@@ -1,0 +1,86 @@
+.btndesignk{
+    width: 20%;
+    padding: 17px 20px;
+    margin:auto;
+    box-sizing: border-box;
+    margin-left: 330px;
+    border-radius: 1px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    border:none;
+    background-color: #80ccff;
+}
+
+.forms{
+    background: #fff;
+}
+.form-control ::before {
+    border: none;
+    border-bottom: 1px solid #000;
+    color: tomato;
+    font-size: 18px;
+}
+.form-control ::after {
+    border: none;
+    border-bottom: 1px solid #000;
+    color: tomato;
+    font-size: 18px;
+}
+
+.form-group{
+    margin-left: 120px;
+    margin-right: 120px;
+    
+}
+.btnf{
+    padding: 17px 20px;
+    margin:auto;
+    margin-left: 50px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    border:none;
+}
+.btng{
+    padding: 17px 20px;
+    margin:auto;
+    margin-left: 120px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    border:none;
+}
+ .actc{
+     margin-top: 10px;
+    margin-left: 250px;
+}
+.withs{
+    margin-left: 370px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: grey;
+}
+.ors{
+    margin-left: 370px;
+    margin-bottom: 5px;
+    font-weight: 700;
+    color: grey;
+}
+.res{
+    font-size: 50px;
+    margin-left: 300px;
+    color: orange;
+}
+img{
+    height: 100px;
+    width:120px
+}
+label{
+    margin-left: 10px;
+}

@@ -1,0 +1,13 @@
+.navbar{
+    letter-spacing: 1px;
+   border-bottom: 1px solid grey;
+}
+.navbar-brand{
+    text-decoration: tomato;
+    font-size: 25px;
+    font-weight: 500;
+    margin-left: 600px;
+}
+.navbar-light .navbar-brand{
+    color: orange;
+}

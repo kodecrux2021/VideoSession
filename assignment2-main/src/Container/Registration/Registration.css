@@ -94,14 +94,14 @@ padding : 8px 0;
     background-color:#30b3f0;
 }
 
-._footer {
+.registration__view__footer {
     padding: 20px;
     color: rgb(67, 68, 68);
     font-weight: 500;
    font-size: larger;
 }
 
-._footer > a {
+.registration__view__footer > a {
     cursor: pointer;
     color: #30b3f0 !important;
     font-weight: bolder;

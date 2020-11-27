@@ -23,7 +23,7 @@ class VerificationContainer extends Component {
             "city": localStorage.getItem('city'),
             "pincode": localStorage.getItem('pincode'),
             "state": localStorage.getItem('state'),
-            "otp": localStorage.getItem('otp'),
+            "otp": localStorage.getItem('otp'),  
             "school": localStorage.getItem('school'),
         }
         console.log('the otp ----------------', this.state.otp)

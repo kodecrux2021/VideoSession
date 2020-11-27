@@ -43,7 +43,7 @@ export default function Registration(props) {
                  </div>
            </form>
        </div>
-      <div className="_footer">
+      <div className="registration__view__footer">
            Already have an account? <a>Login</a>
       </div>
 </div>

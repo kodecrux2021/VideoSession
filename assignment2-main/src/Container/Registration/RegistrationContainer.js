@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import RegistrationView from './RegistrationView'
 
-
 class RegistrationContainer extends Component {
     state = {
         name : '',
@@ -24,7 +23,32 @@ class RegistrationContainer extends Component {
 
     onSubmit=(e)=> {
         e.preventDefault();
-        console.log('values___________', this.state);
+
+        localStorage.setItem('username', this.state.name)
+        localStorage.setItem("is_instructor",this.state.is_instructor)
+        localStorage.setItem("is_freelancer",this.state.is_freelancer)
+        localStorage.setItem("is_codeexpert",this.state.is_codeexpert)
+        localStorage.setItem('phone', this.state.mobile)
+        localStorage.setItem('password', this.state.password)
+    //     fetch(("http://7e4a4d386d0f.ngrok.io/api/user/"),
+    //     {
+    //      method: 'POST',
+    //      headers: {
+    //       'Accept': 'application/json',
+    //      'Content-Type': 'application/json',
+    //               },
+    //      body: JSON.stringify(data),
+    //      mode: 'no-cors'
+    //    })
+    //    .then(res => res.json()) 
+    //    .then((response) => {
+    //      console.log('response___________________', response)
+    //    })
+    //    .catch(error => {
+    //      console.log('error__________', error)
+    //    })
+
+    this.props.history.push("/details");
     }
     onChangeValue = (event) => {
         event.preventDefault();
@@ -37,9 +61,9 @@ class RegistrationContainer extends Component {
                 onChangeValue={this.onChangeValue}
                 handelData={this.handelData}
                 onSubmit={this.onSubmit}
-                name={this.name}
-                mobile={this.mobile}
-                password={this.password}
+                name={this.state.name}
+                mobile={this.state.mobile}
+                password={this.state.password}
                 position={this.state.position}
         	/>)
     }

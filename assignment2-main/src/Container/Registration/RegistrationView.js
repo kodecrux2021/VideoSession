@@ -17,10 +17,10 @@ export default function Registration(props) {
            <p>Or</p>
        </div>
        <div className="form__container">
-           <form className="was-validated">
+           <form >
                <div className="form__group">
                    <label >Name</label>
-                   <input type="text" value={props.name} onChange={(e) => props.handelData('name', e.target.value)} className="form__control"  placeholder="Enter Your Name" name="uname" />
+                   <input type="text" value={props.name} onChange={(e) => props.handelData('name', e.target.value)} className="form__control" id="uname" placeholder="Enter Your Name" name="uname" />
 
                </div>
                <div className="form__group">

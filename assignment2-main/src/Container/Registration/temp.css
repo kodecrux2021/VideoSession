@@ -1,3 +1,11 @@
+html * {
+    font-family: Camphor,Helvetica,Arial,sans-serif!important;
+    margin: 0;
+}
+body::-webkit-scrollbar {
+    display: none;
+}
+
 
 input {
     outline: 0;
@@ -17,7 +25,7 @@ input {
 
 
 .form__container {
-    width: 700px;
+    width: 500px;
 }
 
 ._header {
@@ -28,47 +36,38 @@ align-items: center;
 }
 
 ._header > h2 {
-    font-size: 50px;
-    color: #30b3f0;
+    color: #5964c9;
 }
 
 ._header > p {
     font-weight: bolder;
-    color: rgb(169, 167, 167);
+    color: rgb(91, 92, 92);
     padding-top: 9px;
 }
 
-.form__group {
-padding : 8px 0;
-}
-
-.form__group label {
+.form-group label {
     color: rgb(67, 68, 68);
-     font-weight: 500;
-    font-size: large;
 }
 
 .header__button > button {
-    margin: 5px 20px;
-    width: 320px;
-    height: 55px;
-    padding: 6px;
-    font-size: 16px;
+    margin: 5px 15px;
+    width: 230px;
+    height: 40px;
+    padding: 5px;
+    font-size: 14px;
     font-weight: bold;
     border: none;
     color: white;
 }
-
-
 
 .form__control{
     display: block;
     width: 100%;
     height: calc(1.5em + .75rem + 2px);
     padding: .375rem .75rem;
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 400;
-    line-height: 2.5;
+    line-height: 1.5;
     color: #495057;
     background-color: #fff;
     background-clip: padding-box;
@@ -77,18 +76,16 @@ padding : 8px 0;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.form-actions {
-    margin: 15px 0 0;
+.form__actions {
+    margin: 0;
     background-color: transparent;
     text-align: center;
-    padding: 10px 0 ;
 }
-.form-actions button {
+.form__actions button {
     width: 160px;
-    height: 55px;
+    height: 45px;
     padding: 5px;
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 20px;
     border: none;
     color: white;
     background-color:#30b3f0;
@@ -96,9 +93,6 @@ padding : 8px 0;
 
 ._footer {
     padding: 20px;
-    color: rgb(67, 68, 68);
-    font-weight: 500;
-   font-size: larger;
 }
 
 ._footer > a {
@@ -109,37 +103,61 @@ padding : 8px 0;
 
 .select__container {
 display: flex;
-justify-content: space-around;
-padding: 40px 0;
+justify-content: center;
+padding-bottom: 20px;
 }
 
 
-.select__button {
-    width: 170px;
-    height: 55px;
-    font-size: 18px;
-    padding: 10px 10px;
-    border-radius: 1px;
-    
-    font-weight: 700;
+.select__option {
+    list-style-type:none;
+    margin:25px 0 0 0;
+    padding:0;
+}
+
+.select__option li {
+    float:left;
+    margin:0 36px 0 10px;
+   width:120px;
+   height:60px;
+   position:relative;
+}
+
+.select__option li label{
+    font-weight: bolder;
+    text-align: center;
+    padding: 15px 0;
     color: rgb(82, 82, 82);
-    border:none;
-    background-color:#DDD;
-    outline:none !important;
 }
 
-.select__button__active {
-    width: 170px;
-    height: 55px;
-    font-size: 18px;
-    padding: 10px 10px;
-    border-radius: 1px;
-  
-    font-weight: 700;
-    color: #fff;
-    border:none;
-    background-color: #30b3f0;
-    outline:none !important;
+.select__option label, .select__option input {
+   display:block;
+   position:absolute;
+   top:0;
+   left:0;
+   right:0;
+   bottom:0;
+   
+}
+
+.select__option input[type="radio"] {
+   opacity:0.011;
+   z-index:100;
+}
+
+.select__option input[type="radio"]:checked + label {
+   background:#30b3f0;
+   color: white;
+}
+
+.select__option label {
+    /* padding:15px; */
+    background: #DDD;
+    cursor:pointer;
+   z-index:90;
+}
+
+.select__option label:hover {
+    background:rgb(192, 192, 192);
 }
 
 @media (max-width: 550px) {
@@ -156,14 +174,17 @@ padding: 40px 0;
         padding: 4px;
         font-size: 10px;
     }
- 
-    .select__container > button {
-        width: 100px;
-        padding: 10px 5px;
-        border-radius: 1px;
-        font-size: 12px;
-        font-weight: 700;
-      
+
+    .select__option li {
+        margin:0 3px 0 10px;
+       width:90px;
+       height:45px;
     }
-  
+
+    .select__option li label{
+        font-weight: 200px;
+        font-size: 12px;
+        text-align: center;
+        padding: 9px 0;
+    }
 }

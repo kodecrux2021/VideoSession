@@ -1,10 +1,9 @@
 import React from 'react';
 import './App.css';
-import Pagetwo from './Container/Pagetwo';
+import RegistrationDetailsContainer from './Container/RegistrationDetails/RegsitrationDetailsContainer';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
-import VerifyPage from './Container/VerificationPage';
-import Registration from './Container/Registration/RegistrationView'
 import RegistrationContainer from './Container/Registration/RegistrationContainer';
+import VerificationContainer from './Container/VerificationPage/VerificationContainer'
 
 function App() {
 
@@ -14,8 +13,8 @@ function App() {
         <Switch>
          
           <Route path="/registration" exact component={RegistrationContainer} />
-          <Route path="/next" component={Pagetwo} />
-          <Route path="/verify" component={VerifyPage} />
+          <Route path="/details" component={RegistrationDetailsContainer} />
+          <Route path="/verification" component={VerificationContainer} />
         </Switch>
       </Router>
       

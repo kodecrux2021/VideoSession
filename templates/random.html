@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form method="POST">
+			{% csrf_token %}
+		<div style="margin-bottom:1em">
+			<label style="margin-right: 5px;">phone:</label><input id='userid' name='phone' type="text"></input>
+		</div>
+        <br>
+        <input type="submit" style='color: blue;'>
+    </form>
+
+
+</body>
+</html>

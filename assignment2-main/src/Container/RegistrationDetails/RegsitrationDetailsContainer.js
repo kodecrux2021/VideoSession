@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import RegistrationLayout from '../../components/RegistrationLayout/RegistrationLayout'
 import Pagetwo from './index'
 export default class RegsitrationDetailsContainer extends Component {
 
@@ -40,14 +41,18 @@ export default class RegsitrationDetailsContainer extends Component {
 
     render() {
         return (
-            <Pagetwo
-            pincode={this.state.pincode}
-            school={this.state.school}
-            state={this.state.state}
-            city={this.state.city}
-            handelData={this.handelData}
-            onSubmit ={this.onSubmit}
-            />
+            <div>
+                   <RegistrationLayout />
+                   <Pagetwo
+                    pincode={this.state.pincode}
+                    school={this.state.school}
+                    state={this.state.state}
+                    city={this.state.city}
+                    handelData={this.handelData}
+                    onSubmit ={this.onSubmit}
+                    />
+            </div>
+            
         )
     }
 }

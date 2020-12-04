@@ -1,0 +1,36 @@
+.navbar{
+    letter-spacing: 1px;
+   height: 65px;
+   border-bottom: 3px solid rgb(225, 225, 225);
+   display: flex;
+   justify-content: center;
+ 
+}
+.nav__icon {
+    position: fixed;
+    top: 5px;
+    left: 20px;
+
+}
+
+.navbar-light .navbar-brand{
+    color: #30b3f0;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.navbar-brand:hover  {
+    color: #30b3f0 !important;
+}
+
+.navbar-light:hover{
+    color: #30b3f0 !important;
+}
+
+.navbar-brand:focus  {
+    color: #30b3f0 !important;
+}
+
+.navbar-light:focus{
+    color: #30b3f0 !important;
+}

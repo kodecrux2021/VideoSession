@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import RegistrationLayout from '../../components/RegistrationLayout/RegistrationLayout';
 import RegistrationView from './RegistrationView'
 
 class RegistrationContainer extends Component {
+   
+
     state = {
         name : '',
         password : '',
@@ -57,7 +60,9 @@ class RegistrationContainer extends Component {
       }
 
     render() {
-        return (<RegistrationView
+        return (
+            <div>
+                <RegistrationView
                 onChangeValue={this.onChangeValue}
                 handelData={this.handelData}
                 onSubmit={this.onSubmit}
@@ -65,7 +70,10 @@ class RegistrationContainer extends Component {
                 mobile={this.state.mobile}
                 password={this.state.password}
                 position={this.state.position}
-        	/>)
+        	/>
+            </div>
+
+            )
     }
 }
 

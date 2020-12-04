@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import RegistrationLayout from '../../components/RegistrationLayout/RegistrationLayout'
 import VerificationView from './VerificationView'
 class VerificationContainer extends Component {
     state = {
@@ -53,14 +54,17 @@ class VerificationContainer extends Component {
     }
     render() {
 
-        return (
-         
+        return ( 
+            <div>
+                <RegistrationLayout title="Verification Code" />
                 <VerificationView 
                 otp={this.state.otp}
                 onChange={this.onChangeValue}
                 onSubmit={this.onSubmit}
                 
                 />
+            </div>
+            
        
         )
     }

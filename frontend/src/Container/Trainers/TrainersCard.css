@@ -1,0 +1,86 @@
+.trainers__card {
+width: 100%;
+display: flex;
+max-width: 1200px;
+padding: 0 40px ;
+margin : 20px 0;
+}
+
+.trainers__card__left {
+    display: flex;
+    flex: 0.85;
+    font-size: 22px;
+    line-height: 2em;
+}
+
+.trainers__card__left > img {
+    width:90px;
+    height:90px;
+    border-radius: 100%;
+   margin: auto 0px;
+}
+
+.trainers__card__details {
+    padding: 40px;
+}
+
+.trainers__card__right {
+    display: flex;
+    flex: 0.15;
+    flex-direction: column;
+    margin: auto 0px;
+}
+
+.trainers__card__right > button {
+  margin: 5px;
+  height: 50px;
+  width: 180px;
+  font-weight: bold;
+}
+
+.__card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+  }
+  
+  /* On mouse-over, add a deeper shadow */
+  .__card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+
+  @media(max-width:900px) {
+    .trainers__card {
+       flex-direction: column;
+        padding: 30px 8px ;
+        margin : 20px 0;
+        }
+
+        .trainers__card__left {
+            flex: 1;
+            font-size: 19px;
+            line-height: 2em;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .trainers__card__right {
+
+            flex: 1;
+            flex-direction: row;
+            margin: 0px;
+           justify-content: space-around;
+        }
+
+        /* .trainers__card__right > button {
+            margin: 5px;
+            height: 50px;
+            width: 180px;
+            font-weight: bold;
+
+          } */
+          .trainers__card__details {
+            padding: 0px;
+            text-align: center;
+        }
+  }

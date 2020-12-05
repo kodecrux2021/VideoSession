@@ -42,16 +42,16 @@ export default class RegsitrationDetailsContainer extends Component {
     render() {
         return (
             <div>
-                   <RegistrationLayout />
-                   <Pagetwo
-                    pincode={this.state.pincode}
-                    school={this.state.school}
-                    state={this.state.state}
-                    city={this.state.city}
-                    handelData={this.handelData}
-                    onSubmit ={this.onSubmit}
-                    />
-            </div>
+            <RegistrationLayout />
+            <Pagetwo
+            pincode={this.state.pincode}
+            school={this.state.school}
+            state={this.state.state}
+            city={this.state.city}
+            handelData={this.handelData}
+            onSubmit ={this.onSubmit}
+            />
+             </div>
             
         )
     }

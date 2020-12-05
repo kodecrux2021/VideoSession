@@ -61,7 +61,7 @@ class RegistrationContainer extends Component {
 
     render() {
         return (
-            <div>
+            <div> 
                 <RegistrationView
                 onChangeValue={this.onChangeValue}
                 handelData={this.handelData}
@@ -73,7 +73,7 @@ class RegistrationContainer extends Component {
         	/>
             </div>
 
-            )
+            );
     }
 }
 

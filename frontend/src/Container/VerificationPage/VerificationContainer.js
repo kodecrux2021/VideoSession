@@ -24,12 +24,13 @@ class VerificationContainer extends Component {
             "city": localStorage.getItem('city'),
             "pincode": localStorage.getItem('pincode'),
             "state": localStorage.getItem('state'),
-            "otp": localStorage.getItem('otp'),  
+            "otp": localStorage.getItem('otp'),
             "school": localStorage.getItem('school'),
         }
         console.log('the otp ----------------', this.state.otp)
         localStorage.setItem('otp', this.state.otp)
         console.log('localstorage -----------------------', localStorage)
+        this.props.history.push('/home');
 
 
     //     fetch(("http://7e4a4d386d0f.ngrok.io/api/user/"),
@@ -54,18 +55,16 @@ class VerificationContainer extends Component {
     }
     render() {
 
-        return ( 
+        return (
             <div>
-                <RegistrationLayout title="Verification Code" />
+            <RegistrationLayout title="Verification Code" />
                 <VerificationView 
                 otp={this.state.otp}
                 onChange={this.onChangeValue}
                 onSubmit={this.onSubmit}
-                
+  
                 />
-            </div>
-            
-       
+ </div>       
         )
     }
 }

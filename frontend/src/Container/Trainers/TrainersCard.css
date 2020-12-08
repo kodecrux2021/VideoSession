@@ -3,7 +3,12 @@ width: 100%;
 display: flex;
 max-width: 1200px;
 padding: 0 40px ;
-margin : 20px 0;
+margin : 13px 0;
+}
+
+.card {
+  flex-direction: row;
+  border: 2px solid rgba(0,0,0,.125);
 }
 
 .trainers__card__left {
@@ -15,13 +20,14 @@ margin : 20px 0;
 
 .trainers__card__left > img {
     width:90px;
+    object-fit: cover;
     height:90px;
     border-radius: 100%;
    margin: auto 0px;
 }
 
 .trainers__card__details {
-    padding: 40px;
+    padding: 30px 40px;
 }
 
 .trainers__card__right {
@@ -83,4 +89,8 @@ margin : 20px 0;
             padding: 0px;
             text-align: center;
         }
+  }
+
+  .btn-outline-info {
+    border: 1px solid #17a2b8 !important;
   }

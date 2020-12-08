@@ -21,7 +21,7 @@ const styles = theme => ({
  function TrainersCard(props) {
     const { classes } = props;
     return (
-        <div className="trainers__card  __card" >
+        <div className="card trainers__card" >
             <div className="trainers__card__left">
                 <img src={props.img} alt="avatar" />
                 <div className="d-flex flex-column trainers__card__details "> 

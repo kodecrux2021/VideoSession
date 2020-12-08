@@ -8,6 +8,15 @@ input {
     border-color: rgb(73, 209, 101);
   }
 
+textarea {
+    outline: 0;
+    border-width: 0 0 0;
+}
+
+textarea:focus {
+    border-color: rgb(73, 209, 101);
+  }
+
 .__container {
     display: flex;
     flex-direction: column;
@@ -48,7 +57,7 @@ padding : 8px 0;
     font-size: large;
 }
 
-.header__button > button {
+/* .header__button > button {
     margin: 5px 20px;
     width: 320px;
     height: 55px;
@@ -57,7 +66,7 @@ padding : 8px 0;
     font-weight: bold;
     border: none;
     color: white;
-}
+} */
 .google {
     margin: 5px 20px !important;
     width: 320px !important;
@@ -165,20 +174,47 @@ padding: 40px 0;
     outline:none !important;
 }
 
-@media (max-width: 550px) {
+@media (max-width: 800px) {
     .__container {
         padding: 10px;
     }
     .form__container {
         width: 320px;
     }
-    .header__button > button {
+    /* .header__button > button {
         margin: 5px 10px;
-        width: 120px;
+        width: 70px;
         height: 35px;
         padding: 4px;
         font-size: 10px;
+    } */
+
+    .google {
+        margin: 5px 10px !important;
+        width: 150px !important;
+        height: 40px !important;
+        padding: 0 auto !important;
+        font-size: 10px !important;
+        font-weight: bold !important;
+        border: none!important;
+        color: white !important;
+        background-color:#DB4437 !important;
+        text-align: center !important;
+        padding-left: 45px !important;
     }
+    .facebook {
+        margin: 5px 10px;
+        width: 150px;
+        height: 40px;
+        padding: 6px;
+        font-size: 12px;
+        font-weight: bold;
+        border: none;
+        color: white;
+        background-color:#4c69ba
+    }
+
+
  
     .select__container > button {
         width: 100px;

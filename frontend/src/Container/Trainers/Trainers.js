@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import TrainersCard from './TrainersCard'
-import avatar from '../../assets/images/avatar.png'
+import avatar from '../../assets/images/avatar2.jpeg'
 
 export default class Trainers extends Component {
     render() {

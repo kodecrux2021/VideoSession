@@ -6,6 +6,8 @@ import RegistrationContainer from './Container/Registration/RegistrationContaine
 import VerificationContainer from './Container/VerificationPage/VerificationContainer'
 import Home from './Container/Home/Home'
 import Trainers from './Container/Trainers/Trainers';
+import EmployeeRegistrationComponent from './Container/EmployeeRegistration/EmployeeRegistrationComponent';
+import ChatComponent from './Container/Chat/ChatComponent';
 function App() {
 
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path="/details" component={RegistrationDetailsContainer} />
           <Route path="/verification" component={VerificationContainer} />
           <Route path="/trainers" component={Trainers} />
+          <Route path="/employee-registration" component={EmployeeRegistrationComponent} />
+          <Route path="/chat" component={ChatComponent} />
         </Switch>
       </Router>
       

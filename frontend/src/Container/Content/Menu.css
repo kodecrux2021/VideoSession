@@ -1,0 +1,109 @@
+.fa {
+    padding-right: 10px;
+  }
+  
+  .cr_icons{
+    position: absolute;
+    right: 10px;
+  }
+
+  .navbar {
+    /* background-color: #f2f2f2; */
+    width: 250px;
+    height: 53px;
+    cursor: pointer;
+    border: none !important;
+  }
+  
+  /* .logo {
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 50px;
+    color: #7a7a7a;
+    float: left;
+    margin-left: 20px;
+  }
+   */
+
+
+
+  .analytics .topButton {
+    height: 84px;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 50px;
+    color: #595959;
+    float: left;
+    border: none;
+
+    /* margin-left: 50px; */
+    /* border-bottom: 3px solid transparent; */
+  }
+  
+  /* .analytics:hover .topButton {
+    border-bottom: 3px solid #848484;
+  } */
+  
+  .analyticsDropDown {
+    position: absolute;
+    top: 94px;
+    left: 50px;
+    display: none;
+    /* border-left: 1px solid #f2f2f2;
+    border-right: 1px solid #f2f2f2; */
+    border: 1px solid #dcdacb;
+    box-shadow: 0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08);
+    background-color: white;
+    /* padding : 20px 10px; */
+
+  }
+  
+  .analyticsDropDown .moduleGroup {
+    width: 350px;
+    list-style-type: none;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 25px;
+    /* align-items: center; */
+    /* border-bottom: 1px solid #f2f2f2; */
+    /* border-top: 0px solid transparent;
+    border-left: 5px solid transparent; */
+    padding: 12px 15px;
+    max-height: 50px;
+  }
+  
+  .modulesSet {
+    position: absolute;
+    top: -2px;
+    left: 352px;
+    /* border: 1px solid #f2f2f2; */
+    border: 1px solid #dcdacb;
+    box-shadow: 0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08);
+    display: none;
+    background-color: white;
+  
+  }
+  
+  .singleModule {
+    width: 350px;
+    list-style-type: none;
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 25px;
+    /* border-bottom: 1px solid #f2f2f2;
+    border-left: 5px solid transparent; */
+    padding: 12px 15px;
+    max-height: 50px;
+  }
+  
+  .visible {
+    display: block;
+  }

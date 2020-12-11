@@ -9,8 +9,8 @@ export default function EmployeeRegistrationView(props) {
     const options = [
         {name: 'Swedish', value: 'sv'},
         {name: 'English', value: 'en'},
-        {name: 'Swedish', value: 'sv'},
-        {name: 'English', value: 'en'},
+        {name: 'japanese', value: 'jp'},
+        {name: 'spanese', value: 'sp'},
     ];
 
     const securityQn = [

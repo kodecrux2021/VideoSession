@@ -1,56 +1,25 @@
 from rest_framework import serializers
-from .models import CustomUser
-import random
-from twilio.rest import Client
-from django.conf import settings
+from .models import Educator,Clients
+from customuser.serializers import CustomUserSerializers
+from rest_framework.serializers import ReadOnlyField
 
 
-class CustomUserSerializers(serializers.ModelSerializer):
+
+
+class EducatorSerializer(serializers.ModelSerializer):
+    user_username = ReadOnlyField(source='user.username')
+    user_email = ReadOnlyField(source='user.email')
+    user_first_name = ReadOnlyField(source='user.first_name')
+    user_last_name = ReadOnlyField(source='user.last_name')
+    user_phone = ReadOnlyField(source='user.phone')
+
     class Meta:
-        model = CustomUser
-        read_only_fields = ('otp',)
-        fields = ('username','otp','password','email','state','school','city','pincode','phone','is_instructor','is_freelancer','is_codeexpert')
-        extra_kwargs = {'password': {'write_only': True}}
+        model = Educator
+        fields = ('user','user_username','user_email','user_first_name','user_last_name','user_phone','fees','date','rating',)
 
-
-    def create(self,validated_data):
-        code = random.randint(100000, 999999)
-        user = CustomUser(
-
-            username=validated_data['username'],
-            email=['email'],
-            school=['school'],
-            state=['state'],
-            city=['city'],
-            pincode=['pincode'],
-            is_active=False,
-            otp=code,
-            phone=validated_data['phone'],
-        )
-        user.set_password(validated_data['password'])
-        user.save()
-        # if user:
-        #     print('I HAVE TO PUT MESSAGE FUNCTION')
-        #     otp_verification(user.phone,user.otp)
-        return user
-
-def otp_verification(mobile_number,otp):
-    client = Client(settings.ACCOUNT_SID, settings.AUTH_TOKEN)
-    incoming_phone_number = client.incoming_phone_numbers.create(
-        phone_number='+15005550006',
-    )
-
-    print('fake',incoming_phone_number.sid)
-    message = client.messages.create(
-        body=otp,
-        from_='+15005550006',
-        to='+919827792681'
-    )
-
-    print('message.sid',message.sid)
-
-class PhoneVerificationSerializer(serializers.ModelSerializer):
+class ClientSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
-        read_only_fields = ('username', 'email')
-        fields = ('username', 'email','phone','otp')
+        model = Clients
+        fields = '__all__'
+
+

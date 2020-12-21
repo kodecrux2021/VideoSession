@@ -1,19 +1,28 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
+from customuser.models import CustomUser
+from datetime import datetime
 
 
 
 
-class CustomUser(AbstractUser):
-    state = models.CharField(max_length=15, blank=True, null=True)
-    city = models.CharField(max_length=15, blank=True, null=True)
-    pincode = models.CharField(max_length=15, blank=True, null=True)
-    school = models.CharField(max_length=15, blank=True, null=True)
-    phone = models.IntegerField(blank=True, null=True)
-    is_codeexpert  = models.BooleanField(default=False)
-    is_instructor  = models.BooleanField(default=False)
-    is_freelancer = models.BooleanField(default=False)
-    otp = models.CharField(blank=True, max_length=255,null=True)
+class Clients(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    job_description = models.TextField(blank=True,null= True)
 
-    # def __str__(self):
-    #     return self.phone
+    def __str__(self):
+        """String for representing the Model object."""
+        return str(self.user.first_name)
+
+
+
+
+class Educator(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    fees = models.IntegerField(max_length=100)
+    date  = models.DateTimeField(default=datetime.now(),null=True, blank=True)
+    rating = models.IntegerField(max_length=100)
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return str(self.user.first_name)
+

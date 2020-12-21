@@ -31,7 +31,7 @@ SECRET_KEY = 'p_w#!6jui_dlu78z7*ne8^y2z$+2q0u%2kqm*hg(ij9a2=1w^1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['7e4a4d386d0f.ngrok.io']
+ALLOWED_HOSTS = ['7e4a4d386d0f.ngrok.io','127.0.0.1']
 
 
 # Application definition
@@ -45,6 +45,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'user',
+    'technology',
+    'proposal',
+    'job',
+    'session',
+    'customuser',
+    'django_filters',
+    'hire'
+
 ]
 
 MIDDLEWARE = [
@@ -126,7 +134,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-AUTH_USER_MODEL = "user.CustomUser"
+AUTH_USER_MODEL = "customuser.CustomUser"
 
 
 
@@ -136,3 +144,12 @@ ACCOUNT_SID = 'AC8e2a3cefda57282f6ef9800fe0063564'
 AUTH_TOKEN = '533ea0a2260253cc505f001c3c9a336b'
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+AUTHENTICATION_BACKENDS = (
+    ('django.contrib.auth.backends.ModelBackend'),
+)

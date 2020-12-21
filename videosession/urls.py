@@ -16,13 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from .router import router
 from django.urls import path,include
-from user import views as user_views
+from customuser import views as customuser_views
+from rest_framework_simplejwt import views as jwt_views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('random/',user_views.Random.as_view(),name='random'),
-    path('otp/',user_views.MobileVerificationViewset.as_view(),name='otp')
-
+    path('random/',customuser_views.Random.as_view(),name='random'),
+    path('otp/',customuser_views.MobileVerificationViewset.as_view(),name='otp'),
+    path('lastseen/', customuser_views.LastseenView.as_view(), name='device'),
+    path('currentuser/', customuser_views.CurrentUserView.as_view(), name='currentuser'),
+    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 ]

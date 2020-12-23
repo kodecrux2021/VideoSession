@@ -22,6 +22,8 @@ class CustomUser(AbstractUser):
     topic = models.ManyToManyField(Topic)
     is_active = models.BooleanField(default=False)
     last_seen =  models.DateTimeField(default=datetime.now(),null=True, blank=True)
+    profile_pic =  models.ImageField(upload_to ='profile_pics/',null=True,blank=True, max_length=255)
+
 
     def __str__(self):
         return self.username

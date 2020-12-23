@@ -12,8 +12,11 @@ class CustomUserSerializers(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         read_only_fields = ('id','last_seen','otp')
-        fields = ('id','username','otp','password','email','first_name','last_name','phone','is_instructor','is_freelancer','is_codeexpert','is_client','technology','sub_technology','topic','last_seen')
+        fields = ('id','username','otp','password','email','first_name','last_name','phone','is_instructor','is_freelancer','is_codeexpert','is_client','technology','sub_technology','topic','last_seen','profile_pic',)
         extra_kwargs = {'password': {'write_only': True}}
+
+    def perform_create(self, serializer):
+        return serializer.save()
 
     def create(self,validated_data):
         code = random.randint(100000, 999999)
@@ -32,6 +35,7 @@ class CustomUserSerializers(serializers.ModelSerializer):
             is_freelancer=validated_data['is_freelancer'],
             is_codeexpert=validated_data['is_codeexpert'],
             is_client=validated_data['is_client'],
+            profile_pic = validated_data['profile_pic'],
         )
         user.set_password(validated_data['password'])
         user.save()

@@ -14,6 +14,7 @@ from django.shortcuts import render,redirect
 from .models import Technology,Subtechnology,Topic
 from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, permissions, status, views
 
 
 
@@ -21,6 +22,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 class TechnologyViewset(viewsets.ModelViewSet):
     queryset = models.Technology.objects.all()
     serializer_class = serializers.TechnologySerializer
+    permission_classes = [permissions.AllowAny]
+
 
     def get(self):
         content = {'message': 'Hello, World!'}
@@ -30,6 +33,8 @@ class TechnologyViewset(viewsets.ModelViewSet):
 class SubtechnologyViewset(viewsets.ModelViewSet):
     queryset = models.Subtechnology.objects.all()
     serializer_class = serializers.SubtechnologySerializer
+    permission_classes = [permissions.AllowAny]
+
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['technology']
 
@@ -38,5 +43,7 @@ class SubtechnologyViewset(viewsets.ModelViewSet):
 class TopicViewset(viewsets.ModelViewSet):
     queryset = models.Topic.objects.all()
     serializer_class = serializers.TopicSerializer
+    permission_classes = [permissions.AllowAny]
+
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['sub_technology']

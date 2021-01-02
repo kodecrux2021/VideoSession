@@ -1,5 +1,5 @@
 from user.views import EducatorViewset,ClientViewset
-from customuser.views import CustomUserViewset
+from customuser.views import CustomUserViewset,CustomUsersecondViewset,CustomUserthirdViewset
 from technology.views import TechnologyViewset,SubtechnologyViewset,TopicViewset
 from session.views import SessionViewset
 from rest_framework import routers
@@ -19,6 +19,10 @@ router.register('session',SessionViewset),
 router.register('hire',HireViewset),
 router.register('message',MessageViewset),
 router.register('conversation',ConversationViewset),
+router.register('customusersecond',CustomUsersecondViewset),
+router.register('customuserthird',CustomUserthirdViewset),
+
+
 
 
 

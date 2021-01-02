@@ -8,7 +8,7 @@ class MessageSerializer(serializers.ModelSerializer):
     print('sent_by',user)
     class Meta:
         model = Message
-        fields = ('sent_by','read_by','date','message','is_read','attachment','user','conversation')
+        fields = ('id','sent_by','read_by','date','message','is_read','attachment','user','conversation')
 
     def save(self, **kwargs):
         """Include default for read_only `user` field"""
@@ -19,4 +19,5 @@ class MessageSerializer(serializers.ModelSerializer):
 class ConversationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conversation
-        fields = '__all__'
+        read_only_fields = ('id','archived_by','last_message_datetime')
+        fields = ('id','includes','archived_by','last_message_datetime',)

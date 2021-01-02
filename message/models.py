@@ -6,8 +6,10 @@ from customuser.models import CustomUser
 
 class Conversation(models.Model):
     last_message_datetime = models.DateTimeField(default=datetime.now(), null=True, blank=True)
-    archived_by = models.ManyToManyField(CustomUser, related_name="conversation_archived",)
-    includes = models.ManyToManyField(CustomUser, related_name="conversation_includes",)
+    archived_by = models.ManyToManyField(CustomUser, related_name="conversation_archived", blank=True, null=True)
+    includes = models.ManyToManyField(CustomUser, related_name="conversation_includes", blank=True, null=True)
+    def __str__(self):
+        return str(self.id)
 
 class Message(models.Model):
     date = models.DateTimeField(default=datetime.now(), null=True, blank=True)

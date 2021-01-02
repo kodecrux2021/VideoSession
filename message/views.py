@@ -4,6 +4,7 @@ from . import serializers
 from . import models
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, permissions, status, views
 
 from rest_framework.response import Response
 # from django_filters.rest_framework import DjangoFilterBackend
@@ -23,6 +24,7 @@ class MessageViewset(viewsets.ModelViewSet):
 
 class ConversationViewset(viewsets.ModelViewSet):
     queryset = models.Conversation.objects.all()
+    permission_classes = [permissions.AllowAny]
     serializer_class = serializers.ConversationSerializer
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['includes',]

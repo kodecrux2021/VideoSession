@@ -4,15 +4,21 @@ import random
 from twilio.rest import Client
 from django.conf import settings
 from datetime import datetime
+from user.serializers import EducatorSerializer
 
 
 
+class SocialSerializer(serializers.Serializer):
+    provider = serializers.CharField(max_length=255, required=True)
+    access_token = serializers.CharField(max_length=4096, required=True, trim_whitespace=True)
 
 class CustomUserSerializers(serializers.ModelSerializer):
+    # educator_user = EducatorSerializer(many=True,read_only=True)
+    educator_user = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     class Meta:
         model = CustomUser
-        read_only_fields = ('id','last_seen','otp')
-        fields = ('id','username','otp','password','email','first_name','last_name','phone','is_instructor','is_freelancer','is_codeexpert','is_client','technology','sub_technology','topic','last_seen','profile_pic',)
+        read_only_fields = ('id','pincode','state','city','school','otp','email','first_name','last_name','technology','sub_technology','topic','last_seen','profile_pic','educator_user',)
+        fields = ('id','username','pincode','state','city','school','otp','password','email','first_name','last_name','phone','is_instructor','is_freelancer','is_codeexpert','is_client','technology','sub_technology','topic','last_seen','profile_pic','educator_user',)
         extra_kwargs = {'password': {'write_only': True}}
 
     def perform_create(self, serializer):
@@ -22,26 +28,16 @@ class CustomUserSerializers(serializers.ModelSerializer):
         code = random.randint(100000, 999999)
         user = CustomUser(
             username=validated_data['username'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
             phone=validated_data['phone'],
-            email=['email'],
-            state=['state'],
-            city=['city'],
-            pincode=['pincode'],
             is_active=True,
-            otp=code,
             is_instructor=validated_data['is_instructor'],
             is_freelancer=validated_data['is_freelancer'],
             is_codeexpert=validated_data['is_codeexpert'],
             is_client=validated_data['is_client'],
-            profile_pic = validated_data['profile_pic'],
         )
         user.set_password(validated_data['password'])
         user.save()
-        user.technology.set(validated_data['technology'])
-        user.sub_technology.set(validated_data['sub_technology'])
-        user.topic.set(validated_data['topic'])
+
 
 
         # if user:
@@ -76,3 +72,47 @@ class PhoneVerificationSerializer(serializers.ModelSerializer):
         model = CustomUser
         read_only_fields = ('username', 'email')
         fields = ('username', 'email','phone','otp')
+
+
+
+class CustomUsersecondSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('pincode','state','city','school')
+
+
+    def create(self,validated_data):
+        user = CustomUser(
+            state=validated_data['state'],
+            school=validated_data['school'],
+            city=validated_data['city'],
+            pincode=validated_data['pincode'],
+        )
+        user.is_active=True
+        user.save()
+        return user
+
+
+class CustomUserthirdSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('first_name','last_name','technology','sub_technology','topic','last_seen','profile_pic','email','phone','summary')
+
+
+    def create(self,validated_data):
+        user = CustomUser(
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            technology=validated_data['technology'],
+            sub_technology=validated_data['sub_technology'],
+            topic=validated_data['topic'],
+            last_seen=validated_data['last_seen'],
+            profile_pic=validated_data['profile_pic'],
+            email=validated_data['email'],
+            phone=validated_data['phone'],
+            summary=validated_data['summary'],
+
+        )
+        user.save()
+        return user
+

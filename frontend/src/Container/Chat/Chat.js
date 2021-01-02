@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './Chat.css'
 import { Avatar, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,9 +9,14 @@ import Popover from '@material-ui/core/Popover';
 
 import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
 import VideocamOutlinedIcon from '@material-ui/icons/VideocamOutlined';
+import { Drawer } from 'antd';
+import MenuIcon from '@material-ui/icons/Menu';
 import NextWeekOutlinedIcon from '@material-ui/icons/NextWeekOutlined';
 import PageviewOutlinedIcon from '@material-ui/icons/PageviewOutlined';
 import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
+import { Link, useHistory } from 'react-router-dom';
+import Datetime from 'react-datetime';
+import dateFormat from 'dateformat';
 
 const useStyles = makeStyles((theme) => ({
     // root: {
@@ -22,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
     // },
 
     largeIcon: {
-        width: 90,
-        height: 90,
+        width: 80,
+        height: 80,
       },
 
     small: {
@@ -31,8 +36,8 @@ const useStyles = makeStyles((theme) => ({
       height: theme.spacing(3),
     },
     large: {
-      width: theme.spacing(7),
-      height: theme.spacing(7),
+      width: theme.spacing(6),
+      height: theme.spacing(6),
     },
  
     icon: {
@@ -44,26 +49,47 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     msgicon: {
-        width: theme.spacing(6),
-        height: theme.spacing(6),
+        width: theme.spacing(5),
+        height: theme.spacing(5),
         marginRight: '10px',
     }
   }));
 
 export default function Chat(props) {
+    const history = useHistory();
     const classes = useStyles();
+
+    const today = Date.now();
+    console.log(today)
+    console.log(dateFormat(props.lastseen, "mmmm dS, yyyy"));
+
+    const [visible, setVisible] = useState(false);
+    const showDrawer = () => {
+        setVisible(true);
+      };
+    
+      const onClose = () => {
+        setVisible(false);
+      };
+
+      const logout = () => {
+        localStorage.clear();
+        history.push('/login')
+    }
+
     return (
         <div className='chat'>
             <div className='chat__header'>
                 <Avatar src={props.img} className={classes.large}/>
                 <div className='chat__header__info'>
                     <h4>{props.name}</h4>
-                    <span>{props.lastseen}</span>
+                    <span>{dateFormat(props.lastseen, "mmmm dS, h:MM TT")} </span>
                 </div>
                 <div className='chat__header__right'>
                     <IconButton className={classes.icon} onClick={props.dropHandle}>
                         <ExpandLessIcon />
                     </IconButton>
+
                 </div>
             </div>
             <div className='chat__body'>
@@ -129,11 +155,13 @@ export default function Chat(props) {
                 <div className='message__container'>
                 <span><Avatar src={props.img} className={classes.msgicon}/></span>
                 <p className='chat__message tri-right left-top'>
-                    Hi Prasad</p>
+                    <img className='msg__img' src={props.img} alt='img' />
+                    <p>Here is my pic</p>
+                    </p>
                 </div>
                 
                 <div className={`message__container ${true && "reciever__container"}`}>
-                <span><Avatar src={props.img} className={classes.msgicon}/></span>
+                <span><Avatar src={props.user_img} className={classes.msgicon}/></span>
                 <p className={`chat__message ${true && "chat__reciever tri-right right-top"}`}>
                
                     Hi Prasad</p>
@@ -158,6 +186,34 @@ export default function Chat(props) {
                 <IconButton><PictureAsPdfIcon className="svg_icons" /></IconButton>
                 
             </div>
+
+            <Drawer
+        title="Navigation"
+        placement="right"
+        closable={false}
+        onClose={onClose}
+        visible={visible}
+      >
+        <Link to='/home' ><p><strong>HOME</strong></p></Link>
+        <Link to='/trainers' ><p><strong>TEACHERS</strong></p></Link>
+        <Link to='/courses' ><p><strong>COURSES</strong></p></Link>
+        <Link to='/chat' ><p><strong>CHAT</strong></p></Link>
+        <Link to='/course-registration' ><p><strong>COURSE REGISTRATION</strong></p></Link>
+        <Link to='/help/1' ><p><strong>HELP SECTION</strong></p></Link> 
+        {
+        (localStorage.token)?
+        <Link><p onClick={logout} ><strong>LOG OUT</strong></p></Link>
+        :
+        <Link to='/login'><p><strong>LOG IN</strong></p></Link>    
+         }
+         {
+        (localStorage.token)?
+        null
+        :
+        <Link to='/registration'><p><strong>SIGN UP</strong></p></Link>   
+         }
+        
+      </Drawer>
         </div>
     )
 }

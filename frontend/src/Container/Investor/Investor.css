@@ -1,0 +1,46 @@
+.investor{
+    background-color: whitesmoke;
+    padding: 45px;
+    display: grid;
+    place-items: center;
+}
+
+.investor__head__title {
+    display: flex;
+    align-items: center;
+
+}
+
+.investor__head__detail {
+    padding: 10px 0;
+    color: gray;
+    font-size: 18px;
+}
+
+.invester__heading  {
+    color:rgb(15, 15, 151);
+    font-weight: 700;
+    font-size: 22px;
+    padding: 0 15px;
+}
+
+.investor__card {
+    background-color: #fff;
+    padding: 25px 20px;
+    margin: 20px 0;
+}
+
+.round__icon {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 100%;
+    background-color: rgb(15, 15, 151);
+    font-size: 16px;
+    margin-top: 5px;
+}
+

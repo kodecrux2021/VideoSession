@@ -14,7 +14,7 @@ place-items: center;
 }
 
 .employ__reg__container{
-    height: 720px;
+    height: 600px;
     width: 90vw;
     display: flex;
     /* padding: 25px 40px; */
@@ -44,17 +44,17 @@ justify-content: space-around;
     }
 
 .employ__reg__container__left > button {
-    padding: 10px;
+    padding: 0px;
     border-radius: 50px;
-    width: 200px;
-    height: 50px;
+    width: 170px;
+    height: 40px;
     /* margin-top: 30px; */
     }
 
 .employ__reg__container__right {
     flex: 0.7;
     text-align: center;
-    padding: 40px 70px;
+    padding: 20px 70px;
     background-color: whitesmoke;
   border-top-left-radius: 95px 400px;
   border-bottom-left-radius:  95px 400px;
@@ -76,9 +76,9 @@ justify-content: space-around;
 
 .employ__reg__footer > button {
     border-radius: 50px;
-    width: 200px;
-    height: 50px;
-    padding-bottom: 7px;
+    width: 170px;
+    height: 40px;
+    padding-bottom: 2px;
 }
 
 .blue__white {
@@ -130,7 +130,7 @@ justify-content: space-around;
     padding: .375rem .75rem;
     width: 100%;
     height: 120px;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 400;
     color: #495057;
     background-color: #fff;
@@ -190,7 +190,7 @@ justify-content: space-around;
     box-shadow: 0 .0625rem .125rem rgba(0, 0, 0, 0.15);
     border-radius: 3px;
     outline: none;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 400;
     text-align: left;
     text-overflow: ellipsis;
@@ -352,4 +352,20 @@ justify-content: space-around;
     padding: 16px;
     text-align: center;
     color: #888;
+}
+
+.reg__modal__button {
+    padding: 40px 10px;
+    display: flex;
+    justify-content: space-evenly;
+}
+.reg__modal__button > button{
+    width: 200px;
+    height: 50px;
+    padding: 5px;
+    border-radius: 6px;
+    border: none;
+    color: whitesmoke;
+    font-weight: 500;
+    font-size: 17px;
 }

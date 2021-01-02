@@ -1,23 +1,14 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import './EmployeeRegistration.css'
-import SelectSearch from 'react-select-search';
 import rocket from '../../assets/images/rocket.png'
+import Select from 'react-select';
+import { Modal  } from 'antd';
+import { useHistory } from 'react-router-dom';
 
 export default function EmployeeRegistrationView(props) {
+    const history = useHistory();
 
-    const options = [
-        {name: 'Swedish', value: 'sv'},
-        {name: 'English', value: 'en'},
-        {name: 'japanese', value: 'jp'},
-        {name: 'spanese', value: 'sp'},
-    ];
-
-    const securityQn = [
-        {name: 'Favourate Book', value: '1'},
-        {name: 'Favourate Movie', value: '2'},
-        {name: 'Favourate Song', value: '3'},
-    ];
 
     return (
         <div className='employ__reg__wrapper'>
@@ -29,7 +20,7 @@ export default function EmployeeRegistrationView(props) {
                     <br/>
                     <p><strong>You are 20 seconds away from joining a wonderful community. Please Register and join.</strong></p>
                 </div>
-                <button className='white__blue'>Login</button>
+                {/* <button className='white__blue' onClick={props.showModal} >Login</button> */}
             </div>
             <div className='employ__reg__container__right'>
                 {/* <Row className='d-flex justify-content-end p-3 '>
@@ -39,24 +30,24 @@ export default function EmployeeRegistrationView(props) {
                     </div>
                 </Row> */}
                 
-                <h1>Apply as a Employee</h1>
-                <form className='p-5' >
+                <h1>Register for a course</h1>
+                <form className='p-3' >
                     <Row>
                         <Col>
-                        <input type="text" className="form__control"  placeholder="Enter Your FIrst Name"  />
+                        <input type="text" value={props.first_name} className="form__control"  placeholder="Enter Your First Name" onChange={(e) => props.handelData('first_name', e.target.value)}  />
                         </Col>
                      
                         <Col>
-                        <input type="text" className="form__control"  placeholder="Enter Your Last Name"  />
+                        <input type="text" className="form__control"  placeholder="Enter Your Last Name" value={props.last_name} onChange={(e) => props.handelData('last_name', e.target.value)}  />
                         </Col>
                     </Row>
                     <br/>
                     <Row>
                         <Col>
-                        <input type="email" className="form__control"  placeholder="Enter Your Email"  />
+                        <input type="email" className="form__control"  placeholder="Enter Your Email" value={props.email} onChange={(e) => props.handelData('email', e.target.value)}  />
                         </Col>
                         <Col>
-                        <input type="text" className="form__control"  placeholder="Enter Your Phone Number"  />
+                        <input type="text" className="form__control"  placeholder="Enter Your Phone Number" value={props.phone_no} onChange={(e) => props.handelData('phone_no', e.target.value)}  />
                         </Col>
                     </Row>
                     {/* <br/>
@@ -81,22 +72,67 @@ export default function EmployeeRegistrationView(props) {
                     <br/>
                     <Row>
                         <Col>
-                        <SelectSearch search={true} options={options} value="" name="" placeholder="Choose Technology" />
+                        <Select
+                className="react-selectcomponent"
+                classNamePrefix="name-select"
+                onChange={(value) => props.handelData('technology',value)}
+                getOptionLabel={option =>
+                  `${option.name}`
+                }
+                getOptionValue={option => `${option}`}
+                isOptionSelected={option => (
+                    (props.technology === option.name) ? true : false
+                  )}
+                options={props.tech_list}
+                isSearchable={true}
+                openMenuOnClick={true}
+                placeholder={'Choose Technology'}
+              />
                         </Col>
                         <Col>
-                        <SelectSearch search={true} options={options} value="" name="" placeholder="Choose Sub-Technology" />
+                        <Select
+                className="react-selectcomponent"
+                classNamePrefix="name-select"
+                onChange={(value) => props.handelData('sub_technology',value)}
+                getOptionLabel={option =>
+                  `${option.name}`
+                }
+                getOptionValue={option => `${option}`}
+                isOptionSelected={option => (
+                    (props.sub_technology === option.name) ? true : false
+                  )}
+                options={props.subtech_list}
+                isSearchable={true}
+                openMenuOnClick={true}
+                placeholder={'Choose Sub Technology'}
+              />
                         </Col>
                     </Row>
                     <br/>
                     <Row>
                         <Col>
-                        <SelectSearch search={true} options={options} value="" name="" placeholder="Choose Topic To Learn" />
+                        <Select
+                className="react-selectcomponent"
+                classNamePrefix="name-select"
+                onChange={(value) => props.handelData('topic',value)}
+                getOptionLabel={option =>
+                  `${option.name}`
+                }
+                getOptionValue={option => `${option}`}
+                isOptionSelected={option => (
+                    (props.topic === option.name) ? true : false
+                  )}
+                options={props.topic_list}
+                isSearchable={true}
+                openMenuOnClick={true}
+                placeholder={'Choose Technology'}
+              />
                         </Col>
                         <Col></Col>
                     </Row>
                     <br/>
                     <Row className='textwrapper'>
-<textarea className='employ__reg__textarea' placeholder='Enter Brief Summary'>
+<textarea className='employ__reg__textarea' placeholder='Enter Brief Summary' value={props.summary} onChange={(e) => props.handelData('summary', e.target.value)}  >
 
 </textarea>
                     </Row>
@@ -109,12 +145,20 @@ export default function EmployeeRegistrationView(props) {
                         <label><strong>Female</strong></label>
                     </Row> */}
                      
-                     <div className='employ__reg__footer'>  <button className='blue__white' type="submit" >Register</button></div>
+                     <div className='employ__reg__footer'>  <button className='blue__white' type="submit" onClick={props.handleSubmit} >Register</button></div>
               
                 </form>
             </div>
 
         </div>
+        <Modal title="Select Option" footer={null} visible={props.isModalVisible}  onCancel={props.handleCancel}>
+            <div className='reg__modal__button' >
+            <button onClick={()=>history.push('/trainers/message')} style={{  backgroundColor:' #5964c9'}} type="primary" size='large' >Go to Udemy Courses</button>
+            <button onClick={()=>history.push('/trainers/live')} style={{  backgroundColor:' #76d2fd'}} type="primary" size='large' >Live Session</button>
+            </div>
+
+
+      </Modal>
         </div>
       
     )

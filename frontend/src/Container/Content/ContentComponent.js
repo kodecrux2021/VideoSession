@@ -3,6 +3,7 @@ import ContentViewHeader from './ContentViewHeader'
 import home4 from '../../assets/images/home4.jpg'
 import './Content.css'
 import ContentBody from './ContentBody'
+import { url } from '../../Server/GlobalUrl'
 
 
 
@@ -14,170 +15,43 @@ const sampleData = [
   ];
 
   const availableModules = [
-	{
-		key: 'python',
-		color: '#305b2d',
-		'icon': 'fa-tree',
-		modules: [
-			{key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-			{key: 'flask'},
+    {
+        "name": "web development",
+        "sub_technology": [
+            {
+                "name": "ruby",
+                "topic": [
+                    {
+                        "name": "array",
+                        "sub_technology": 4
+                    },
+                    {
+                        "name": "string",
+                        "sub_technology": 4
+                    }
+                ],
+                "technology": 1
+            },
+            {
+                "name": "python",
+                "topic": [
+                    {
+                        "name": "string",
+                        "sub_technology": 5
+                    },
+                    {
+                        "name": "string",
+                        "sub_technology": 5
+                    }
+                ],
+                "technology": 1
+            }
         ]
-	}, {
-		key: 'web development ',
-		color: '#066da0',
-		'icon': 'fa-bus',
-		modules: [
-			{key: 'react'},
-			{key: 'redux'},
-            {key: 'material ui'},
-            {key: 'react'},
-			{key: 'redux'},
-            {key: 'material ui'},
-            {key: 'react'},
-			{key: 'redux'},
-            {key: 'material ui'},
-            {key: 'react'},
-        ]
-	}, {
-		key: 'cryptocurrency',
-		color: '#772016',
-		'icon': 'fa-bitcoin',
-		modules: [
-			{key: 'blockchain'},
-			{key: 'bitcoin'},
-            {key: 'ethirium'},
-            {key: 'blockchain'},
-			{key: 'bitcoin'},
-            {key: 'ethirium'},
-            {key: 'blockchain'},
-			{key: 'bitcoin'},
-            {key: 'ethirium'},
-            {key: 'blockchain'},
-		
-        ]
-	}, {
-		key: 'python',
-		color: '#305b2d',
-		'icon': 'fa-tree',
-		modules: [
-			{key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-			{key: 'flask'},
-        ]
-	}, {
-		key: 'web development ',
-		color: '#066da0',
-		'icon': 'fa-bus',
-		modules: [
-			{key: 'react'},
-			{key: 'redux'},
-            {key: 'material ui'},
-            {key: 'react'},
-			{key: 'redux'},
-            {key: 'material ui'},
-            {key: 'react'},
-			{key: 'redux'},
-            {key: 'material ui'},
-            {key: 'react'},
-        ]
-	}, {
-		key: 'cryptocurrency',
-		color: '#772016',
-		'icon': 'fa-bitcoin',
-		modules: [
-			{key: 'blockchain'},
-			{key: 'bitcoin'},
-            {key: 'ethirium'},
-            {key: 'blockchain'},
-			{key: 'bitcoin'},
-            {key: 'ethirium'},
-            {key: 'blockchain'},
-			{key: 'bitcoin'},
-            {key: 'ethirium'},
-            {key: 'blockchain'},
-		
-        ]
-	}, {
-		key: 'python',
-		color: '#305b2d',
-		'icon': 'fa-tree',
-		modules: [
-			{key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-			{key: 'flask'},
-        ]
-	}, {
-		key: 'web development ',
-		color: '#066da0',
-		'icon': 'fa-bus',
-		modules: [
-			{key: 'react'},
-			{key: 'redux'},
-            {key: 'material ui'},
-            {key: 'react'},
-			{key: 'redux'},
-            {key: 'material ui'},
-            {key: 'react'},
-			{key: 'redux'},
-            {key: 'material ui'},
-            {key: 'react'},
-        ]
-	}, {
-		key: 'cryptocurrency',
-		color: '#772016',
-		'icon': 'fa-bitcoin',
-		modules: [
-			{key: 'blockchain'},
-			{key: 'bitcoin'},
-            {key: 'ethirium'},
-            {key: 'blockchain'},
-			{key: 'bitcoin'},
-            {key: 'ethirium'},
-            {key: 'blockchain'},
-			{key: 'bitcoin'},
-            {key: 'ethirium'},
-            {key: 'blockchain'},
-		
-        ]
-	},  {
-		key: 'python',
-		color: '#305b2d',
-		'icon': 'fa-tree',
-		modules: [
-			{key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-            {key: 'flask'},
-            {key: 'django'},
-			{key: 'flask'},
-        ]
-	},
+    },
+    {
+        "name": "game development",
+        "sub_technology": []
+    }
 ]
 
 export default class ContentComponent extends Component {
@@ -187,6 +61,7 @@ export default class ContentComponent extends Component {
         this.state = {
           selected: '',
           input:'',
+          categories : [],
         };
         this.handleSelect = this.handleSelect.bind(this);
         this.customFilter = this.customFilter.bind(this);
@@ -222,6 +97,23 @@ this.setState({input: e.target.value})
       )
 
 
+      componentDidMount() {
+          fetch(url + '/api/technology/', {
+              method:'GET',
+              headers: {
+                'Accept': 'application/json',
+               'Content-Type': 'application/json',
+             },
+          })
+          .then(res => res.json())
+          .then(
+              (result) => {
+                console.log('result',result)
+                this.setState({categories: result })
+              }
+          )
+      }
+
 
     render() {
         return (
@@ -234,9 +126,12 @@ this.setState({input: e.target.value})
                 handleSelect={this.handleSelect}
                 handleInputChange={this.handleInputChange}
                 input={this.state.input}
-                availableModules={availableModules}
+                availableModules={this.state.categories}
                 />
+                <div className='body__container'>
                 <ContentBody />
+                </div>
+                
             </div>
         )
     }

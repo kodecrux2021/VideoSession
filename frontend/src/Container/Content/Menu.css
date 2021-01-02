@@ -9,32 +9,21 @@
 
   .navbar {
     /* background-color: #f2f2f2; */
-    width: 250px;
+    /* width: 250px; */
     height: 53px;
     cursor: pointer;
     border: none !important;
   }
   
-  /* .logo {
-    font-family: 'Arial';
-    font-style: normal;
-    font-weight: 900;
-    font-size: 24px;
-    line-height: 50px;
-    color: #7a7a7a;
-    float: left;
-    margin-left: 20px;
-  }
-   */
-
 
 
   .analytics .topButton {
-    height: 84px;
+    height: 73px;
+    margin-top: -5px;
     font-family: 'Arial';
     font-style: normal;
     font-weight: 600;
-    font-size: 25px;
+    font-size: 20px;
     line-height: 50px;
     color: #595959;
     float: left;
@@ -50,8 +39,8 @@
   
   .analyticsDropDown {
     position: absolute;
-    top: 94px;
-    left: 50px;
+    top: 72px;
+    left: 20px;
     display: none;
     /* border-left: 1px solid #f2f2f2;
     border-right: 1px solid #f2f2f2; */
@@ -63,12 +52,12 @@
   }
   
   .analyticsDropDown .moduleGroup {
-    width: 350px;
+    width: 270px;
     list-style-type: none;
     font-family: 'Arial';
     font-style: normal;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 15px;
     line-height: 25px;
     /* align-items: center; */
     /* border-bottom: 1px solid #f2f2f2; */
@@ -80,8 +69,8 @@
   
   .modulesSet {
     position: absolute;
-    top: -2px;
-    left: 352px;
+    top: -1px;
+    left: 271px;
     /* border: 1px solid #f2f2f2; */
     border: 1px solid #dcdacb;
     box-shadow: 0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08);
@@ -91,12 +80,12 @@
   }
   
   .singleModule {
-    width: 350px;
+    width: 270px;
     list-style-type: none;
     font-family: 'Arial';
     font-style: normal;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 15px;
     line-height: 25px;
     /* border-bottom: 1px solid #f2f2f2;
     border-left: 5px solid transparent; */

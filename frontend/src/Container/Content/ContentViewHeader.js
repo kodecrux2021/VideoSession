@@ -1,17 +1,30 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './Content.css'
 import kodecrux from '../../assets/images/reg2.jpeg'
 import { IconButton } from '@material-ui/core'
-import Select from 'react-select';
 import SearchIcon from '@material-ui/icons/Search';
-import SelectSearch from 'react-select-search';
 import Menu from './Menu'
+import MenuIcon from '@material-ui/icons/Menu';
+import { Drawer } from 'antd';
+import { Link, useHistory } from 'react-router-dom';
 
 
 
 export default function ContentViewHeader(props) {
+    const history = useHistory();
+    const [visible, setVisible] = useState(false);
+    const showDrawer = () => {
+        setVisible(true);
+      };
+    
+      const onClose = () => {
+        setVisible(false);
+      };
 
-   
+      const logout = () => {
+          localStorage.clear();
+          history.push('/login')
+      }
 
     return (
         <div className='content'>
@@ -19,7 +32,7 @@ export default function ContentViewHeader(props) {
              
                     <div className='content__header__left'>
                       
-                        <img src={kodecrux} style={{height:'90px'}} />
+                        <img src={kodecrux} style={{height:'70px'}}  />
         
                             <div className='left__search__container'>
                             <Menu availableModules={props.availableModules} />
@@ -37,32 +50,37 @@ export default function ContentViewHeader(props) {
                     <div className='header__searchbar' >
                     <input placeholder='Search for anything' />
                     </div>
-                   
-                    {/* <Select
-                className="react-selectcomponent"
-                classNamePrefix="name-select"
-                onChange={props.handleSelect}
-                getOptionLabel={option =>
-                  `${option.first_name} ${option.last_name}`
-                }
-                getOptionValue={option => `${option}`}
-                isOptionSelected={option => (
-                    (props.selected.id === option.id) ? true : false
-                  )}
-                options={props.sampleData}
-                isSearchable={true}
-                openMenuOnClick={false}
-                filterOption={props.customFilter}
-                // onInputChange={props.handleInputChange}
-                
-                noOptionsMessage={() => null}
-                placeholder={'Search for anything'}
-                autoFocus={true}
-  
-                // menuIsOpen={props.state.menuOpen}
-              /> */}
-                        {/* <SelectSearch search={true} options={options} value="" name="" placeholder="Choose Technology" /> */}
-                        </div>   
+                        </div>  
+                        <IconButton>
+                        <MenuIcon onClick={showDrawer} />
+                    </IconButton> 
+                    <Drawer
+        title="Navigation"
+        placement="right"
+        closable={true}
+        onClose={onClose}
+        visible={visible}
+      >
+        <Link to='/home' ><p><h5>HOME</h5></p></Link>
+        {/* <Link to='/trainers' ><p><h5>TEACHERS</h5></p></Link> */}
+        {/* <Link to='/courses' ><p><h5>COURSES</h5></p></Link> */}
+        {/* <Link to='/chat' ><p><h5>CHAT</h5></p></Link> */}
+        {/* <Link to='/course-registration' ><p><h5>COURSE REGISTRATION</h5></p></Link> */}
+        {/* <Link to='/help/1' ><p><h5>HELP SECTION</h5></p></Link>  */}
+        {
+        (localStorage.token)?
+        <Link><p onClick={logout} ><h5>LOG OUT</h5></p></Link>
+        :
+        <Link to='/login'><p><h5>LOG IN</h5></p></Link>    
+         }
+         {
+        (localStorage.token)?
+        null
+        :
+        <Link to='/registration'><p><h5>SIGN UP</h5></p></Link>   
+         }
+        
+      </Drawer>
                     </div>
             </div>
         </div>

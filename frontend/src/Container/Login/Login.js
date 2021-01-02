@@ -1,25 +1,110 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import kodecrux from '../../assets/images/reg2.jpeg'
+import { url } from '../../Server/GlobalUrl';
 import './Login.css'
+import { message } from 'antd';
+import Navbar from '../../components/Header/Navbar';
 
 function Login() {
     const history = useHistory();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
    
-    const signIn = e => {
+    const signIn = async(e) => {
         e.preventDefault();
+        // localStorage.clear();
+        if (email === '' || password === ''){
+            if (email === ''){
+                message.info('Please Fill Email');    
+            }
+            else if(password === ''){
+                message.info('Please Fill Password');
+            }
+        }
+        else {
+            const data = {'username': email, 'password': password}
+            console.log('data', data)
+        
+            await fetch( url + '/api/token/' , {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain',
+                    'Content-Type': 'application/json;charset=UTF-8',
+        
+                },
+                body: JSON.stringify(data)
+            })
+            .then((response) => {
+                console.log("response", response)
+                if (response['status'] === 201 || response['status'] === 200) {
+                    return response.json()
+                } else if (response['status'] === 401) {
+                    if (response['statusText'] === 'Unauthorized'){
+                      console.log('username or password you have provided is Incorrect')
+                      message.info('Username or password you have provided is incorrect!!!');
+                    }
+                    else{
+                        console.log('No active account found with the given credentials')
+                        message.info('No active account found with the given credentials!!!');
+                    
+                    }
+                }
+            })
+            .then((result) => {
+                console.log('access', result)
+                if (result){
+
+                    if (result.access){
+                        localStorage.setItem('token', result.access)
+                        console.log('result.access',result.access)
+                    }
+                    if (result.refresh){
+                        localStorage.setItem('refresh', result.refresh)
+                        console.log('result.refresh',result.refresh)
+                    }
+
+let auth = localStorage.getItem('token')
+fetch(url + '/currentuser/', {
+    method:'GET',
+    headers: {
+      'Accept': 'application/json',
+     'Content-Type': 'application/json',
+     'Authorization': 'Bearer ' + auth,
+   },
+})
+.then(res => res.json())
+.then(
+    (result) => {
+      console.log('result',result)
+      if(result){
+        localStorage.setItem('user_id', result.user?.id);
+        localStorage.setItem('user_name', result.user?.first_name);
+    }
+    }
+)
+
+                    
+
+                    message.info('Logged In Succsessfully!!!');
+                    history.push('/home')
+                }
+            })
+        }
+
        
     }
 
     const register = e => {
         e.preventDefault();
-     
+     history.push('/registration')
     }
 
     return (
-        <div className="login">
+        <>
+        <Navbar/>
+        <div className='body__ctr'>
+              <div className="login">
             
             <div className='login__container'>
 
@@ -32,10 +117,10 @@ function Login() {
                 <h1>Login</h1>
             
             <form>
-                <h4>Email</h4>
+                <h4>Username</h4>
                 <input type='email' 
                 className='form__control'
-                placeholder='Enter Your Email'
+                placeholder='Enter Your Username'
                 value={email}
                 onChange={event => setEmail(event.target.value)}
                  />
@@ -61,6 +146,10 @@ function Login() {
             className='login__registerButton'>Create New Account</button>
             </div>
         </div>
+        </div>
+        
+        </>
+      
     )
 }
 

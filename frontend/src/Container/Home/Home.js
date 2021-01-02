@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-
 import Carousel from 'react-bootstrap/Carousel'  
 import './Home.css'
 import codeexp from '../../assets/images/codeexpert.jpeg'
@@ -11,12 +10,15 @@ import home2 from '../../assets/images/home2.jpg'
 import home3 from '../../assets/images/home3.jpg'
 import home4 from '../../assets/images/home4.jpg'
 import home5 from '../../assets/images/home5.jpg'
+import Navbar from '../../components/Header/Navbar'
 
 export default class Home extends Component {
     render() {
         return (
-        
-        <div className="home_container">
+        <>
+        <Navbar/>
+        <div className='body__ctr'>
+              <div className="home_container">
       <Carousel controls={false} interval={10000} indicators={false} pause={false} fade={true}>
   <Carousel.Item >
     <img
@@ -107,7 +109,7 @@ export default class Home extends Component {
                         <h2>Study Room</h2>
                         <p>ndustry's standard dummy text ever since the 1500s
                             , when an unknown printer took</p>
-                        <button style={{  backgroundColor:' #5964c9'}} >Study Room</button>
+                        <button style={{  backgroundColor:' #5964c9'}} onClick={()=>this.props.history.push('/course-registration')} >Study Room</button>
                     </div>
               
                 </div>
@@ -119,7 +121,7 @@ export default class Home extends Component {
                         <h2>Soluton Room</h2>
                         <p>ndustry's standard dummy text ever since the 1500s
                             , when an unknown printer took</p>
-                        <button style={{  backgroundColor:' #76d2fd'}}>Solution Room</button>
+                        <button style={{  backgroundColor:' #76d2fd'}} onClick={()=>this.props.history.push('/help/1')} >Solution Room</button>
                     </div>
                 </div>
             </div>
@@ -146,6 +148,10 @@ export default class Home extends Component {
             </div>
         </div>
     </div>
+        </div>
+ 
+        </>
+     
      
         )
     }

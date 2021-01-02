@@ -5,6 +5,7 @@ import LibraryBooksOutlinedIcon from '@material-ui/icons/LibraryBooksOutlined';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import { IconButton } from '@material-ui/core';
+import Navbar from '../../components/Header/Navbar';
 
 export default class HelpForm2 extends Component {
 
@@ -12,10 +13,7 @@ export default class HelpForm2 extends Component {
         clicked: false,
         help_text: '',
         selected: '',
-        // Troubleshooting: false,
-        // Debugging: false,
-        // Tutoring: false,
-        // Other: false,
+
     }
 
     clickedHandler = () => {
@@ -25,10 +23,6 @@ export default class HelpForm2 extends Component {
     onClickHandler = (data) => {
         console.log('data', data)
         this.setState({selected:data})
-        // if(data==='Troubleshooting') {this.setState({Troubleshooting: this.state.tr})}
-        // if(data==='Debugging') {this.setState({Debugging: true})}
-        // if(data==='Tutoring') {this.setState({Tutoring: true})}
-        // if(data==='Other') {this.setState({Other: true})}
     }
 
     textChangeHandler = (data) => {
@@ -37,6 +31,8 @@ export default class HelpForm2 extends Component {
 
     render() {
         return ( 
+            <>
+            <Navbar/>
             <div className='help__form__container'>
             <div className='HelpForm1'>
                 <div className='HelpForm2__header'>
@@ -74,7 +70,7 @@ export default class HelpForm2 extends Component {
                </div>
                
            
-                <button className='help__next__btn' > Next <NavigateNextOutlinedIcon /> </button>
+                <button className='help__next__btn' onClick={()=>this.props.history.push('/help/3')} > Next <NavigateNextOutlinedIcon /> </button>
 
 
                 </div>
@@ -83,6 +79,8 @@ export default class HelpForm2 extends Component {
             
                 </div>
             </div>
+            </>
+       
             
         )
     }

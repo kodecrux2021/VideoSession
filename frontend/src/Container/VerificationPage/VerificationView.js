@@ -1,9 +1,12 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './Verification.css'
 import OtpInput from 'react-otp-input';
 import icon from '../../assets/images/reg4.jpeg'
+import { useHistory } from 'react-router-dom'
 
 export default function VerificationView(props) {
+    const history = useHistory();
+
 
     return (
     <div className="verification__view">

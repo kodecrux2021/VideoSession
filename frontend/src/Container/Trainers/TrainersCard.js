@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Star, Dot } from 'react-bootstrap-icons';
 import Badge from '@material-ui/core/Badge';
 import StarsIcon from '@material-ui/icons/Stars';
+import { Link, useHistory } from 'react-router-dom'
 
 const styles = theme => ({
     customBadge: {
@@ -19,15 +20,40 @@ const styles = theme => ({
 
 
  function TrainersCard(props) {
+    const history = useHistory();
+
+
+   const messageHandle = (id) => {
+console.log('id', id)
+history.push('/chat/'+id)
+    }
+
+  const hireHandle = () => {
+
+    }
+
+    const LiveHandle = () => {
+
+    }
+
     const { classes } = props;
+    const {id} = props;
+
+    let initial = new Date(props.lastseen);
+    let final = new Date();
+    let seconds = (final.getTime()-initial.getTime())
+    console.log('seconds diffrence',seconds)
+ 
+
+
     return (
         <div className="card trainers__card" >
             <div className="trainers__card__left">
-                <img src={props.img} alt="avatar" />
+                <img src={props.img?props.img:props.img2} alt="avatar" />
                 <div className="d-flex flex-column trainers__card__details "> 
                     <div >
                         <span style={{color: "#5bc0de", marginRight: "20px"}}><strong>{props.name}</strong></span> 
-                        {props.online ? <span style={{color:"rgb(85, 243, 124)"}}>
+                        {(seconds <= 60) ? <span style={{color:"rgb(85, 243, 124)"}}>
                           <Badge  classes={{ badge: classes.customBadge }}
                             overlap="circle"
                             badgeContent=""
@@ -41,19 +67,32 @@ const styles = theme => ({
                             ></Badge> Offline</span>}
                     </div>
                     <div >
-                        <span style={{marginRight: "20px"}}><strong>US ${props.rate}</strong> / {props.time} mins</span>
-                        <span style={{marginRight: "12px"}}> <Star style={{paddingBottom:"5px"}} /> <strong>{props.rating}</strong> ({props.reviews} reviews) </span>
+                        <span style={{marginRight: "20px"}}><strong>US ${props.rate}</strong></span>
+                         {/* / {props.time} mins</span> */}
+                        <span style={{marginRight: "12px"}}> <Star style={{paddingBottom:"5px"}} /> <strong>{props.rating}</strong></span>
+                         {/* ({props.reviews} reviews) </span> */}
                         {props.badge?<StarsIcon />:null}   
                     </div>
                     <span>{props.details}</span>
                 </div>
             </div>
-            <div className="trainers__card__right">
-            <button type="button" class="btn btn-outline-info">MESSAGE</button>
-            <button class="btn btn-info" type="button">HIRE</button>
+            {
+                props.message ? 
+<div className="trainers__card__right">
+            <button type="button" class="btn btn-outline-info" onClick={ () => messageHandle(props.id) } >MESSAGE</button>
+            <button class="btn btn-info" type="button" onClick={hireHandle} >HIRE</button>
             </div>
+            :
+            <div className="trainers__card__right">
+            <button type="button" class="btn btn-info" onClick={ id => LiveHandle(id) } >LIVE SESSION</button>
+            </div>
+            }
+            
         </div>
     )
 }
 
 export default withStyles(styles)(TrainersCard)
+
+
+

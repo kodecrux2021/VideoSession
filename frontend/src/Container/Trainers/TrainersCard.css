@@ -1,8 +1,8 @@
 .trainers__card {
 width: 100%;
 display: flex;
-max-width: 1200px;
-padding: 0 40px ;
+max-width: 900px;
+padding: 0 30px ;
 margin : 13px 0;
 }
 
@@ -19,15 +19,16 @@ margin : 13px 0;
 }
 
 .trainers__card__left > img {
-    width:90px;
+    width:80px;
     object-fit: cover;
-    height:90px;
+    height:80px;
     border-radius: 100%;
    margin: auto 0px;
 }
 
 .trainers__card__details {
-    padding: 30px 40px;
+    padding: 10px 40px;
+    font-size: 20px;
 }
 
 .trainers__card__right {
@@ -39,8 +40,8 @@ margin : 13px 0;
 
 .trainers__card__right > button {
   margin: 5px;
-  height: 50px;
-  width: 180px;
+  height: 35px;
+  width: 130px;
   font-weight: bold;
 }
 

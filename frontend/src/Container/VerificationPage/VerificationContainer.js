@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Navbar from '../../components/Header/Navbar'
 import RegistrationLayout from '../../components/RegistrationLayout/RegistrationLayout'
 import VerificationView from './VerificationView'
 class VerificationContainer extends Component {
@@ -16,20 +17,10 @@ class VerificationContainer extends Component {
     {
         e.preventDefault();
         let data={
-            "username": localStorage.getItem('username'),
-            "phone": localStorage.getItem('phone'),
-            "is_freelancer": localStorage.getItem('is_freelancer'),
-            "is_codeexpert": localStorage.getItem('is_codeexpert'),
-            "is_instructor": localStorage.getItem('is_instructor'),
-            "city": localStorage.getItem('city'),
-            "pincode": localStorage.getItem('pincode'),
-            "state": localStorage.getItem('state'),
-            "otp": localStorage.getItem('otp'),
-            "school": localStorage.getItem('school'),
+    
         }
         console.log('the otp ----------------', this.state.otp)
-        localStorage.setItem('otp', this.state.otp)
-        console.log('localstorage -----------------------', localStorage)
+
         this.props.history.push('/home');
 
 
@@ -57,7 +48,8 @@ class VerificationContainer extends Component {
 
         return (
             <div>
-            <RegistrationLayout title="Verification Code" />
+            {/* <RegistrationLayout title="Verification Code" /> */}
+            <Navbar />
                 <VerificationView 
                 otp={this.state.otp}
                 onChange={this.onChangeValue}

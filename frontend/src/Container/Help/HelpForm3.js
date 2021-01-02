@@ -2,14 +2,11 @@ import React, { Component } from 'react'
 import Select from 'react-select';
 import './Help.css'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
+import { message } from 'antd';
+import { url } from '../../Server/GlobalUrl';
+import Navbar from '../../components/Header/Navbar';
 
 
-const sampleData = [
-    { id: 1, first_name: 'Blockchain' },
-    { id: 2, first_name: 'Ruby' },
-    { id: 3, first_name: 'Express' },
-    { id: 4, first_name: 'Django' }
-  ];
 
 
 export default class HelpForm3 extends Component {
@@ -19,9 +16,28 @@ export default class HelpForm3 extends Component {
         this.state = {
           selected: [],
           recommended_selected: [],
+          topic_list: [],
         };
         this.handleSelect = this.handleSelect.bind(this);
-        this.customFilter = this.customFilter.bind(this);
+      }
+
+      componentDidMount() {
+
+        fetch(url + '/api/topic/', {
+          method:'GET',
+          headers: {
+            'Accept': 'application/json',
+           'Content-Type': 'application/json',
+         },
+      })
+      .then(res => res.json())
+      .then(
+          (result) => {
+            console.log('result',result)
+            this.setState({topic_list: result })
+          }
+      )
+
       }
     
       // set selected value
@@ -37,37 +53,18 @@ export default class HelpForm3 extends Component {
       this.setState({ recommended_selected: selected });
     }
 
-      handleInputChange=(e)=>{
-          console.log('input cahnge ', e.target.value)
-this.setState({input: e.target.value})
-      }
-    
-      //Add your search logic here.
-      customFilter(option, searchText) {
-        if (
-          option.data.first_name.toLowerCase().includes(searchText.toLowerCase()) ||
-          option.data.last_name.toLowerCase().includes(searchText.toLowerCase()) ||
-          option.data.gender.toLowerCase().includes(searchText.toLowerCase())
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    
-    
-      isOptionSelected = (option) => (
-        (this.state.selected.id === option.id) ? true : false
-      )
-
 
 submitHandler=() => {
-    
+  message.info('Submitted Successfully!!!');   
+  console.log('state', this.state)
+    this.props.history.push('/home')
 }
 
     render() {
         return (
-            <div className='help__form__container'>
+          <>
+          <Navbar/>
+          <div className='help__form__container'>
             <div className='HelpForm1'>
                 <div className='HelpForm2__header'>
                 <p>Technologies you need help with</p>
@@ -79,16 +76,14 @@ submitHandler=() => {
                   <Select
                 className="basic-multi-select"
                 classNamePrefix="select"
-                // defaultValue={[sampleData[2], sampleData[3]]}
                 onChange={this.handleSelect}
                 getOptionLabel={option =>
-                  `${option.first_name}`
+                  `${option.name}`
                 }
-                getOptionValue={option => `${option.first_name}`}
+                getOptionValue={option => `${option.id}`}
                 name="colors"
-                options={sampleData}
-                isSearchable={true}
-                // filterOption={this.customFilter}         
+                options={this.state.topic_list}
+                isSearchable={true}        
                 isMulti
                 placeholder={'Search for anything'}
                
@@ -120,6 +115,8 @@ submitHandler=() => {
                 </div>
             </div>
             </div>
+          </>
+          
         )
     }
 }

@@ -40,8 +40,8 @@ padding: 80px 60px ;
     padding: 10px;
 }
 .button__card__img > img{
-    width: 100%;
-    max-width: 240px;
+    /* width: 100%; */
+    width: 160px;
 }
 .button__card__details{
     flex:0.7;
@@ -50,22 +50,22 @@ padding: 80px 60px ;
     padding: 20px 10px;
 }
 .button__card__details > p{
- font-size: 24px;
+ font-size: 16px;
 
 }
 .button__card__details > h2{
-    font-size: 36px;
+    font-size: 22px;
     font-weight: 500;
    }
 .button__card__details> button {
-    width: 220px;
-    height: 60px;
+    width: 160px;
+    height: 36px;
     padding: 5px;
     border-radius: 6px;
     border: none;
     color: whitesmoke;
     font-weight: 500;
-    font-size: 25px;
+    font-size: 16px;
 }
 
 .cards__container {
@@ -77,25 +77,28 @@ padding: 80px 60px ;
 ._card {
     flex: 0.25;
     padding: 10px;
-    color: whitesmoke;
-    font-size: 24px;
+    color: rgb(223, 222, 222);
+    font-size: 20px;
     line-height: 1.5em;
 }
 ._card > img {
-    width: 100%;
-    max-width: 480px;
+    /* width: 100%; */
+    width: 350px;
+    height: 250px;
     border-radius: 10px;
 }
 ._card > h3{
     padding: 8px 0;
-    font-size: 40px;
+    font-size: 35px;
+    color: whitesmoke;
 }
 ._footer {
     display: flex;
     justify-content: space-around;
-    background-color: #28328c;
+    background-color: #3743b1;
     padding: 40px 0;
-    font-size: 25px;
+    font-size: 20px;
+    
 }
 .footer__cards {
     color: rgb(237, 237, 237);
@@ -105,13 +108,14 @@ padding: 80px 60px ;
     flex-direction: column;
 }
 .footer__cards > span {
-    color: whitesmoke !important;
+    color: rgb(214, 214, 214) !important;
     cursor: pointer;
     font-weight: 400;
 }
 .footer__cards > h3{
     padding-bottom: 4px;
-    font-size: 40px;
+    font-size: 30px;
+    color: whitesmoke;
 }
 .footer__cards > span {
 padding: 3px 0;

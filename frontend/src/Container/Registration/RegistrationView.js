@@ -3,16 +3,48 @@ import './Registration.css'
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import { useHistory } from 'react-router-dom';
+import { url } from '../../Server/GlobalUrl';
 
 export default function Registration(props) {
   const history = useHistory();
-    console.log('props_____________',props)
-    console.log('answer_________',(props.position=="codeexpert"))
-    const responseFacebook = (response) => {
+    // console.log('props_____________',props)
+
+    const responseFacebook = async (response) => {
         console.log('respose',response)
          if (response.accessToken) {
-           localStorage.setItem('token',response.accessToken)
-           localStorage.setItem('name',response.name)
+          //  localStorage.setItem('token',response.accessToken)
+          //  localStorage.setItem('name',response.name)
+
+           let data = {
+            "token" : response.accessToken,
+
+        }
+
+           await fetch( url + '/facebookuser/?email='+response.email, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8',
+    
+            },
+            // body: JSON.stringify(data)
+        })
+        .then((response) => {
+            console.log("response", response)
+            if (response['status'] === 201 || response['status'] === 200) {
+                return response.json()
+            } else if (response['status'] === 400) {
+               
+            }
+        })
+        .then((result) => {
+            console.log('result', result);
+            if(result){
+              localStorage.setItem('token',result.token)
+            }
+            
+        })
+            
            console.log("success")
            history.replace('/home')
          }
@@ -70,8 +102,8 @@ export default function Registration(props) {
               <div className="form__container">
                   <form >
                       <div className="form__group">
-                          <label >Name</label>
-                          <input type="text" value={props.name} onChange={(e) => props.handelData('name', e.target.value)} className="form__control" id="uname" placeholder="Enter Your Name" name="uname" />
+                          <label >Username</label>
+                          <input type="text" value={props.name} onChange={(e) => props.handelData('name', e.target.value)} className="form__control" id="uname" placeholder="Enter Your Username" name="uname" />
 
                       </div>
                       <div className="form__group">
@@ -83,6 +115,7 @@ export default function Registration(props) {
                                   <button className={props.position==="codeexpert"?'select__button__active':'select__button'}  value="codeexpert" onClick={props.onChangeValue}>CODE EXPERT</button>
                                   <button className={props.position==="instructor"?'select__button__active':'select__button'} value="instructor" onClick={props.onChangeValue}>INSTRUCTOR</button>
                                   <button className={props.position==="freelancer"?'select__button__active':'select__button'} value="freelancer" onClick={props.onChangeValue} >FREELANCER</button>
+                                  <button className={props.position==="customer"?'select__button__active':'select__button'} value="customer" onClick={props.onChangeValue} >CUSTOMER</button>
                       </div>
                       <div className="form__group">
                           <label for="pwd">Password:</label>
@@ -95,8 +128,11 @@ export default function Registration(props) {
                   </form>
               </div>
       <div className="registration__view__footer">
-           Already have an account? <a>Login</a>
+           Already have an account? <a onClick={()=> history.replace('/login')} >Login</a>
       </div>
+
+
+
 </div>
        
     );

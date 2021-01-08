@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Star, Dot } from 'react-bootstrap-icons';
 import Badge from '@material-ui/core/Badge';
 import StarsIcon from '@material-ui/icons/Stars';
+import { Modal  } from 'antd';
 import { Link, useHistory } from 'react-router-dom'
 
 const styles = theme => ({
@@ -23,10 +24,6 @@ const styles = theme => ({
     const history = useHistory();
 
 
-   const messageHandle = (id) => {
-console.log('id', id)
-history.push('/chat/'+id)
-    }
 
   const hireHandle = () => {
 
@@ -79,7 +76,7 @@ history.push('/chat/'+id)
             {
                 props.message ? 
 <div className="trainers__card__right">
-            <button type="button" class="btn btn-outline-info" onClick={ () => messageHandle(props.id) } >MESSAGE</button>
+            <button type="button" class="btn btn-outline-info" onClick={ props.showModal } >MESSAGE</button>
             <button class="btn btn-info" type="button" onClick={hireHandle} >HIRE</button>
             </div>
             :
@@ -87,6 +84,13 @@ history.push('/chat/'+id)
             <button type="button" class="btn btn-info" onClick={ id => LiveHandle(id) } >LIVE SESSION</button>
             </div>
             }
+
+<Modal title="Select Option" footer={null} visible={props.isModalVisible}  onCancel={props.handleCancel}>
+            <div className='reg__modal__button' >
+            <button onClick={ () => props.messageHandle(props.id, props.reciever_id, props.conversation_id) } style={{  backgroundColor:' #5964c9'}} type="primary" size='large' >Send Request</button>
+            <button onClick={props.handleCancel} style={{  backgroundColor:' #76d2fd'}} type="primary" size='large' >Cancel</button>
+            </div>
+           </Modal>
             
         </div>
     )

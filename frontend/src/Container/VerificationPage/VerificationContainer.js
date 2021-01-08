@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Navbar from '../../components/Header/Navbar'
 import RegistrationLayout from '../../components/RegistrationLayout/RegistrationLayout'
 import VerificationView from './VerificationView'
+import { message } from 'antd';
 class VerificationContainer extends Component {
     state = {
         otp: "",
@@ -20,8 +21,8 @@ class VerificationContainer extends Component {
     
         }
         console.log('the otp ----------------', this.state.otp)
-
-        this.props.history.push('/home');
+        message.info('Registered successfull! Please login.'); 
+        this.props.history.push('/login');
 
 
     //     fetch(("http://7e4a4d386d0f.ngrok.io/api/user/"),

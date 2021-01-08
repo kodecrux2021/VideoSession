@@ -34,8 +34,8 @@ button {
    padding: 30px;
    height: 82vh;
    overflow: scroll;
-   display: flex; 
-    align-items: flex-end;
+   /* display: flex; 
+    align-items: flex-end; */
    
 }
 

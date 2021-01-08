@@ -62,6 +62,7 @@ export default function ContentViewHeader(props) {
         visible={visible}
       >
         <Link to='/home' ><p><h5>HOME</h5></p></Link>
+        <Link to='/notifications' ><p><h5>NOTIFICATIONS</h5></p></Link>
         {/* <Link to='/trainers' ><p><h5>TEACHERS</h5></p></Link> */}
         {/* <Link to='/courses' ><p><h5>COURSES</h5></p></Link> */}
         {/* <Link to='/chat' ><p><h5>CHAT</h5></p></Link> */}

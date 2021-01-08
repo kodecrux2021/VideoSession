@@ -5,15 +5,17 @@ import { message } from 'antd';
 import { url } from '../../Server/GlobalUrl';
 import Navbar from '../../components/Header/Navbar';
 
-let reciever_id =''
+let conversation_id =''
+
 
 export default class ChatComponent extends Component {
     state = {
         clicked : false,
         reciever: '',
         user: '',
-        conversation_id: null,
-        messages: []
+        messages: [],
+        message: '',
+        conversation: [],
     }
 
     dropHandle = () => {
@@ -21,9 +23,30 @@ export default class ChatComponent extends Component {
         this.setState({clicked:!this.state.clicked});
     }
 
+async fetchMessages() {
+
+    let auth = localStorage.getItem('token')
+    await fetch(url + '/api/message/?conversation='+conversation_id, {
+        method:'GET',
+        headers: {
+          'Accept': 'application/json',
+         'Content-Type': 'application/json',
+         'Authorization': 'Bearer ' + auth,
+       },
+    })
+    .then(res => res.json())
+    .then(
+        (result) => {
+          console.log('result',result)
+          this.setState({messages:result})
+    
+        }
+    )
+}
+
 componentDidMount() {
 
-    reciever_id = window.location.href.split("/").pop()
+    conversation_id = window.location.href.split("/").pop()
 
     console.log('previous token',localStorage.getItem("token"))
     if (localStorage.getItem("token")){
@@ -54,7 +77,8 @@ componentDidMount() {
         )   
 }
 let auth = localStorage.getItem('token')
-fetch(url + '/api/customuser/'+reciever_id+'/', {
+
+fetch(url + '/api/conversation/'+conversation_id, {
     method:'GET',
     headers: {
       'Accept': 'application/json',
@@ -66,9 +90,29 @@ fetch(url + '/api/customuser/'+reciever_id+'/', {
 .then(
     (result) => {
       console.log('result',result)
-      this.setState({reciever: result })
+      this.setState({conversation: result})
+
+      fetch(url + '/api/customuser/'+result.includes[0]+'/', { 
+        method:'GET',
+        headers: {
+          'Accept': 'application/json',
+         'Content-Type': 'application/json',
+         'Authorization': 'Bearer ' + auth,
+       },
+    })
+    .then(res => res.json())
+    .then(
+        (result) => {
+          console.log('result',result)
+          this.setState({reciever: result })
+        }
+    )
+
+
     }
 )
+
+
 
 fetch(url + '/currentuser/', {
     method:'GET',
@@ -86,52 +130,53 @@ fetch(url + '/currentuser/', {
     }
 )
 
-let data = {
-    "includes": [this.state.user?.id],
-        "archived_by": [reciever_id]
+  
+this.fetchMessages()
+
 }
 
-fetch(url + '/api/conversation/', {
-    method: 'POST',
-    headers: {
-       'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data)
-})
-    .then((response) => {
-     if (response['status'] === 201 || response['status'] === 200) {
-        return response.json()
-    } else if (response['status'] === 401) {
-        message.info('Something went wrong');  
+
+handleData = (identity, data) => {
+    console.log('data', identity, data)
+    if(identity==='message'){
+        this.setState({message: data})
     }
+}
+
+sendMessage = async(e) => {
+    e.preventDefault()
+    let data = {
+        "read_by": [
+         this.state.reciever.id
+     ],
+     "message": this.state.message ,
+     "conversation": conversation_id
+ 
+ }
+    let auth = localStorage.getItem('token')
+    await fetch( url + '/api/message/', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Authorization': 'Bearer ' + auth,
+        },
+        body: JSON.stringify(data)
+    })
+    .then((response) => {
+        console.log("response", response)
+        if (response['status'] === 201 || response['status'] === 200) {
+            return response.json()
+        } else if (response['status'] === 400) {
+                console.log('Something is wrong')
+        }
     })
     .then((result) => {
-        console.log('result',result)
-        if (result){
-            this.setState({conversation_id: result.id})
-        }
-    }
-    )   
+        console.log('result', result);
+    })
 
-
-
-fetch(url + '/api/message/?conversation='+this.state.conversation_id, {
-    method:'GET',
-    headers: {
-      'Accept': 'application/json',
-     'Content-Type': 'application/json',
-     'Authorization': 'Bearer ' + auth,
-   },
-})
-.then(res => res.json())
-.then(
-    (result) => {
-      console.log('result',result)
-
-    }
-)
-
+    this.fetchMessages()
+    this.setState({message:''})
 
 }
 
@@ -144,12 +189,18 @@ fetch(url + '/api/message/?conversation='+this.state.conversation_id, {
                 <Chat
                 clicked={this.state.clicked}
                 dropHandle={this.dropHandle}
-                img={this.state.reciever?.profile_pic}
+                reciever_img={this.state.reciever?.profile_pic}
                 user_img={this.state.user?.profile_pic}
                 name={`${this.state.reciever?.first_name} ${this.state.reciever?.last_name}`}
+                reciever_id={this.state.reciever.id}
                 lastseen={this.state.reciever.last_seen}
                 rate='$20/15 mins'
                 chattime='Nov 27, 7:30 PM'
+                handleData={this.handleData}
+                message={this.state.message}
+                messages= {this.state.messages}
+                sendMessage={this.sendMessage}
+                conversation={this.state.conversation}
                 />
             </div>
             </>

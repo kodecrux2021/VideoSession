@@ -14,6 +14,9 @@ import HelpForm1 from './Container/Help/HelpForm1';
 import HelpForm2 from './Container/Help/HelpForm2';
 import HelpForm3 from './Container/Help/HelpForm3';
 import InvestorContainer from './Container/Investor/InvestorContainer';
+import NotificationsContainer from './Container/Notifications/NotificationsContainer';
+import Email from './Container/Login/ForgotPassword/Email';
+import Reset from './Container/Login/ForgotPassword/Reset';
 
 
 
@@ -36,7 +39,9 @@ function App() {
           <Route path="/help/2" exact component={HelpForm2} />
           <Route path="/help/3" exact component={HelpForm3} />
           <Route path="/investor" exact component={InvestorContainer} />
-
+          <Route path="/notifications" component={NotificationsContainer} />
+          <Route path="/forgot-password" exact component={Email} />
+          <Route path="/reset" exact component={Reset} />
         </Switch>
       </Router>
       

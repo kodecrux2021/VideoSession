@@ -6,9 +6,9 @@
 
 /* header */
 
-.body__container {
+/* .body__container {
     margin-top: 80px;
-}
+} */
 
 .css-2b097c-container{
     width: 100% !important;
@@ -76,7 +76,7 @@
 }
 
 .content__header {
-    position: fixed;
+    position: relative;
     width: 100%;
     padding: 10px;
   display: flex;

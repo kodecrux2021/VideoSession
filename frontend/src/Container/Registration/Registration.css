@@ -5,7 +5,7 @@ input {
     /* border-color: rgb(104, 104, 104); */
   }
   input:focus {
-    border-color: rgb(73, 209, 101);
+    border-color: blue;
   }
 
 textarea {
@@ -14,19 +14,18 @@ textarea {
 }
 
 textarea:focus {
-    border-color: rgb(73, 209, 101);
+    border-color: blue;
   }
 
 .__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px;
+display: grid;
+place-items: center;
+    height: 100vh;
 }
 
 
 .form__container {
-    width: 600px;
+    /* width: 600px; */
 }
 
 ._header {
@@ -57,6 +56,11 @@ padding : 8px 0;
     /* font-size: large; */
 }
 
+.header__button{
+    display: flex;
+}
+
+
 /* .header__button > button {
     margin: 5px 20px;
     width: 320px;
@@ -67,22 +71,47 @@ padding : 8px 0;
     border: none;
     color: white;
 } */
-.google {
-    margin: 5px 20px !important;
-    width: 280px !important;
-    height: 40px !important;
-    padding: 6px !important;
+
+.header__button > button > span {
     font-size: 12px !important;
-    font-weight: bold !important;
-    border: none!important;
+    font-weight:750 !important;
+    font-family: inherit;
+    line-height: inherit;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: center;
+    /* align-items: flex-start;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: center;
+    align-items: flex-start; */
+    font: 400 13.3333px Arial;
+    
+}
+.google {
+    margin: 5px 10px 5px 0px !important;
+    width: 230px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    /* padding: 6px !important; */
+    /* font-size: 12px !important; */
+    /* font-weight: bold !important; */
+    box-shadow: none!important;
+    
     color: white !important;
     background-color:#DB4437 !important;
-    text-align: center !important;
-    padding-left: 100px !important;
+    /* padding-left: 100px !important; */
+    display: flex !important;
+    justify-content: center !important;
+    border: none !important;
 }
 .facebook {
-    margin: 5px 20px;
-    width: 280px;
+    margin: 5px 0px 5px 10px;
+    width: 230px;
     height: 40px;
     padding: 6px;
     font-size: 14px;
@@ -109,6 +138,10 @@ padding : 8px 0;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+.MuiFormControl-root {
+    width: 100% !important;
+}
+
 .form-actions {
     margin: 15px 0 0;
     background-color: transparent;
@@ -131,6 +164,8 @@ padding : 8px 0;
     color: rgb(67, 68, 68);
     font-weight: 500;
    font-size: larger;
+   display: flex;
+   justify-content: center;
 }
 
 .registration__view__footer > a {
@@ -141,32 +176,28 @@ padding : 8px 0;
 
 .select__container {
 display: flex;
-justify-content: space-around;
-padding: 25px 0;
+justify-content: space-between;
+padding: 10px 0 20px 0;
 }
 
 
 .select__button {
-    width: 130px;
+    width: 110px;
     height: 45px;
-    font-size: 16px;
-    padding: 10px 10px;
-    border-radius: 1px;
-    
+    font-size: 14px;
+    border-radius: 2px;
     font-weight: 700;
-    color: rgb(82, 82, 82);
-    border:none;
-    background-color:#DDD;
+    color: rgb(155, 154, 154);
+    border:1px solid rgb(155, 154, 154) !important;
+    background-color:white;
     outline:none !important;
 }
 
 .select__button__active {
-    width: 130px;
+    width: 110px;
     height: 45px;
-    font-size: 16px;
-    padding: 10px 10px;
-    border-radius: 1px;
-  
+    font-size: 14px;
+    border-radius: 2px;
     font-weight: 700;
     color: #fff;
     border:none;
@@ -193,14 +224,12 @@ padding: 25px 0;
         margin: 5px 10px !important;
         width: 150px !important;
         height: 40px !important;
-        padding: 0 auto !important;
         font-size: 10px !important;
         font-weight: bold !important;
         border: none!important;
         color: white !important;
         background-color:#DB4437 !important;
         text-align: center !important;
-        padding-left: 45px !important;
     }
     .facebook {
         margin: 5px 10px;
@@ -217,10 +246,10 @@ padding: 25px 0;
 
  
     .select__container > button {
-        width: 100px;
+        width: 75px;
         padding: 10px 5px;
-        border-radius: 1px;
-        font-size: 12px;
+        border-radius: 2px;
+        font-size: 9px;
         font-weight: 700;
       
     }

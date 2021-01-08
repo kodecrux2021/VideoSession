@@ -4,6 +4,8 @@ import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import { useHistory } from 'react-router-dom';
 import { url } from '../../Server/GlobalUrl';
+import { message } from 'antd';
+import TextField from '@material-ui/core/TextField';
 
 export default function Registration(props) {
   const history = useHistory();
@@ -12,22 +14,19 @@ export default function Registration(props) {
     const responseFacebook = async (response) => {
         console.log('respose',response)
          if (response.accessToken) {
-          //  localStorage.setItem('token',response.accessToken)
-          //  localStorage.setItem('name',response.name)
-
            let data = {
-            "token" : response.accessToken,
-
+            "access_token" : response.accessToken,
+            "provider" : "facebook"
         }
 
-           await fetch( url + '/facebookuser/?email='+response.email, {
+           await fetch( url + '/facebook', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json, text/plain',
                 'Content-Type': 'application/json;charset=UTF-8',
     
             },
-            // body: JSON.stringify(data)
+            body: JSON.stringify(data)
         })
         .then((response) => {
             console.log("response", response)
@@ -40,31 +39,102 @@ export default function Registration(props) {
         .then((result) => {
             console.log('result', result);
             if(result){
-              localStorage.setItem('token',result.token)
+              localStorage.setItem('token',result.access_token)
+              localStorage.setItem('refresh',result.refresh_token)
+              localStorage.setItem('username',result.username)
             }
             
         })
+
+
+        let auth = localStorage.getItem('token')
+        await fetch(url + '/currentuser/', {
+          method:'GET',
+          headers: {
+            'Accept': 'application/json',
+           'Content-Type': 'application/json',
+           'Authorization': 'Bearer ' + auth,
+         },
+      })
+      .then(res => res.json())
+      .then(
+          (result) => {
+            console.log('result',result)
+            if(result){
+              localStorage.setItem('user_id', result.user?.id);
+              localStorage.setItem('user_name', result.user?.first_name);
+          }
+          }
+      )
             
            console.log("success")
-           history.replace('/home')
+          //  history.replace('/home')
          }
          else if(response.status=='unknown') {
            alert('No user Found')  
          }
     }
-    const componentClicked = (data) => {
-        console.log('hi',data);
-    }
-    const responseGoogle = (response) => {
+
+
+
+    const responseGoogle = async(response) => {
       console.log('google',response);
       if (response.accessToken) {
-        localStorage.setItem('token',response.accessToken)
-        localStorage.setItem('name',response.name)
+let data = {"token": response.accessToken}
+        await fetch( url + '/google/', {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-Type': 'application/json;charset=UTF-8',
+  
+          },
+          body: JSON.stringify(data)
+      })
+      .then((response) => {
+          console.log("response", response)
+          if (response['status'] === 201 || response['status'] === 200) {
+              return response.json()
+          } else if (response['status'] === 400) {
+             console.log('errorrr')
+          }
+      })
+      .then((result) => {
+          console.log('result', result);
+          if(result){
+            localStorage.setItem('token',result.access_token)
+            localStorage.setItem('refresh',result.refresh_token)
+            localStorage.setItem('username',result.username)
+          }
+          
+      })
+      let auth = localStorage.getItem('token')
+      await fetch(url + '/currentuser/', {
+        method:'GET',
+        headers: {
+          'Accept': 'application/json',
+         'Content-Type': 'application/json',
+         'Authorization': 'Bearer ' + auth,
+       },
+    })
+    .then(res => res.json())
+    .then(
+        (result) => {
+          console.log('result',result)
+          if(result){
+            localStorage.setItem('user_id', result.user?.id);
+            localStorage.setItem('user_name', result.user?.first_name);
+        }
+        }
+    )
+
+
         console.log("success")
-        history.replace('/home')
+        message.info('Logged In Succsessfully!!!');
+        // history.replace('/home')  
       }
       else if(response.status=='unknown') {
-        alert('No user Found')  
+        // alert('No user Found')  
+        message.info('No user Found!!!');
       }
     }
     // if (localStorage.getItem('token') == null  ){
@@ -73,7 +143,7 @@ export default function Registration(props) {
     return (
        
             <div className="__container">
-       
+              <div>
               <div className="_header">
                   <h2>Register</h2>
                   <p>With</p>
@@ -81,7 +151,7 @@ export default function Registration(props) {
                       <GoogleLogin 
                       className = 'google'
                       clientId="515126473370-emg4305tflmvetsklioachjblbekk066.apps.googleusercontent.com" //CLIENTID NOT CREATED YET
-                      buttonText="GOOGLE"
+                      buttonText="Google"
                       onSuccess={responseGoogle}
                       onFailure={responseGoogle}
                       icon= {false}
@@ -101,13 +171,21 @@ export default function Registration(props) {
               </div>
               <div className="form__container">
                   <form >
+                  {/* <TextField
+          // required
+          id="outlined-required"
+          label="Enter Your Email Address"
+          variant="outlined"
+          color="primary"
+          value={props.email}
+           onChange={(e) => props.handelData('email', e.target.value)}
+        /> */}
                       <div className="form__group">
-                          <label >Username</label>
-                          <input type="text" value={props.name} onChange={(e) => props.handelData('name', e.target.value)} className="form__control" id="uname" placeholder="Enter Your Username" name="uname" />
+                          <input type="text" value={props.email} onChange={(e) => props.handelData('email', e.target.value)} className="form__control" id="uname" placeholder="Enter Your Email Address" name="uname" />
 
                       </div>
+                      <p/>
                       <div className="form__group">
-                          <label>Mobile</label>
                           <input type="text" value={props.mobile} onChange={(e) => props.handelData('mobile', e.target.value)} className="form__control" id="uname" placeholder="Enter Mobile Number" name="uname" />
 
                       </div>
@@ -118,7 +196,6 @@ export default function Registration(props) {
                                   <button className={props.position==="customer"?'select__button__active':'select__button'} value="customer" onClick={props.onChangeValue} >CUSTOMER</button>
                       </div>
                       <div className="form__group">
-                          <label for="pwd">Password:</label>
                           <input type="password" value={props.password} onChange={(e) => props.handelData('password', e.target.value)} className="form__control" id="pwd" placeholder="Enter Password" name="pswd" />
 
                         </div>
@@ -128,8 +205,11 @@ export default function Registration(props) {
                   </form>
               </div>
       <div className="registration__view__footer">
-           Already have an account? <a onClick={()=> history.replace('/login')} >Login</a>
+           Already have an account? &nbsp; <a onClick={()=> history.replace('/login')} > Login</a>
       </div>
+              </div>
+       
+
 
 
 

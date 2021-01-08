@@ -11,8 +11,8 @@ class RegistrationContainer extends Component {
    
 
     state = {
-        name : '',
-        setname_validate: '',
+        email : '',
+        setemail_validate: '',
         password : '', 
         setpassword_validate: '',
         mobile : '',
@@ -25,17 +25,14 @@ class RegistrationContainer extends Component {
     handelData  = (identity,data) =>{
         console.log('identity',identity)
         console.log('data',data)
-        if (identity === 'name'){
-            this.setState({'name' : data})
-    //   if (/^([a-zA-Z]+[,.]?[ ]?|[a-zA-Z]+['-]?)+$/.test(data)) {
-    //     this.setState({ setname_validate: '' })
-    //   }
-    //   else if (data.length <= 0) {
-    //     this.setState({ setname_validate: '' })
-    //   }
-    //   else {
-    //     this.setState({ setname_validate: 'Please enter a valid name' })
-    //   }
+        if (identity === 'email'){
+            this.setState({'email' : data})
+            if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.toLowerCase())) {
+                this.setState({ setemail_validate: '' })
+              }
+              else {
+                this.setState({ setemail_validate: 'Please enter a valid email' })
+              }
             
         }
         else if (identity === 'password') {
@@ -80,8 +77,8 @@ class RegistrationContainer extends Component {
     onSubmit=async(e)=> {
         e.preventDefault();
        
-        if (this.state.name === '' || this.state.password === '' || this.state.mobile === '' || this.state.position === '' || this.state.setname_validate !== '' || this.state.setmobile_validate !== '' || this.state.setpassword_validate !== '' ){
-            if (this.state.name === ''){
+        if (this.state.email === '' || this.state.password === '' || this.state.mobile === '' || this.state.position === '' || this.state.setemail_validate !== '' || this.state.setmobile_validate !== '' || this.state.setpassword_validate !== '' ){
+            if (this.state.email === ''){
                 message.info('Please Fill Name');    
             }
             else if(this.state.mobile === ''){
@@ -90,8 +87,8 @@ class RegistrationContainer extends Component {
             else if(this.state.password === ''){
 				message.info('Please Fill Password');
             }
-            else if(this.state.setname_validate !== ''){
-                message.info(this.state.setname_validate);
+            else if(this.state.setemail_validate !== ''){
+                message.info(this.state.setemail_validate);
             }
             else if(this.state.setmobile_validate !== ''){
                 message.info(this.state.setmobile_validate);
@@ -103,7 +100,7 @@ class RegistrationContainer extends Component {
         }
         else {
             let data = {
-                "username" : this.state.name,
+                "username" : this.state.email,
                 "password" : this.state.password,
                 "phone" : this.state.mobile,
                 "is_instructor" : this.state.position==='codeexpert',
@@ -165,7 +162,7 @@ class RegistrationContainer extends Component {
                 onChangeValue={this.onChangeValue}
                 handelData={this.handelData}
                 onSubmit={this.onSubmit}
-                name={this.state.name}
+                email={this.state.email}
                 mobile={this.state.mobile}
                 password={this.state.password}
                 position={this.state.position}

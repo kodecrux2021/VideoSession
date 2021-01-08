@@ -15,17 +15,9 @@ import NextWeekOutlinedIcon from '@material-ui/icons/NextWeekOutlined';
 import PageviewOutlinedIcon from '@material-ui/icons/PageviewOutlined';
 import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
 import { Link, useHistory } from 'react-router-dom';
-import Datetime from 'react-datetime';
 import dateFormat from 'dateformat';
 
 const useStyles = makeStyles((theme) => ({
-    // root: {
-    //   display: 'flex',
-    //   '& > *': {
-    //     margin: theme.spacing(1),
-    //   },
-    // },
-
     largeIcon: {
         width: 80,
         height: 80,
@@ -63,6 +55,7 @@ export default function Chat(props) {
     console.log(today)
     console.log(dateFormat(props.lastseen, "mmmm dS, yyyy"));
 
+
     const [visible, setVisible] = useState(false);
     const showDrawer = () => {
         setVisible(true);
@@ -80,7 +73,7 @@ export default function Chat(props) {
     return (
         <div className='chat'>
             <div className='chat__header'>
-                <Avatar src={props.img} className={classes.large}/>
+                <Avatar src={props.reciever_img} className={classes.large}/>
                 <div className='chat__header__info'>
                     <h4>{props.name}</h4>
                     <span>{dateFormat(props.lastseen, "mmmm dS, h:MM TT")} </span>
@@ -150,9 +143,10 @@ export default function Chat(props) {
            
 <div className='chat__msg__container'>
                 <div className='chat__date'>
-                    <p>Nov 27, 7:36 PM</p>
+                    <p>{dateFormat(props.conversation.last_message_datetime, "mmmm dS, yyyy")}</p>
                 </div>
-                <div className='message__container'>
+                {/*
+                 <div className='message__container'>
                 <span><Avatar src={props.img} className={classes.msgicon}/></span>
                 <p className='chat__message tri-right left-top'>
                     <img className='msg__img' src={props.img} alt='img' />
@@ -166,6 +160,17 @@ export default function Chat(props) {
                
                     Hi Prasad</p>
                 </div>
+                 */}
+                 {
+                     props.messages.map((message)=>(
+                        <div className={`message__container ${(props.reciever_id===message.sent_by) && "reciever__container"}`}>
+                        <span><Avatar src={props.user_img} className={classes.msgicon}/></span>
+                        <p className={`chat__message tri-right ${(props.reciever_id===message.sent_by) ? "chat__reciever  right-top" :"left-top"}`}>
+                       
+                            {message.message}</p>
+                        </div> 
+                     ))
+                 }
 
                     
                 
@@ -179,8 +184,8 @@ export default function Chat(props) {
             </div>
             <div className='chat__footer'>
                 <form>
-                    <input placeholder='Type a message' type="text" />
-                    <button type='submit'>Send a message</button>
+                    <input placeholder='Type a message' value={props.message} onChange={(e)=>props.handleData('message', e.target.value)} type="text" />
+                    <button type='submit' onClick={(e)=>props.sendMessage(e)} >Send a message</button>
                 </form>
                 <IconButton > <AttachFileIcon className="svg_icons" /> </IconButton>
                 <IconButton><PictureAsPdfIcon className="svg_icons" /></IconButton>

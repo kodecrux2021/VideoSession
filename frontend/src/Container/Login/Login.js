@@ -10,16 +10,32 @@ function Login() {
     const history = useHistory();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [emailValidate, setEmailValidate] = useState('');
+
+    const handelData  = (data) => {
+
+        console.log('data', data)
+        setEmail(data);
+        if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.toLowerCase())) {
+            setEmailValidate('')
+          }
+          else {
+              setEmailValidate('Please enter a valid email')
+          }
+  }
    
     const signIn = async(e) => {
         e.preventDefault();
         // localStorage.clear();
-        if (email === '' || password === ''){
+        if (email === '' || password === ''|| emailValidate!==''){
             if (email === ''){
                 message.info('Please Fill Email');    
             }
             else if(password === ''){
                 message.info('Please Fill Password');
+            }
+            else {
+                message.info(emailValidate); 
             }
         }
         else {
@@ -100,6 +116,8 @@ fetch(url + '/currentuser/', {
      history.push('/registration')
     }
 
+
+
     return (
         <>
         <Navbar/>
@@ -117,10 +135,10 @@ fetch(url + '/currentuser/', {
                 <h1>Login</h1>
             
             <form>
-                <h4>Username</h4>
+                <h4>Email</h4>
                 <input type='email' 
                 className='form__control'
-                placeholder='Enter Your Username'
+                placeholder='Enter Your Email Address'
                 value={email}
                 onChange={event => setEmail(event.target.value)}
                  />
@@ -144,8 +162,11 @@ fetch(url + '/currentuser/', {
             type='submit'
             onClick={register}
             className='login__registerButton'>Create New Account</button>
+             <div style={{color:'grey', fontWeight:'500'}}  >Forgot Password ? <span style={{color:'#17a2b8', cursor:'pointer'}} onClick={()=>history.push('forgot-password')} >Click Here</span> </div>
             </div>
+            
         </div>
+       
         </div>
         
         </>

@@ -1,13 +1,18 @@
 .verification__view{
-    display: flex;
-    justify-content: center;
+    display: grid;
+    place-items: center;
+    height: 100vh;
     padding: 40px;
+    background-color: whitesmoke;
 }
 
 .verification__container {
     width: 500px;
     display: flex;
     flex-direction: column;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 2px 0 8px rgba(0,0,0,.15) ;
 }
 
 .verification__body {

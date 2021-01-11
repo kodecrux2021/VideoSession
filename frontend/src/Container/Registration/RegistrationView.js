@@ -143,7 +143,7 @@ let data = {"token": response.accessToken}
     return (
        
             <div className="__container">
-              <div>
+              <div style={{padding: ' 20px 20px'}} className='registration__details__container' >
               <div className="_header">
                   <h2>Register</h2>
                   <p>With</p>
@@ -180,11 +180,18 @@ let data = {"token": response.accessToken}
           value={props.email}
            onChange={(e) => props.handelData('email', e.target.value)}
         /> */}
+
+                      <div className="form__group">
+                      <input type="text" value={props.first_name} className="form__control"  placeholder="Enter Your First Name" onChange={(e) => props.handelData('first_name', e.target.value)}  />
+                      </div>
+                      <div className="form__group">
+                      <input type="text" className="form__control"  placeholder="Enter Your Last Name" value={props.last_name} onChange={(e) => props.handelData('last_name', e.target.value)}  />
+                      </div>
                       <div className="form__group">
                           <input type="text" value={props.email} onChange={(e) => props.handelData('email', e.target.value)} className="form__control" id="uname" placeholder="Enter Your Email Address" name="uname" />
 
                       </div>
-                      <p/>
+  
                       <div className="form__group">
                           <input type="text" value={props.mobile} onChange={(e) => props.handelData('mobile', e.target.value)} className="form__control" id="uname" placeholder="Enter Mobile Number" name="uname" />
 

@@ -19,13 +19,22 @@ class RegistrationContainer extends Component {
         setmobile_validate: '',
         position: 'codeexpert',
 
+        first_name: '',
+        last_name: '',
+
     }
 
 
     handelData  = (identity,data) =>{
         console.log('identity',identity)
         console.log('data',data)
-        if (identity === 'email'){
+        if (identity === 'first_name'){
+            this.setState({'first_name' : data})
+        }
+        else if (identity === 'last_name'){
+            this.setState({'last_name' : data})
+        }
+        else if (identity === 'email'){
             this.setState({'email' : data})
             if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.toLowerCase())) {
                 this.setState({ setemail_validate: '' })
@@ -78,8 +87,14 @@ class RegistrationContainer extends Component {
         e.preventDefault();
        
         if (this.state.email === '' || this.state.password === '' || this.state.mobile === '' || this.state.position === '' || this.state.setemail_validate !== '' || this.state.setmobile_validate !== '' || this.state.setpassword_validate !== '' ){
-            if (this.state.email === ''){
-                message.info('Please Fill Name');    
+            if (this.state.first_name === ''){
+                message.info('Please Fill First Name');    
+            }
+            else if (this.state.last_name === ''){
+                message.info('Please Fill last Name');    
+            }
+            else if (this.state.email === ''){
+                message.info('Please Fill Email');    
             }
             else if(this.state.mobile === ''){
                 message.info('Please Fill Mobile Number');
@@ -106,7 +121,9 @@ class RegistrationContainer extends Component {
                 "is_instructor" : this.state.position==='codeexpert',
                 "is_freelancer" : this.state.position==='instructor',
                 "is_codeexpert": this.state.position==='freelancer',
-                "is_client": this.state.position==='customer'
+                "is_client": this.state.position==='customer',
+                "first_name": this.state.first_name,
+                "last_name": this.state.last_name
             }
             console.log('data', data)
 
@@ -158,7 +175,7 @@ class RegistrationContainer extends Component {
             <div> 
                 <Navbar/>
                 <div className='body__ctr'>
-                                   <RegistrationView
+                <RegistrationView
                 onChangeValue={this.onChangeValue}
                 handelData={this.handelData}
                 onSubmit={this.onSubmit}
@@ -166,6 +183,8 @@ class RegistrationContainer extends Component {
                 mobile={this.state.mobile}
                 password={this.state.password}
                 position={this.state.position}
+                first_name={this.state.first_name}
+                last_name={this.state.last_name}
         	/>
                 </div>
  

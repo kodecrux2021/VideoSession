@@ -90,83 +90,83 @@ export default class Trainers extends Component {
 
     }
 
+    // messageHandle = (id, reciever_id, conversation_id) => {
+    //     message.info('Request Sent');
+    //     this.handleCancel();
+    // }
+
     messageHandle = (id, reciever_id, conversation_id) => {
-        message.info('Request Sent');
-        this.handleCancel();
-    }
 
-//     messageHandle = (id, reciever_id, conversation_id) => {
+        console.log('data', id, reciever_id, conversation_id)
 
-//         console.log('data', id, reciever_id, conversation_id)
-
-//         if(conversation_id.length > 0) {
-//             this.props.history.push('/chat/'+ conversation_id)
-//         }
-//         else {
+        if(conversation_id.length > 0) {
+            this.props.history.push('/chat/'+ conversation_id)
+        }
+        else {
     
-//         let auth = localStorage.getItem('token')
+        let auth = localStorage.getItem('token')
     
-//         let data = {
-//             "includes": [reciever_id],
-//             "archived_by": [this.state.user.id]
-//         }
-//     console.log('data',data)
-//         fetch(url + '/api/conversation/', {
-//             method: 'POST',
-//             headers: {
-//                'Accept': 'application/json',
-//               'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify(data)
-//         })
-//             .then((response) => {
-//              if (response['status'] === 201 || response['status'] === 200) {
-//                 return response.json()
-//             } else if (response['status'] === 401) {
-//                 message.info('Something went wrong');  
-//             }
-//             })
-//             .then((result) => {
-//                 if (result){
-//                 console.log('result',result)
+        let data = {
+            "includes": [reciever_id],
+            "archived_by": [this.state.user.id]
+        }
+    console.log('data',data)
+        fetch(url + '/api/conversation/', {
+            method: 'POST',
+            headers: {
+               'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+            .then((response) => {
+             if (response['status'] === 201 || response['status'] === 200) {
+                return response.json()
+            } else if (response['status'] === 401) {
+                message.info('Something went wrong');  
+            }
+            })
+            .then((result) => {
+                if (result){
+                console.log('result',result)
 
 
-//                 let data = {
-//                     "conversation": [result.id]
-//                 }
+                let data = {
+                    "conversation": [result.id]
+                }
                 
-//                 fetch(url + '/api/educator/'+id+'/', {
-//                     method: 'PUT',
-//                     headers: {
-//                        'Accept': 'application/json',
-//                       'Content-Type': 'application/json',
-//                     },
-//                     body: JSON.stringify(data)
-//                 })
-//                     .then((response) => {
-//                      if (response['status'] === 201 || response['status'] === 200) {
-//                         return response.json()
-//                     } else if (response['status'] === 401) {
-//                         message.info('Something went wrong');  
-//                     }
-//                     })
-//                     .then((result) => {
-//                         if (result){
-//                         console.log('result',result)
-//                         this.props.history.push('/chat/'+ result.conversation[0])
-//                         }
-//                     }
-//                     )
+                fetch(url + '/api/educator/'+id+'/', {
+                    method: 'PUT',
+                    headers: {
+                       'Accept': 'application/json',
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then((response) => {
+                     if (response['status'] === 201 || response['status'] === 200) {
+                        return response.json()
+                    } else if (response['status'] === 401) {
+                        message.info('Something went wrong');  
+                    }
+                    })
+                    .then((result) => {
+                        if (result){
+                        console.log('result',result)
+                        this.props.history.push('/chat/'+ result.conversation[0])
+                        }
+                    }
+                    )
 
 
-//                 }
-//             }
-//             )
+                }
+            }
+            )
 
 
 
-//         }
-// }
+        }
+}
 
 showModal = () => {
     console.log('show')

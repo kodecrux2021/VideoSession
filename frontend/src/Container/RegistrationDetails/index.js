@@ -3,7 +3,12 @@ import { Container,Row,Col } from 'react-bootstrap'
 import './style.css';
 import { Upload, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import Select from 'react-select';
 import icon from '../../assets/images/reg2.jpeg'
+import { message } from 'antd';
+import Navbar from '../../components/Header/Navbar';
+import { url } from '../../Server/GlobalUrl'
+import { DatePicker, Space } from 'antd';
 
 function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -14,6 +19,21 @@ function getBase64(file) {
     });
   }
 
+  function onChange(date, dateString) {
+    console.log(date, dateString);
+  }
+
+  const experienceData = [
+    { id: 2, name: '1 year', value: 1 },
+    { id: 2, name: '2 years', value: 2 },
+    { id: 4, name: '3 years', value: 3 },
+    { id: 2, name: '4 years', value: 4 },
+    { id: 2, name: '5 years', value: 5 },
+    { id: 4, name: '5+ years', value: 6 },
+  ];
+  
+
+
 class Pagetwo extends React.Component {
 
     state = {
@@ -22,7 +42,130 @@ class Pagetwo extends React.Component {
         previewTitle: '',
         fileList: [
         ],
+
+        tech_list: [],
+        technology: '',
+        sub_technology: '',
+
+        pincode : '',
+        state : '',
+        city : '',
+        // school : '',
       };
+
+      componentDidMount() {
+        console.log('previous token',localStorage.getItem("token"))
+        if (localStorage.getItem("token")){
+        let data_refresh = {'refresh': localStorage.getItem('refresh')}
+
+        fetch(url + '/api/token/refresh/', {
+            method: 'POST',
+            headers: {
+               'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data_refresh)
+        })
+            .then((response) => {
+             if (response['status'] === 201 || response['status'] === 200) {
+                return response.json()
+            } else if (response['status'] === 401) {
+                message.info('Something went wrong');  
+                localStorage.removeItem('refresh')
+                localStorage.removeItem('access')
+            }
+            })
+            .then((result) => {
+                if (result){
+                console.log('result.access',result.access)
+                localStorage.setItem('token',result.access)
+                }
+            }
+            )   
+    }
+
+        fetch(url + '/api/technology/', {
+            method:'GET',
+            headers: {
+              'Accept': 'application/json',
+             'Content-Type': 'application/json',
+           },
+        })
+        .then(res => res.json())
+        .then(
+            (result) => {
+              console.log('result',result)
+              this.setState({tech_list: result })
+            }
+        )
+
+
+    }
+
+    handelData  = (identity,data) =>{
+        console.log('identity',identity)
+        console.log('data',data)
+        if (identity === 'pincode'){
+            this.setState({'pincode' : data})
+        }else if(identity === 'state'){
+            this.setState({'state' : data})
+        }else if(identity === 'city'){
+            this.setState({'city' : data})
+        }
+
+    }
+
+    onSubmit=async(e)=> {
+        e.preventDefault();
+
+
+        if (this.state.pincode === '' ||  this.state.city === '' || this.state.state === '' ) {
+            if (this.state.pincode === ''){
+                message.info('Please Fill Pincode');    
+            }
+
+            else if(this.state.city === ''){
+				message.info('Please Fill City');
+            }
+            else if(this.state.state === ''){
+				message.info('Please Fill State');
+            }
+        }
+        else {
+            let data = {
+                "pincode" : this.state.pincode,
+                "city" : this.state.city,
+                "state" : this.state.state,
+            }
+            
+           console.log('data_______________', data)
+            let id = localStorage.getItem('user_id')
+           await fetch( url + '/api/customusersecond/' + id + '/' , {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8',
+    
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            console.log("response", response)
+            if (response['status'] === 201 || response['status'] === 200) {
+                return response.json()
+            } else if (response['status'] === 400) {
+                    console.log('Something is wrong')
+            }
+        })
+        .then((result) => {
+            console.log('result', result);
+        })
+
+            this.state.history.push("/verification");
+        }
+
+  
+    }
 
       handleCancel = () => this.setState({ previewVisible: false });
 
@@ -82,25 +225,122 @@ class Pagetwo extends React.Component {
                     <Col style={{marginTop:"10px"}}>
                         <div class="form__group">
                             <label >Pin Code</label>
-                            <input className="form__control"  value={this.props.pincode} onChange={(e) => this.props.handelData('pincode', e.target.value)} type="text"   placeholder="Enter Your Postal Code" />
+                            <input className="form__control"  value={this.state.pincode} onChange={(e) => this.handelData('pincode', e.target.value)} type="text"   placeholder="Enter Your Postal Code" />
                         </div>
                         <div class="form__group">
                             <label >State</label>
-                            <input type="text"  value={this.props.state} onChange={(e) => this.props.handelData('state', e.target.value)} className="form__control"  placeholder="Enter Your State" />
+                            <input type="text"  value={this.state.state} onChange={(e) => this.handelData('state', e.target.value)} className="form__control"  placeholder="Enter Your State" />
                         </div>
                         <div class="form__group">
                             <label >City</label>
-                            <input type="text"  value={this.props.city} onChange={(e) => this.props.handelData('city', e.target.value)} className="form__control"  placeholder="Enter Your City" />
+                            <input type="text"  value={this.state.city} onChange={(e) => this.handelData('city', e.target.value)} className="form__control"  placeholder="Enter Your City" />
+                        </div>
+
+                        {/* <div class="form__group">
+                            <label >School</label>
+                            <input type="text"  value={this.state.school} onChange={(e) => this.handelData('school', e.target.value)} className="form__control"  placeholder="Enter Your School" />
+                        </div> */}
+
+                        <div className='trainer__details__ctr' >
+                        <div class="form__group">
+                        <label >Technology</label>
+                        <Select
+                className="react-selectcomponent"
+                classNamePrefix="name-select"
+                onChange={(value) => this.handelData('technology',value)}
+                getOptionLabel={option =>
+                  `${option.name}`
+                }
+                getOptionValue={option => `${option}`}
+                isOptionSelected={option => (
+                    (this.state.technology === option.name) ? true : false
+                  )}
+                options={this.state.tech_list}
+                isSearchable={true}
+                openMenuOnClick={true}
+                placeholder={'Choose Technology'}
+              />
+                        </div>
+
+                
+
+
+              
+              <div class="form__group">
+              <label > Sub Technology</label>
+                <Select
+                className="react-selectcomponent"
+                classNamePrefix="name-select"
+                onChange={(value) => this.handelData('sub_technology',value)}
+                getOptionLabel={option =>
+                  `${option.name}`
+                }
+                getOptionValue={option => `${option}`}
+                isOptionSelected={option => (
+                    (this.state.sub_technology === option.name) ? true : false
+                  )}
+                options={this.state.subtech_list}
+                isSearchable={true}
+                openMenuOnClick={true}
+                placeholder={'Choose Sub Technology'}
+              />
+              </div>
+             
+              <div class="form__group">
+              <label >Total Experience</label>
+              <Select
+                className="react-selectcomponent"
+                classNamePrefix="name-select"
+                onChange={(value) => this.handelData('sub_technology',value)}
+                getOptionLabel={option =>
+                  `${option.name}`
+                }
+                getOptionValue={option => `${option}`}
+                isOptionSelected={option => (
+                    (this.state.sub_technology === option.name) ? true : false
+                  )}
+                options={experienceData}
+                isSearchable={true}
+                openMenuOnClick={true}
+                placeholder={'Years of Experince'}
+              />
+              </div>
+
+              <div class="form__group">
+              <label >Relevant Experience</label>
+              <Select
+                className="react-selectcomponent"
+                classNamePrefix="name-select"
+                onChange={(value) => this.handelData('sub_technology',value)}
+                getOptionLabel={option =>
+                  `${option.name}`
+                }
+                getOptionValue={option => `${option}`}
+                isOptionSelected={option => (
+                    (this.state.sub_technology === option.name) ? true : false
+                  )}
+                options={experienceData}
+                isSearchable={true}
+                openMenuOnClick={true}
+                placeholder={'Years of Experince'}
+              />
+              </div> 
                         </div>
 
                         <div class="form__group">
-                            <label >School</label>
-                            <input type="text"  value={this.props.school} onChange={(e) => this.props.handelData('school', e.target.value)} className="form__control"  placeholder="Enter Your School" />
-                        </div>
+                 <div style={{display: 'flex', alignItems:'center'}} >
+                 <label>Date of Birth</label>
+                 <div style={{margin: '0 60px'}} >
+                 <DatePicker onChange={onChange} size='large' />
+                 </div>
+                 </div>
+
+              </div>
+
                     </Col>
                         
                     <Col className="registration__details__footer">
-                        <button type="submit" onClick={this.props.onSubmit}>Done</button>
+                        <button type="submit" onClick={this.onSubmit}>Done</button>
                         <div >
                             <span >By register I agree To</span>
                             <span><a style={{color:'#30b3f0',cursor:'pointer'}} >Term & Condition</a> and <a style={{color:'#30b3f0',cursor:'pointer'}} >Privacy policy</a></span>

@@ -69,7 +69,7 @@ export default class HelpForm3 extends Component {
 submitHandler=() => {
   message.info('Submitted Successfully!!!');   
   console.log('state', this.state)
-    this.props.history.push('/home')
+    this.props.history.push('/trainers/message')
 }
 
     render() {

@@ -13,7 +13,7 @@ export default class HelpForm1 extends Component {
     handelData  = (identity) =>{
         console.log('identity',identity)
         if (identity === 'livehelp'){
-          
+            this.props.history.push('/help/2')
         }
     else if (identity === 'freelancejob'){
            
@@ -22,7 +22,7 @@ export default class HelpForm1 extends Component {
        
     }
 
-    this.props.history.push('/help/2')
+
     }
 
     render() {

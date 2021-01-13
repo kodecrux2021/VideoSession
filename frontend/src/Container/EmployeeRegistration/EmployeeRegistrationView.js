@@ -153,7 +153,7 @@ export default function EmployeeRegistrationView(props) {
         </div>
         <Modal title="Select Option" footer={null} visible={props.isModalVisible}  onCancel={props.handleCancel}>
             <div className='reg__modal__button' >
-            <button onClick={()=>history.push('/trainers/message')} style={{  backgroundColor:' #5964c9'}} type="primary" size='large' >Reference Link</button>
+            <button onClick={()=>history.push('/courses')} style={{  backgroundColor:' #5964c9'}} type="primary" size='large' >Reference Link</button>
             <button onClick={()=>history.push('/trainers/live')} style={{  backgroundColor:' #76d2fd'}} type="primary" size='large' >Live Session</button>
             </div>
 

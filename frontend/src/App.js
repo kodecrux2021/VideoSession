@@ -17,6 +17,7 @@ import InvestorContainer from './Container/Investor/InvestorContainer';
 import NotificationsContainer from './Container/Notifications/NotificationsContainer';
 import Email from './Container/Login/ForgotPassword/Email';
 import Reset from './Container/Login/ForgotPassword/Reset';
+import Pagetwo from './Container/RegistrationDetails';
 
 
 
@@ -28,7 +29,8 @@ function App() {
         <Switch>
           <Route path="/home" exact component={Home} />
           <Route path="/registration" exact component={RegistrationContainer} />
-          <Route path="/details" exact component={RegistrationDetailsContainer} />
+          {/* <Route path="/details" exact component={RegistrationDetailsContainer} /> */}
+          <Route path="/details" exact component={Pagetwo} />
           <Route path="/verification" exact component={VerificationContainer} />
           <Route path="/trainers"  component={Trainers} />
           <Route path="/course-registration" exact component={EmployeeRegistrationComponent} />

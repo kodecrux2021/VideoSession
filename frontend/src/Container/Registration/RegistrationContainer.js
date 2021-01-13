@@ -150,6 +150,7 @@ class RegistrationContainer extends Component {
                 console.log('result', result);
                 if(result){
                     localStorage.setItem('user_id', result?.id);
+                    localStorage.setItem('is_client', result?.is_client);
                     this.props.history.push("/details");
                 }
                 

@@ -169,3 +169,7 @@ padding:20px 0 40px 0;
   background-color: rgb(254, 229, 229);
   border: 2px solid rgb(252, 164, 164) !important;
 }
+
+.remove_svg {
+  transform: scale(0.7);
+}

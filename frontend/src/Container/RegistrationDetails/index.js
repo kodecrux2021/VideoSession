@@ -19,9 +19,6 @@ function getBase64(file) {
     });
   }
 
-  function onChange(date, dateString) {
-    console.log(date, dateString);
-  }
 
   const experienceData = [
     { id: 2, name: '1 year', value: 1 },
@@ -44,14 +41,24 @@ class Pagetwo extends React.Component {
         ],
 
         tech_list: [],
+        subtech_list:[],
         technology: '',
         sub_technology: '',
 
         pincode : '',
         state : '',
         city : '',
-        // school : '',
+        total_experience : null,
+        relevant_experience : null,
+        date_of_birth: null, 
+
       };
+
+      
+   onChange=(date, dateString) => {
+    console.log(date, dateString);
+    this.setState({date_of_birth: date})
+  }
 
       componentDidMount() {
         console.log('previous token',localStorage.getItem("token"))
@@ -84,6 +91,8 @@ class Pagetwo extends React.Component {
             )   
     }
 
+    let auth = localStorage.getItem("token")
+
         fetch(url + '/api/technology/', {
             method:'GET',
             headers: {
@@ -100,6 +109,8 @@ class Pagetwo extends React.Component {
         )
 
 
+
+
     }
 
     handelData  = (identity,data) =>{
@@ -112,6 +123,18 @@ class Pagetwo extends React.Component {
         }else if(identity === 'city'){
             this.setState({'city' : data})
         }
+        else if (identity === 'technology'){
+          this.setState({'technology' : data, subtech_list : data.sub_technology})
+      }
+      else if (identity === 'sub_technology'){
+          this.setState({'sub_technology' : data})
+      }
+      else if (identity === 'total_experience'){
+        this.setState({'total_experience' : data})
+    }
+    else if (identity === 'relevant_experience'){
+        this.setState({'relevant_experience' : data})
+    }
 
     }
 
@@ -132,10 +155,20 @@ class Pagetwo extends React.Component {
             }
         }
         else {
+          let tech = []
+          let sub_tech = []
+  
+          tech.push(parseInt(this.state.technology?.id))
+          sub_tech.push(parseInt(this.state.sub_technology?.id))
             let data = {
                 "pincode" : this.state.pincode,
                 "city" : this.state.city,
                 "state" : this.state.state,
+                "technology": tech,
+                "sub_technology": sub_tech,
+                "total_experience" : this.state.total_experience?.value,
+                "relevant_experience" : this.state.relevant_experience?.value,
+                "date_of_birth": this.state.date_of_birth
             }
             
            console.log('data_______________', data)
@@ -161,7 +194,7 @@ class Pagetwo extends React.Component {
             console.log('result', result);
         })
 
-            this.state.history.push("/verification");
+            this.props.history.push("/verification");
         }
 
   
@@ -186,6 +219,7 @@ class Pagetwo extends React.Component {
     
 
     render() {
+      const is_client = localStorage.getItem('is_client')
         const { previewVisible, previewImage, fileList, previewTitle } = this.state;
         const uploadButton = (
           <div>
@@ -195,9 +229,10 @@ class Pagetwo extends React.Component {
         );
         return (
 
+          <>
+         <Navbar/>
 
-               
-            <div className="registration__page__two">   
+<div className="registration__page__two">   
                 <form className="registration__details__container">
                     <div className="registration__details__img" >
                         {/* <img src={icon} alt="KodeCrux"></img> */}
@@ -236,102 +271,103 @@ class Pagetwo extends React.Component {
                             <input type="text"  value={this.state.city} onChange={(e) => this.handelData('city', e.target.value)} className="form__control"  placeholder="Enter Your City" />
                         </div>
 
-                        {/* <div class="form__group">
-                            <label >School</label>
-                            <input type="text"  value={this.state.school} onChange={(e) => this.handelData('school', e.target.value)} className="form__control"  placeholder="Enter Your School" />
-                        </div> */}
-
-                        <div className='trainer__details__ctr' >
-                        <div class="form__group">
-                        <label >Technology</label>
-                        <Select
-                className="react-selectcomponent"
-                classNamePrefix="name-select"
-                onChange={(value) => this.handelData('technology',value)}
-                getOptionLabel={option =>
-                  `${option.name}`
-                }
-                getOptionValue={option => `${option}`}
-                isOptionSelected={option => (
-                    (this.state.technology === option.name) ? true : false
-                  )}
-                options={this.state.tech_list}
-                isSearchable={true}
-                openMenuOnClick={true}
-                placeholder={'Choose Technology'}
-              />
-                        </div>
-
-                
-
-
-              
-              <div class="form__group">
-              <label > Sub Technology</label>
-                <Select
-                className="react-selectcomponent"
-                classNamePrefix="name-select"
-                onChange={(value) => this.handelData('sub_technology',value)}
-                getOptionLabel={option =>
-                  `${option.name}`
-                }
-                getOptionValue={option => `${option}`}
-                isOptionSelected={option => (
-                    (this.state.sub_technology === option.name) ? true : false
-                  )}
-                options={this.state.subtech_list}
-                isSearchable={true}
-                openMenuOnClick={true}
-                placeholder={'Choose Sub Technology'}
-              />
+                        {is_client==="true" ? null :
+                       <div className='trainer__details__ctr' >
+                       <div class="form__group">
+                       <label >Technology</label>
+                       <Select
+               className="react-selectcomponent"
+               classNamePrefix="name-select"
+               onChange={(value) => this.handelData('technology',value)}
+               getOptionLabel={option =>
+                 `${option.name}`
+               }
+               getOptionValue={option => `${option}`}
+               isOptionSelected={option => (
+                   (this.state.technology === option.name) ? true : false
+                 )}
+               options={this.state.tech_list}
+               isSearchable={true}
+               openMenuOnClick={true}
+               placeholder={'Choose Technology'}
+             />
               </div>
-             
-              <div class="form__group">
-              <label >Total Experience</label>
-              <Select
-                className="react-selectcomponent"
-                classNamePrefix="name-select"
-                onChange={(value) => this.handelData('sub_technology',value)}
-                getOptionLabel={option =>
-                  `${option.name}`
-                }
-                getOptionValue={option => `${option}`}
-                isOptionSelected={option => (
-                    (this.state.sub_technology === option.name) ? true : false
-                  )}
-                options={experienceData}
-                isSearchable={true}
-                openMenuOnClick={true}
-                placeholder={'Years of Experince'}
-              />
-              </div>
+ 
+             <div class="form__group">
+             <label > Sub Technology</label>
+               <Select
+               className="react-selectcomponent"
+               classNamePrefix="name-select"
+               onChange={(value) => this.handelData('sub_technology',value)}
+               getOptionLabel={option =>
+                 `${option.name}`
+               }
+               getOptionValue={option => `${option}`}
+               isOptionSelected={option => (
+                   (this.state.sub_technology === option.name) ? true : false
+                 )}
+               options={this.state.subtech_list}
+               isSearchable={true}
+               openMenuOnClick={true}
+               placeholder={'Choose Sub Technology'}
+             />
+             </div>
+            
+             <div class="form__group">
+             <label >Total Experience</label>
+             <Select
+               className="react-selectcomponent"
+               classNamePrefix="name-select"
+               onChange={(value) => this.handelData('total_experience',value)}
+               getOptionLabel={option =>
+                 `${option.name}`
+               }
+               getOptionValue={option => `${option}`}
+               isOptionSelected={option => (
+                   (this.state.sub_technology === option.name) ? true : false
+                 )}
+               options={experienceData}
+               isSearchable={true}
+               openMenuOnClick={true}
+               placeholder={'Years of Experince'}
+             />
+             </div>
 
-              <div class="form__group">
-              <label >Relevant Experience</label>
-              <Select
-                className="react-selectcomponent"
-                classNamePrefix="name-select"
-                onChange={(value) => this.handelData('sub_technology',value)}
-                getOptionLabel={option =>
-                  `${option.name}`
-                }
-                getOptionValue={option => `${option}`}
-                isOptionSelected={option => (
-                    (this.state.sub_technology === option.name) ? true : false
-                  )}
-                options={experienceData}
-                isSearchable={true}
-                openMenuOnClick={true}
-                placeholder={'Years of Experince'}
-              />
-              </div> 
-                        </div>
+             <div class="form__group">
+             <label >Relevant Experience</label>
+             <Select
+               className="react-selectcomponent"
+               classNamePrefix="name-select"
+               onChange={(value) => this.handelData('relevant_experience',value)}
+               getOptionLabel={option =>
+                 `${option.name}`
+               }
+               getOptionValue={option => `${option}`}
+               isOptionSelected={option => (
+                   (this.state.sub_technology === option.name) ? true : false
+                 )}
+               options={experienceData}
+               isSearchable={true}
+               openMenuOnClick={true}
+               placeholder={'Years of Experince'}
+             />
+             </div> 
+                       </div>
+                        
+                      }
+
+
+ 
+
+
+
+
 
                         <div class="form__group">
                  <div style={{display: 'flex', alignItems:'center'}} >
                  <label>Date of Birth</label>
                  <div style={{margin: '0 60px'}} >
-                 <DatePicker onChange={onChange} size='large' />
+                 <DatePicker onChange={this.onChange} size='large' />
                  </div>
                  </div>
 
@@ -350,6 +386,15 @@ class Pagetwo extends React.Component {
                     
                 </form>
             </div>
+
+
+          </>
+
+ 
+
+
+               
+ 
           
 
 

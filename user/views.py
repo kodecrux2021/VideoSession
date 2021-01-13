@@ -16,14 +16,17 @@ from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from rest_framework import generics, permissions, status, views
-
-
+from message.models import Conversation
+import json
+from django.forms.models import model_to_dict
+from django.http import JsonResponse
 
 
 
 
 
 class EducatorViewset(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     queryset = models.Educator.objects.all()
     serializer_class = serializers.EducatorSerializer
     permission_classes = [permissions.AllowAny]
@@ -31,7 +34,30 @@ class EducatorViewset(viewsets.ModelViewSet):
     filterset_fields = ('user__technology','user__sub_technology','user__topic','conversation')
 
 
+class EducatorView(APIView):
+    permission_classes = [permissions.AllowAny]
+    def get(self, request):
+        # serializer = serializers.EducatorSerializer(request.user)
+        # content = {'user': serializer.data}
+        educator_list= Educator.objects.all()
+        context = educator_list.values()
+        for educator in context:
+            context = list(context)
+            print('educator',educator)
+            # print('edu',educator.user.id)
+            c_list= []
+            c_list.append(educator["user_id"])
+            c_list.append(request.user.id)
+            conversation=Conversation.objects.filter(includes__in=c_list).first()
+            educator['conversation_id'] = conversation.id
+            print('conv',conversation)
+        return JsonResponse(context,safe=False)
+
+
+        # return Response(content)
+
 class ClientViewset(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     queryset = models.Clients.objects.all()
     serializer_class = serializers.ClientSerializer
     permission_classes = [permissions.AllowAny]

@@ -19,5 +19,5 @@ class MessageSerializer(serializers.ModelSerializer):
 class ConversationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conversation
-        read_only_fields = ('id','archived_by','last_message_datetime')
+        read_only_fields = ('id','last_message_datetime')
         fields = ('id','includes','archived_by','last_message_datetime',)

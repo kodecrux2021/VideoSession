@@ -11,7 +11,7 @@ class EducatorSerializer(serializers.ModelSerializer):
     user_first_name = ReadOnlyField(source='user.first_name')
     user_last_name = ReadOnlyField(source='user.last_name')
     user_phone = ReadOnlyField(source='user.phone')
-    conversation = ConversationSerializer(many=True,write_only=True)
+    # conversation = ConversationSerializer(many=True,read_only=True)
 
 
     class Meta:

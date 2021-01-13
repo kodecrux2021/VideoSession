@@ -4,7 +4,7 @@ import random
 from twilio.rest import Client
 from django.conf import settings
 from datetime import datetime
-from user.serializers import EducatorSerializer
+
 
 
 
@@ -13,12 +13,10 @@ class SocialSerializer(serializers.Serializer):
     access_token = serializers.CharField(max_length=4096, required=True, trim_whitespace=True)
 
 class CustomUserSerializers(serializers.ModelSerializer):
-    # educator_user = EducatorSerializer(many=True,read_only=True)
-    educator_user = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     class Meta:
         model = CustomUser
-        read_only_fields = ('id','pincode','state','city','school','otp','email','first_name','last_name','technology','sub_technology','topic','last_seen','profile_pic','educator_user',)
-        fields = ('id','username','pincode','state','city','school','otp','password','email','first_name','last_name','phone','is_instructor','is_freelancer','is_codeexpert','is_client','technology','sub_technology','topic','last_seen','profile_pic','educator_user',)
+        read_only_fields = ('id','pincode','state','city','otp','email','first_name','last_name','technology','sub_technology','topic','last_seen','profile_pic','total_experience','relevant_experience','date_of_birth')
+        fields = ('id','username','pincode','state','city','otp','password','email','first_name','last_name','phone','is_instructor','is_freelancer','is_codeexpert','is_client','technology','sub_technology','topic','last_seen','profile_pic','total_experience','relevant_experience','date_of_birth')
         extra_kwargs = {'password': {'write_only': True}}
 
     def perform_create(self, serializer):
@@ -78,15 +76,18 @@ class PhoneVerificationSerializer(serializers.ModelSerializer):
 class CustomUsersecondSerializers(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('pincode','state','city','school')
+        fields = ('pincode','state','city','total_experience','relevant_experience','date_of_birth')
 
 
     def create(self,validated_data):
         user = CustomUser(
             state=validated_data['state'],
-            school=validated_data['school'],
             city=validated_data['city'],
             pincode=validated_data['pincode'],
+            total_experience=validated_data['total_experience'],
+            relevant_experience=validated_data['relevant_experience'],
+            date_of_birth=validated_data['date_of_birth'],
+
         )
         user.is_active=True
         user.save()
@@ -116,3 +117,15 @@ class CustomUserthirdSerializers(serializers.ModelSerializer):
         user.save()
         return user
 
+class ForgotPasswordSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        read_only_fields = ('username',)
+        fields = ('verification_code','password','username')
+        extra_kwargs = {'password': {'write_only': True}}
+
+
+class ForgotPasswordEmailVerificationSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('username',)

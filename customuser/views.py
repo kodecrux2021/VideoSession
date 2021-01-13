@@ -4,6 +4,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from . import serializers
 from django.contrib.auth import authenticate, login
 from . import models
@@ -34,8 +35,23 @@ from rest_framework_jwt.settings import api_settings
 # from rest_auth.registration.views import SocialLoginView
 # from .adapters import GoogleOAuth2AdapterIdToken
 from rest_framework.authtoken.models import Token
+from django.template.loader import render_to_string
+from django.conf import settings
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+import random
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.hashers import make_password
+from rest_framework.utils import json
+from rest_framework.views import APIView
+from rest_framework.response import Response
+import requests
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import User
+from rest_framework_jwt.settings import api_settings
 
-
+jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 # class GoogleLogin(SocialLoginView):
 #     adapter_class =  GoogleOAuth2AdapterIdToken
@@ -66,13 +82,18 @@ class SocialLoginView(generics.GenericAPIView):
             print('line50',backend)
 
         except MissingBackend:
+            print('MissingBackend',MissingBackend)
             return Response({'error': 'Please provide a valid provider'},
                             status=status.HTTP_400_BAD_REQUEST)
+            print('Response',Response)
         try:
+            print('tryinstance')
             if isinstance(backend, BaseOAuth2):
                 access_token = serializer.data.get('access_token')
                 print('line58')
             user = backend.do_auth(access_token)
+            print('user',user.email)
+
         except HTTPError as error:
             print('line61')
             return Response({
@@ -87,6 +108,28 @@ class SocialLoginView(generics.GenericAPIView):
                 "error": "Invalid credentials",
                 "details": str(error)
             }, status=status.HTTP_400_BAD_REQUEST)
+
+
+        # try:
+        #     print('try114')
+        #     user = CustomUser.objects.get(email=user.email)
+        # except CustomUser.DoesNotExist:
+        #     user = CustomUser()
+        #     user.username = user.email
+        #     print('user.username',user.username)
+        #     # provider random default password
+        #     user.password = make_password(BaseUserManager().make_random_password())
+        #     user.email = user.email
+        #     user.is_active= True
+        #     print('user.is_active',user.is_active)
+        #     user.save()
+        #
+        # token = RefreshToken.for_user(user)  # generate token without username & password
+        # response = {}
+        # response['username'] = user.username
+        # response['access_token'] = str(token.access_token)
+        # response['refresh_token'] = str(token)
+        # return Response(response)
 
         try:
             print('line76')
@@ -110,20 +153,24 @@ class SocialLoginView(generics.GenericAPIView):
         print('authenticated_user.is_active',authenticated_user.is_active)
         authenticated_user.is_active = True
         print('authenticated_user.is_active',authenticated_user.is_active)
+        authenticated_user.save()
         if authenticated_user and authenticated_user.is_active:
             print('line94')
             # generate JWT token
             login(request, authenticated_user)
-            data = {
-                "token": jwt_encode_handler(
-                    jwt_payload_handler(user)
-                )}
+            # data = {
+            #     "token": jwt_encode_handler(
+            #         jwt_payload_handler(user)
+            #     )}
+            token = RefreshToken.for_user(user)
             # customize the response to your needs
             response = {
                 "email": authenticated_user.email,
                 "username": authenticated_user.username,
-                "token": data.get('token')
             }
+
+            response['access_token'] = str(token.access_token)
+            response['refresh_token'] = str(token)
             return Response(status=status.HTTP_200_OK, data=response)
 
 
@@ -145,7 +192,6 @@ class MobileVerificationViewset(generics.ListAPIView):
 
 class Random(TemplateView):
         template_name = "random.html"
-        print(random())
 
         def post(self, request):
             phone = request.POST.get('phone')
@@ -168,6 +214,7 @@ class CustomUserViewset(viewsets.ModelViewSet):
     queryset = models.CustomUser.objects.all()
     serializer_class = serializers.CustomUserSerializers
     permission_classes = [permissions.AllowAny]
+    print('CustomUser',CustomUser.objects.filter(id=CustomUser.objects.last().id).values())
 
 
     def get(self):
@@ -225,3 +272,95 @@ class FacebookUserView(APIView):
         return Response(content,status=status.HTTP_226_IM_USED)
 
 
+class ForgotPasswordViewset(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = serializers.ForgotPasswordSerializers
+    lookup_field = 'verification_code'
+    lookup_url_kwarg = 'verification_code'
+
+    def update(self, request, *args, **kwargs):
+        print('pk', kwargs.get('verification_code'))
+        print('self',self.kwargs['verification_code'])
+        instance = self.queryset.get(verification_code=kwargs.get('verification_code'))
+        instance.set_password(request.data['password'])
+        instance.save()
+        print('password', request.data['password'], instance)
+        return Response(instance.email)
+
+
+# def ForgotPasswordVerification(code, email):
+#     message = Mail(
+#         from_email='sales@codekrux.com',
+#         to_emails=email,
+#         subject='Reset Password',
+#         html_content='<strong>'+ str(code) + '</strong>'
+#     )
+#     print('settings.SENDGRID_API_KEY',settings.SENDGRID_API_KEY)
+#     sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
+#     response = sg.send(message)
+#     print(response.status_code)
+#     print(response.body)
+#     print(response.headers)
+
+
+
+class ForgotPasswordEmailVerificationViewSet(generics.ListAPIView):
+    serializer_class = serializers.ForgotPasswordEmailVerificationSerializers
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        email = self.request.query_params.get('email', None)
+        print('email', email)
+        user = models.CustomUser.objects.filter(email=str(email))
+        if user.exists():
+            is_user = user.first()
+            code = random.randint(100000, 999999)
+            print('instance', is_user.verification_code, code)
+            is_user.verification_code = code
+            is_user.save()
+            # ForgotPasswordVerification(code, is_user.email)
+        return user
+
+
+
+class HelloView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def get(self, request):
+        content = {'message': 'Hello, World!'}
+        return Response(content)
+
+class GoogleView(APIView):
+    print('google')
+    permission_classes = [permissions.AllowAny]
+    def post(self, request):
+        payload = {'access_token': request.data.get("token")}  # validate the token
+        print('request.data.get("token")',request.data.get("token"))
+        print('payload',payload)
+        r = requests.get('https://www.googleapis.com/oauth2/v2/userinfo', params=payload)
+        data = json.loads(r.text)
+        print(data)
+
+        if 'error' in data:
+            content = {'message': 'wrong google token / this google token is already expired.'}
+            print(content)
+            return Response(content)
+
+        # create user if not exist
+        try:
+            user = CustomUser.objects.get(email=data['email'])
+        except CustomUser.DoesNotExist:
+            user = CustomUser()
+            user.username = data['email']
+            # provider random default password
+            user.password = make_password(BaseUserManager().make_random_password())
+            user.email = data['email']
+            user.is_active= True
+            user.save()
+
+        token = RefreshToken.for_user(user)  # generate token without username & password
+        response = {}
+        response['username'] = user.username
+        response['access_token'] = str(token.access_token)
+        response['refresh_token'] = str(token)
+        return Response(response)

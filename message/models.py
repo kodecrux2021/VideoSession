@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import datetime
 from customuser.models import CustomUser
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -10,6 +12,7 @@ class Conversation(models.Model):
     includes = models.ManyToManyField(CustomUser, related_name="conversation_includes", blank=True, null=True)
     def __str__(self):
         return str(self.id)
+
 
 class Message(models.Model):
     date = models.DateTimeField(default=datetime.now(), null=True, blank=True)

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Select from 'react-select';
 import './Help.css'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
+import RemoveIcon from '@material-ui/icons/Remove';
 import { message } from 'antd';
 import { url } from '../../Server/GlobalUrl';
 import Navbar from '../../components/Header/Navbar';
@@ -16,14 +17,15 @@ export default class HelpForm3 extends Component {
         this.state = {
           selected: [],
           recommended_selected: [],
-          topic_list: [],
+          technology_list: [],
+          subtech_list:[],
         };
         this.handleSelect = this.handleSelect.bind(this);
       }
 
       componentDidMount() {
 
-        fetch(url + '/api/topic/', {
+        fetch(url + '/api/technology/', {
           method:'GET',
           headers: {
             'Accept': 'application/json',
@@ -34,7 +36,7 @@ export default class HelpForm3 extends Component {
       .then(
           (result) => {
             console.log('result',result)
-            this.setState({topic_list: result })
+            this.setState({technology_list: result })
           }
       )
 
@@ -49,7 +51,17 @@ export default class HelpForm3 extends Component {
       handleRecommendedSelect(val) {
         console.log(val);
         let selected = [...this.state.recommended_selected]
-        selected.push(val)
+        console.log('selected', selected)
+        const index = selected.findIndex(
+          (Item) => Item === val
+        );
+        if (index >= 0) {
+          selected.splice(index, 1);
+        }
+        else {
+          selected.push(val)
+        }
+        
       this.setState({ recommended_selected: selected });
     }
 
@@ -57,7 +69,7 @@ export default class HelpForm3 extends Component {
 submitHandler=() => {
   message.info('Submitted Successfully!!!');   
   console.log('state', this.state)
-    this.props.history.push('/home')
+    this.props.history.push('/trainers/message')
 }
 
     render() {
@@ -82,7 +94,7 @@ submitHandler=() => {
                 }
                 getOptionValue={option => `${option.id}`}
                 name="colors"
-                options={this.state.topic_list}
+                options={this.state.technology_list}
                 isSearchable={true}        
                 isMulti
                 placeholder={'Search for anything'}
@@ -95,14 +107,14 @@ submitHandler=() => {
 
             <span>Recommended technologies</span>
             <div className='HelpForm3__btn__ctr' >
-                    <button className={true && 'button__selected'} > JavaScript  {false && <AddOutlinedIcon/>}</button>
-                    <button> React JS  <AddOutlinedIcon/></button>
-                    <button> Python  <AddOutlinedIcon/></button>
-                    <button> C++  <AddOutlinedIcon/></button>
-                    <button> React Native <AddOutlinedIcon/></button>
-                    <button> Bootstrap  <AddOutlinedIcon/></button>
-                    <button className={true && 'button__selected'} > Futter  {false && <AddOutlinedIcon/>}</button>
-                    <button> Java  <AddOutlinedIcon/></button>
+
+{
+  this.state.technology_list.slice(0,5).map((tech)=> (
+    <button className={this.state.recommended_selected.includes(tech.id) && 'button__selected'} onClick={()=>this.handleRecommendedSelect(tech.id)} > {tech.name}  {!this.state.recommended_selected.includes(tech.id) ? <AddOutlinedIcon/> : <RemoveIcon className='remove_svg' />}</button>
+  ))
+}
+
+                    {/* <button className={true && 'button__selected'} > JavaScript  {false && <AddOutlinedIcon/>}</button> */}
             </div>
 
 

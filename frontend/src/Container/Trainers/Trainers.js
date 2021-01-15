@@ -65,9 +65,10 @@ export default class Trainers extends Component {
     .then(res => res.json())
     .then(
         (result) => {
+            
           console.log('result',result)
             this.setState({user: result.user})
-          fetch(url + '/api/educator/?user__technology='+result.user?.technology[0]+'&user__sub_technology='+result.user?.sub_technology[0]+'&user__topic='+result.user?.topic[0], { 
+          fetch(url + '/api/educator/?user__technology='+result.user?.technology[0]+'&user__sub_technology='+result.user?.sub_technology[0]+'&user__topic='+1, { 
             method:'GET',
             headers: {
               'Accept': 'application/json',
@@ -100,72 +101,74 @@ export default class Trainers extends Component {
         console.log('data', id, reciever_id, conversation_id)
 
         if(conversation_id.length > 0) {
-            this.props.history.push('/chat/'+ conversation_id)
+            message.info('request has been sent')
+            //this.props.history.push('/chat/'+ conversation_id)
         }
         else {
+            message.info('request has been sent')
     
-        let auth = localStorage.getItem('token')
+    //     let auth = localStorage.getItem('token')
     
-        let data = {
-            "includes": [reciever_id],
-            "archived_by": [this.state.user.id]
-        }
-    console.log('data',data)
-        fetch(url + '/api/conversation/', {
-            method: 'POST',
-            headers: {
-               'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
-            .then((response) => {
-             if (response['status'] === 201 || response['status'] === 200) {
-                return response.json()
-            } else if (response['status'] === 401) {
-                message.info('Something went wrong');  
-            }
-            })
-            .then((result) => {
-                if (result){
-                console.log('result',result)
+    //     let data = {
+    //         "includes": [reciever_id],
+    //         "archived_by": [this.state.user.id]
+    //     }
+    // console.log('data',data)
+    //     fetch(url + '/api/conversation/', {
+    //         method: 'POST',
+    //         headers: {
+    //            'Accept': 'application/json',
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(data)
+    //     })
+    //         .then((response) => {
+    //          if (response['status'] === 201 || response['status'] === 200) {
+    //             return response.json()
+    //         } else if (response['status'] === 401) {
+    //             message.info('Something went wrong');  
+    //         }
+    //         })
+    //         .then((result) => {
+    //             if (result){
+    //             console.log('result',result)
 
 
-                let data = {
-                    "conversation": [result.id]
-                }
+    //             let data = {
+    //                 "conversation": [result.id]
+    //             }
                 
-                fetch(url + '/api/educator/'+id+'/', {
-                    method: 'PUT',
-                    headers: {
-                       'Accept': 'application/json',
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                })
-                    .then((response) => {
-                     if (response['status'] === 201 || response['status'] === 200) {
-                        return response.json()
-                    } else if (response['status'] === 401) {
-                        message.info('Something went wrong');  
-                    }
-                    })
-                    .then((result) => {
-                        if (result){
-                        console.log('result',result)
-                        this.props.history.push('/chat/'+ result.conversation[0])
-                        }
-                    }
-                    )
+    //             fetch(url + '/api/educator/'+id+'/', {
+    //                 method: 'PUT',
+    //                 headers: {
+    //                    'Accept': 'application/json',
+    //                   'Content-Type': 'application/json',
+    //                 },
+    //                 body: JSON.stringify(data)
+    //             })
+    //                 .then((response) => {
+    //                  if (response['status'] === 201 || response['status'] === 200) {
+    //                     return response.json()
+    //                 } else if (response['status'] === 401) {
+    //                     message.info('Something went wrong');  
+    //                 }
+    //                 })
+    //                 .then((result) => {
+    //                     if (result){
+    //                     console.log('result',result)
+    //                     this.props.history.push('/chat/'+ result.conversation[0])
+    //                     }
+    //                 }
+    //                 )
 
 
-                }
-            }
-            )
+    //             }
+    //         }
+    //         )
 
 
 
-        }
+       }
 }
 
 showModal = () => {
@@ -176,7 +179,9 @@ handleCancel = () => {
   this.setState({isModalVisible: false})
 };
 
-
+hireHandle = () =>{
+    this.props.history.push('/investor')
+}
 
 
     render() {
@@ -212,6 +217,7 @@ handleCancel = () => {
                     showModal={this.showModal}
                     handleCancel={this.handleCancel}
                     isModalVisible={this.state.isModalVisible}
+                    hireHandle = {this.hireHandle}
                     // badge={false}
                     />
                     ))}       

@@ -7,9 +7,6 @@ import { message } from 'antd';
 import { url } from '../../Server/GlobalUrl';
 import Navbar from '../../components/Header/Navbar';
 
-
-
-
 export default class HelpForm3 extends Component {
 
     constructor() {
@@ -66,12 +63,60 @@ export default class HelpForm3 extends Component {
     }
 
 
-submitHandler=() => {
-  message.info('Submitted Successfully!!!');   
-  console.log('state', this.state)
-    this.props.history.push('/trainers/message')
-}
+submitHandler=async(e) => {
 
+  e.preventDefault();
+
+  if(this.state.selected.length !== null && this.state.selected.length > 0){
+    message.info('Submitted Successfully!!!');   
+    // console.log(this.state.recommended_selected);
+    console.log('state', this.state);
+    
+    let auth = localStorage.getItem('token')
+
+    let tech = []
+    let sub_tech = []
+    //let topic = []
+    console.log(this.state.selected[0].id);
+    console.log(this.state.recommended_selected);
+    tech.push(parseInt(this.state.selected[0].id))
+    sub_tech.push(parseInt(this.state.recommended_selected))
+    //topic.push(parseInt(this.state.subtech_list[0].id))
+    let data = {
+        "technology": tech,
+        "sub_technology": sub_tech,
+        //"topic": topic,
+    }
+
+    console.log('data_______________', data);
+    //let auth = localStorage.getItem('token');
+    let id = localStorage.getItem('user_id');
+  //  await fetch(url + '/api/customusersecond/'+ id + '/', {
+  //     method:'PUT',
+  //     headers: {
+  //        'Accept': 'application/json',
+  //      'Content-Type': 'application/json',
+  //      'Authorization': 'Bearer ' + auth,
+  //    },
+  //    body: JSON.stringify(data)
+  // })
+  // .then(res => res.json())
+  //     .then(
+  //         (result) => {
+  //           console.log('result',result);
+  //           this.props.history.push('/trainers/message');
+  //         }
+  //     )
+
+  this.props.history.push('/trainers/message');
+      }
+
+
+else{
+message.info('Please select a technology')
+}
+}
+ 
     render() {
         return (
           <>
@@ -108,11 +153,23 @@ submitHandler=() => {
             <span>Recommended technologies</span>
             <div className='HelpForm3__btn__ctr' >
 
+            {this.state.selected !== null  && this.state.selected.map( t =>(
+                t.sub_technology.map( s =>(
+                  <button className={this.state.recommended_selected.includes(s.id) && 'button__selected'} key = {s.name} onClick={()=>this.handleRecommendedSelect(s.id)}>
+                    {s.name}
+                    {!this.state.recommended_selected.includes(s.id) ? <AddOutlinedIcon/> : <RemoveIcon className='remove_svg' />}</button>
+                  
+                ))
+              
+              
+              )
+    )}
+{/* 
 {
   this.state.technology_list.slice(0,5).map((tech)=> (
     <button className={this.state.recommended_selected.includes(tech.id) && 'button__selected'} onClick={()=>this.handleRecommendedSelect(tech.id)} > {tech.name}  {!this.state.recommended_selected.includes(tech.id) ? <AddOutlinedIcon/> : <RemoveIcon className='remove_svg' />}</button>
   ))
-}
+} */}
 
                     {/* <button className={true && 'button__selected'} > JavaScript  {false && <AddOutlinedIcon/>}</button> */}
             </div>

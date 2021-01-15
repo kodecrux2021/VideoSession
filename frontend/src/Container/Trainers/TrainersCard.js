@@ -26,7 +26,7 @@ const styles = theme => ({
 
 
   const hireHandle = () => {
-
+        props.hireHandle();
     }
 
     const LiveHandle = () => {

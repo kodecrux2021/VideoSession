@@ -18,6 +18,7 @@ import NotificationsContainer from './Container/Notifications/NotificationsConta
 import Email from './Container/Login/ForgotPassword/Email';
 import Reset from './Container/Login/ForgotPassword/Reset';
 import Pagetwo from './Container/RegistrationDetails';
+import New from './Container/RegistrationDetails/new';
 
 
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/registration" exact component={RegistrationContainer} />
           {/* <Route path="/details" exact component={RegistrationDetailsContainer} /> */}
           <Route path="/details" exact component={Pagetwo} />
+          <Route path="/details2" exact component={New} />
           <Route path="/verification" exact component={VerificationContainer} />
           <Route path="/trainers"  component={Trainers} />
           <Route path="/course-registration" exact component={EmployeeRegistrationComponent} />

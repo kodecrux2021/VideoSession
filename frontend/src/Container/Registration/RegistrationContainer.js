@@ -22,6 +22,8 @@ class RegistrationContainer extends Component {
         first_name: '',
         last_name: '',
 
+
+
     }
 
 
@@ -125,6 +127,19 @@ class RegistrationContainer extends Component {
                 "first_name": this.state.first_name,
                 "last_name": this.state.last_name
             }
+
+            let data2 = {
+                "user_username" : this.state.email,
+                "password" : this.state.password,
+                "phone" : this.state.mobile,
+                // "is_instructor" : this.state.position==='codeexpert',
+                // "is_freelancer" : this.state.position==='instructor',
+                // "is_codeexpert": this.state.position==='freelancer',
+                // "is_client": this.state.position==='customer',
+                "user_first_name": this.state.first_name,
+                "user_last_name": this.state.last_name,
+                
+            }
             console.log('data', data)
 
 
@@ -148,10 +163,30 @@ class RegistrationContainer extends Component {
             })
             .then((result) => {
                 console.log('result', result);
-                if(result){
+                 if(result){
+                    if(this.state.position!=='customer'){
+                        fetch( url + '/api/educator/' , {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json, text/plain',
+                                'Content-Type': 'application/json;charset=UTF-8',
+                    
+                            },
+                            body: JSON.stringify(data2)
+                        })
+                        .then((response) => {
+                            console.log("response", response)
+                            if (response['status'] === 201 || response['status'] === 200) {
+                                return response.json()
+                            } else if (response['status'] === 400) {
+                                    console.log('A user with that username already exists.')
+                                    message.info('A user with that username already exists!!!');
+                            }
+                        })
+                    }
                     localStorage.setItem('user_id', result?.id);
                     localStorage.setItem('is_client', result?.is_client);
-                    this.props.history.push("/details");
+                    this.props.history.push("/details2");
                 }
                 
             })
@@ -186,10 +221,10 @@ class RegistrationContainer extends Component {
                 position={this.state.position}
                 first_name={this.state.first_name}
                 last_name={this.state.last_name}
+                
         	/>
-                </div>
- 
-            </div>
+            </div> 
+        </div>
 
             );
     }

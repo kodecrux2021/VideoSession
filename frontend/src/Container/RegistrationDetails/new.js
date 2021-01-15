@@ -31,7 +31,7 @@ function getBase64(file) {
   
 
 
-class Pagetwo extends React.Component {
+class New extends React.Component {
 
     state = {
         previewVisible: false,
@@ -39,6 +39,10 @@ class Pagetwo extends React.Component {
         previewTitle: '',
         fileList: [
         ],
+
+        desig: '',
+        fees: null,
+        rating: null,
 
         tech_list: [],
         subtech_list:[],
@@ -151,6 +155,15 @@ class Pagetwo extends React.Component {
     else if (identity === 'relevant_experience'){
         this.setState({'relevant_experience' : data})
     }
+    else if (identity === 'desig'){
+        this.setState({'desig' : data})
+    }
+    else if (identity === 'fees'){
+        this.setState({'fees' : data})
+    }
+    else if (identity === 'rating'){
+        this.setState({'rating' : data})
+    }
 
     }
 
@@ -180,16 +193,21 @@ class Pagetwo extends React.Component {
                 "pincode" : this.state.pincode,
                 "city" : this.state.city,
                 "state" : this.state.state,
-                "technology": tech,
-                "sub_technology": sub_tech,
+                "technology": [this.state.technology?.id],
+                "sub_technology": [this.state.sub_technology?.id],
                 "total_experience" : this.state.total_experience?.value,
                 "relevant_experience" : this.state.relevant_experience?.value,
-                "date_of_birth": this.state.date_of_birth
+                "date_of_birth": this.state.date_of_birth,
+                "fees": this.state.fees,
+                "designation":this.state.designation,
+                "rating": this.state.rating
             }
             
            console.log('data_______________', data)
+           console.log(tech,sub_tech);
+           console.log(this.state.sub_technology?.id);
             let id = localStorage.getItem('user_id')
-           await fetch( url + '/api/customusersecond/' + id + '/' , {
+           await fetch( url + '/api/customuserthird/' + id + '/' , {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',
@@ -207,8 +225,8 @@ class Pagetwo extends React.Component {
             }
         })
         .then((result) => {
-        //  fetch( url + '/api/educator/' + id + '/' , {
-        //     method: 'PUT',
+        //  fetch( url + '/api/educator/' , {
+        //     method: 'POST',
         //     headers: {
         //         'Accept': 'application/json, text/plain',
         //         'Content-Type': 'application/json;charset=UTF-8',
@@ -237,7 +255,7 @@ class Pagetwo extends React.Component {
         }
 
   
-      }
+    }
 
       handleCancel = () => this.setState({ previewVisible: false });
 
@@ -258,7 +276,9 @@ class Pagetwo extends React.Component {
     
 
     render() {
-      const is_client = localStorage.getItem('is_client')
+        
+      const is_client = localStorage.getItem('is_client');
+      console.log(is_client);
         const { previewVisible, previewImage, fileList, previewTitle } = this.state;
         const uploadButton = (
           <div>
@@ -266,6 +286,24 @@ class Pagetwo extends React.Component {
             <div style={{ marginTop: 8 }}>Upload</div>
           </div>
         );
+
+        const educator = (
+            !is_client=== 'true' ? 
+                            <div className='trainer__details__ctr' >
+                                 <div class="form__group">
+                            <label >Designation</label>
+                            <input type="text"  value={this.state.desig} onChange={(e) => this.handelData('desig', e.target.value)} className="form__control"  placeholder="Designation" />
+                        </div>
+                        <div class="form__group">
+                            <label >Fees</label>
+                            <input type="text"  value={this.state.fees} onChange={(e) => this.handelData('fees', e.target.value)} className="form__control"  placeholder="Fees" />
+                        </div>
+                        <div class="form__group">
+                            <label >Rating</label>
+                            <input type="text"  value={this.state.rating} onChange={(e) => this.handelData('rating', e.target.value)} className="form__control"  placeholder="Rating" />
+                        </div>
+                            </div>:null
+        )
         return (
 
           <>
@@ -309,6 +347,11 @@ class Pagetwo extends React.Component {
                             <label >City</label>
                             <input type="text"  value={this.state.city} onChange={(e) => this.handelData('city', e.target.value)} className="form__control"  placeholder="Enter Your City" />
                         </div>
+
+                        {
+                            educator
+                        }
+
 
                         {is_client==="true" ? null :
                        <div className='trainer__details__ctr' >
@@ -391,6 +434,18 @@ class Pagetwo extends React.Component {
                placeholder={'Years of Experince'}
              />
              </div> 
+             <div class="form__group">
+                            <label >Designation</label>
+                            <input type="text"  value={this.state.desig} onChange={(e) => this.handelData('desig', e.target.value)} className="form__control"  placeholder="Designation" />
+                        </div>
+                        <div class="form__group">
+                            <label >Fees</label>
+                            <input type="text"  value={this.state.fees} onChange={(e) => this.handelData('fees', e.target.value)} className="form__control"  placeholder="Fees" />
+                        </div>
+                        <div class="form__group">
+                            <label >Rating</label>
+                            <input type="text"  value={this.state.rating} onChange={(e) => this.handelData('rating', e.target.value)} className="form__control"  placeholder="Rating" />
+                        </div>
                        </div>
                         
                       }
@@ -444,4 +499,4 @@ class Pagetwo extends React.Component {
 
 }
 
-export default Pagetwo
+export default New

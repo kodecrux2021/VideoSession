@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import './Investor.css'
-import { Avatar, IconButton } from '@material-ui/core';
+import { Avatar, IconButton,  } from '@material-ui/core';
 import avatar from '../../assets/images/avatar2.jpeg'
 import { makeStyles } from '@material-ui/core/styles';
 import Select from 'react-select';
@@ -8,6 +8,8 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { DatePicker, Space } from 'antd';
 import 'antd/dist/antd.css';
+import {Modal } from 'antd';
+import { SkipEnd } from 'react-bootstrap-icons';
 
 const useStyles = makeStyles((theme) => ({
     large: {
@@ -20,10 +22,25 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Investor(props) {
     const classes = useStyles();
+    const [isModalVisible, setVisible] = useState(false);
+
 
     function onChange(date, dateString) {
         console.log(date, dateString);
       }
+
+    const hire = () =>{
+        setVisible(true);
+        console.log(isModalVisible);
+    }  
+
+    const send = () =>{
+        setVisible(false)
+    }
+
+    const cancel = () =>{
+        setVisible(false)
+    }
 
     return (
         <div className='investor' > 
@@ -137,8 +154,18 @@ export default function Investor(props) {
             <span className='investor__head__detail' > * The details of the freelance job will be final after it's been created. Please make sure all the information above is correct. </span>
 
             </div>
+            <div className="form-actions">
+            <button style = {{backgroundColor: ' rgb(15, 15, 151)'}} onClick = {() => hire()}>HIRE</button>
+                        </div>
+                        <Modal title="Are you sure you want to hire?" visible={isModalVisible}  footer={null} >
+            <div className='reg__modal__button' >
+            <button onClick={ () => send() } style={{  backgroundColor:' #5964c9'}} type="primary" size='large' >Send Request</button>
+            <button onClick={()=>cancel()} style={{  backgroundColor:' #76d2fd'}} type="primary" size='large' >Cancel</button>
+            </div>
+           </Modal>
         </div>
         
         </div>
     )
 }
+// onCancel={props.handleCancel}

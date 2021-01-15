@@ -42,7 +42,7 @@ class SampleAdminModel(admin.ModelAdmin):
                 'fields':(('name','sub_technology'),)
             }),
     )
-    list_display =('name','active')
+    list_display =('name','sub_technology','active')
     list_filter = ('sub_technology',)
     ordering =('name',)
     def active(self, obj):

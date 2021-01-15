@@ -32,5 +32,5 @@ class Educator(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return str(self.user.username)
+        return str(self.user)
 

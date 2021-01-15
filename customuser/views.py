@@ -364,3 +364,19 @@ class GoogleView(APIView):
         response['access_token'] = str(token.access_token)
         response['refresh_token'] = str(token)
         return Response(response)
+
+class UserView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def get(self, request):
+        # id = self.request.query_params.get('id', None)
+        # print(id)
+        print('requst',request.user)
+        user_exists= CustomUser.objects.filter(technology=request.user.technology)
+        if user_exists.exists():
+            user = user_exists.first()
+            user.last_seen = datetime.now()
+            user.save()
+            content = {'user.last_seen':datetime.now()}
+            return Response(content)
+        content = {'message':'No user '}
+        return Response(content,status=status.HTTP_226_IM_USED)

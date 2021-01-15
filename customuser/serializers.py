@@ -76,7 +76,7 @@ class PhoneVerificationSerializer(serializers.ModelSerializer):
 class CustomUsersecondSerializers(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('pincode','state','city','total_experience','relevant_experience','date_of_birth')
+        fields = ('pincode','state','city','total_experience','relevant_experience','date_of_birth','profile_pic')
 
 
     def create(self,validated_data):
@@ -87,6 +87,7 @@ class CustomUsersecondSerializers(serializers.ModelSerializer):
             total_experience=validated_data['total_experience'],
             relevant_experience=validated_data['relevant_experience'],
             date_of_birth=validated_data['date_of_birth'],
+            profile_pic=validated_data['profile_pic'],
 
         )
         user.is_active=True

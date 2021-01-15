@@ -33,6 +33,11 @@ class EducatorViewset(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ('user__technology','user__sub_technology','user__topic','conversation')
 
+    def get_queryset(self):
+        qs = super(EducatorViewset, self).get_queryset()
+        print('qs',qs)
+        return qs
+
 
 class EducatorView(APIView):
     permission_classes = [permissions.AllowAny]

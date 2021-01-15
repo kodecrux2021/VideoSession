@@ -31,7 +31,7 @@ SECRET_KEY = 'p_w#!6jui_dlu78z7*ne8^y2z$+2q0u%2kqm*hg(ij9a2=1w^1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['2567ddfd45b2.ngrok.io','127.0.0.1','0.0.0.0',]
+ALLOWED_HOSTS = ['f9abc28b3b06.ngrok.io','127.0.0.1','0.0.0.0',]
 
 
 # Application definition
@@ -245,3 +245,8 @@ EMAIL_USE_TLS = True
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
+PAYMENT_VARIANTS = {
+    'razorpay': ('django_payments_razorpay.RazorPayProvider', {
+        'public_key': 'rzp_test_TVbCLwAp2V8lVn',
+        'secret_key': 'KyyHwi8ix0IAW4fEzYnYcAl0'})}

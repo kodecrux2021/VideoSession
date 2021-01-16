@@ -214,8 +214,7 @@ class CustomUserViewset(viewsets.ModelViewSet):
     queryset = models.CustomUser.objects.all()
     serializer_class = serializers.CustomUserSerializers
     permission_classes = [permissions.AllowAny]
-    print('CustomUser',CustomUser.objects.filter(id=CustomUser.objects.last().id).values())
-
+    
 
     def get(self):
         content = {'message': 'Hello, World!'}

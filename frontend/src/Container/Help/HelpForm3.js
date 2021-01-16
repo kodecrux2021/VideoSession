@@ -69,44 +69,45 @@ submitHandler=async(e) => {
 
   if(this.state.selected.length !== null && this.state.selected.length > 0){
     message.info('Submitted Successfully!!!');   
-    // console.log(this.state.recommended_selected);
     console.log('state', this.state);
     
-    let auth = localStorage.getItem('token')
 
     let tech = []
     let sub_tech = []
-    //let topic = []
-    console.log(this.state.selected[0].id);
     console.log(this.state.recommended_selected);
-    tech.push(parseInt(this.state.selected[0].id))
-    sub_tech.push(parseInt(this.state.recommended_selected))
-    //topic.push(parseInt(this.state.subtech_list[0].id))
+    this.state.selected.map((item)=> (
+      tech.push(parseInt(item.id))
+    ))
+    
+    sub_tech=[...this.state.recommended_selected]
     let data = {
         "technology": tech,
         "sub_technology": sub_tech,
-        //"topic": topic,
     }
 
     console.log('data_______________', data);
-    //let auth = localStorage.getItem('token');
+    let auth = localStorage.getItem('token');
     let id = localStorage.getItem('user_id');
-  //  await fetch(url + '/api/customusersecond/'+ id + '/', {
-  //     method:'PUT',
-  //     headers: {
-  //        'Accept': 'application/json',
-  //      'Content-Type': 'application/json',
-  //      'Authorization': 'Bearer ' + auth,
-  //    },
-  //    body: JSON.stringify(data)
-  // })
-  // .then(res => res.json())
-  //     .then(
-  //         (result) => {
-  //           console.log('result',result);
-  //           this.props.history.push('/trainers/message');
-  //         }
-  //     )
+   fetch( url + '/api/customuserthird/' + id + '/' , {
+      method: 'PUT',
+      headers: {
+          'Accept': 'application/json, text/plain',
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Authorization': 'Bearer ' + auth,
+      },
+      body: JSON.stringify(data)
+  })
+  .then((response) => {
+      console.log("response", response)
+      if (response['status'] === 201 || response['status'] === 200) {
+          return response.json()
+      } else if (response['status'] === 400) {
+              console.log('Something is wrong')
+      }
+  })
+  .then((result) => {
+      console.log('result', result);
+  })
 
   this.props.history.push('/trainers/message');
       }

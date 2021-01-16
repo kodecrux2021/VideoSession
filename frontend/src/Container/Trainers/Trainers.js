@@ -68,7 +68,17 @@ export default class Trainers extends Component {
             
           console.log('result',result)
             this.setState({user: result.user})
-          fetch(url + '/api/educator/?user__technology='+result.user?.technology[0]+'&user__sub_technology='+result.user?.sub_technology[0]+'&user__topic='+1, { 
+            let param  = ""
+            result.user.technology.map((tech)=> (
+                param += "&user__technology=" + tech
+            ))
+            result.user.sub_technology.map((tech)=> (
+                param += "&user__sub_technology=" + tech
+            ))
+            let new_param  = param.substring(1);
+
+            console.log('param', new_param)
+          fetch(url + '/api/educator/?'+new_param, { 
             method:'GET',
             headers: {
               'Accept': 'application/json',
@@ -102,6 +112,37 @@ export default class Trainers extends Component {
 
         if(conversation_id.length > 0) {
             message.info('request has been sent')
+
+
+            let data = {
+                
+            }
+        
+            console.log('data_______________', data);
+            let auth = localStorage.getItem('token');
+           fetch( url + 'api/request/' , {
+              method: 'POST',
+              headers: {
+                  'Accept': 'application/json, text/plain',
+                  'Content-Type': 'application/json;charset=UTF-8',
+                  'Authorization': 'Bearer ' + auth,
+              },
+              body: JSON.stringify(data)
+          })
+          .then((response) => {
+              console.log("response", response)
+              if (response['status'] === 201 || response['status'] === 200) {
+                  return response.json()
+              } else if (response['status'] === 400) {
+                      console.log('Something is wrong')
+              }
+          })
+          .then((result) => {
+              console.log('result', result);
+          })
+
+
+
             //this.props.history.push('/chat/'+ conversation_id)
         }
         else {

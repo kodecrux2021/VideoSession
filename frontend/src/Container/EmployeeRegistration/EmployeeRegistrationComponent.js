@@ -190,32 +190,32 @@ export default class EmployeeRegistrationComponent extends Component {
                 }
 
                 console.log('data_______________', data)
-                let auth = localStorage.getItem('token')
-                let id = localStorage.getItem('user_id')
-               await fetch( url + '/api/customuserthird/' + id + '/' , {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json, text/plain',
-                    'Content-Type': 'application/json;charset=UTF-8',
-                    'Authorization': 'Bearer ' + auth,
-                },
-                body: JSON.stringify(data)
-            })
-            .then((response) => {
-                console.log("response", response)
-                if (response['status'] === 201 || response['status'] === 200) {
-                    return response.json()
-                } else if (response['status'] === 400) {
-                        console.log('Something is wrong')
-                }
-            })
-            .then((result) => {
-                console.log('result', result);
+            //     let auth = localStorage.getItem('token')
+            //     let id = localStorage.getItem('user_id')
+            //    await fetch( url + '/api/customuserthird/' + id + '/' , {
+            //     method: 'PUT',
+            //     headers: {
+            //         'Accept': 'application/json, text/plain',
+            //         'Content-Type': 'application/json;charset=UTF-8',
+            //         'Authorization': 'Bearer ' + auth,
+            //     },
+            //     body: JSON.stringify(data)
+            // })
+            // .then((response) => {
+            //     console.log("response", response)
+            //     if (response['status'] === 201 || response['status'] === 200) {
+            //         return response.json()
+            //     } else if (response['status'] === 400) {
+            //             console.log('Something is wrong')
+            //     }
+            // })
+            // .then((result) => {
+            //     console.log('result', result);
              
-                    this.showModal();
+            //         this.showModal();
     
         
-            })
+            // })
 
             }
             

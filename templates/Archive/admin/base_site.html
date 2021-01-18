@@ -1,0 +1,53 @@
+{% extends 'admin/base_site.html' %}
+
+{% load static %}
+
+{% block branding %}
+    <div class="head" style="color: #57C5A5 !important">
+        <h1 id="name" >Admin Dashboard</h1>
+    </div>
+{% endblock %}
+
+{% block nav-global %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a
+        class="nav-link text-primary"
+        href="/author/"
+      >
+        Go to Authors
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link text-primary"
+        href="/article/"
+      >
+        Go to Articles
+      </a>
+    </li>
+    {% if user.is_authenticated %}
+    <li class="nav-item dropdown">
+      <a
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="font-weight-bold nav-link text-primary dropdown-toggle"
+        data-toggle="dropdown"
+        href="#"
+        role="button"
+      >
+        Admin
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="/admin/myapp/author/">
+          Manage authors
+        </a>
+        <a class="dropdown-item" href="/admin/myapp/article/">
+          Manage articles
+        </a>
+      </div>
+    </li>
+    {% endif %}
+  </ul>
+</nav>{% endblock %}

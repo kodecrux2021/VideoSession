@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import './Content.css'
 import kodecrux from '../../assets/images/reg2.jpeg'
 import { IconButton } from '@material-ui/core'
@@ -15,74 +15,69 @@ export default function ContentViewHeader(props) {
     const [visible, setVisible] = useState(false);
     const showDrawer = () => {
         setVisible(true);
-      };
-    
-      const onClose = () => {
-        setVisible(false);
-      };
+    };
 
-      const logout = () => {
-          localStorage.clear();
-          history.push('/login')
-      }
+    const onClose = () => {
+        setVisible(false);
+    };
+
+    const logout = () => {
+        localStorage.clear();
+        history.push('/login')
+    }
 
     return (
         <div className='content'>
             <div className='content__header'>
-             
-                    <div className='content__header__left'>
-                      
-                        <img src={kodecrux} style={{height:'70px'}}  />
-        
-                            <div className='left__search__container'>
-                            <Menu availableModules={props.availableModules} />
-                    
-                            </div>
-                          
+
+                <div className='content__header__left'>
+
+                    <img src={kodecrux} style={{ height: '70px' }} />
+
+                    <div className='left__search__container'>
+                        <Menu availableModules={props.availableModules} />
+
                     </div>
-                    <div className='content__header__right'>
-                        <div className='right__search__container'>
-                        <div style={{width: '55px'}}>
-                    
-                        <SearchIcon className='search__icon' />
-                        
+
+                </div>
+                <div className='content__header__right'>
+                    <div className='right__search__container'>
+                        <div style={{ width: '55px' }}>
+
+                            <SearchIcon className='search__icon' />
+
+                        </div>
+                        <div className='header__searchbar' >
+                            <input placeholder='Search for anything' />
+                        </div>
                     </div>
-                    <div className='header__searchbar' >
-                    <input placeholder='Search for anything' />
-                    </div>
-                        </div>  
-                        <IconButton>
+                    <IconButton>
                         <MenuIcon onClick={showDrawer} />
-                    </IconButton> 
+                    </IconButton>
                     <Drawer
-        title="Navigation"
-        placement="right"
-        closable={true}
-        onClose={onClose}
-        visible={visible}
-      >
-        <Link to='/home' ><p><h5>HOME</h5></p></Link>
-        <Link to='/notifications' ><p><h5>NOTIFICATIONS</h5></p></Link>
-        {/* <Link to='/trainers' ><p><h5>TEACHERS</h5></p></Link> */}
-        {/* <Link to='/courses' ><p><h5>COURSES</h5></p></Link> */}
-        {/* <Link to='/chat' ><p><h5>CHAT</h5></p></Link> */}
-        {/* <Link to='/course-registration' ><p><h5>COURSE REGISTRATION</h5></p></Link> */}
-        {/* <Link to='/help/1' ><p><h5>HELP SECTION</h5></p></Link>  */}
-        {
-        (localStorage.token)?
-        <Link><p onClick={logout} ><h5>LOG OUT</h5></p></Link>
-        :
-        <Link to='/login'><p><h5>LOG IN</h5></p></Link>    
-         }
-         {
-        (localStorage.token)?
-        null
-        :
-        <Link to='/registration'><p><h5>SIGN UP</h5></p></Link>   
-         }
-        
-      </Drawer>
-                    </div>
+                        title="Navigation"
+                        placement="right"
+                        closable={true}
+                        onClose={onClose}
+                        visible={visible}
+                    >
+                        <Link to='/home' ><p><h5>HOME</h5></p></Link>
+                        <Link to='/notifications/messages' ><p><h5>NOTIFICATIONS</h5></p></Link>
+                        {
+                            (localStorage.token) ?
+                                <Link><p onClick={logout} ><h5>LOG OUT</h5></p></Link>
+                                :
+                                <Link to='/login'><p><h5>LOG IN</h5></p></Link>
+                        }
+                        {
+                            (localStorage.token) ?
+                                null
+                                :
+                                <Link to='/registration'><p><h5>SIGN UP</h5></p></Link>
+                        }
+
+                    </Drawer>
+                </div>
             </div>
         </div>
     )

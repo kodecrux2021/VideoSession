@@ -6,6 +6,8 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { Avatar, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+
+
 const useStyles = makeStyles((theme) => ({
     largeIcon: {
         width: 80,
@@ -39,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Notifications(props) {
     const classes = useStyles();
-    // console.log(props);
     return (
         <div className='notifications' >
             <div className='notifications__header' >
@@ -193,24 +194,46 @@ export default function Notifications(props) {
                     <div className='notifications__body__chat' >
                     <h2>Requests</h2>
                     <div className='friend__cards' >
-                    <div className='chat__card' >
-                    <div className='chat__card__left' >
-                    <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Tyson Jhonson sent you a request.</span>
+
+                       {
+                           props.requests.map((request)=> 
+                            {
+
+                                let data =  request.accepted ? 
+                                null :
+                                <div className='chat__card' >
+                                <div className='chat__card__left' >
+                                <Avatar src={request.user_profile_pic} className={classes.large}/>
+                                            <div className='chat__card__details' >
+                                                <span>{request.user_first_name} {request.user_last_name} sent you a request.</span>
+                                            </div>
                                 </div>
-                    </div>
-
-                                <div className='chat__card__time' >
-                                    <div className='friend__card__button' >
-                                        <button  style={{  backgroundColor:' #5964c9'}}  >Accept</button>
-                                        <button  style={{  backgroundColor:' #76d2fd'}}  >Reject</button>
-                                    </div>
-
+            
+                                            <div className='chat__card__time' >
+                                                <div className='friend__card__button' >
+                                                    <button  style={{  backgroundColor:' #5964c9'}} onClick={()=> props.acceptReq(request.id)}  >Accept</button>
+                                                    <button  style={{  backgroundColor:' #76d2fd'}} onClick={()=> props.rejectReq(request.id)} >Reject</button>
+                                                </div>
+            
+                                            </div>
                                 </div>
-                    </div>
+                                
 
-                    <div className='chat__card' >
+                                return (
+                                    data
+                                );
+
+                               
+
+                            }
+
+
+
+                           )
+                       } 
+
+
+                    {/* <div className='chat__card' >
                     <div className='chat__card__left' >
                     <Avatar src={props.img} className={classes.large}/>
                                 <div className='chat__card__details' >
@@ -224,40 +247,9 @@ export default function Notifications(props) {
                                     </div>
 
                                 </div>
-                    </div>
+                    </div> */}
 
-                    <div className='chat__card' >
-                    <div className='chat__card__left' >
-                    <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Tyson Jhonson sent you a request.</span>
-                                </div>
-                    </div>
 
-                                <div className='chat__card__time' >
-                                    <div className='friend__card__button' >
-                                        <button  style={{  backgroundColor:' #5964c9'}}  >Accept</button>
-                                        <button  style={{  backgroundColor:' #76d2fd'}}  >Reject</button>
-                                    </div>
-
-                                </div>
-                    </div>
-                    <div className='chat__card' >
-                    <div className='chat__card__left' >
-                    <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Tyson Jhonson sent you a request.</span>
-                                </div>
-                    </div>
-
-                                <div className='chat__card__time' >
-                                    <div className='friend__card__button' >
-                                        <button  style={{  backgroundColor:' #5964c9'}}  >Accept</button>
-                                        <button  style={{  backgroundColor:' #76d2fd'}}  >Reject</button>
-                                    </div>
-
-                                </div>
-                    </div>
 
 
             </div>
@@ -270,26 +262,23 @@ export default function Notifications(props) {
 {
                     props.selected === 'troubleshoot' ?
                     <div className='notifications__body__chat' >
-                    <h2>Troubleshoot</h2>
+                    <h2>Notifications</h2>
                     <div className='chat__cards' >
-                        <div className='chat__card' >
-                        <Avatar src={props.img} className={classes.large}/>
-                                <div className='troubleshoot__details' >
-                                    <span>The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for. </span>
-                                </div>
-                        </div>
-                        <div className='chat__card' >
-                            <Avatar src={props.img} className={classes.large}/>
-                            <div className='troubleshoot__details' >
-                                <span>The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for. </span>
-                            </div>
-                         </div>
-                    <div className='chat__card' >
-                    <Avatar src={props.img} className={classes.large}/>
-                            <div className='troubleshoot__details' >
-                                <span>The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for. </span>
-                            </div>
-                    </div>
+                        {
+                            props.notifications.map((notification)=> {
+
+                                return (
+                                    <div className='chat__card' >
+                                    <Avatar src={props.img} className={classes.large}/>
+                                            <div className='troubleshoot__details' >
+                                                <span>The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for. </span>
+                                            </div>
+                                    </div>
+                                );
+                            })
+                        }
+
+
             </div>   
             </div>
 

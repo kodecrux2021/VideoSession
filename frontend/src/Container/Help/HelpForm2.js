@@ -4,7 +4,6 @@ import BugReportOutlinedIcon from '@material-ui/icons/BugReportOutlined';
 import LibraryBooksOutlinedIcon from '@material-ui/icons/LibraryBooksOutlined';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
-import { IconButton } from '@material-ui/core';
 import Navbar from '../../components/Header/Navbar';
 
 export default class HelpForm2 extends Component {

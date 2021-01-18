@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ContentViewHeader from './ContentViewHeader'
-import home4 from '../../assets/images/home4.jpg'
 import './Content.css'
 import ContentBody from './ContentBody'
 import { url } from '../../Server/GlobalUrl'

@@ -9,7 +9,6 @@ import TextField from '@material-ui/core/TextField';
 
 export default function Registration(props) {
   const history = useHistory();
-    // console.log('props_____________',props)
 
     const responseFacebook = async (response) => {
         console.log('respose',response)

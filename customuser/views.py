@@ -214,8 +214,12 @@ class CustomUserViewset(viewsets.ModelViewSet):
     queryset = models.CustomUser.objects.all()
     serializer_class = serializers.CustomUserSerializers
     permission_classes = [permissions.AllowAny]
+<<<<<<< HEAD
     # print('CustomUser',CustomUser.objects.filter(id=CustomUser.objects.last().id).values())
 
+=======
+    
+>>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707
 
     def get(self):
         content = {'message': 'Hello, World!'}
@@ -379,4 +383,8 @@ class UserView(APIView):
             content = {'user.last_seen':datetime.now()}
             return Response(content)
         content = {'message':'No user '}
+<<<<<<< HEAD
         return Response(content,status=status.HTTP_226_IM_USED)
+=======
+        return Response(content,status=status.HTTP_226_IM_USED)
+>>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707

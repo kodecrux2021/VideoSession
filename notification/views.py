@@ -1,8 +1,11 @@
 from rest_framework import viewsets
 from . import serializers
 from . import models
+<<<<<<< HEAD
 from customuser.models import CustomUser
 from django.contrib.auth.models import User
+=======
+>>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions, status, views
@@ -15,6 +18,7 @@ class NotificationViewset(viewsets.ModelViewSet):
     queryset = models.Notification.objects.all()
     serializer_class = serializers.NotificationSerializer
     permission_classes = [permissions.AllowAny]
+<<<<<<< HEAD
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['user']
     http_method_names = ['get', ]
@@ -31,15 +35,32 @@ class NotificationViewset(viewsets.ModelViewSet):
             except:
                 element["user"] = ""
         return Response(data)
+=======
+    # filter_backends = [DjangoFilterBackend]
+    # filter_fields = ['recieved_by']
+    http_method_names = ['get', ]
+
+    def get(self):
+        content = {'message': 'Hello, World!'}
+        return Response(content)
+>>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707
 
 class RequestViewset(viewsets.ModelViewSet):
     queryset = models.Request.objects.all()
     serializer_class = serializers.RequestSerializer
     permission_classes = (IsAuthenticated,)
+<<<<<<< HEAD
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['recieved_by']
 
     def get_queryset(self):
         """Return objects for the current authenticated users only"""
        
+=======
+    # filter_backends = [DjangoFilterBackend]
+    # filter_fields = ['recieved_by']
+
+    def get_queryset(self):
+        """Return objects for the current authenticated users only"""
+>>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707
         return self.queryset.filter(recieved_by=self.request.user,accepted=False)

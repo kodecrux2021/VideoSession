@@ -41,7 +41,10 @@ class ConversationViewset(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     serializer_class = serializers.ConversationSerializer
     filter_backends = [DjangoFilterBackend]
+<<<<<<< HEAD
     filter_fields = ['includes', 'archived_by']
+=======
+>>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707
 
     # def get_queryset(self):
     #     queryset = models.Conversation.objects.all()

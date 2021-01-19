@@ -33,6 +33,7 @@ class EducatorViewset(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ('user__technology','user__sub_technology','user__topic','conversation')
 
+<<<<<<< HEAD
     # def get_queryset(self):
     #     qs = super(EducatorViewset, self).get_queryset()
     #     print('qs',qs)
@@ -67,6 +68,12 @@ class EducatorViewset(viewsets.ModelViewSet):
         # some extra filtering
         return context
 
+=======
+    def get_queryset(self):
+        qs = super(EducatorViewset, self).get_queryset()
+        print('qs',qs)
+        return qs
+>>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707
 
 
 class EducatorView(APIView):

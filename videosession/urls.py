@@ -17,7 +17,10 @@ from django.contrib import admin
 from .router import router
 from django.urls import path,include
 from customuser import views as customuser_views
+<<<<<<< HEAD
 #from notification import views as notification_views
+=======
+>>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707
 from user import views as user_views
 from message import views as message_views
 from rest_framework_simplejwt import views as jwt_views
@@ -33,7 +36,10 @@ admin.empty_value_display = '**Empty**'
 
 urlpatterns = [
 
+<<<<<<< HEAD
     #path('notification/', notification_views.Notification.as_view(), name = 'notification'),
+=======
+>>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('api/auth/oauth/', include('rest_framework_social_oauth2.urls')),

@@ -252,7 +252,7 @@ export default class Trainers extends Component {
                                         time="15"
                                         reviews="150"
                                         id={trainer.id}
-                                        reciever_id={trainer.user}
+                                        reciever_id={trainer.id}
                                         conversation_id={trainer.conversation}
                                         message={uri === 'message'}
                                         messageHandle={this.messageHandle}

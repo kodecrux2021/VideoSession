@@ -225,6 +225,7 @@ class New extends React.Component {
             }
         })
         .then((result) => {
+          
         //  fetch( url + '/api/educator/' , {
         //     method: 'POST',
         //     headers: {

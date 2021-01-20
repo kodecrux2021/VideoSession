@@ -271,7 +271,7 @@ export default function Notifications(props) {
                                     <div className='chat__card' >
                                     <Avatar src={props.img} className={classes.large}/>
                                             <div className='troubleshoot__details' >
-                                                <span>The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for. </span>
+                                                <span>{notification.user}has accepted your request</span>
                                             </div>
                                     </div>
                                 );

@@ -4,7 +4,9 @@ from django.shortcuts import render
 from django.shortcuts import render
 from rest_framework import viewsets
 from . import serializers
+from message.serializers import ConversationSerializer
 from . import models
+from message.models import Conversation
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
@@ -26,14 +28,35 @@ from django.http import JsonResponse
 
 
 class EducatorViewset(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    #permission_classes = (IsAuthenticated,)
     queryset = models.Educator.objects.all()
     serializer_class = serializers.EducatorSerializer
     permission_classes = [permissions.AllowAny]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ('user__technology','user__sub_technology','user__topic','conversation')
+    http_method_names = ['get', ]
 
-<<<<<<< HEAD
+    
+    def list(self,request, pk=None):
+        queryset = models.Educator.objects.all()
+        serializer = serializers.EducatorSerializer(queryset,many=True)
+        data = serializer.data
+        for element in data:
+            try:
+                user = CustomUser.objects.get(id=element["user"])
+                name = f'{user.first_name} {user.last_name}'
+                element["user"] = name
+                if Conversation.objects.filter(includes__in=[user.id,request.user.id]).exists():
+                    element["converstation"] = Conversation.objects.filter(includes__in=[user.id,request.user.id]).first().id
+            except:
+                element["user"] = ""
+       # queryset = models.Conversation.objects.filter(id)
+       # print(queryset)
+       # datab = serializers.ConversationSerializer
+        print(type(data))
+
+        return Response(data)
+
     # def get_queryset(self):
     #     qs = super(EducatorViewset, self).get_queryset()
     #     print('qs',qs)
@@ -46,54 +69,60 @@ class EducatorViewset(viewsets.ModelViewSet):
     #     print('qs', qs)
     #     for i in qs:
     #         print('i.user', i.last_seen)
-    #     return qs
-    def filter_queryset(self, queryset):
-    # super needs to be called to filter backends to be applied
-        qs = super().filter_queryset(queryset)
-        context = qs.values()
-        for educator in context:
-            context = list(context)
-            print('educator',educator)
-            # print('edu',educator.user.id)
-            c_list= []
-            c_list.append(educator["user_id"])
-            c_list.append(self.request.user.id)
-            print('c_list',c_list)
-            conversation=Conversation.objects.filter(includes__in=c_list)
-            if conversation.exists():
-                conversation=conversation.first()
-                educator['conversation_id'] = conversation.id
-                print('conversation',conversation)
-            print('conv',context)
-        # some extra filtering
-        return context
+#        # return qs
+#     def filter_queryset(self, queryset):
+#     #super needs to be called to filter backends to be applied
+#         qs = super().filter_queryset(queryset)
+#         context = qs.values()
+#         for educator in context:
+#             context = list(context)
+# #print('educator',educator)
+#            # print('edu',educator.user.id)
+#             print("Hi I am here")
+#             c_list= []
+#             c_list.append(educator["user_id"])
+#             c_list.append(self.request.user.id)
+#            # print('c_list',c_list)
+#             conversation=Conversation.objects.filter(includes__in=c_list)
+#             if conversation.exists():
+#                 conversation=conversation.first()
+#                 educator['conversation'] = conversation.id
+#                # print('conversation',conversation)
+#            # print('conv',context)
+#         #some extra filtering
+#         return context
 
-=======
-    def get_queryset(self):
-        qs = super(EducatorViewset, self).get_queryset()
-        print('qs',qs)
-        return qs
->>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707
 
 
 class EducatorView(APIView):
     permission_classes = [permissions.AllowAny]
     def get(self, request):
-        # serializer = serializers.EducatorSerializer(request.user)
-        # content = {'user': serializer.data}
-        educator_list= Educator.objects.all()
-        context = educator_list.values()
-        for educator in context:
-            context = list(context)
-            print('educator',educator)
-            # print('edu',educator.user.id)
-            c_list= []
-            c_list.append(educator["user_id"])
-            c_list.append(request.user.id)
-            conversation=Conversation.objects.filter(includes__in=c_list).first()
-            educator['conversation_id'] = conversation.id
-            print('conv',conversation)
-        return JsonResponse(context,safe=False)
+        serializer = serializers.EducatorSerializer(request.user)
+        #content = {'user': serializer.data}
+        data = serializer.data
+        for element in data:
+            try:
+                user = CustomUser.objects.get(id=element["user"])
+                name = f'{user.first_name} {user.last_name}'
+                element["user"] = name 
+            except:
+                element["user"] = ""
+        return Response(data)
+        
+       # educator_list= Educator.objects.all()
+       # context = educator_list.values()
+
+        # for educator in context:
+        #     context = list(context)
+        #     print('educator',educator)
+        #     # print('edu',educator.user.id)
+        #     c_list= []
+        #     c_list.append(educator["user_id"])
+        #     c_list.append(request.user.id)
+        #     conversation=Conversation.objects.filter(includes__in=c_list).first()
+        #     educator['conversation_id'] = conversation.id
+        # #     print('conv',conversation)
+        # return JsonResponse(context,safe=False)
 
 
         # return Response(content)

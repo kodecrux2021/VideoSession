@@ -3,10 +3,7 @@ from customuser.models import CustomUser
 from datetime import datetime
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-<<<<<<< HEAD
 from message.models import Conversation
-=======
->>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707
 
 
 REQUEST_CHOICES = (
@@ -29,13 +26,10 @@ class Request(models.Model):
 @receiver(post_save, sender=Request, dispatch_uid="update_stock_count")
 def update_request(sender, instance, **kwargs):
     if instance.accepted:
-<<<<<<< HEAD
-        Notification.objects.create(request=instance,user=instance.sent_by,accepted_by=instance.recieved_by)
-        conversation = Conversation.objects.create(last_message_datetime=datetime.now())
-        conversation.includes.add(instance.sent_by.id,instance.recieved_by.id)
-=======
-        Notification.objects.create(request=instance,user=instance.recieved_by)
->>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707
+        if Notification.objects.filter(request=instance,user=instance.sent_by,accepted_by=instance.recieved_by).exists():
+            Notification.objects.create(request=instance,user=instance.sent_by,accepted_by=instance.recieved_by)
+            conversation = Conversation.objects.create(last_message_datetime=datetime.now())
+            conversation.includes.add(instance.sent_by.id,instance.recieved_by.id)
 
 
 
@@ -46,17 +40,10 @@ class Notification(models.Model):
     user = models.ForeignKey(CustomUser,related_name="users_notification", on_delete=models.CASCADE,null=True,blank=True)
     seen_by =   models.BooleanField(default=False,null=True, blank=True)
     created_at =  models.DateTimeField(default=datetime.now(),null=True, blank=True)
-<<<<<<< HEAD
     accepted_by = models.ForeignKey(CustomUser,related_name="accepted_by_notification", on_delete=models.CASCADE,null=True,blank=True)
 
-=======
->>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707
 
 
     def __str__(self):
         """String for representing the Model object."""
-<<<<<<< HEAD
         return str(self.user)
-=======
-        return str(self.users)
->>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707

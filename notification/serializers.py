@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from . models import Notification,Request
-<<<<<<< HEAD
 from customuser.serializers import CustomUserthirdSerializers
 from rest_framework.serializers import ReadOnlyField
 
@@ -23,16 +22,3 @@ class RequestSerializer(serializers.ModelSerializer):
        # read_only_fields = ('user_first_name','user_last_name','user_profile_pic')
         fields = ('id','sent_by','recieved_by','datetime','accepted','type')
 
-=======
-
-class NotificationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Notification
-        read_only_fields = ('id','request','user','seen_by','created_at')
-        fields = ('id','request','user','seen_by','created_at')
-
-class RequestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Request
-        fields = ('id','sent_by','recieved_by','datetime','accepted')
->>>>>>> 341ee0603f711cd7006dbb050ae7916a1bf19707

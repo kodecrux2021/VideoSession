@@ -21,9 +21,9 @@ class Clients(models.Model):
 
 class Educator(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,related_name='educator_user',null=True, blank=True)
-    fees = models.IntegerField(max_length=100,null=True, blank=True)
+    fees = models.IntegerField(null=True, blank=True)
     date  = models.DateTimeField(default=datetime.now(),null=True, blank=True)
-    rating = models.IntegerField(max_length=100,null=True, blank=True)
+    rating = models.IntegerField(null=True, blank=True)
     designation = models.CharField(max_length=300,null=True, blank=True)
     profile_pic =  models.ImageField(upload_to ='profile_pics/',null=True,blank=True, max_length=255)
     last_seen =  models.DateTimeField(default=datetime.now(),null=True, blank=True)

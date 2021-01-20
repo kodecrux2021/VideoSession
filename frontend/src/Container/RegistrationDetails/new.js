@@ -66,20 +66,20 @@ class New extends React.Component {
 
       componentDidMount() {
 
-        fetch(url + '/api/notification/', {
-          method:'GET',
-          headers: {
-            'Accept': 'application/json',
-           'Content-Type': 'application/json',
-         },
-      })
-      .then(res => res.json())
-      .then(
-          (result) => {
-            console.log('result',result)
-            this.setState({technology_list: result })
-          }
-      )
+      //   fetch(url + '/api/notification/', {
+      //     method:'GET',
+      //     headers: {
+      //       'Accept': 'application/json',
+      //      'Content-Type': 'application/json',
+      //    },
+      // })
+      // .then(res => res.json())
+      // .then(
+      //     (result) => {
+      //       console.log('result',result)
+      //       this.setState({technology_list: result })
+      //     }
+      // )
         
         console.log('previous token',localStorage.getItem("token"));
         if (localStorage.getItem("token")){
@@ -199,15 +199,15 @@ class New extends React.Component {
                 "relevant_experience" : this.state.relevant_experience?.value,
                 "date_of_birth": this.state.date_of_birth,
                 "fees": this.state.fees,
-                "designation":this.state.designation,
+                "designation":this.state.desig,
                 "rating": this.state.rating
             }
             
            console.log('data_______________', data)
            console.log(tech,sub_tech);
            console.log(this.state.sub_technology?.id);
-            let id = localStorage.getItem('user_id')
-           await fetch( url + '/api/customuserthird/' + id + '/' , {
+            let id = localStorage.getItem('educator_id')
+           await fetch( url + '/api/educator/' + id + '/' , {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',

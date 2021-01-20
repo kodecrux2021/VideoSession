@@ -128,27 +128,17 @@ class RegistrationContainer extends Component {
                 "last_name": this.state.last_name
             }
 
-            let data2 = {
-                "user_username" : this.state.email,
-                "password" : this.state.password,
-                "phone" : this.state.mobile,
-                // "is_instructor" : this.state.position==='codeexpert',
-                // "is_freelancer" : this.state.position==='instructor',
-                // "is_codeexpert": this.state.position==='freelancer',
-                // "is_client": this.state.position==='customer',
-                "user_first_name": this.state.first_name,
-                "user_last_name": this.state.last_name,
-                
-            }
-            console.log('data', data)
+            let data2 = null;
+           
+            console.log('data', data, data2)
 
-
+            let auth = localStorage.getItem('token');
             await fetch( url + '/api/customuser/' , {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json, text/plain',
                     'Content-Type': 'application/json;charset=UTF-8',
-        
+                    'Authorization': 'Bearer' + auth
                 },
                 body: JSON.stringify(data)
             })
@@ -163,6 +153,20 @@ class RegistrationContainer extends Component {
             })
             .then((result) => {
                 console.log('result', result);
+                 data2 = {
+                    "password" : this.state.password,  
+                    "user": result?.id,  
+            // "user_username": this.state.email,
+            // "user_email": "",
+            // "user_first_name": this.state.first_name,
+            // "user_last_name": this.state.last_name,
+            // "user_phone": this.state.mobile,
+            "fees": null,
+            "rating": null,
+            "designation": null,
+            "profile_pic": null,
+                    
+                }
                  if(result){
                     if(this.state.position!=='customer'){
                         fetch( url + '/api/educator/' , {
@@ -183,6 +187,10 @@ class RegistrationContainer extends Component {
                                     message.info('A user with that username already exists!!!');
                             }
                         })
+                        .then((result) =>{
+                            localStorage.setItem('educator_id', result?.id)
+                            console.log('result', result)})
+                            
                     }
                     localStorage.setItem('user_id', result?.id);
                     localStorage.setItem('is_client', result?.is_client);

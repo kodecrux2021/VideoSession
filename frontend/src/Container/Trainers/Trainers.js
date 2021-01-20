@@ -116,7 +116,7 @@ export default class Trainers extends Component {
 
         let data = {
             "sent_by": this.state.user.id,
-            "recieved_by": reciever_id
+            "recieved_by": id
         }
 
         console.log('data_______________', data);
@@ -239,8 +239,11 @@ export default class Trainers extends Component {
                         :
                         <div className='body__ctr'>
                             <div className=" d-flex  p-3 flex-column" style={{ alignItems: "center" }}>
-                                {this.state.trainers.map((trainer) => (
+                                
+                                 {this.state.trainers.map((trainer) => (
+                                    
                                     <TrainersCard
+                                        key = {trainer.id}
                                         name={`${trainer.user_first_name} ${trainer.user_last_name}`}
                                         img={trainer.profile_pic}
                                         img2={avatar}
@@ -252,7 +255,7 @@ export default class Trainers extends Component {
                                         time="15"
                                         reviews="150"
                                         id={trainer.id}
-                                        reciever_id={trainer.id}
+                                       // reciever_id={trainer.user}
                                         conversation_id={trainer.conversation}
                                         message={uri === 'message'}
                                         messageHandle={this.messageHandle}
@@ -262,7 +265,7 @@ export default class Trainers extends Component {
                                         hireHandle={this.hireHandle}
                                     // badge={false}
                                     />
-                                ))}
+                                ))} 
                             </div>
 
                         </div>

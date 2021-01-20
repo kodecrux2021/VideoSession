@@ -20,7 +20,7 @@ export default class NotificationsContainer extends Component {
 
     getReqList = () => {
         let auth = localStorage.getItem("token")
-        fetch(url + '/api/request', {
+        fetch(url + '/api/request-read/', {
             method:'GET',
             headers: {
               'Accept': 'application/json',

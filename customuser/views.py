@@ -216,7 +216,6 @@ class CustomUserViewset(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     # print('CustomUser',CustomUser.objects.filter(id=CustomUser.objects.last().id).values())
 
-
     def get(self):
         content = {'message': 'Hello, World!'}
         return Response(content)

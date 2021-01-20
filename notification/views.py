@@ -20,7 +20,7 @@ class NotificationViewset(viewsets.ModelViewSet):
     http_method_names = ['get', ]
 
     def list(self,request, pk=None):
-        queryset = models.Notification.objects.all()
+        queryset = models.Notification.objects.filter(user=request.user)
         serializer = serializers.NotificationSerializer(queryset,many=True)
         data = serializer.data
         for element in data:
@@ -39,12 +39,25 @@ class RequestViewset(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['recieved_by']
 
-    def get_queryset(self):
-        """Return objects for the current authenticated users only"""
        
     # filter_backends = [DjangoFilterBackend]
     # filter_fields = ['recieved_by']
 
     def get_queryset(self):
         """Return objects for the current authenticated users only"""
-        return self.queryset.filter(sent_by=self.request.user,accepted=False)
+        return self.queryset.filter(recieved_by=self.request.user,accepted=False)
+
+class RequestReadViewset(viewsets.ModelViewSet):
+    queryset = models.Request.objects.all()
+    serializer_class = serializers.RequestReadSerializer
+    permission_classes = (IsAuthenticated,)
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['recieved_by']
+
+       
+    # filter_backends = [DjangoFilterBackend]
+    # filter_fields = ['recieved_by']
+
+    def get_queryset(self):
+        """Return objects for the current authenticated users only"""
+        return self.queryset.filter(recieved_by=self.request.user,accepted=False)

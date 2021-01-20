@@ -34,7 +34,7 @@ class EducatorViewset(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ('user__technology','user__sub_technology','user__topic','conversation')
-    http_method_names = ['get', ]
+    http_method_names = ['get', 'post','put']
 
     
     def list(self,request, pk=None):
@@ -42,20 +42,32 @@ class EducatorViewset(viewsets.ModelViewSet):
         serializer = serializers.EducatorSerializer(queryset,many=True)
         data = serializer.data
         for element in data:
-            try:
-                user = CustomUser.objects.get(id=element["user"])
-                name = f'{user.first_name} {user.last_name}'
-                element["user"] = name
-                if Conversation.objects.filter(includes__in=[user.id,request.user.id]).exists():
-                    element["converstation"] = Conversation.objects.filter(includes__in=[user.id,request.user.id]).first().id
-            except:
-                element["user"] = ""
+                print("element",element)
+                try:
+                    user = CustomUser.objects.get(id=element["user"])
+                    name = f'{user.first_name} {user.last_name}'
+                    element["user"] = name
+                    if Conversation.objects.filter(includes__in=[user.id,request.user.id]).exists():
+                        element["converstation"] = Conversation.objects.filter(includes__in=[user.id,request.user.id]).first().id
+                except CustomUser.DoesNotExist:
+                    print("user",)
        # queryset = models.Conversation.objects.filter(id)
        # print(queryset)
        # datab = serializers.ConversationSerializer
         print(type(data))
 
         return Response(data)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        print("request.data",request.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        serializer.save()
 
     # def get_queryset(self):
     #     qs = super(EducatorViewset, self).get_queryset()

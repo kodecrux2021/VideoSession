@@ -5,7 +5,7 @@ from session.views import SessionViewset
 from rest_framework import routers
 from hire.views import HireViewset
 from message.views import MessageViewset,ConversationViewset
-from notification.views import NotificationViewset,RequestViewset
+from notification.views import NotificationViewset,RequestViewset,RequestReadViewset
 
 
 router = routers.DefaultRouter()
@@ -24,6 +24,7 @@ router.register('customuserthird',CustomUserthirdViewset),
 router.register('forgotpassword',ForgotPasswordViewset),
 router.register('notification',NotificationViewset),
 router.register('request',RequestViewset),
+router.register('request-read',RequestReadViewset),
 
 
 

@@ -250,3 +250,5 @@ PAYMENT_VARIANTS = {
     'razorpay': ('django_payments_razorpay.RazorPayProvider', {
         'public_key': 'rzp_test_TVbCLwAp2V8lVn',
         'secret_key': 'KyyHwi8ix0IAW4fEzYnYcAl0'})}
+
+APPEND_SLASH = True

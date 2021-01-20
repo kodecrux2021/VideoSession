@@ -20,7 +20,7 @@ class CustomUser(AbstractUser):
     technology = models.ManyToManyField(Technology, blank=True, null=True)
     sub_technology = models.ManyToManyField(Subtechnology, blank=True, null=True)
     topic = models.ManyToManyField(Topic, blank=True, null=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     last_seen =  models.DateTimeField(default=datetime.now(),null=True, blank=True)
     profile_pic =  models.ImageField(upload_to ='profile_pics/',null=True,blank=True, max_length=255)
     verification_code = models.CharField(max_length=30, blank=True)

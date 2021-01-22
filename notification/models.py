@@ -43,10 +43,7 @@ def update_request(sender, instance, **kwargs):
     if instance.accepted:
         print("Request accepted",instance,instance.sent_by,instance.recieved_by )
         if not Notification.objects.filter(request=instance,user=instance.sent_by,accepted_by=instance.recieved_by).exists():
-            print("Request accepted",instance,instance.sent_by,instance.recieved_by )
             Notification.objects.create(request=instance,user=instance.sent_by,accepted_by=instance.recieved_by)
+            print("Request accepted",instance,instance.sent_by,instance.recieved_by )
             conversation = Conversation.objects.create(last_message_datetime=datetime.now())
             conversation.includes.add(instance.sent_by.id,instance.recieved_by.id)
-
-
-

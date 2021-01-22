@@ -18,6 +18,8 @@ export default function TopCategories() {
                 <span>Design</span>
                 </div>
                 </Col>
+            </Row> 
+            <Row>   
                 <Col className='topcategories__card'>
                 <img alt="design"  src="https://s.udemycdn.com/home/top-categories/lohp-category-design.jpg" />
                 <div className='topcategories__card__title'>
@@ -44,6 +46,8 @@ export default function TopCategories() {
                 <span>Design</span>
                 </div>
                 </Col>
+            </Row> 
+            <Row>   
                 <Col className='topcategories__card'>
                 <img alt="design"  src="https://s.udemycdn.com/home/top-categories/lohp-category-design.jpg" />
                 <div className='topcategories__card__title'>

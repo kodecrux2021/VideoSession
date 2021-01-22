@@ -31,23 +31,23 @@ export default function EmployeeRegistrationView(props) {
                 </Row> */}
                 
                 <h1>Register for a course</h1>
-                <form className='p-3' >
-                    <Row>
+                <form  >
+                    <Row className="row">
                         <Col>
-                        <input type="text" value={props.first_name} className="form__control"  placeholder="Enter Your First Name" onChange={(e) => props.handelData('first_name', e.target.value)}  />
+                        <input type="text" value={props.first_name} className="form__control"  placeholder="First Name" onChange={(e) => props.handelData('first_name', e.target.value)}  />
                         </Col>
                      
                         <Col>
-                        <input type="text" className="form__control"  placeholder="Enter Your Last Name" value={props.last_name} onChange={(e) => props.handelData('last_name', e.target.value)}  />
+                        <input type="text" className="form__control"  placeholder="Last Name" value={props.last_name} onChange={(e) => props.handelData('last_name', e.target.value)}  />
                         </Col>
                     </Row>
                     <br/>
                     <Row>
                         <Col>
-                        <input type="email" className="form__control"  placeholder="Enter Your Email" value={props.email} onChange={(e) => props.handelData('email', e.target.value)}  />
+                        <input type="email" className="form__control"  placeholder="Email" value={props.email} onChange={(e) => props.handelData('email', e.target.value)}  />
                         </Col>
                         <Col>
-                        <input type="text" className="form__control"  placeholder="Enter Your Phone Number" value={props.phone_no} onChange={(e) => props.handelData('phone_no', e.target.value)}  />
+                        <input type="text" className="form__control"  placeholder="Phone Number" value={props.phone_no} onChange={(e) => props.handelData('phone_no', e.target.value)}  />
                         </Col>
                     </Row>
                     {/* <br/>
@@ -86,7 +86,7 @@ export default function EmployeeRegistrationView(props) {
                 options={props.tech_list}
                 isSearchable={true}
                 openMenuOnClick={true}
-                placeholder={'Choose Technology'}
+                placeholder={'Technology'}
               />
                         </Col>
                         <Col>
@@ -104,7 +104,7 @@ export default function EmployeeRegistrationView(props) {
                 options={props.subtech_list}
                 isSearchable={true}
                 openMenuOnClick={true}
-                placeholder={'Choose Sub Technology'}
+                placeholder={'Sub Technology'}
               />
                         </Col>
                     </Row>
@@ -125,7 +125,7 @@ export default function EmployeeRegistrationView(props) {
                 options={props.topic_list}
                 isSearchable={true}
                 openMenuOnClick={true}
-                placeholder={'Choose Technology'}
+                placeholder={'Technology'}
               />
                         </Col>
                         <Col></Col>

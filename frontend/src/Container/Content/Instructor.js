@@ -26,7 +26,7 @@ export default function Instructor() {
             <div className='instructor__warpper'>
             <div className='instructor__left__video'>
             <ReactPlayer
-            width='420px'
+            width='300px'
             height='240px'
              url='https://youtu.be/QFIhEmOd6No'
              controls

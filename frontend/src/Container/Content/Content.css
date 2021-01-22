@@ -342,3 +342,17 @@ background-color: #f9f9dd;
     font-weight: bolder;
 }
 
+@media(max-width: 500px){
+    .techdetail__description{
+        display: inline;
+    }
+    .instructor__warpper{
+        display: inline;
+    }
+    .instructor__left > img{
+        width: 300px;
+    }
+    .instructor__detail{
+        padding: 30px;
+    }
+}

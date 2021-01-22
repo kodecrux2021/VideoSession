@@ -7,11 +7,12 @@ class MessageSerializer(serializers.ModelSerializer):
     user_profile_pic = serializers.SerializerMethodField(source='sent_by.profile_pic', read_only=True)
     user_first_name = serializers.SerializerMethodField(source='sent_by.first_name', read_only=True)
     user_last_name = serializers.SerializerMethodField(source='sent_by.last_name', read_only=True)
+    user_id = serializers.SerializerMethodField(source='sent_by.id', read_only=True)
 
     class Meta:
         model = Message
         fields = ('id',
-                        'user_first_name','user_last_name','user_profile_pic',
+                        'user_first_name','user_last_name','user_profile_pic','user_id',
                         'date','message','is_read','attachment','user','conversation')
 
     def get_user_profile_pic(self, obj):
@@ -23,6 +24,10 @@ class MessageSerializer(serializers.ModelSerializer):
     def get_user_last_name(self, obj):
         if obj.sent_by:
             return obj.sent_by.last_name
+
+    def get_user_id(self, obj):
+        if obj.sent_by:
+            return obj.sent_by.id
 
     def save(self, **kwargs):
         """Include default for read_only `user` field"""

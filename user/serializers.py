@@ -11,6 +11,7 @@ class EducatorSerializer(serializers.ModelSerializer):
     user_first_name = ReadOnlyField(source='user.first_name')
     user_last_name = ReadOnlyField(source='user.last_name')
     user_phone = ReadOnlyField(source='user.phone')
+    user_id = ReadOnlyField(source='user.id')
     #conversation = ReadOnlyField(source ='conversation.id')
 
    # conversation = ConversationSerializer(many=True,read_only=True)
@@ -18,7 +19,7 @@ class EducatorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Educator
-        fields = ('id','user','user_username','conversation','user_email','user_first_name','user_last_name','user_phone','fees','date','rating','designation','profile_pic','last_seen','is_active',)
+        fields = ('id','user','user_id','user_username','conversation','user_email','user_first_name','user_last_name','user_phone','fees','date','rating','designation','profile_pic','last_seen','is_active',)
 
     # def to_representation(self, data):
     #     data = super(EducatorSerializer, self).to_representation(data)

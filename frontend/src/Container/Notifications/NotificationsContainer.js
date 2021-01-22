@@ -4,12 +4,40 @@ import Notifications from './Notifications';
 import { url } from '../../Server/GlobalUrl';
 import { message } from 'antd';
 
+let user_id = localStorage.getItem('user_id')
+
 export default class NotificationsContainer extends Component {
     state={
         selected: 'messages',
         requests: [],
         notifications: [],
         user: '',
+        message:[]
+    }
+
+    
+    getMessage = () =>{
+        console.log(user_id);
+        fetch(url+'/api/conversation/?includes='+user_id,{
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+             'Content-Type': 'application/json',
+            },
+
+        })
+        .then(res => res.json())
+        .then(
+            (result) => {
+
+              console.log('convo',result)
+
+              
+              this.setState({message: result})
+              //console.log(this.state.message);
+
+            }
+        )
     }
 
     selectHandler = (data) => {
@@ -33,18 +61,20 @@ export default class NotificationsContainer extends Component {
             (result) => {
               console.log('request result',result)
               this.setState({requests: result})
-              console.log(this.state.requests);
+             // console.log(this.state.requests);
 
             }
         )
     }
 
     getNotifications = (id) => {
-        fetch(url + '/api/notification/?user='+ id, {
+        let auth = localStorage.getItem('token');
+        fetch(url + '/api/notification/', {
             method:'GET',
             headers: {
-              'Accept': 'application/json',
-             'Content-Type': 'application/json',
+              'Accept': 'application/json, text/plain',
+             'Content-Type': 'application/json, charset=UTF-8',
+             'Authorization': 'Bearer ' + auth,
            },
         })
         .then(res => res.json())
@@ -113,9 +143,12 @@ export default class NotificationsContainer extends Component {
             )   
     }
 
+
         this.getUser()
 
         this.getReqList();
+
+        this.getMessage()
 
     }
     
@@ -176,7 +209,9 @@ export default class NotificationsContainer extends Component {
             })
     }
 
-
+    chatHandler = () =>{
+        this.props.history.push('/chat')
+    }
 
 
     render() {
@@ -190,6 +225,8 @@ export default class NotificationsContainer extends Component {
                 acceptReq = {this.acceptReq}
                 notifications = {this.state.notifications}
                 rejectReq ={this.rejectReq}
+                chatHandler = {this.chatHandler}
+                message={this.state.message}
                 />
             </div>
         )

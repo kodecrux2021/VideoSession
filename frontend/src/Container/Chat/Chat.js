@@ -162,10 +162,10 @@ export default function Chat(props) {
                 </div>
                  */}
                  {
-                     props.messages.map((message)=>(
-                        <div className={`message__container ${(props.reciever_id===message.sent_by) && "reciever__container"}`}>
+                    props.messages.length > 0 && props.messages.map((message)=>(
+                        <div className={`message__container ${(props.reciever_id!==message.user_id) && "reciever__container"}`}>
                         <span><Avatar src={props.user_img} className={classes.msgicon}/></span>
-                        <p className={`chat__message tri-right ${(props.reciever_id===message.sent_by) ? "chat__reciever  right-top" :"left-top"}`}>
+                        <p className={`chat__message tri-right ${(props.reciever_id!==message.user_id) ? "chat__reciever  right-top" :"left-top"}`}>
                        
                             {message.message}</p>
                         </div> 

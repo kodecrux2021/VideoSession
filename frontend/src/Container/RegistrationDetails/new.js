@@ -49,7 +49,7 @@ class New extends React.Component {
         technology: '',
         sub_technology: '',
 
-        pincode : '',
+        pincode : null,
         state : '',
         city : '',
         total_experience : null,
@@ -171,7 +171,7 @@ class New extends React.Component {
         e.preventDefault();
 
 
-        if (this.state.pincode === '' ||  this.state.city === '' || this.state.state === '' ) {
+        if (this.state.pincode === null ||  this.state.city === '' || this.state.state === '' ) {
             if (this.state.pincode === ''){
                 message.info('Please Fill Pincode');    
             }
@@ -338,7 +338,7 @@ class New extends React.Component {
                     <Col style={{marginTop:"10px"}}>
                         <div class="form__group">
                             <label >Pin Code</label>
-                            <input className="form__control"  value={this.state.pincode} onChange={(e) => this.handelData('pincode', e.target.value)} type="text"   placeholder="Enter Your Postal Code" />
+                            <input className="form__control" type="number" value={this.state.pincode} onChange={(e) => this.handelData('pincode', e.target.value)} type="text"   placeholder="Enter Your Postal Code" />
                         </div>
                         <div class="form__group">
                             <label >State</label>

@@ -1,5 +1,5 @@
 // const url = "http://13.229.251.62:8000"
-const url = "http://fe42146b5771.ngrok.io"
+const url = "http://13.229.251.62:8000"
 
 export { url };
 

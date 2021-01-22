@@ -5,7 +5,7 @@ import { message } from 'antd';
 import { url } from '../../Server/GlobalUrl';
 import Navbar from '../../components/Header/Navbar';
 
-let conversation_id =''
+//let conversation_id =''
 
 
 export default class ChatComponent extends Component {
@@ -26,6 +26,8 @@ export default class ChatComponent extends Component {
 async fetchMessages() {
 
     let auth = localStorage.getItem('token')
+    let conversation_id = localStorage.getItem('conversation_id')
+    console.log(conversation_id);
     await fetch(url + '/api/message/?conversation='+conversation_id, {
         method:'GET',
         headers: {
@@ -46,7 +48,7 @@ async fetchMessages() {
 
 componentDidMount() {
 
-    conversation_id = window.location.href.split("/").pop()
+    //conversation_id = window.location.href.split("/").pop()
 
     console.log('previous token',localStorage.getItem("token"))
     if (localStorage.getItem("token")){
@@ -77,7 +79,7 @@ componentDidMount() {
         )   
 }
 let auth = localStorage.getItem('token')
-
+let conversation_id = localStorage.getItem('conversation_id')
 fetch(url + '/api/conversation/'+conversation_id, {
     method:'GET',
     headers: {
@@ -92,7 +94,13 @@ fetch(url + '/api/conversation/'+conversation_id, {
       console.log('result',result)
       this.setState({conversation: result})
 
-      fetch(url + '/api/customuser/'+result.includes[0]+'/', { 
+      let id = result.includes[0].id ;
+      let user_id = localStorage.getItem('user_id')
+      if(result.includes[0].id == user_id){
+        id = result.includes[1].id
+      }
+      
+      fetch(url + '/api/customuser/'+id+'/', { 
         method:'GET',
         headers: {
           'Accept': 'application/json',
@@ -145,6 +153,7 @@ handleData = (identity, data) => {
 
 sendMessage = async(e) => {
     e.preventDefault()
+    let conversation_id = localStorage.getItem('conversation_id')
     let data = {
         "read_by": [
          this.state.reciever.id
@@ -187,6 +196,7 @@ sendMessage = async(e) => {
             <div style={{backgroundColor: '#ededed', height: '100vh'}}>
                 <Navbar/>
                 <Chat
+                
                 clicked={this.state.clicked}
                 dropHandle={this.dropHandle}
                 reciever_img={this.state.reciever?.profile_pic}

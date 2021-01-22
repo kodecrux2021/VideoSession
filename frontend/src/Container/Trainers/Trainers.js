@@ -15,6 +15,7 @@ export default class Trainers extends Component {
         user: [],
         isModalVisible: false,
         loading: true,
+        rec_id: null
     }
 
 
@@ -106,9 +107,9 @@ export default class Trainers extends Component {
     //     this.handleCancel();
     // }
 
-    messageHandle = (id, reciever_id, conversation_id) => {
+    messageHandle = (id) => {
 
-        console.log('data', id, reciever_id, conversation_id)
+        console.log('data', id)
 
 
 
@@ -213,8 +214,9 @@ export default class Trainers extends Component {
 
     }
 
-    showModal = () => {
+    showModal = (id) => {
         console.log('show')
+        this.setState({rec_id: id})
         this.setState({ isModalVisible: true })
     };
     handleCancel = () => {
@@ -255,7 +257,7 @@ export default class Trainers extends Component {
                                         time="15"
                                         reviews="150"
                                         id={trainer.id}
-                                       // reciever_id={trainer.user}
+                                        reciever_id={trainer.user_id}
                                         conversation_id={trainer.conversation}
                                         message={uri === 'message'}
                                         messageHandle={this.messageHandle}
@@ -263,7 +265,8 @@ export default class Trainers extends Component {
                                         handleCancel={this.handleCancel}
                                         isModalVisible={this.state.isModalVisible}
                                         hireHandle={this.hireHandle}
-                                    // badge={false}
+                                        rec_id={this.state.rec_id}
+                                        // badge={false}
                                     />
                                 ))} 
                             </div>

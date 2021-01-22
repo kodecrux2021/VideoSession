@@ -6,7 +6,8 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { Avatar, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-
+let user_id = localStorage.getItem('user_id');
+let rec = null;
 
 const useStyles = makeStyles((theme) => ({
     largeIcon: {
@@ -60,7 +61,37 @@ export default function Notifications(props) {
 
                     <div className='notifications__body__chat' >
                         <h2>Messages</h2>
-                    <div className='chat__cards' >
+                        <div className='chat__cards' >
+                        {
+                            
+                            props.message.map((user) =>{
+
+                                if(user.includes[0].id == user_id){
+                                    rec = user.includes[1]
+                                    console.log(rec);
+                                }else{
+                                    rec = user.includes[0]
+                                }
+
+                                return(
+                                   
+                                <div className='chat__card' onClick = {()=>{
+                                    console.log(rec.first_name);
+
+                                    localStorage.setItem('conversation_id', user.id);
+                                    props.chatHandler()
+                                }}>
+                            <div className='chat__card__left' >
+                            <Avatar src={props.img} className={classes.large}/>
+                                <div className='chat__card__details' >
+                                    <span>{rec.first_name} {rec.last_name}</span>
+                                </div>
+                            </div>
+                        </div>)
+                            })
+                        }
+                        </div>
+                    {/* <div className='chat__cards' >
                         <div className='chat__card' >
                             <div className='chat__card__left' >
                             <Avatar src={props.img} className={classes.large}/>
@@ -180,10 +211,8 @@ export default function Notifications(props) {
                                 <div className='chat__card__time' >
                                     <span> 3:31 PM </span>
                                 </div>
-                        </div>
-                      
-       
-                    </div> 
+                        </div>       
+                    </div>  */}
                 </div>
                 :
                 null
@@ -271,7 +300,7 @@ export default function Notifications(props) {
                                     <div className='chat__card' >
                                     <Avatar src={props.img} className={classes.large}/>
                                             <div className='troubleshoot__details' >
-                                                <span>{notification.user}has accepted your request</span>
+                                                <span>{notification.user} has accepted your request</span>
                                             </div>
                                     </div>
                                 );

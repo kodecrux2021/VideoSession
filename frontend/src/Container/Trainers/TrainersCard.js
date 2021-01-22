@@ -27,6 +27,7 @@ const styles = theme => ({
 
   const hireHandle = () => {
         props.hireHandle();
+        console.log(props.id);
     }
 
     const LiveHandle = () => {
@@ -42,15 +43,17 @@ const styles = theme => ({
     console.log('seconds diffrence',seconds)
  
 
+    const modal = (<Modal title="Select Option" footer={null} visible={props.isModalVisible}  onCancel={props.handleCancel}>
+    <div className='reg__modal__button' >
+    <button onClick={ ()=>props.messageHandle(props.rec_id) } style={{  backgroundColor:' #5964c9'}} type="primary" size='large' >Send Request</button>
+    <button onClick={props.handleCancel} style={{  backgroundColor:' #76d2fd'}} type="primary" size='large' >Cancel</button>
+    </div>
+   </Modal>)
 
     return (
+       
         <div className="card trainers__card" >
-            <Modal title="Select Option" footer={null} visible={props.isModalVisible}  onCancel={props.handleCancel}>
-            <div className='reg__modal__button' >
-            <button onClick={ ()=>props.messageHandle(props.id, props.reciever_id, props.conversation_id) } style={{  backgroundColor:' #5964c9'}} type="primary" size='large' >Send Request</button>
-            <button onClick={props.handleCancel} style={{  backgroundColor:' #76d2fd'}} type="primary" size='large' >Cancel</button>
-            </div>
-           </Modal>
+            {modal}
             <div className="trainers__card__left">
                 <img src={props.img?props.img:props.img2} alt="avatar" />
                 <div className="d-flex flex-column trainers__card__details "> 
@@ -83,9 +86,11 @@ const styles = theme => ({
                 props.message ? 
 <div className="trainers__card__right">
 
-            <button type="button" class="btn btn-outline-info" onClick={ props.showModal } >MESSAGE</button>
+            <button type="button" class="btn btn-outline-info" onClick={()=> props.showModal(props.reciever_id)} >MESSAGE</button>
             <button class="btn btn-info" type="button" onClick={hireHandle} >HIRE</button>
+            
             </div>
+            
             :
             <div className="trainers__card__right">
             <button type="button" class="btn btn-info" onClick={ id => LiveHandle(id) } >LIVE SESSION</button>

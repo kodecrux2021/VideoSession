@@ -23,28 +23,33 @@ export default class ChatComponent extends Component {
         this.setState({clicked:!this.state.clicked});
     }
 
-async fetchMessages() {
+    fetchMessages = setInterval(() => {
 
-    let auth = localStorage.getItem('token')
-    let conversation_id = localStorage.getItem('conversation_id')
-    console.log(conversation_id);
-    await fetch(url + '/api/message/?conversation='+conversation_id, {
-        method:'GET',
-        headers: {
-          'Accept': 'application/json',
-         'Content-Type': 'application/json',
-         'Authorization': 'Bearer ' + auth,
-       },
-    })
-    .then(res => res.json())
-    .then(
-        (result) => {
-          console.log('result',result)
-          this.setState({messages:result})
-    
-        }
-    )
-}
+        let auth = localStorage.getItem('token')
+        let conversation_id = localStorage.getItem('conversation_id')
+        console.log(conversation_id);
+         fetch(url + '/api/message/?conversation='+conversation_id, {
+            method:'GET',
+            headers: {
+              'Accept': 'application/json',
+             'Content-Type': 'application/json',
+             'Authorization': 'Bearer ' + auth,
+           },
+        })
+        .then(res => res.json())
+        .then(
+            (result) => {
+              console.log('result',result)
+              this.setState({messages:result})
+        
+            }
+        )
+    }, 3000);
+
+    componentWillUnmount(){
+        clearInterval(this.fetchMessages)
+    }
+
 
 componentDidMount() {
 
@@ -141,7 +146,7 @@ fetch(url + '/currentuser/', {
 )
 
   
-this.fetchMessages()
+//this.fetchMessages()
 
 }
 
@@ -186,7 +191,7 @@ sendMessage = async(e) => {
         console.log('result', result);
     })
 
-    this.fetchMessages()
+    //this.fetchMessages()
     this.setState({message:''})
 
 }

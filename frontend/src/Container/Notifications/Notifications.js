@@ -303,7 +303,7 @@ export default function Notifications(props) {
                                     <div className='chat__card' >
                                     <Avatar src={props.img} className={classes.large}/>
                                             <div className='troubleshoot__details' >
-                                                <span>{notification.user} has accepted your request</span>
+                                                <span>{notification.user_first_name} {notification.user_last_name} has accepted your request</span>
                                             </div>
                                     </div>
                                 );

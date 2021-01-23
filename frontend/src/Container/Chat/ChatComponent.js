@@ -96,9 +96,11 @@ fetch(url + '/api/conversation/'+conversation_id, {
 
       let id = result.includes[0].id ;
       let user_id = localStorage.getItem('user_id')
-      if(result.includes[0].id == user_id){
+      if(result.includes[0].id == user_id && result.includes.length > 1){
         id = result.includes[1].id
       }
+
+      
       
       fetch(url + '/api/customuser/'+id+'/', { 
         method:'GET',

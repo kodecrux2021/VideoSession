@@ -7,7 +7,7 @@ import { Avatar, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 let user_id = localStorage.getItem('user_id');
-let rec = null;
+let rec = '';
 
 const useStyles = makeStyles((theme) => ({
     largeIcon: {
@@ -64,11 +64,14 @@ export default function Notifications(props) {
                         <div className='chat__cards' >
                         {
                             
-                            props.message.map((user) =>{
+                           props.message.length > 0 && props.message.map((user) =>{
 
-                                if(user.includes[0].id == user_id){
-                                    rec = user.includes[1]
-                                    console.log(rec);
+                                if(user.includes[0].id == user_id && user.includes.length > 1){
+                                    
+                                        rec = user.includes[1]
+                                        console.log(rec);
+                                    
+                                   
                                 }else{
                                     rec = user.includes[0]
                                 }

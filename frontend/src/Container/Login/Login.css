@@ -17,6 +17,8 @@
   }
 
 .login__container {
+  padding: 3rem;
+  box-shadow: 2px 0 8px rgba(0,0,0,.15);
     width: 550px;
     height: fit-content;
     display: flex;

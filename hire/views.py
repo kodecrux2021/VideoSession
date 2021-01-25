@@ -13,9 +13,6 @@ class HireViewset(viewsets.ModelViewSet):
     queryset = models.Hire.objects.all()
     serializer_class = serializers.HireSerializer
 
-    def get(self):
-        content = {'message': 'Hello, World!'}
-        return Response(content)
     # filter_backends = [DjangoFilterBackend]
     # filterset_fields = ('user__technology', 'user__sub_technology', 'user__topic')
 

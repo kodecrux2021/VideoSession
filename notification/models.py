@@ -4,7 +4,7 @@ from datetime import datetime
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from message.models import Conversation
-
+from hire.models import Hire
 
 REQUEST_CHOICES = (
     ('MESSAGE','MESSAGE'),
@@ -14,10 +14,10 @@ REQUEST_CHOICES = (
 class Request(models.Model):
     sent_by = models.ForeignKey(CustomUser,related_name="sent_by_notification", on_delete=models.CASCADE,null=True,blank=True)
     recieved_by = models.ForeignKey(CustomUser,related_name="recieved_by_notification", on_delete=models.CASCADE,null=True,blank=True)
+    contract = models.ForeignKey(Hire,related_name="requests", on_delete=models.CASCADE,null=True,blank=True)
     datetime =  models.DateTimeField(default=datetime.now(),null=True, blank=True)
     accepted = models.BooleanField(default=False)
     type = models.CharField(max_length=100, choices=REQUEST_CHOICES, null=True, blank=True)
-
 
     def __str__(self):
         """String for representing the Model object."""

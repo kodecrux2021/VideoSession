@@ -2,7 +2,7 @@ from django.db import models
 from user.models import Educator,Clients
 from datetime import datetime
 from django.utils.translation import ugettext_lazy as _
-from notification.models import Notification
+from customuser.models import CustomUser
 
 PAYMENT_STATUS = (
     ("SUCCESS", _("Success")),
@@ -33,10 +33,11 @@ class Hire(models.Model):
         choices=HIRING_STATUS,
         default="NOT_DONE",
     )
+    sent_by = models.ForeignKey(CustomUser, related_name="created_contracts", on_delete=models.CASCADE, blank=True, null=True)
+    recieved_by = models.ForeignKey(CustomUser, related_name="recieved_contracts", on_delete=models.CASCADE, blank=True, null=True)
     date  = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         """String for representing the Model object."""
         return str(self.client)
-    def save():
-        pass
+

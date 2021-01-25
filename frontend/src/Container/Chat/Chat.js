@@ -6,7 +6,8 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import Popover from '@material-ui/core/Popover';
-
+import {DatePicker, Space} from 'antd'
+import moment from 'moment';
 import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
 import VideocamOutlinedIcon from '@material-ui/icons/VideocamOutlined';
 import { Drawer } from 'antd';
@@ -16,7 +17,9 @@ import PageviewOutlinedIcon from '@material-ui/icons/PageviewOutlined';
 import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
 import { Link, useHistory } from 'react-router-dom';
 import dateFormat from 'dateformat';
+import Modal from 'antd/lib/modal/Modal';
 
+const { RangePicker } = DatePicker;
 const useStyles = makeStyles((theme) => ({
     largeIcon: {
         width: 80,
@@ -70,6 +73,11 @@ export default function Chat(props) {
         history.push('/login')
     }
 
+    const onChange = (dates, dateStrings) => {
+        console.log('From: ', dates[0], ', to: ', dates[1]);
+        console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
+      }
+
     return (
         <div className='chat'>
             <div className='chat__header'>
@@ -112,10 +120,13 @@ export default function Chat(props) {
         </div>
         <div className='pop__over__buttons'>
             <IconButton>
-            <CalendarTodayOutlinedIcon />
+            <CalendarTodayOutlinedIcon onClick = {props.schedule}/>
             </IconButton> 
         <span>Schedule session</span>
+        
         </div>
+        
+        
         {/* <div className='pop__over__buttons'>
             <IconButton>
             <NextWeekOutlinedIcon />
@@ -139,6 +150,9 @@ export default function Chat(props) {
         </div>
         <span className='pop__over__rate'>{props.rate}</span>
         </div>
+       
+        
+   
       </Popover>
            
 <div className='chat__msg__container'>
@@ -189,6 +203,15 @@ export default function Chat(props) {
                 </form>
                 <IconButton > <AttachFileIcon className="svg_icons" /> </IconButton>
                 <IconButton><PictureAsPdfIcon className="svg_icons" /></IconButton>
+                <RangePicker
+      ranges={{
+        Today: [moment(), moment()],
+        'This Month': [moment().startOf('month'), moment().endOf('month')],
+      }}
+      showTime
+      format="YYYY/MM/DD HH:mm:ss"
+      onChange={onChange}
+    />
                 
             </div>
 

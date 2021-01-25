@@ -4,6 +4,8 @@ import avatar from '../../assets/images/avatar2.jpeg'
 import { message } from 'antd';
 import { url } from '../../Server/GlobalUrl';
 import Navbar from '../../components/Header/Navbar';
+import {DatePicker} from 'antd'
+import moment from 'moment';
 
 //let conversation_id =''
 
@@ -158,6 +160,55 @@ handleData = (identity, data) => {
     }
 }
 
+schedule = () =>{
+    //let auth = localStorage.getItem('token')
+    let data = {
+
+    }
+     fetch( 'https://cors-anywhere.herokuapp.com/http://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=388609-YgM2aKpYNsYmThQrs7Cn&redirect_uri=https://community.teamviewer.com/English/discussion/53405/authorization-codehttp://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=388609-YgM2aKpYNsYmThQrs7Cn&redirect_uri=https://community.teamviewer.com/English/discussion/53405/authorization-code', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json;charset=UTF-8',
+        },
+    })
+    .then((response) => {
+        console.log("response", response)
+        if (response['status'] === 201 || response['status'] === 200) {
+            console.log(response);
+            return response.text()
+        } else if (response['status'] === 400) {
+                console.log('Something is wrong')
+        }
+    })
+    .then((result) => {
+        console.log(result);
+        let data = {
+            'redirect_uri': 'https://community.teamviewer.com/English/discussion/53405/authorization-code',
+            'client_id': '388609-YgM2aKpYNsYmThQrs7Cn',
+            'client_secret': '9o4on6EWu0gY5CUzXwpd',
+            'grant_type': 'authorization_code',
+            'code': result
+        }
+        fetch('https://webapi.teamviewer.com/api/v1/oauth2/token', {
+            method:'POST',
+            headers: {
+              'Accept': 'application/json',
+             'Content-Type': 'application/json',
+             //'Authorization': 'Bearer ' + auth,
+           },
+           body: JSON.stringify(data),
+        })
+        .then(res => res.json())
+        .then(
+            (result) => {
+              console.log('result',result)
+             // this.setState({user: result })
+            }
+        )
+    })
+}
+
 sendMessage = async(e) => {
     e.preventDefault()
     let conversation_id = localStorage.getItem('conversation_id')
@@ -218,6 +269,7 @@ sendMessage = async(e) => {
                 messages= {this.state.messages}
                 sendMessage={this.sendMessage}
                 conversation={this.state.conversation}
+                schedule = {this.schedule}
                 />
             </div>
             </>

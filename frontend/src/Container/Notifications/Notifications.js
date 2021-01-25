@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Notifications.css'
 import ChatIcon from '@material-ui/icons/Chat';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
@@ -6,7 +6,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { Avatar, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-let user_id = localStorage.getItem('user_id');
+let user_id = ''
 let rec = '';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export default function Notifications(props) {
+    useEffect(() =>{
+        user_id = localStorage.getItem('user_id');
+    },[])
     const classes = useStyles();
     return (
         <div className='notifications' >

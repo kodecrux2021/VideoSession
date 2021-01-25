@@ -4,7 +4,7 @@ import Notifications from './Notifications';
 import { url } from '../../Server/GlobalUrl';
 import { message } from 'antd';
 
-let user_id = localStorage.getItem('user_id')
+let user_id = ''
 
 export default class NotificationsContainer extends Component {
     state={
@@ -14,6 +14,8 @@ export default class NotificationsContainer extends Component {
         user: '',
         message:[]
     }
+
+
 
     
     getMessage = () =>{
@@ -29,7 +31,7 @@ export default class NotificationsContainer extends Component {
         .then(res => res.json())
         .then(
             (result) => {
-
+                console.log(user_id);
               console.log('convo',result)
 
               
@@ -111,6 +113,7 @@ export default class NotificationsContainer extends Component {
 
 
     componentDidMount(){
+         user_id = localStorage.getItem('user_id')
         const uri = window.location.href.split('/').pop()
         this.setState({selected: uri})
         console.log('previous token',localStorage.getItem("token"))

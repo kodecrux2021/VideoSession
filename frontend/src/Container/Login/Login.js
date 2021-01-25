@@ -96,6 +96,7 @@ function Login() {
                                     if (result) {
                                         localStorage.setItem('user_id', result.user?.id);
                                         localStorage.setItem('user_name', result.user?.first_name);
+                                        console.log(localStorage.getItem('user_id'));
                                     }
                                 }
                             )

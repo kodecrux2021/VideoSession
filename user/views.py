@@ -38,11 +38,13 @@ class EducatorViewset(viewsets.ModelViewSet):
 
     
     def list(self,request, pk=None):
-        queryset = models.Educator.objects.all()
+        print ('request.user',request.user.technology.all().values_list('id',flat=True))
+        user = request.user.technology.all().values_list('id',flat=True)
+        queryset = models.Educator.objects.filter(user__technology__in=user)
         serializer = serializers.EducatorSerializer(queryset,many=True)
         data = serializer.data
         for element in data:
-                print("element",element)
+                print("element1",element)
                 try:
                     user = CustomUser.objects.get(id=element["user"])
                     name = f'{user.first_name} {user.last_name}'
@@ -55,7 +57,6 @@ class EducatorViewset(viewsets.ModelViewSet):
        # print(queryset)
        # datab = serializers.ConversationSerializer
         print(type(data))
-
         return Response(data)
 
     def create(self, request, *args, **kwargs):

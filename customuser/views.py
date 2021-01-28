@@ -248,6 +248,12 @@ class LastseenView(APIView):
         content = {'message':'No user '}
         return Response(content,status=status.HTTP_226_IM_USED)
 
+class LastseenView(APIView):
+    permission_classes = [permissions.AllowAny]
+    def get(self, request):
+        content = "REPONSE"
+        return Response(content,status=status.HTTP_226_IM_USED)
+
 class CurrentUserView(APIView):
     permission_classes = (IsAuthenticated,)
     def get(self, request):

@@ -310,11 +310,10 @@ class ForgotPasswordViewset(viewsets.ModelViewSet):
 
 
 
-class ForgotPasswordEmailVerificationViewSet(generics.ListAPIView):
-    serializer_class = serializers.ForgotPasswordEmailVerificationSerializers
+class ForgotPasswordEmailVerificationViewSet(APIView):
     permission_classes = [permissions.AllowAny]
 
-    def get_queryset(self):
+    def get(self,request):
         email = self.request.query_params.get('email', None)
         print('email', email)
         user = models.CustomUser.objects.filter(email=str(email))
@@ -325,8 +324,9 @@ class ForgotPasswordEmailVerificationViewSet(generics.ListAPIView):
             is_user.verification_code = code
             is_user.save()
             # ForgotPasswordVerification(code, is_user.email)
-        return user
-
+            # content = {'code':code}
+        context = {'code':code}
+        return render(self.request, 'random.html', context)
 
 
 class HelloView(APIView):

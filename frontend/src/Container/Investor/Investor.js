@@ -25,9 +25,7 @@ export default function Investor(props) {
     const [isModalVisible, setVisible] = useState(false);
 
 
-    function onChange(date, dateString) {
-        console.log(date, dateString);
-      }
+   
 
     const hire = () =>{
         setVisible(true);
@@ -35,7 +33,8 @@ export default function Investor(props) {
     }  
 
     const send = () =>{
-        setVisible(false)
+        setVisible(false);
+        props.onSubmit()
     }
 
     const cancel = () =>{
@@ -47,7 +46,7 @@ export default function Investor(props) {
         <div style={{maxWidth: '900px'}} >
         <div className='investor__head'>
                 <div className='investor__head__title'>
-                <Avatar src={avatar} className={classes.large} />
+                <Avatar src={props.pic} className={classes.large} />
                 <span className='invester__heading' >Create a freelance job for {props.investor__name}</span>
                 </div>
                 <div className='investor__head__detail'>
@@ -94,11 +93,11 @@ export default function Investor(props) {
                 </div>
                 <span className='investor__head__detail' >Project title *</span>
                
-                <input style={{backgroundColor:'whitesmoke'}} type="text" className="form__control"  placeholder="Enter Project Title"  />
+                <input style={{backgroundColor:'whitesmoke'}} type="text" className="form__control"  placeholder="Enter Project Title" onChange={(e) => props.handleChange('title',e.target.value)} />
                    <div style={{marginTop:'25px'}} ></div>
                 <span  className='investor__head__detail' >Deliverables *</span>
                
-               <input style={{backgroundColor:'whitesmoke'}} type="text" className="form__control"  placeholder="Enter Deliverables"  />
+               <input style={{backgroundColor:'whitesmoke'}} type="text" className="form__control"  placeholder="Enter Deliverables"  onChange={(e) => props.handleChange('deliverables',e.target.value)}/>
             </div>
 
             <div className='investor__card'>
@@ -113,7 +112,7 @@ export default function Investor(props) {
                 <div style={{display:'flex', alignItems:'center', color:'gray'}} >
                 <AttachMoneyIcon/>
                 <div style={{width: '40%', margin:'5px 20px 5px 0px'}} >
-                <input style={{backgroundColor:'whitesmoke'}} type="text" className="form__control"  placeholder="Enter Budget"  />
+                <input style={{backgroundColor:'whitesmoke'}} type="text" className="form__control"  placeholder="Enter Budget" onChange={(e) => props.handleChange('budget',e.target.value)}  />
                 </div>
                 <span className='investor__head__detail' > Maximum USD $2000 </span>
                 <div style={{marginLeft:'5px'}} >
@@ -127,7 +126,7 @@ export default function Investor(props) {
                 <div  style={{display:'flex', alignItems:'center', color:'gray'}} >
                 <span className='investor__head__detail' > Before the end of  </span>
                 <div style={{margin: '5px 20px'}} >
-                <DatePicker onChange={onChange} size='large' />
+                <DatePicker onChange={props.onChange} size='large' />
                 </div>
                 <HelpOutlineIcon/>
                 </div>
@@ -144,7 +143,7 @@ export default function Investor(props) {
                 </div>
                 <span className='investor__head__detail' >Project backgroud, links, and addtional terms </span>
                 
-                <textarea style={{backgroundColor:'whitesmoke'}} className="employ__reg__textarea"  placeholder='Enter Information' >
+                <textarea style={{backgroundColor:'whitesmoke'}} className="employ__reg__textarea"  placeholder='Enter Information' onChange={(e) => props.handleChange('info',e.target.value)}>
                 </textarea>
       
                

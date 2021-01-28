@@ -16,70 +16,167 @@ export default class InvestorContainer extends Component {
     constructor() {
         super();
         this.state = {
-          selected: [],
+          // selected: [],
+          title: '',
+          deliverables: '',
+          budget: null,
+          budget_validate: '',
+          info: '',
+          deadline: '',
+          req: '',
 
-          investor__name: 'Nauman'
+          investor__name: '',
+
         };
         this.handleSelect = this.handleSelect.bind(this);
       }
 
       handleSelect(val) {
         console.log(val);
-      this.setState({ selected: val });
+      this.setState({ req: val.name });
+    }
+
+    onSubmit = async() =>{
+      if(this.state.req === ''){
+        message.info('Please select request')
+      }
+      else if(this.state.title === ''){
+        message.info('Please fill the title')
+      }
+      else if(this.state.deliverables === ''){
+        message.info('Please fill deliverables')
+      }
+      else if(this.state.budget === ''){
+        message.info('Please fill budget')
+      }
+      else if(this.state.deadline === ''){
+        message.info('Please select deadline')
+      }
+      else if(this.state.budget_validate !== ''){
+        message.info(this.state.budget_validate)
+      }
+      else{
+        
+        let data = {
+          "request": this.state.req,
+          "project_title": this.state.title,
+          "deliverables": this.state.deliverables,
+          "budget": this.state.budget,
+          "deadlines": this.state.deadline,
+          "additional_information": this.state.info,
+          "sent_by": localStorage.getItem('user_id'),
+          "recieved_by": localStorage.getItem('hire_id')
+        }
+        console.log(data);
+        await fetch(url + '/api/hire/', {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-Type': 'application/json;charset=UTF-8',
+              'Authorization': 'Bearer ' + auth,
+          },
+          body: JSON.stringify(data)
+      })
+          .then((response) => {
+            console.log(auth);
+              console.log("response", response)
+              if (response['status'] === 201 || response['status'] === 200) {
+                  return response.json()
+              } else if (response['status'] === 400) {
+                  console.log('Something is wrong')
+              }
+          })
+          .then((result) => {
+              console.log('result', result);
+          })
+      }
+    }
+
+     onChange = (date, dateString) => {
+      console.log(date, dateString);
+      this.setState({deadline: date})
+    }
+
+    handleChange = (identity, value) =>{
+      if(identity == 'title'){
+        this.setState({'title': value})
+      }else if(identity == 'deliverables'){
+        this.setState({'deliverables': value})
+      }else if(identity == 'budget'){
+        this.setState({'budget': value})
+        if(isNaN(value)){
+          //console.log(isNaN(value));
+          this.setState({budget_validate:'Please enter a valid budget'})
+        }else if(value>2000){
+          this.setState({budget_validate:'Budget should be less than 2000'})
+        }else{
+          this.setState({budget_validate:''})
+        }
+      }else if(identity == 'info'){
+        this.setState({'info': value})
+        console.log(this.state.info);
+      }
+      
     }
 
     componentDidMount(){
       // if (localStorage.getItem("token")){
        
        console.log(auth);
-        // let data_refresh = {'refresh': localStorage.getItem('refresh')}
+       auth = localStorage.getItem('token')
+       let hire_id = localStorage.getItem('hire_id')
 
-        // fetch(url + '/api/token/refresh/', {
-        //     method: 'POST',
-        //     headers: {
-        //        'Accept': 'application/json',
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(data_refresh)
-        // })
-        //     .then((response) => {
-        //      if (response['status'] === 201 || response['status'] === 200) {
-        //         return response.json()
-        //     } else if (response['status'] === 401) {
-        //         message.info('Something went wrong');  
-        //         localStorage.removeItem('refresh')
-        //         localStorage.removeItem('access')
-        //     }
-        //     })
-        //     .then((result) => {
-        //         if (result){
-        //         console.log('result.access',result.access)
-        //         localStorage.setItem('token',result.access)
-        //         }
-        //     }
-        //     )   
-      
+       fetch(url+ '/api/customuser/'+hire_id,{
+         method: 'GET',
+         
+          headers: {
+                   'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+        
+       })
+       .then((response) =>{
+        if (response['status'] === 201 || response['status'] === 200) {
+                  return response.json()
+              } else if (response['status'] === 401) {
+                  message.info('Something went wrong');  
+                  localStorage.removeItem('refresh')
+                  localStorage.removeItem('access')
+              }
+       })
+       .then((result) =>{
+         this.setState({investor__name: result.first_name, pic: result.profile_pic})
+         console.log(result);
+       })
+        let data_refresh = {'refresh': localStorage.getItem('refresh')}
 
-        fetch(url + '/api/hire/', {
-            method: 'GET',
+        fetch(url + '/api/token/refresh/', {
+            method: 'POST',
             headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Authorization': 'Bearer ' + auth,
-            }
+               'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data_refresh)
         })
             .then((response) => {
-              console.log(auth);
-                console.log("response", response)
-                if (response['status'] === 201 || response['status'] === 200) {
-                    return response.json()
-                } else if (response['status'] === 400) {
-                    console.log('Something is wrong')
-                }
+             if (response['status'] === 201 || response['status'] === 200) {
+                return response.json()
+            } else if (response['status'] === 401) {
+                message.info('Something went wrong');  
+                localStorage.removeItem('refresh')
+                localStorage.removeItem('access')
+            }
             })
             .then((result) => {
-                console.log('result', result);
-            })
+                if (result){
+                console.log('result.access',result.access)
+                localStorage.setItem('token',result.access)
+                }
+            }
+            )   
+      
+
+        
     }
 
     render() {
@@ -90,6 +187,10 @@ export default class InvestorContainer extends Component {
                 selected={this.state.selected}
                 handleSelect={this.handleSelect}
                 sampleData={sampleData}
+                onChange = {this.onChange}
+                handleChange={this.handleChange}
+                onSubmit={this.onSubmit}
+                pic={this.state.pic}
                 />
             </div>
         )

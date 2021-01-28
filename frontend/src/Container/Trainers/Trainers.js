@@ -84,6 +84,7 @@ export default class Trainers extends Component {
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json',
+                            
                         },
                     })
                         .then(res => res.json())
@@ -91,6 +92,7 @@ export default class Trainers extends Component {
                             (result) => {
                                 console.log('result', result)
                                 this.setState({ trainers: result, loading: false })
+                                console.log(this.state.loading);
                             }
                         )
                 }
@@ -110,10 +112,6 @@ export default class Trainers extends Component {
     messageHandle = (id) => {
 
         console.log('data', id)
-
-
-
-
 
         let data = {
             "sent_by": this.state.user.id,

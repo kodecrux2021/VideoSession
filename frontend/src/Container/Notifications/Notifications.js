@@ -5,6 +5,7 @@ import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import WarningIcon from '@material-ui/icons/Warning';
 import { Avatar, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import {Modal, Button, notification} from 'antd'
 
 let user_id = ''
 let rec = '';
@@ -81,7 +82,7 @@ export default function Notifications(props) {
 
                                 return(
                                    
-                                <div className='chat__card' onClick = {()=>{
+                                <div key = {user.id}className='chat__card' onClick = {()=>{
                                     console.log(rec.first_name);
 
                                     localStorage.setItem('conversation_id', user.id);
@@ -236,7 +237,7 @@ export default function Notifications(props) {
 
                                 let data =  request.accepted ? 
                                 null :
-                                <div className='chat__card' >
+                                <div className='chat__card' key={request.id}>
                                 <div className='chat__card__left' >
                                 <Avatar src={request.user_profile_pic} className={classes.large}/>
                                             <div className='chat__card__details' >
@@ -303,11 +304,42 @@ export default function Notifications(props) {
                             props.notifications.map((notification)=> {
 
                                 return (
-                                    <div className='chat__card' >
-                                    <Avatar src={props.img} className={classes.large}/>
+                                    <div className='chat__card' key={notification.id}>
+                                    <Avatar src={notification.user_profile_pic} className={classes.large}/>
+                                   {props.hire !== null ? (<Modal title="Hiring Application" visible={props.isModalVisible}  onCancel={props.handleCancel}
+                                    footer={[
+                                        <Button onClick={() =>props.acceptHire(props.hire.id)}>
+                                          Accept
+                                        </Button>,
+                                        <Button  type="primary" onClick = {() =>props.declineHire(props.hire.id)}>
+                                          Reject
+                                        </Button>,
+                                      ]}>
+                                         { props.hire !==null ?
+
+                                         (<div> <p><e>Project Title</e>: {props.hire.project_title}</p>
+                                          <p><e>Topic</e>: {props.hire.request}</p>
+                                          <p><e>Budget</e>: ${props.hire.budget}</p>
+                                          <p><e>Deliverables</e>: {props.hire.deliverables}</p>
+                                          <p><e>Additional Information</e>: {props.hire.additional_information}</p>
+                                          <p><e>Deadline</e>: {props.hire.deadlines}</p>
+                                          </div>) : null
+                                        }
+                                    </Modal>): null}
                                             <div className='troubleshoot__details' >
+                                                {notification.type == 'HIRE'?
+                                                <span>{notification.user_first_name} {notification.user_last_name} wants to hire you</span>
+                                                :
                                                 <span>{notification.user_first_name} {notification.user_last_name} has accepted your request</span>
-                                            </div>
+                                                }
+                                                </div>
+                                           {notification.type== 'HIRE'?
+                                            <div className='friend__card__button' >
+                                                 <button  style={{  backgroundColor:' #5964c9'}} onClick = {() =>props.show(notification.contract)}>Show</button>
+                                             </div>
+                                            :
+                                            null
+                                    }
                                     </div>
                                 );
                             })

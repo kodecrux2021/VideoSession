@@ -33,23 +33,23 @@ export default class HelpForm1 extends Component {
             <div className='help__form__container'>
              <div className='HelpForm1'>
                 <div className='HelpForm1__header'>
-                    <p>What type of help you need ?</p>
+                    <p> Please choose appropriate service from below . Our esteemed code experts will be available at your service.</p>
                 </div>
                 <div className='HelpForm1__body'>
                     <div className='HelpForm1__card' onClick={() => this.handelData('livehelp')} >
                     <VideocamOutlinedIcon className='help_svg_icons' />
-                    <p><strong>Get Live Help</strong></p>
-                    <span>Start a live 1:1 session for one-off or long-term  mentorship</span>
+                    <p><strong>Quick help</strong></p>
+                    <span>Online interactive sessions for quick remedy of your issue </span>
                     </div>
                     <div className='HelpForm1__card' onClick={() => this.handelData('freelancejob')} >
                     <NextWeekOutlinedIcon className='help_svg_icons' />
-                    <p><strong>Post a freelance job</strong></p>
-                    <span>Hire a mentor to complete a freelance job</span>
+                    <p><strong>Design review & Consulting </strong></p>
+                    <span>We take care of review needs </span>
                     </div>
                     <div className='HelpForm1__card' onClick={() => this.handelData('codereviewed')} >
                     <PageviewOutlinedIcon className='help_svg_icons' />
-                    <p><strong>Get Code Reviewed</strong></p>
-                    <span>Hire a developer to review your code</span>
+                    <p><strong>Gig workers / Freelancers </strong></p>
+                    <span>We are here to serve your short term project needs</span>
                     </div>
                 </div>
             </div>

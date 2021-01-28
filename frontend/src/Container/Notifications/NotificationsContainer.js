@@ -12,11 +12,98 @@ export default class NotificationsContainer extends Component {
         requests: [],
         notifications: [],
         user: '',
-        message:[]
+        message:[],
+        isModalVisible: false,
+        hire: []
     }
 
+    handleCancel = () =>{
+        this.setState({isModalVisible: false})
+    }
 
+    acceptHire = (id) =>{
+        let data = {
+            hiring_status: "INSTRUCTOR_ACCEPTED"
+        }
+        console.log(id);
+        
+        let auth = localStorage.getItem('token')
+        fetch(url + '/api/hire/'+id+'/', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Authorization': 'Bearer ' + auth,
+            },
+            body: JSON.stringify(data)
+        })
+            .then((response) => {
+                console.log("response", response)
+                if (response['status'] === 201 || response['status'] === 200) {
+                    return response.json()
+                } else if (response['status'] === 400) {
+                    console.log('Something is wrong')
+                }
+            })
+            .then((result) => {
+                console.log('result', result);
+                this.setState({isModalVisible: false})
+            })    
+    }
 
+    declineHire = (id) =>{
+        
+        let data = {
+            'hiring_status': 'NOT_DONE'
+        }
+        console.log(id);
+        let auth = localStorage.getItem('token')
+        fetch(url + '/api/hire/'+id+'/', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Authorization': 'Bearer ' + auth,
+            },
+            body: JSON.stringify(data)
+        })
+            .then((response) => {
+                console.log("response", response)
+                if (response['status'] === 201 || response['status'] === 200) {
+                    return response.json()
+                } else if (response['status'] === 400) {
+                    console.log('Something is wrong')
+                }
+            })
+            .then((result) => {
+                console.log('result', result);
+                this.setState({isModalVisible: false})
+            })    
+    }
+
+    show = (id) =>{
+        let auth = localStorage.getItem('token')
+        fetch(url + '/api/hire/'+id, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Authorization': 'Bearer ' + auth,
+            }
+        })
+            .then((response) => {
+                console.log("response", response)
+                if (response['status'] === 201 || response['status'] === 200) {
+                    return response.json()
+                } else if (response['status'] === 400) {
+                    console.log('Something is wrong')
+                }
+            })
+            .then((result) => {
+                console.log('result', result);
+                this.setState({isModalVisible: true, hire: result})
+            })    
+    }
     
     getMessage = () =>{
         console.log(user_id);
@@ -139,7 +226,6 @@ export default class NotificationsContainer extends Component {
             })
             .then((result) => {
                 if (result){
-                console.log('result.access',result.access)
                 localStorage.setItem('token',result.access)
                 }
             }
@@ -230,6 +316,12 @@ export default class NotificationsContainer extends Component {
                 rejectReq ={this.rejectReq}
                 chatHandler = {this.chatHandler}
                 message={this.state.message}
+                isModalVisible={this.state.isModalVisible}
+                show={this.show}
+                handleCancel = {this.handleCancel}
+                hire={this.state.hire}
+                acceptHire={this.acceptHire}
+                declineHire={this.declineHire}
                 />
             </div>
         )

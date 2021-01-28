@@ -26,6 +26,7 @@ const styles = theme => ({
 
 
   const hireHandle = () => {
+        localStorage.setItem('hire_id', props.reciever_id)
         props.hireHandle();
         console.log(props.id);
     }

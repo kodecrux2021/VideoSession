@@ -285,6 +285,19 @@ export default class Home extends Component {
 
             </div>
 
+            <div className="blog__container">
+            <div  style ={{display: 'inline'}}>
+                    <div className= 'button__card__details'>
+                        <h1>Blogs by Kodecrux</h1>
+                        <h3>Topic</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            <a><e>Read More...</e></a>
+                        </p>
+        
+                    </div>
+            </div>
+            </div>
+
             <div className="button__container">
                 
                 <div className="button__card">
@@ -304,8 +317,8 @@ export default class Home extends Component {
                         <img src={study} alt="" />
                     </div>
                     <div className= 'button__card__details'>
-                        <h2>Soluton Room</h2>
-                        <p>ndustry's standard dummy text ever since the 1500s
+                        <h2>Solution Room</h2>
+                        <p>Industry's standard dummy text ever since the 1500s
                             , when an unknown printer took</p>
                         <button style={{  backgroundColor:' #76d2fd'}} onClick={()=>this.props.history.push('/help/1')} >Solution Room</button>
                     </div>
@@ -323,7 +336,7 @@ export default class Home extends Component {
             <div className="footer__cards">
                 <h3 >POLICY</h3>
                 <span onClick = {this.refund}><a>Refund and return</a></span>
-                <span onClick = {this.shipping}><a>Shipping and Delivery Policy</a></span>
+                {/* <span onClick = {this.shipping}><a>Shipping and Delivery Policy</a></span> */}
                 <span onClick = {this.price}><a>Price and Payment</a></span>
             </div>
             <div className="footer__cards">

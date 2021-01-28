@@ -123,7 +123,15 @@ export default function Chat(props) {
             <CalendarTodayOutlinedIcon onClick = {props.schedule}/>
             </IconButton> 
         <span>Schedule session</span>
-        
+        <RangePicker
+      ranges={{
+        Today: [moment(), moment()],
+        'This Month': [moment().startOf('month'), moment().endOf('month')],
+      }}
+      showTime
+      format="YYYY/MM/DD HH:mm:ss"
+      onChange={onChange}
+    />
         </div>
         
         
@@ -203,15 +211,7 @@ export default function Chat(props) {
                 </form>
                 <IconButton > <AttachFileIcon className="svg_icons" /> </IconButton>
                 <IconButton><PictureAsPdfIcon className="svg_icons" /></IconButton>
-                <RangePicker
-      ranges={{
-        Today: [moment(), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-      }}
-      showTime
-      format="YYYY/MM/DD HH:mm:ss"
-      onChange={onChange}
-    />
+                
                 
             </div>
 

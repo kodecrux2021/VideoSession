@@ -35,26 +35,26 @@ export default class HelpForm2 extends Component {
             <div className='help__form__container'>
             <div className='HelpForm1'>
                 <div className='HelpForm2__header'>
-                <p>Tell us about what you need help with</p>
+                <p>Please share summary of your problem, we are happy to help you</p>
                 </div>
 
                 <div className='HelpForm2__body'>
                     <div className={`select__btn ${this.state.selected==='Troubleshooting' && "select__btn__active"}`} onClick={() => this.onClickHandler('Troubleshooting')}  >
                     <ReportProblemOutlinedIcon className='mg__rt' />
-                    <span>Troubleshooting</span>
+                    <span>Quick Help</span>
                     </div>
                     <div className={`select__btn ${this.state.selected==='Debugging' && "select__btn__active"}`} onClick={() => this.onClickHandler('Debugging')} >
                     <BugReportOutlinedIcon className='mg__rt' />
-                    <span>Debugging</span>
+                    <span>Design review & Consulting </span>
                     </div>
                     <div className={`select__btn ${this.state.selected==='Tutoring' && "select__btn__active"}`} onClick={() => this.onClickHandler('Tutoring')} >
                     <LibraryBooksOutlinedIcon className='mg__rt' />
-                    <span>Tutoring</span>
+                    <span>Gig workers & Free lancers </span>
                     </div>
-                    <div className={`select__btn ${this.state.selected==='Other' && "select__btn__active"}`} onClick={() => this.onClickHandler('Other')} >
+                    {/* <div className={`select__btn ${this.state.selected==='Other' && "select__btn__active"}`} onClick={() => this.onClickHandler('Other')} >
                     <CreateOutlinedIcon className='mg__rt' />
                     <span>Add others</span>
-                    </div>
+                    </div> */}
                 </div>
                 <div className='HelpForm2__footer'>
                     {this.state.selected==='Other' ?
@@ -63,7 +63,7 @@ export default class HelpForm2 extends Component {
                      : null
                       }
                <div className='HelpForm2__textarea'>
-               <p>Details of what you need help with *</p>
+               <p>Detailed information to help us to understand better…</p>
                <textarea className='employ__reg__textarea' placeholder='Enter Your Text'>
                </textarea>
                </div>

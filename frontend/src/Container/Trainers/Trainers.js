@@ -84,7 +84,7 @@ export default class Trainers extends Component {
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json',
-                            
+                            'Authorization': 'Bearer ' + auth,
                         },
                     })
                         .then(res => res.json())
@@ -92,7 +92,6 @@ export default class Trainers extends Component {
                             (result) => {
                                 console.log('result', result)
                                 this.setState({ trainers: result, loading: false })
-                                console.log(this.state.loading);
                             }
                         )
                 }

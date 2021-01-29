@@ -182,7 +182,7 @@
 }
 
 .techdetail__description {
-display: flex;
+    
 padding: 20px ;
 background-color: rgb(249, 239, 224);
 }
@@ -343,9 +343,7 @@ background-color: #f9f9dd;
 }
 
 @media(max-width: 500px){
-    .techdetail__description{
-        display: inline;
-    }
+    
     .instructor__warpper{
         display: inline;
     }
@@ -354,5 +352,14 @@ background-color: #f9f9dd;
     }
     .instructor__detail{
         padding: 30px;
+    }
+    .topcategories__card{
+        margin: 20px 0;
+    }
+}
+
+@media(min-width: 700px){
+    .techdetail__description{
+        display: flex;
     }
 }

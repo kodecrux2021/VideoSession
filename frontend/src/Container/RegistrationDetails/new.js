@@ -207,52 +207,73 @@ class New extends React.Component {
            console.log(tech,sub_tech);
            console.log(this.state.sub_technology?.id);
             let id = localStorage.getItem('educator_id')
-           await fetch( url + '/api/educator/' + id + '/' , {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json;charset=UTF-8',
-    
-            },
-            body: JSON.stringify(data)
-        })
-        .then((response) => {
-            console.log("response", response)
-            if (response['status'] === 201 || response['status'] === 200) {
-                return response.json()
-            } else if (response['status'] === 400) {
-                    console.log('Something is wrong')
-            }
-        })
-        .then((result) => {
-          
-        //  fetch( url + '/api/educator/' , {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json, text/plain',
-        //         'Content-Type': 'application/json;charset=UTF-8',
-    
-        //     },
-        //     body: JSON.stringify(data)
-        // })
-        // .then((response) => {
-        //     console.log("response", response)
-        //     if (response['status'] === 201 || response['status'] === 200) {
-        //         return response.json()
-        //     } else if (response['status'] === 400) {
-        //             console.log('Something is wrong')
-        //     }
-        // })
-        // .then((result) => {
-        //     console.log('result', result);
-        // })
-            console.log('result', result);
-         })
-
+            let user_id = localStorage.getItem('user_id')
+            
+            await fetch( url + '/api/customusersecond/' + user_id + '/' , {
+              method: 'PUT',
+              headers: {
+                  'Accept': 'application/json, text/plain',
+                  'Content-Type': 'application/json;charset=UTF-8',
+      
+              },
+              body: JSON.stringify(data)
+          })
+          .then((response) => {
+              console.log("response", response)
+              if (response['status'] === 201 || response['status'] === 200) {
+                  return response.json()
+              } else if (response['status'] === 400) {
+                      console.log('Something is wrong')
+              }
+          })
+          .then((result) => {
+            let auth = localStorage.getItem('token')
+            console.log(result);
+             if(!localStorage.getItem('is_client')){
+              fetch( url + '/api/educatorcreate/' + id + '/' , {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json, text/plain',
+                    'Content-Type': 'application/json;charset=UTF-8',
+                    'Authorization': 'Bearer' + auth
+                },
+                body: JSON.stringify(data)
+            })
+            .then((response) => {
+                console.log("response", response)
+                if (response['status'] === 201 || response['status'] === 200) {
+                    return response.json()
+                } else if (response['status'] === 400) {
+                        console.log('Something is wrong')
+                }
+            })
+            .then((result) => {
+              
+            //  fetch( url + '/api/educator/' , {
+            //     method: 'POST',
+            //     headers: {
+            //         'Accept': 'application/json, text/plain',
+            //         'Content-Type': 'application/json;charset=UTF-8',
         
-
-
-            this.props.history.push("/verification");
+            //     },
+            //     body: JSON.stringify(data)
+            // })
+            // .then((response) => {
+            //     console.log("response", response)
+            //     if (response['status'] === 201 || response['status'] === 200) {
+            //         return response.json()
+            //     } else if (response['status'] === 400) {
+            //             console.log('Something is wrong')
+            //     }
+            // })
+            // .then((result) => {
+            //     console.log('result', result);
+            // })
+                console.log('result', result);
+             })
+             }
+          })
+        this.props.history.push("/verification");
         }
 
   

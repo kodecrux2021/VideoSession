@@ -119,8 +119,8 @@ export default function Chat(props) {
         <span>Join session room</span>
         </div>
         <div className='pop__over__buttons'>
-            <IconButton>
-            <CalendarTodayOutlinedIcon onClick = {props.schedule}/>
+            <IconButton  onClick = {props.schedule}>
+            <CalendarTodayOutlinedIcon/>
             </IconButton> 
         <span>Schedule session</span>
         <RangePicker

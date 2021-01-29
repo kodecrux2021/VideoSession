@@ -161,11 +161,11 @@ class RegistrationContainer extends Component {
             // "user_first_name": this.state.first_name,
             // "user_last_name": this.state.last_name,
             // "user_phone": this.state.mobile,
-            "fees": null,
-            "rating": null,
-            "designation": null,
-            "profile_pic": null,
-                    
+                    "fees": null,
+                    "rating": null,
+                    "designation": null,
+                    "profile_pic": null,
+                            
                 }
                  if(result){
                     if(this.state.position!=='customer'){
@@ -174,7 +174,7 @@ class RegistrationContainer extends Component {
                             headers: {
                                 'Accept': 'application/json, text/plain',
                                 'Content-Type': 'application/json;charset=UTF-8',
-                    
+                                'Authorization': 'Bearer' + auth
                             },
                             body: JSON.stringify(data2)
                         })

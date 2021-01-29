@@ -165,7 +165,7 @@ schedule = () =>{
     let data = {
 
     }
-     fetch( 'https://cors-anywhere.herokuapp.com/http://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=388609-YgM2aKpYNsYmThQrs7Cn&redirect_uri=https://community.teamviewer.com/English/discussion/53405/authorization-codehttp://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=388609-YgM2aKpYNsYmThQrs7Cn&redirect_uri=https://community.teamviewer.com/English/discussion/53405/authorization-code', {
+     fetch( 'https://cors-anywhere.herokuapp.com/http://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=388609-YgM2aKpYNsYmThQrs7Cn', {
         method: 'GET',
         headers: {
             'Accept': 'application/json, text/plain',
@@ -175,7 +175,7 @@ schedule = () =>{
     .then((response) => {
         console.log("response", response)
         if (response['status'] === 201 || response['status'] === 200) {
-            console.log(response);
+            console.log(response.url);
             return response.text()
         } else if (response['status'] === 400) {
                 console.log('Something is wrong')

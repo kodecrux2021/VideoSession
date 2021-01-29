@@ -122,8 +122,9 @@ padding: 3px 0;
 color: rgb(237, 237, 237);
 }
 .blog__container{
-   width: 100%;
+   width: 95%;
    padding: 80px 60px 30px;
+   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
 }
 
 @media(max-width: 1000px) {

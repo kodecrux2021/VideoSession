@@ -32,7 +32,7 @@ export default function ContentViewHeader(props) {
 
                 <div className='content__header__left'>
 
-                    <img src={kodecrux} style={{ height: '70px' }} />
+                    <img src={kodecrux} style={{ height: '70px' }} onClick = {() =>history.push('/home')}/>
 
                     <div className='left__search__container'>
                         <Menu availableModules={props.availableModules} />

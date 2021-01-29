@@ -28,7 +28,7 @@ from django.http import JsonResponse
 
 
 class EducatorViewset(viewsets.ModelViewSet):
-    #permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = models.Educator.objects.all()
     serializer_class = serializers.EducatorSerializer
     permission_classes = [permissions.AllowAny]
@@ -36,13 +36,16 @@ class EducatorViewset(viewsets.ModelViewSet):
     filterset_fields = ('user__technology','user__sub_technology','user__topic','conversation')
     http_method_names = ['get', 'post','put']
 
-    
+
     def list(self,request, pk=None):
-        queryset = models.Educator.objects.all()
+        print ('request.user',request.user.technology.all().values_list('id',flat=True))
+
+        user = request.user.technology.all().values_list('id',flat=True)
+        queryset = models.Educator.objects.filter(user__technology__in=user)
         serializer = serializers.EducatorSerializer(queryset,many=True)
         data = serializer.data
         for element in data:
-                print("element",element)
+                print("element1",element)
                 try:
                     user = CustomUser.objects.get(id=element["user"])
                     name = f'{user.first_name} {user.last_name}'
@@ -55,7 +58,6 @@ class EducatorViewset(viewsets.ModelViewSet):
        # print(queryset)
        # datab = serializers.ConversationSerializer
         print(type(data))
-
         return Response(data)
 
     def create(self, request, *args, **kwargs):
@@ -103,6 +105,12 @@ class EducatorViewset(viewsets.ModelViewSet):
 #            # print('conv',context)
 #         #some extra filtering
 #         return context
+
+class EducatorCreateViewset(viewsets.ModelViewSet):
+    # permission_classes = (IsAuthenticated,)
+    queryset = models.Educator.objects.all()
+    serializer_class = serializers.EducatorCreateSerializer
+    permission_classes = [permissions.AllowAny]
 
 
 
@@ -189,4 +197,35 @@ class ClientViewset(viewsets.ModelViewSet):
 
 
 
-
+from django.shortcuts import render
+import requests
+import sys, json
+def home(request):
+   # get the list of todos
+   # response = requests.get('https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=388609-YgM2aKpYNsYmThQrs7Cn&redirect_uri=https://community.teamviewer.com/English/discussion/53405/authorization-code/')
+   # print('response.url',response.url,response.status_code)
+   # if response.history:
+   #     print("Request was redirected")
+   #     for resp in response.history:
+   #         print(resp.status_code, resp.url)
+   #     print("Final destination:")
+   #     print(response.status_code, response.url)
+   # else:
+   #     print("Request was not redirected")
+   # # response = requests.get('https://jsonplaceholder.typicode.com/todos/')
+   # # transfor the response to json objects
+   parameters = {
+       "response_type": 'code',
+       "client_id": '388609-YgM2aKpYNsYmThQrs7Cn',
+       "redirect_uri":'https://community.teamviewer.com/English/discussion/53405/authorization-code',
+   }
+   r = requests.get('https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=388609-YgM2aKpYNsYmThQrs7Cn&redirect_uri=https://community.teamviewer.com/English/discussion/53405/authorization-code/',
+                    params=parameters)
+   print ('r',r)
+   r.status_code  # 302
+   r.url  # http://github.com, not https.
+   print (r.url)
+   r.headers['https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=388609-YgM2aKpYNsYmThQrs7Cn&redirect_uri=https://community.teamviewer.com/English/discussion/53405/authorization-code/']  # https://github.com/ -- the redirect destination
+   print (r.headers)
+   todos = r.json()
+   return JsonResponse(todos,safe=False)

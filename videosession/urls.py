@@ -52,6 +52,8 @@ urlpatterns = [
     path('google/', customuser_views.GoogleView.as_view(), name='google'),  # add path for google authentication
     path('eduser/', user_views.EducatorView.as_view(), name='eduser'),
     path('user/', customuser_views.UserView.as_view(), name='user'),
+    path('cForgotPasswordViewsetode/', customuser_views.OTP.as_view(), name='code'),
+    path('team', user_views.home, name='home'),
 
 ]
 

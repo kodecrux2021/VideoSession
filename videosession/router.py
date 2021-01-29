@@ -1,4 +1,4 @@
-from user.views import EducatorViewset,ClientViewset
+from user.views import EducatorViewset,ClientViewset,EducatorCreateViewset
 from customuser.views import CustomUserViewset,CustomUsersecondViewset,CustomUserthirdViewset,ForgotPasswordViewset
 from technology.views import TechnologyViewset,SubtechnologyViewset,TopicViewset
 from session.views import SessionViewset
@@ -25,6 +25,8 @@ router.register('forgotpassword',ForgotPasswordViewset),
 router.register('notification',NotificationViewset),
 router.register('request',RequestViewset),
 router.register('request-read',RequestReadViewset),
+router.register('educatorcreate',EducatorCreateViewset),
+
 
 
 

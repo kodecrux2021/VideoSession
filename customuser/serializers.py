@@ -79,7 +79,7 @@ class PhoneVerificationSerializer(serializers.ModelSerializer):
 class CustomUsersecondSerializers(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('pincode','state','city','total_experience','relevant_experience','date_of_birth','profile_pic')
+        fields = ('pincode','state','city','total_experience','relevant_experience','date_of_birth','profile_pic','technology','sub_technology','topic',)
 
 
     def create(self,validated_data):
@@ -91,6 +91,9 @@ class CustomUsersecondSerializers(serializers.ModelSerializer):
             relevant_experience=validated_data['relevant_experience'],
             date_of_birth=validated_data['date_of_birth'],
             profile_pic=validated_data['profile_pic'],
+            technology=validated_data['technology'],
+            sub_technology=validated_data['sub_technology'],
+            topic=validated_data['topic'],
 
         )
         user.is_active=True
@@ -132,4 +135,5 @@ class ForgotPasswordSerializers(serializers.ModelSerializer):
 class ForgotPasswordEmailVerificationSerializers(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('username',)
+        read_only_fields = ('__all__',)
+        fields = ('verification_code',)

@@ -21,12 +21,24 @@ class EducatorSerializer(serializers.ModelSerializer):
         model = Educator
         fields = ('id','user','user_id','user_username','conversation','user_email','user_first_name','user_last_name','user_phone','fees','date','rating','designation','profile_pic','last_seen','is_active',)
 
+
     # def to_representation(self, data):
     #     data = super(EducatorSerializer, self).to_representation(data)
     #     print('data',data.get('id'))
     #     print('dataself', self.context['request'].user.id)
     #     data['conversation_id'] = conversation_id
     #     return data
+class EducatorCreateSerializer(serializers.ModelSerializer):
+    user_username = ReadOnlyField(source='user.username')
+    user_email = ReadOnlyField(source='user.email')
+    user_first_name = ReadOnlyField(source='user.first_name')
+    user_last_name = ReadOnlyField(source='user.last_name')
+    user_phone = ReadOnlyField(source='user.phone')
+    user_id = ReadOnlyField(source='user.id')
+
+    class Meta:
+        model = Educator
+        fields = ('id','user','user_id','user_username','conversation','user_email','user_first_name','user_last_name','user_phone','fees','date','rating','designation','profile_pic','last_seen','is_active',)
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:

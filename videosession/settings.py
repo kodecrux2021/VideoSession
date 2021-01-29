@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import datetime
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,7 +32,7 @@ SECRET_KEY = 'p_w#!6jui_dlu78z7*ne8^y2z$+2q0u%2kqm*hg(ij9a2=1w^1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['525d3d726b33.ngrok.io','127.0.0.1','0.0.0.0','*']
+ALLOWED_HOSTS = ['086576134632.ngrok.io','127.0.0.1','0.0.0.0','*']
 
 
 # Application definition
@@ -183,6 +184,15 @@ REST_FRAMEWORK = {
     ],
 }
 JWT_AUTH = {
+ # how long the original token is valid for
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=2),
+
+    # allow refreshing of tokens
+    'JWT_ALLOW_REFRESH': True,
+
+    # this is the maximum time AFTER the token was issued that
+    # it can be refreshed.  exprired tokens can't be refreshed.
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_PAYLOAD_HANDLER':
         'rest_framework_jwt.utils.jwt_payload_handler',
 'JWT_ENCODE_HANDLER':

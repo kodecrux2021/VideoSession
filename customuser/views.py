@@ -29,17 +29,19 @@ from social_django.utils import load_strategy, load_backend
 from social_core.backends.oauth import BaseOAuth2
 from social_core.exceptions import MissingBackend, AuthTokenError, AuthForbidden
 from . import serializers
+import json
 from rest_framework_jwt.settings import api_settings
 # from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 # from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 # from rest_auth.registration.views import SocialLoginView
 # from .adapters import GoogleOAuth2AdapterIdToken
 from rest_framework.authtoken.models import Token
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.conf import settings
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-import random
+import math, random
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
 from rest_framework.utils import json
@@ -49,6 +51,10 @@ import requests
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from rest_framework_jwt.settings import api_settings
+from django.http import JsonResponse
+from django.views.generic import TemplateView
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -60,6 +66,71 @@ jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 #     callback_url = 'http://localhost:8000/accounts/google/login/callback/'
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+def Moosend(email):
+    params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json"}
+    payload = {
+        "Name": "New updated List"
+    }
+    resp = requests.post(
+        'https://api.moosend.com/v3/lists/create.json?apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980&Format=json',
+        json=payload,
+        headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, )
+    print (resp.text)
+    if resp.status_code != 201:
+        success_dict = json.loads(resp.text)
+        mail_id = success_dict['Context']
+        print('createmaillistsuccess')
+        # to create subscriber
+        params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json",
+                  "MailingListID": mail_id}
+        payload = {
+            "Email": email
+        }
+        resp = requests.post(
+            'https://api.moosend.com/v3/subscribers/'+ mail_id +'/subscribe.json?apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980&MailingListID='+ mail_id +'&Format=json',
+            json=payload,
+            headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, )
+        print (resp.text)
+        if resp.status_code != 201:
+            print('success subscriber')
+            # to create campaign
+            params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json"}
+            payload = {
+                "Name": "test4",
+                "Subject": "Some subject",
+                "SenderEmail": "sales@kodecrux.com",
+                "ReplyToEmail": "sales@kodecrux.com",
+                "ConfirmationToEmail": "sales@kodecrux.com",
+                "WebLocation": "http://13.229.251.62:8000/password-email-verification/?email=arshi.khan67@gmail.com",
+                "MailingLists": [
+                    {
+                        "MailingListID": mail_id
+                    }
+                ]
+
+            }
+            resp = requests.post(
+                'https://api.moosend.com/v3/campaigns/create.json?apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980',
+                json=payload,
+                headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, )
+            print ('campaign created', resp.text)
+            if resp.status_code != 201:
+                success_dict = json.loads(resp.text)
+                campaign_id = success_dict['Context']
+                print('Created task. ID: {}')
+                # to sending a campaign
+                params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json",
+                          "CampaignID": campaign_id}
+                resp = requests.post(
+                    'https://api.moosend.com/v3/campaigns/'+ campaign_id +'/send.json?Format=json&apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980&CampaignID='+ campaign_id +'',
+                    headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, )
+                print (resp.text)
+                if resp.status_code != 201:
+                    print('sendingsuccess')
+                    return True
+                else:
+                    return False
 
 class SocialLoginView(generics.GenericAPIView):
     """Log in using facebook"""
@@ -272,11 +343,15 @@ class FacebookUserView(APIView):
 
 
 class ForgotPasswordViewset(viewsets.ModelViewSet):
+    print ('uytfghj')
     queryset = CustomUser.objects.all()
+    print(queryset)
     permission_classes = [permissions.AllowAny]
     serializer_class = serializers.ForgotPasswordSerializers
     lookup_field = 'verification_code'
     lookup_url_kwarg = 'verification_code'
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['email']
 
     def update(self, request, *args, **kwargs):
         print('pk', kwargs.get('verification_code'))
@@ -304,11 +379,10 @@ class ForgotPasswordViewset(viewsets.ModelViewSet):
 
 
 
-class ForgotPasswordEmailVerificationViewSet(generics.ListAPIView):
-    serializer_class = serializers.ForgotPasswordEmailVerificationSerializers
+class ForgotPasswordEmailVerificationViewSet(APIView):
     permission_classes = [permissions.AllowAny]
 
-    def get_queryset(self):
+    def get(self,request):
         email = self.request.query_params.get('email', None)
         print('email', email)
         user = models.CustomUser.objects.filter(email=str(email))
@@ -318,9 +392,11 @@ class ForgotPasswordEmailVerificationViewSet(generics.ListAPIView):
             print('instance', is_user.verification_code, code)
             is_user.verification_code = code
             is_user.save()
+            success = Moosend(email)
             # ForgotPasswordVerification(code, is_user.email)
-        return user
-
+            # content = {'code':code}
+        context = {'code':code}
+        return render(self.request, 'random.html', context)
 
 
 class HelloView(APIView):
@@ -379,3 +455,9 @@ class UserView(APIView):
             return Response(content)
         content = {'message':'No user '}
         return Response(content,status=status.HTTP_226_IM_USED)
+
+class OTP(APIView):
+    permission_classes = (IsAuthenticated,)
+    def get(self, request):
+        otp = request.user.verification_code
+        return Response(otp,status=status.HTTP_226_IM_USED)

@@ -32,44 +32,47 @@ export default function Reset() {
     }
 
 
-    const submitHandler = async(e) => {
+    const submitHandler = (e) => {
         e.preventDefault();
         if (password === '' || passwordValidate!==''){
             if (password === '') {
                 message.info('Please Fill Password'); 
             }
-            else {
+            else  {
                 message.info(passwordValidate);
             }
               
         }
         else {
 
-                //             fetch(url + 'password-email-verification/?email=' + email, {
-                //     method: 'POST',
-                //     headers: {
-                //        'Accept': 'application/json',
-                //       'Content-Type': 'application/json',
-                //     },
+            let data = {
+                "password": password
+            }
+                    fetch(url + `/api/forgotpassword/${localStorage.getItem('verif')}/`, {
+                    method: 'PUT',
+                    headers: {
+                       'Accept': 'application/json',
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then((response) => {
+                     if (response['status'] === 201 || response['status'] === 200) {
+                        return response.json()
+                    } else if (response['status'] === 401) {
+                        message.info('Something went wrong');  
+                    }
+                    })
+                    .then((result) => {
+                        if (result){
+                        console.log('result',result)
+                        message.info('Password Reset Successful! Please login.'); 
+                        history.push('/login')
+                        }
+                    }
+                    )
 
-                // })
-                //     .then((response) => {
-                //      if (response['status'] === 201 || response['status'] === 200) {
-                //         return response.json()
-                //     } else if (response['status'] === 401) {
-                //         message.info('Something went wrong');  
-                //     }
-                //     })
-                //     .then((result) => {
-                //         if (result){
-                //         console.log('result',result)
-
-                //         }
-                //     }
-                //     )
-
-                message.info('Password Reset Successful! Please login.'); 
-                history.push('/login')
+               
         }
     }
 
@@ -112,7 +115,7 @@ export default function Reset() {
                 <button 
                 type='submit'
                 className='login__signInButton' 
-                onClick={submitHandler}
+                onClick={(e)=>submitHandler(e)}
                 >Submit</button>
             </form>
 

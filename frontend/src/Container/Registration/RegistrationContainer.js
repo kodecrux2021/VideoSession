@@ -125,7 +125,8 @@ class RegistrationContainer extends Component {
                 "is_codeexpert": this.state.position==='freelancer',
                 "is_client": this.state.position==='customer',
                 "first_name": this.state.first_name,
-                "last_name": this.state.last_name
+                "last_name": this.state.last_name,
+                "email": this.state.email
             }
 
             let data2 = null;
@@ -153,6 +154,7 @@ class RegistrationContainer extends Component {
             })
             .then((result) => {
                 console.log('result', result);
+                localStorage.setItem('email', this.state.email)
                  data2 = {
                     "password" : this.state.password,  
                     "user": result?.id,  
@@ -165,6 +167,7 @@ class RegistrationContainer extends Component {
                     "rating": null,
                     "designation": null,
                     "profile_pic": null,
+                    
                             
                 }
                  if(result){

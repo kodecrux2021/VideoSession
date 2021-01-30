@@ -15,7 +15,7 @@ export default function VerificationView(props) {
             <img src={icon} alt="no img"></img>
             </div>
             <div className="verification__body">
-                <p>Please type the verification code sent to your mobile number</p>
+                <p>Please type the verification code sent to your email</p>
                 <div>
         
                 <OtpInput
@@ -27,7 +27,7 @@ export default function VerificationView(props) {
                     inputStyle="otp__box"
                 />
                 </div>
-                <h5>Didn't Recieve OTP? <span style={{fontWeight:"bold",color:" #30b3f0"}}>Resend Code</span></h5>
+                <h5>Didn't Recieve OTP? <span style={{fontWeight:"bold",color:" #30b3f0", cursor: "pointer"}} >Resend Code</span></h5>
                 <button onClick={props.onSubmit}>VERIFY</button>
             </div>
         </div>

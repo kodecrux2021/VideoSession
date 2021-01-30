@@ -3,6 +3,7 @@ import Navbar from '../../components/Header/Navbar'
 import RegistrationLayout from '../../components/RegistrationLayout/RegistrationLayout'
 import VerificationView from './VerificationView'
 import { message } from 'antd';
+import {url} from '../../Server/GlobalUrl'
 class VerificationContainer extends Component {
     state = {
         otp: "",
@@ -45,6 +46,12 @@ class VerificationContainer extends Component {
 
     
     }
+
+ 
+
+    // componentDidMount(){
+    //    this.getOtp()      
+    // }
     render() {
 
         return (
@@ -55,6 +62,7 @@ class VerificationContainer extends Component {
                 otp={this.state.otp}
                 onChange={this.onChangeValue}
                 onSubmit={this.onSubmit}
+              
   
                 />
  </div>       

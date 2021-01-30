@@ -30,18 +30,41 @@ export default function Email() {
         }
     }
 
+    
+
     const submitHandler = async (e) => {
         e.preventDefault();
         if (email === '' || emailValidate !== '') {
             if (email === '') {
                 message.info('Please Fill Email');
             }
-            else {
+            else if(emailValidate !== ''){
                 message.info(emailValidate);
             }
 
         }
         else {
+                
+                fetch(url + `/password-email/?email=${email}`,{
+                  method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                }).then((response) =>
+                {console.log("response", response)
+                              if (response['status'] === 201 || response['status'] === 200) {
+                                  return response.json()
+                              } else if (response['status'] === 400) {
+                                      console.log('Something is wrong')
+                                      message.info('Something went wrong, try again later')
+                              }}
+                              )
+                    .then((result)=>{
+                        showModal()
+                        console.log(result)
+                        localStorage.setItem('verif', result[0].verification_code)})    
+            
 
             //             fetch(url + 'password-email-verification/?email=' + email, {
             //     method: 'POST',
@@ -66,7 +89,7 @@ export default function Email() {
             //     }
             //     )
 
-            showModal()
+            
         }
     }
 
@@ -75,9 +98,11 @@ export default function Email() {
         if (otp === '') {
             message.info('Please Fill OTP');
         }
+        else if (otp !== localStorage.getItem('verif')){
+            message.info('Entered OTP is incorrect')
+        }
         else {
             history.push('/reset')
-
         }
     }
 

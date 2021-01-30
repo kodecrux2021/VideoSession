@@ -47,6 +47,7 @@ urlpatterns = [
     path('api-token-auth/', views.obtain_auth_token),
     path('conversationcreate/', message_views.ConversationView.as_view(), name='conversationview'),
     path('password-email-verification/', customuser_views.ForgotPasswordEmailVerificationViewSet.as_view(), name='ForgotPasswordEmailVerificationViewSet'),
+    path('password-email/', customuser_views.ForgotPasswordEmailSecondVerificationViewSet.as_view(), name='ForgotPasswordEmailSecondVerificationViewSet'),
     path('api/auth/oauth/', include('rest_framework_social_oauth2.urls')),
     path('hello/', customuser_views.HelloView.as_view(), name='hello'),
     path('google/', customuser_views.GoogleView.as_view(), name='google'),  # add path for google authentication

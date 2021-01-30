@@ -219,6 +219,13 @@ def home(request):
        "client_id": '388609-YgM2aKpYNsYmThQrs7Cn',
        "redirect_uri":'https://community.teamviewer.com/English/discussion/53405/authorization-code',
    }
+   payload = {
+       'response_type': 'code',
+       'redirect_uri':'https://community.teamviewer.com/English/discussion/53405/authorization-code',
+
+   'client_id':'388609 - YgM2aKpYNsYmThQrs7Cn',
+
+   }
    r = requests.get('https://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=388609-YgM2aKpYNsYmThQrs7Cn&redirect_uri=https://community.teamviewer.com/English/discussion/53405/authorization-code/',
                     params=parameters)
    print ('r',r)

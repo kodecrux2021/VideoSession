@@ -102,7 +102,7 @@ def Moosend(email):
                 "SenderEmail": "sales@kodecrux.com",
                 "ReplyToEmail": "sales@kodecrux.com",
                 "ConfirmationToEmail": "sales@kodecrux.com",
-                "WebLocation": "http://13.229.251.62:8000/password-email-verification/?email=arshi.khan67@gmail.com",
+                "WebLocation": "http://13.229.251.62:8000/password-email-verification/?email="+ email ,
                 "MailingLists": [
                     {
                         "MailingListID": mail_id
@@ -123,7 +123,7 @@ def Moosend(email):
                 params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json",
                           "CampaignID": campaign_id}
                 resp = requests.post(
-                    'https://api.moosend.com/v3/campaigns/'+ campaign_id +'/send.json?Format=json&apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980&CampaignID='+ campaign_id +'',
+                    'https://api.moosend.com/v3/campaigns/'+ campaign_id +'/send.json?Format=json&apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980&CampaignID='+campaign_id+'',
                     headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, )
                 print (resp.text)
                 if resp.status_code != 201:
@@ -319,6 +319,12 @@ class LastseenView(APIView):
         content = {'message':'No user '}
         return Response(content,status=status.HTTP_226_IM_USED)
 
+class OTP(APIView):
+    permission_classes = [permissions.AllowAny]
+    def get(self, request):
+        otp = request.user.otp
+        return Response(otp,status=status.HTTP_226_IM_USED)
+
 class CurrentUserView(APIView):
     permission_classes = (IsAuthenticated,)
     def get(self, request):
@@ -384,6 +390,22 @@ class ForgotPasswordEmailVerificationViewSet(APIView):
 
     def get(self,request):
         email = self.request.query_params.get('email', None)
+        code = self.request.query_params.get('code',None)
+        print('email', email)
+        user = models.CustomUser.objects.filter(email=str(email),verification_code=str(code))
+        if user.exists():
+            success = Moosend(email)
+            # ForgotPasswordVerification(code, is_user.email)
+            # content = {'code':code}
+        context = {'code':code}
+        return render(self.request, 'random.html', context)
+
+class ForgotPasswordEmailSecondVerificationViewSet(generics.ListAPIView):
+    serializer_class = serializers.ForgotPasswordEmailVerificationSerializers
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        email = self.request.query_params.get('email', None)
         print('email', email)
         user = models.CustomUser.objects.filter(email=str(email))
         if user.exists():
@@ -392,12 +414,10 @@ class ForgotPasswordEmailVerificationViewSet(APIView):
             print('instance', is_user.verification_code, code)
             is_user.verification_code = code
             is_user.save()
-            success = Moosend(email)
+            r = requests.get('http://0.0.0.0:81/password-email-verification/?email='+email+'&code='+str(code))
+            print ('r',r)
             # ForgotPasswordVerification(code, is_user.email)
-            # content = {'code':code}
-        context = {'code':code}
-        return render(self.request, 'random.html', context)
-
+        return user
 
 class HelloView(APIView):
     permission_classes = (IsAuthenticated,)

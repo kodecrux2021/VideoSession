@@ -2,11 +2,11 @@ import requests
 
 
 # to create subscriber
-params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json","MailingListID":"8b1f6035-1b1f-4edb-aa88-ccc080846a58"}
+params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json","MailingListID":"b3227489-b08b-43b0-8fd9-7525e7aba38d"}
 payload = {
   "Email": "arshi.khan67@gmail.com"
 }
-resp = requests.post('https://api.moosend.com/v3/subscribers/8b1f6035-1b1f-4edb-aa88-ccc080846a58/subscribe.json?apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980&MailingListID=6820a2a4-50c4-48f8-a4e1-629f33303af6&Format=json',
+resp = requests.post('https://api.moosend.com/v3/subscribers/b3227489-b08b-43b0-8fd9-7525e7aba38d/subscribe.json?apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980&MailingListID=6820a2a4-50c4-48f8-a4e1-629f33303af6&Format=json',
                         json=payload,
                      headers={'Content-Type':'application/json','Accept':'application/json'},)
 print (resp.text)
@@ -32,15 +32,15 @@ if resp.status_code != 201:
 # to create campaign
 params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json"}
 payload = {
-    "Name": "test4",
+    "Name": "test5",
     "Subject":"Some subject",
     "SenderEmail":"sales@kodecrux.com",
     "ReplyToEmail":"sales@kodecrux.com",
     "ConfirmationToEmail":"sales@kodecrux.com",
-    "WebLocation":"http://13.229.251.62:8000/password-email-verification/?email=arshi.khan67@gmail.com",
+    "WebLocation":"https://en.wikipedia.org/wiki/Wikipedia",
     "MailingLists": [
         {
-            "MailingListID":"6820a2a4-50c4-48f8-a4e1-629f33303af6"
+            "MailingListID":" bc91ad37-ba9c-4fc7-a8bc-1b06317e35d9"
         }
     ]
 
@@ -53,8 +53,8 @@ if resp.status_code != 201:
     print('Created task. ID: {}')
 
 # to sending a campaign
-params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json","CampaignID":"2772d699-a90d-400c-9bb1-2d0192247585"}
-resp = requests.post('https://api.moosend.com/v3/campaigns/2772d699-a90d-400c-9bb1-2d0192247585/send.json?Format=json&apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980&CampaignID=5cc6d39f-20ca-4345-bd4b-3af43087db11',
+params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json","CampaignID":"046854ac-bb71-4172-85fb-7b1cac1a947c"}
+resp = requests.post('https://api.moosend.com/v3/campaigns/046854ac-bb71-4172-85fb-7b1cac1a947c/send.json?Format=json&apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980&CampaignID=046854ac-bb71-4172-85fb-7b1cac1a947c',
                      headers={'Content-Type':'application/json','Accept':'application/json'},)
 print (resp.text)
 if resp.status_code != 201:

@@ -2,7 +2,9 @@ from django.db import models
 from user.models import Educator,Clients
 from datetime import datetime
 from django.utils.translation import ugettext_lazy as _
-from notification.models import Notification
+from customuser.models import CustomUser
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 PAYMENT_STATUS = (
     ("SUCCESS", _("Success")),
@@ -33,10 +35,24 @@ class Hire(models.Model):
         choices=HIRING_STATUS,
         default="NOT_DONE",
     )
+    sent_by = models.ForeignKey(CustomUser, related_name="created_contracts", on_delete=models.CASCADE, blank=True, null=True)
+    recieved_by = models.ForeignKey(CustomUser, related_name="recieved_contracts", on_delete=models.CASCADE, blank=True, null=True)
     date  = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         """String for representing the Model object."""
-        return str(self.client)
-    def save():
-        pass
+        return str(self.sent_by) + str(self.recieved_by)
+
+from notification.models import Request
+
+@receiver(post_save, sender=Hire, dispatch_uid="update_stock_count")
+def update_request(sender, instance, **kwargs):
+    from notification.models import Notification
+    print("Request not accepted",instance,instance.sent_by,instance.recieved_by )    
+    print("Request accepted",instance,instance.sent_by,instance.recieved_by )
+    if not Request.objects.filter(type="HIRE",contract=instance, 
+        sent_by=instance.sent_by,recieved_by=instance.recieved_by).exists():
+        print("Request accepted",instance,instance.sent_by,instance.recieved_by )
+        request = Request.objects.create(sent_by=instance.sent_by,recieved_by=instance.recieved_by,type="HIRE",contract=instance)
+        Notification.objects.create(request=request,user=instance.sent_by,accepted_by=instance.recieved_by)
+    # if instance.accepted:

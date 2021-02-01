@@ -1,7 +1,7 @@
 import React, { Component, useState } from 'react'
 import Carousel from 'react-bootstrap/Carousel'  
 import './Home.css'
-import codeexp from '../../assets/images/codeexpert.jpeg'
+import elearn from '../../assets/images/elearn.jpg'
 import instruc from '../../assets/images/instructor.jpeg'
 import freelan from '../../assets/images/codeexpert.jpeg'
 import study from '../../assets/images/study.jpeg'
@@ -249,14 +249,12 @@ export default class Home extends Component {
 
         <div className="cards__container">
             <div className="_card">
-                <img src={codeexp} alt=""/>
+                <img src={elearn} alt=""/>
                 <h3>
-                    Code Expert
+                E-Learning market place
                 </h3>
                 <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                     Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-                     , when an unknown printer took
+                Just a click-away to experience one-stop  solution for all your training ,learning and certification needs .  Our objective is to give best-in-class platform to access Industry's most prominent learning providers .  We offer solution for training needs of both Academic ,On-job experts  with seemless integration features .
                 </p>
             </div>
 
@@ -266,20 +264,16 @@ export default class Home extends Component {
                    Instructor
                 </h3>
                 <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                     Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-                     , when an unknown printer took
+                Online tutoring platform with best experts are being onboarded to help your academic needs.  Our specialization includes Computer science, software Programming ,  Information technology with salient features of Video and Audio based interactive sessions.
                 </p>
             </div>
             <div className="_card">
                 <img src={freelan} alt=""/>
                 <h3>
-                    Freelancer
+                    Code Expert
                 </h3>
                 <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                     Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-                     , when an unknown printer took
+                We offer a expert support with one click away . Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs. We have variety of experts who can be your buddy to support your project completion with all necessary tools, expertise . Our free lancer module can be your virtual team to meet your deliverables. 
                 </p>
             </div>
 

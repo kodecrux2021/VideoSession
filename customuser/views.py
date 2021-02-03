@@ -76,7 +76,7 @@ def Moosend(email):
         'https://api.moosend.com/v3/lists/create.json?apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980&Format=json',
         json=payload,
         headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, )
-    print (resp.text)
+    print ('mailinglistcreated',resp.text)
     if resp.status_code != 201:
         success_dict = json.loads(resp.text)
         mail_id = success_dict['Context']
@@ -91,18 +91,23 @@ def Moosend(email):
             'https://api.moosend.com/v3/subscribers/'+ mail_id +'/subscribe.json?apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980&MailingListID='+ mail_id +'&Format=json',
             json=payload,
             headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, )
-        print (resp.text)
+        print ('subscriber created',resp.text)
         if resp.status_code != 201:
             print('success subscriber')
             # to create campaign
             params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json"}
             payload = {
                 "Name": "test4",
-                "Subject": "Some subject",
+                "Subject": "Forgot Password",
                 "SenderEmail": "sales@kodecrux.com",
                 "ReplyToEmail": "sales@kodecrux.com",
                 "ConfirmationToEmail": "sales@kodecrux.com",
-                "WebLocation": "http://13.229.251.62:8000/password-email-verification/?email="+ email ,
+                # "WebLocation": "https://en.wikipedia.org/wiki/Wikipedia" ,
+                # "WebLocation": "http://13.229.251.62:8000/password-email-verification/" ,
+                # "WebLocation": "http://0.0.0.0:81/password-email-verification/",
+                # "WebLocation": "https://f8f334c3909c.ngrok.io/password-email/?email="+email,
+                "WebLocation": "https://f8f334c3909c.ngrok.io/password-email-verification/?email="+email,
+
                 "MailingLists": [
                     {
                         "MailingListID": mail_id
@@ -118,7 +123,7 @@ def Moosend(email):
             if resp.status_code != 201:
                 success_dict = json.loads(resp.text)
                 campaign_id = success_dict['Context']
-                print('Created task. ID: {}')
+                print('Created task. ID: {}',campaign_id)
                 # to sending a campaign
                 params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json",
                           "CampaignID": campaign_id}
@@ -387,17 +392,21 @@ class ForgotPasswordViewset(viewsets.ModelViewSet):
 
 class ForgotPasswordEmailVerificationViewSet(APIView):
     permission_classes = [permissions.AllowAny]
-
     def get(self,request):
         email = self.request.query_params.get('email', None)
-        code = self.request.query_params.get('code',None)
+        verification_code = self.request.query_params.get('code',None)
         print('email', email)
-        user = models.CustomUser.objects.filter(email=str(email),verification_code=str(code))
+        print('codes', verification_code)
+        user = models.CustomUser.objects.filter(email=str(email))
         if user.exists():
-            success = Moosend(email)
+            is_user = user.first()
+            print ('is_user.verification_code',is_user.verification_code)
+            verification_code = is_user.verification_code
+            # success = Moosend(email)
             # ForgotPasswordVerification(code, is_user.email)
             # content = {'code':code}
-        context = {'code':code}
+        print ('code',verification_code)
+        context = {'verification_code':verification_code}
         return render(self.request, 'random.html', context)
 
 class ForgotPasswordEmailSecondVerificationViewSet(generics.ListAPIView):
@@ -414,7 +423,8 @@ class ForgotPasswordEmailSecondVerificationViewSet(generics.ListAPIView):
             print('instance', is_user.verification_code, code)
             is_user.verification_code = code
             is_user.save()
-            r = requests.get('http://0.0.0.0:81/password-email-verification/?email='+email+'&code='+str(code))
+            success = Moosend(email)
+            r = requests.get('http://f8f334c3909c.ngrok.io/password-email-verification/?email='+email+'&code='+str(code))
             print ('r',r)
             # ForgotPasswordVerification(code, is_user.email)
         return user
@@ -432,7 +442,7 @@ class GoogleView(APIView):
         payload = {'access_token': request.data.get("token")}  # validate the token
         print('request.data.get("token")',request.data.get("token"))
         print('payload',payload)
-        r = requests.get('https://www.googleapis.com/oauth2/v2/userinfo', params=payload)
+        r = requests.get('http://54.254.226.25/home', params=payload)
         data = json.loads(r.text)
         print(data)
 

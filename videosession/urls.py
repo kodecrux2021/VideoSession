@@ -23,6 +23,7 @@ from rest_framework_simplejwt import views as jwt_views
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.authtoken import views
+from hire.views import Order
 
 admin.site.site_header = 'VideoSession admin'
 admin.site.site_title = 'VideoSession admin'
@@ -54,7 +55,14 @@ urlpatterns = [
     path('eduser/', user_views.EducatorView.as_view(), name='eduser'),
     path('user/', customuser_views.UserView.as_view(), name='user'),
     path('cForgotPasswordViewsetode/', customuser_views.OTP.as_view(), name='code'),
-    path('team', user_views.home, name='home'),
+    path('refresh/', message_views.refresh_token, name='home'),
+    path('order/', Order.as_view(), name="hired"),
+    path('teamviewer/',message_views.TeamviewerView.as_view(),name='teamviewer'),
+    path('teamviewer-access/', message_views.TeamviewerAccesstokenView.as_view(), name='teamviewer'),
+    # path('teamviewer-refresh/', message_views.TeamviewerRefreshAccesstokenView.as_view(), name='teamviewer-refresh'),
+    path('teamviewer-meeting/', message_views.TeamviewerMeetingtokenView.as_view(), name='teamviewer-meeting'),
+    path('teamtemplate/', message_views.TeamViewerTemplateViewSet.as_view(),
+         name='teamtemplate'),
 
 ]
 

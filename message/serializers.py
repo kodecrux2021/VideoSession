@@ -39,5 +39,21 @@ class ConversationSerializer(serializers.ModelSerializer):
     includes = CustomUserSerializers(many=True, read_only=True)
     class Meta:
         model = Conversation
-        read_only_fields = ('id','last_message_datetime')
-        fields = ('id','includes','archived_by','last_message_datetime',)
+        read_only_fields = ('id','last_message_datetime','subject','start_date_time','end_date_time','participant_web_link','teamviewr_id','access_token','refresh_token','conference_call_information','password')
+        fields = ('id','includes','archived_by','last_message_datetime','subject','start_date_time','end_date_time','participant_web_link','teamviewr_id','access_token','refresh_token','conference_call_information','password')
+
+        def create(self, validated_data):
+            print("validated_data['username']'", validated_data['username'])
+            teamviewer_data = Conversation(
+                subject=validated_data['ss'],
+                start_date_time=validated_data['start_date_time'],
+                end_date_time=validated_data['end_date_time'],
+                is_active=True,
+                participant_web_link=validated_data['participant_web_link'],
+                teamviewr_id=validated_data['teamviewr_id'],
+                access_token=validated_data['access_token'],
+                refresh_token=validated_data['refresh_token'],
+                conference_call_information=validated_data['conference_call_information'],
+                password=validated_data['password'],
+            )
+            return teamviewer_data

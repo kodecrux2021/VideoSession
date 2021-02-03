@@ -10,6 +10,15 @@ class Conversation(models.Model):
     last_message_datetime = models.DateTimeField(default=datetime.now(), null=True, blank=True)
     archived_by = models.ManyToManyField(CustomUser, related_name="conversation_archived", blank=True, null=True)
     includes = models.ManyToManyField(CustomUser, related_name="conversation_includes", blank=True, null=True)
+    subject = models.CharField(max_length=1200, null=True, blank=True)
+    start_date_time = models.DateTimeField(default=datetime.now(), null=True, blank=True)
+    end_date_time = models.DateTimeField(default=datetime.now(), null=True, blank=True)
+    participant_web_link= models.CharField(max_length=1200, null=True, blank=True)
+    teamviewr_id = models.CharField(max_length=1200, null=True, blank=True)
+    access_token = models.CharField(max_length=1200, null=True, blank=True)
+    refresh_token = models.CharField(max_length=1200, null=True, blank=True)
+    conference_call_information = models.CharField(max_length=1200, null=True, blank=True)
+    password = models.CharField(max_length=1200, null=True, blank=True)
     def __str__(self):
         return str(self.id)
 
@@ -29,5 +38,10 @@ class Message(models.Model):
     class Meta:
         ordering = ('date',)
 
+
+class TeamViewerTokens(models.Model):
+    expire_on = models.DateTimeField(default=datetime.now(), null=True, blank=True)
+    access_token = models.CharField(max_length=1200, null=True, blank=True)
+    refresh_token = models.CharField(max_length=1200, null=True, blank=True)
 
 

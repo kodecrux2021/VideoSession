@@ -27,6 +27,7 @@ class CustomUserSerializers(serializers.ModelSerializer):
         print("validated_data['username']'",validated_data['username'])
         user = CustomUser(
             username=validated_data['username'],
+            email=validated_data['email'],
             phone=validated_data['phone'],
             is_active=True,
             is_instructor=validated_data['is_instructor'],

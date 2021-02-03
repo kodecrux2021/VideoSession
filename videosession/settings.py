@@ -32,7 +32,7 @@ SECRET_KEY = 'p_w#!6jui_dlu78z7*ne8^y2z$+2q0u%2kqm*hg(ij9a2=1w^1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['086576134632.ngrok.io','127.0.0.1','0.0.0.0','*']
+ALLOWED_HOSTS = ['a159a767237c.ngrok.io','127.0.0.1','0.0.0.0','*']
 
 
 # Application definition
@@ -253,8 +253,25 @@ MAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+# PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+# STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.0/howto/static-files/
+
+STATIC_URL = '/static/'
+STATIC_DIR= os.path.join(BASE_DIR,'static')
+MEDIA_DIR = os.path.join(BASE_DIR,'media')
+STATICFILES_DIRS=[STATIC_DIR]
+MEDIA_ROOT = MEDIA_DIR
+MEDIA_URL = '/media/'
+print("MEDIA_URL",MEDIA_URL)
+
+FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
+                        "django_excel.TemporaryExcelFileUploadHandler")
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 PAYMENT_VARIANTS = {
     'razorpay': ('django_payments_razorpay.RazorPayProvider', {

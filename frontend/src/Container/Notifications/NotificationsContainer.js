@@ -145,7 +145,11 @@ export default class NotificationsContainer extends Component {
              'Authorization': 'Bearer ' + auth,
            },
         })
-        .then(res => res.json())
+        .then(response => { if (response["status"] === 201 || response["status"] === 200) {
+            return response.json();
+          } else {
+            message.info("Something went wrong");
+          }})
         .then(
             (result) => {
               console.log('request result',result)
@@ -166,7 +170,11 @@ export default class NotificationsContainer extends Component {
              'Authorization': 'Bearer ' + auth,
            },
         })
-        .then(res => res.json())
+        .then(response => { if (response["status"] === 201 || response["status"] === 200) {
+            return response.json();
+          } else  {
+            message.info("Something went wrong");
+          }})
         .then(
             (result) => {
               console.log('notification result',result)
@@ -176,6 +184,36 @@ export default class NotificationsContainer extends Component {
     }
 
     getUser = () => {
+        if (localStorage.getItem("token")) {
+            let data_refresh = { refresh: localStorage.getItem("refresh") };
+      
+            fetch(url + "/api/token/refresh/", {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data_refresh),
+            })
+              .then((response) => {
+                if (response["status"] === 201 || response["status"] === 200) {
+                  return response.json();
+                } else if (response["status"] === 401) {
+                  message.info("Something went wrong");
+                  localStorage.removeItem("refresh");
+                  localStorage.removeItem("access");
+                }
+              })
+              .then((result) => {
+                if (result) {
+                  console.log("result.access", result.access);
+                  localStorage.setItem("token", result.access);
+                }
+              })
+              .catch((err)=>{
+                  message.info('some error occured! please refresh page')
+              });
+          }
         let auth = localStorage.getItem('token')
 
         fetch(url + '/currentuser/', {
@@ -191,8 +229,8 @@ export default class NotificationsContainer extends Component {
                 (result) => {
 
                     console.log('current user result', result.user)
-                    this.getNotifications(result.user.id);
-                    this.setState({ user: result.user })
+                    this.getNotifications(result.user?.id);
+                    this.setState({ user: result?.user })
 
                 }
             )

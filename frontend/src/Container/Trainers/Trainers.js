@@ -6,6 +6,7 @@ import { message } from 'antd';
 import Navbar from '../../components/Header/Navbar';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import kodecrux from '../../assets/images/reg2.jpeg'
 
 let uri = ''
 export default class Trainers extends Component {
@@ -228,6 +229,7 @@ export default class Trainers extends Component {
     render() {
         return (
             <>
+                        <img src={kodecrux} style={{ height: '70px', position: 'absolute',left: '0', top: '0' }} onClick = {() =>this.props.history.push('/home')}/>
                 <Navbar />
                 {
                     this.state.loading ?

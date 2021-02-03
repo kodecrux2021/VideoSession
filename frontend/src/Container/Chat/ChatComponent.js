@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import Chat from './Chat'
 import avatar from '../../assets/images/avatar2.jpeg'
-import { message } from 'antd';
+import { message, Spin } from 'antd';
 import { url } from '../../Server/GlobalUrl';
 import Navbar from '../../components/Header/Navbar';
-import {DatePicker} from 'antd'
-import moment from 'moment';
+// import {DatePicker} from 'antd'
+// import moment from 'moment';
+// import { CircularProgress } from '@material-ui/core';
 
 //let conversation_id =''
 
@@ -18,6 +19,7 @@ export default class ChatComponent extends Component {
         messages: [],
         message: '',
         conversation: [],
+        loading: false
     }
 
     dropHandle = () => {
@@ -95,13 +97,17 @@ fetch(url + '/api/conversation/'+conversation_id, {
      'Authorization': 'Bearer ' + auth,
    },
 })
-.then(res => res.json())
+.then(response => { if (response['status'] === 201 || response['status'] === 200) {
+    return response.json()
+} else if (response['status'] === 400) {
+        message.info('Something went wrong, please refresh the page')
+}})
 .then(
     (result) => {
       console.log('result',result)
       this.setState({conversation: result})
 
-      let id = result.includes[0].id ;
+      let id = result?.includes[0].id ;
       let user_id = localStorage.getItem('user_id')
       if(result.includes[0].id == user_id && result.includes.length > 1){
         id = result.includes[1].id
@@ -161,11 +167,8 @@ handleData = (identity, data) => {
 }
 
 schedule = () =>{
-    //let auth = localStorage.getItem('token')
-    let data = {
-
-    }
-     fetch( 'https://cors-anywhere.herokuapp.com/http://login.teamviewer.com/oauth2/authorize?response_type=code&client_id=388609-YgM2aKpYNsYmThQrs7Cn', {
+    
+     fetch(  `${url}/teamviewer-meeting/?conversation_id=${localStorage.getItem('conversation_id')}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json, text/plain',
@@ -175,37 +178,16 @@ schedule = () =>{
     .then((response) => {
         console.log("response", response)
         if (response['status'] === 201 || response['status'] === 200) {
-            console.log(response.url);
-            return response.text()
+            this.setState({loading: false})
+            message.info('Check your mail to join the session')
+            return response.json()
         } else if (response['status'] === 400) {
-                console.log('Something is wrong')
+                this.setState({loading: false})
+                message.info('Something went wrong, please try again later')
         }
     })
     .then((result) => {
-        console.log(result);
-        let data = {
-            'redirect_uri': 'https://community.teamviewer.com/English/discussion/53405/authorization-code',
-            'client_id': '388609-YgM2aKpYNsYmThQrs7Cn',
-            'client_secret': '9o4on6EWu0gY5CUzXwpd',
-            'grant_type': 'authorization_code',
-            'code': result
-        }
-        fetch('https://webapi.teamviewer.com/api/v1/oauth2/token', {
-            method:'POST',
-            headers: {
-              'Accept': 'application/json',
-             'Content-Type': 'application/json',
-             //'Authorization': 'Bearer ' + auth,
-           },
-           body: JSON.stringify(data),
-        })
-        .then(res => res.json())
-        .then(
-            (result) => {
-              console.log('result',result)
-             // this.setState({user: result })
-            }
-        )
+        console.log(result)
     })
 }
 
@@ -234,7 +216,7 @@ sendMessage = async(e) => {
         console.log("response", response)
         if (response['status'] === 201 || response['status'] === 200) {
             return response.json()
-        } else if (response['status'] === 400) {
+        } else {
                 console.log('Something is wrong')
         }
     })
@@ -250,11 +232,12 @@ sendMessage = async(e) => {
     render() {
         return (
             <>
+            
 
             <div style={{backgroundColor: '#ededed', height: '100vh'}}>
                 <Navbar/>
                 <Chat
-                
+                loading={this.state.loading}
                 clicked={this.state.clicked}
                 dropHandle={this.dropHandle}
                 reciever_img={this.state.reciever?.profile_pic}

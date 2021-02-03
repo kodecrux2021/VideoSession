@@ -6,6 +6,8 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { Avatar, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {Modal, Button, notification} from 'antd'
+import kodecrux from '../../assets/images/reg2.jpeg'
+import { useHistory } from 'react-router-dom';
 
 let user_id = ''
 let rec = '';
@@ -45,10 +47,13 @@ export default function Notifications(props) {
     useEffect(() =>{
         user_id = localStorage.getItem('user_id');
     },[])
+    const history = useHistory();
     const classes = useStyles();
     return (
         <div className='notifications' >
             <div className='notifications__header' >
+            <img src={kodecrux} style={{ height: '70px', position: 'absolute',left: '0', top: '0' }} onClick = {() =>history.push('/home')}/>
+
                 <span className={`${props.selected==='messages' && "span__active"}`} onClick={()=>props.selectHandler('messages')}  >
                     <ChatIcon className={`Notifications__header__icon ${props.selected==='messages' && "icon__active" } `}/>
                 </span>
@@ -232,7 +237,7 @@ export default function Notifications(props) {
                     <div className='friend__cards' >
 
                        {
-                           props.requests.map((request)=> 
+                           props.request!==null && props.requests.map((request)=> 
                             {
 
                                 let data =  request.accepted ? 
@@ -328,7 +333,7 @@ export default function Notifications(props) {
                                     </Modal>): null}
                                             <div className='troubleshoot__details' >
                                                 {notification.type == 'HIRE'?
-                                                <span>{notification.user_first_name} {notification.user_last_name} wants to hire you</span>
+                                                <span>{notification.sent_by_first_name} {notification.sent_by_last_name} wants to hire you</span>
                                                 :
                                                 <span>{notification.user_first_name} {notification.user_last_name} has accepted your request</span>
                                                 }

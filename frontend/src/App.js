@@ -19,6 +19,7 @@ import Email from './Container/Login/ForgotPassword/Email';
 import Reset from './Container/Login/ForgotPassword/Reset';
 import Pagetwo from './Container/RegistrationDetails';
 import New from './Container/RegistrationDetails/new';
+import Payment from './payment'
 
 
 
@@ -46,6 +47,7 @@ function App() {
           <Route path="/notifications" component={NotificationsContainer} />
           <Route path="/forgot-password" exact component={Email} />
           <Route path="/reset" exact component={Reset} />
+          <Route path="/payment" exact component={Payment} />
         </Switch>
       </Router>
       

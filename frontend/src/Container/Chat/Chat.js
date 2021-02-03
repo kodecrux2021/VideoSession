@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import './Chat.css'
-import { Avatar, IconButton } from '@material-ui/core';
+import { Avatar, CircularProgress, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
@@ -113,13 +113,14 @@ export default function Chat(props) {
         <div className='pop__over'>
         <div className='pop__over__left'>
         <div className='pop__over__buttons'>
-            <IconButton>
-            <VideocamOutlinedIcon />
+            <IconButton onClick = {props.schedule}>
+            {props.loading ? <CircularProgress/>:
+            <VideocamOutlinedIcon />}
             </IconButton>
         <span>Join session room</span>
         </div>
-        <div className='pop__over__buttons'>
-            <IconButton  onClick = {props.schedule}>
+        {/* <div className='pop__over__buttons'>
+            <IconButton  >
             <CalendarTodayOutlinedIcon/>
             </IconButton> 
         <span>Schedule session</span>
@@ -132,7 +133,7 @@ export default function Chat(props) {
       format="YYYY/MM/DD HH:mm:ss"
       onChange={onChange}
     />
-        </div>
+        </div> */}
         
         
         {/* <div className='pop__over__buttons'>

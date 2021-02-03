@@ -12,6 +12,7 @@ import home4 from '../../assets/images/home4.jpg'
 import home5 from '../../assets/images/home5.jpg'
 import Navbar from '../../components/Header/Navbar';
 import {Modal} from 'antd';
+import kodecrux from '../../assets/images/reg2.jpeg'
 
 export default class Home extends Component {
     state = {
@@ -203,6 +204,7 @@ export default class Home extends Component {
         return (
         <>
         <Navbar/>
+        
         <div className='body__ctr'>
               <div className="home_container">
       <Carousel controls={false} interval={10000} indicators={false} pause={false} fade={true}>

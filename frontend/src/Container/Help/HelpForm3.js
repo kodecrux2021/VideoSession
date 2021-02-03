@@ -6,6 +6,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import { message } from 'antd';
 import { url } from '../../Server/GlobalUrl';
 import Navbar from '../../components/Header/Navbar';
+import kodecrux from '../../assets/images/reg2.jpeg'
 
 export default class HelpForm3 extends Component {
 
@@ -121,6 +122,7 @@ export default class HelpForm3 extends Component {
   render() {
     return (
       <>
+      <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px' }} onClick = {() =>this.props.history.push('/home')}/>
         <Navbar />
         <div className='help__form__container'>
           <div className='HelpForm1'>

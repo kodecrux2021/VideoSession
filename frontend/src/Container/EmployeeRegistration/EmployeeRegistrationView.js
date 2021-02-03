@@ -32,7 +32,7 @@ export default function EmployeeRegistrationView(props) {
                 
                 <h1>Register for a course</h1>
                 <form  >
-                    <Row className="row">
+                    {/* <Row className="row">
                         <Col>
                         <input type="text" value={props.first_name} className="form__control"  placeholder="First Name" onChange={(e) => props.handelData('first_name', e.target.value)}  />
                         </Col>
@@ -40,16 +40,16 @@ export default function EmployeeRegistrationView(props) {
                         <Col>
                         <input type="text" className="form__control"  placeholder="Last Name" value={props.last_name} onChange={(e) => props.handelData('last_name', e.target.value)}  />
                         </Col>
-                    </Row>
-                    <br/>
-                    <Row>
+                    </Row> */}
+                    
+                    {/* <Row>
                         <Col>
                         <input type="email" className="form__control"  placeholder="Email" value={props.email} onChange={(e) => props.handelData('email', e.target.value)}  />
                         </Col>
                         <Col>
                         <input type="text" className="form__control"  placeholder="Phone Number" value={props.phone_no} onChange={(e) => props.handelData('phone_no', e.target.value)}  />
                         </Col>
-                    </Row>
+                    </Row> */}
                     {/* <br/>
                     <Row>
                         <Col>
@@ -145,7 +145,7 @@ export default function EmployeeRegistrationView(props) {
                         <label><strong>Female</strong></label>
                     </Row> */}
                      
-                     <div className='employ__reg__footer'>  <button className='blue__white' type="submit" onClick={props.handleSubmit} >Register</button></div>
+                     <div className='employ__reg__footer'>  <button className='blue__white' type="submit" onClick={props.handleSubmit}>Register</button></div>
               
                 </form>
             </div>

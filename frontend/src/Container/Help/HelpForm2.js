@@ -5,6 +5,7 @@ import LibraryBooksOutlinedIcon from '@material-ui/icons/LibraryBooksOutlined';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import Navbar from '../../components/Header/Navbar';
+import kodecrux from '../../assets/images/reg2.jpeg'
 
 export default class HelpForm2 extends Component {
 
@@ -31,6 +32,7 @@ export default class HelpForm2 extends Component {
     render() {
         return ( 
             <>
+            <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px' }} onClick = {() =>this.props.history.push('/home')}/>
             <Navbar/>
             <div className='help__form__container'>
             <div className='HelpForm1'>

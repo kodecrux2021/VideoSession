@@ -48,7 +48,7 @@ export default class NotificationsContainer extends Component {
             .then((result) => {
                 console.log('result', result);
                 this.setState({isModalVisible: false})
-            })    
+            })  .catch((e)=>console.log(e));  
     }
 
     declineHire = (id) =>{
@@ -78,7 +78,7 @@ export default class NotificationsContainer extends Component {
             .then((result) => {
                 console.log('result', result);
                 this.setState({isModalVisible: false})
-            })    
+            })  .catch((e)=>console.log(e));  
     }
 
     show = (id) =>{
@@ -102,7 +102,7 @@ export default class NotificationsContainer extends Component {
             .then((result) => {
                 console.log('result', result);
                 this.setState({isModalVisible: true, hire: result})
-            })    
+            }) .catch((e)=>console.log(e));   
     }
     
     getMessage = () =>{
@@ -126,7 +126,7 @@ export default class NotificationsContainer extends Component {
               //console.log(this.state.message);
 
             }
-        )
+        ).catch((e)=>console.log(e));
     }
 
     selectHandler = (data) => {
@@ -158,6 +158,7 @@ export default class NotificationsContainer extends Component {
 
             }
         )
+        .catch((e)=>console.log(e));
     }
 
     getNotifications = (id) => {
@@ -172,9 +173,8 @@ export default class NotificationsContainer extends Component {
         })
         .then(response => { if (response["status"] === 201 || response["status"] === 200) {
             return response.json();
-          } else  {
-            message.info("Something went wrong");
-          }})
+          }}) 
+        .catch((e)=>message.info("Something went wrong"))  
         .then(
             (result) => {
               console.log('notification result',result)
@@ -233,7 +233,7 @@ export default class NotificationsContainer extends Component {
                     this.setState({ user: result?.user })
 
                 }
-            )
+            ).catch((e)=>console.log(e));
     }
 
 
@@ -267,7 +267,7 @@ export default class NotificationsContainer extends Component {
                 localStorage.setItem('token',result.access)
                 }
             }
-            )   
+            )  .catch((e)=>console.log(e)); 
     }
 
 
@@ -307,7 +307,7 @@ export default class NotificationsContainer extends Component {
             })
             .then((result) => {
                 console.log('result', result);
-            })
+            }).catch((e)=>console.log(e));
     }
 
 
@@ -333,7 +333,7 @@ export default class NotificationsContainer extends Component {
             })
             .then((result) => {
                 console.log('result', result);
-            })
+            }).catch((e)=>console.log(e));
     }
 
     chatHandler = () =>{

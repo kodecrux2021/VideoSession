@@ -19,7 +19,9 @@ export default class ChatComponent extends Component {
         messages: [],
         message: '',
         conversation: [],
-        loading: false
+        loading: false,
+        meetId: '',
+        isModalVisible: false
     }
 
     dropHandle = () => {
@@ -48,7 +50,9 @@ export default class ChatComponent extends Component {
         
             }
         )
-    }, 3000);
+        .catch((e)=>console.log(e));
+    }, 3000)
+    
 
     componentWillUnmount(){
         clearInterval(this.fetchMessages)
@@ -85,7 +89,8 @@ componentDidMount() {
             localStorage.setItem('token',result.access)
             }
         }
-        )   
+        ) 
+        .catch((e)=>console.log(e))  
 }
 let auth = localStorage.getItem('token')
 let conversation_id = localStorage.getItem('conversation_id')
@@ -167,7 +172,7 @@ handleData = (identity, data) => {
 }
 
 schedule = () =>{
-    
+    this.setState({loading: true})
      fetch(  `${url}/teamviewer-meeting/?conversation_id=${localStorage.getItem('conversation_id')}`, {
         method: 'GET',
         headers: {
@@ -179,16 +184,21 @@ schedule = () =>{
         console.log("response", response)
         if (response['status'] === 201 || response['status'] === 200) {
             this.setState({loading: false})
-            message.info('Check your mail to join the session')
+            //message.info('Check your mail to join the session')
             return response.json()
-        } else if (response['status'] === 400) {
+        } else {
                 this.setState({loading: false})
                 message.info('Something went wrong, please try again later')
         }
     })
     .then((result) => {
-        console.log(result)
+        console.log(JSON.parse(result)); 
+        return JSON.parse(result)
     })
+    .then((res)=>{
+        this.setState({meetId: res.id , isModalVisible: true})
+    })
+    .catch((e)=>console.log(e))
 }
 
 sendMessage = async(e) => {
@@ -223,17 +233,22 @@ sendMessage = async(e) => {
     .then((result) => {
         console.log('result', result);
     })
+    .catch((e)=>console.log(e))
 
     //this.fetchMessages()
     this.setState({message:''})
 
 }
 
+
+handleCancel = () => {
+  this.setState({isModalVisible: false})
+};
+
     render() {
         return (
             <>
-            
-
+        
             <div style={{backgroundColor: '#ededed', height: '100vh'}}>
                 <Navbar/>
                 <Chat
@@ -253,6 +268,10 @@ sendMessage = async(e) => {
                 sendMessage={this.sendMessage}
                 conversation={this.state.conversation}
                 schedule = {this.schedule}
+                meetId={this.state.meetId}
+                isModalVisible={this.state.isModalVisible}
+                handleCancel={this.handleCancel}
+                handleOk = {this.handleCancel}
                 />
             </div>
             </>

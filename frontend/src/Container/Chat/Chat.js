@@ -7,8 +7,6 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import Popover from '@material-ui/core/Popover';
 import {DatePicker, Space} from 'antd'
-import moment from 'moment';
-import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
 import VideocamOutlinedIcon from '@material-ui/icons/VideocamOutlined';
 import { Drawer } from 'antd';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -17,7 +15,9 @@ import PageviewOutlinedIcon from '@material-ui/icons/PageviewOutlined';
 import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
 import { Link, useHistory } from 'react-router-dom';
 import dateFormat from 'dateformat';
-import Modal from 'antd/lib/modal/Modal';
+import {Modal, Button} from 'antd/lib';
+
+
 
 const { RangePicker } = DatePicker;
 const useStyles = makeStyles((theme) => ({
@@ -243,6 +243,10 @@ export default function Chat(props) {
          }
         
       </Drawer>
+      {props.meetId !== '' && <Modal title="Session Information" onOk={props.handleOk} visible={props.isModalVisible} onCancel={props.handleCancel}>
+            <h5>Meeting-ID: {props.meetId}</h5>
+            <h5>Meeting Link: <a>https://go.teamviewer.com/v15/en/</a></h5>
+        </Modal>}
         </div>
     )
 }

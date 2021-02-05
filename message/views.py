@@ -20,8 +20,13 @@ import requests
 import json
 import datetime
 from customuser.models import CustomUser
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 
+def smtp():
+    pass
 
 def Moosend(email):
     params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json"}
@@ -61,7 +66,7 @@ def Moosend(email):
                 # "WebLocation": "https://en.wikipedia.org/wiki/Wikipedia" ,
                 # "WebLocation": "http://13.229.251.62:8000/password-email-verification/" ,
                 # "WebLocation": "http://0.0.0.0:81/password-email-verification/",
-                "WebLocation": "a159a767237c.ngrok.io.io/password-email-verification/?email="+email,
+                "WebLocation": "http://13.229.251.62:8000/password-email-verification/?email="+email,
                 "MailingLists": [
                     {
                         "MailingListID": mail_id
@@ -119,6 +124,19 @@ def MoosendTeam(emails):
                 headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, )
             print (resp.text)
         if resp.status_code != 201:
+            print ('send_mail1', send_mail)
+            sent = send_mail(
+                subject='Start Your TeamViewer Meeting',
+                message='That’s your message body',
+                html_message=render_to_string('teamviewer.html', {'context': 'values'}),
+                # plain_message = strip_tags(),
+                from_email='sales@kodecrux.com',
+                recipient_list=['arshi.khan67@gmail.com'],
+                fail_silently=False,
+            )
+            # send_mail('Subject here', 'Here is the message.', 'sales@kodecrux.com', ['arshi.khan67@gmail.com'],
+            #           fail_silently=False)
+            print ('sent', sent)
             print('success subscriber')
             # to create campaign
             params = {"apikey": "7708db34-9af3-4b1d-9cca-eae97e8dd980", "format": "json"}
@@ -128,7 +146,7 @@ def MoosendTeam(emails):
                 "SenderEmail": "sales@kodecrux.com",
                 "ReplyToEmail": "sales@kodecrux.com",
                 "ConfirmationToEmail": "sales@kodecrux.com",
-                "WebLocation": "https://a159a767237c.ngrok.io/teamtemplate/",
+                "WebLocation": "http://13.229.251.62:8000/teamtemplate/",
                 # "WebLocation": "http://13.229.251.62:8000/password-email-verification/" ,
                 # "WebLocation": "http://0.0.0.0:81/password-email-verification/",
                 # "WebLocation": "http://0.0.0.0:81/teamtemplate/?email="+emails,
@@ -218,6 +236,7 @@ class ConversationView(APIView):
 class TeamviewerView(APIView):
     permission_classes = [permissions.AllowAny]
     def get(self, request, format=None):
+        smtp()
         parameters = {
             "response_type": 'code',
             "client_id": '388609-YgM2aKpYNsYmThQrs7Cn',
@@ -297,7 +316,7 @@ class TeamviewerMeetingtokenView(APIView):
         conversation_id = self.request.query_params.get('conversation_id', None)
         # code = raw_input('Enter your AUTH code:')
         print ('access_token154', access_token.access_token)
-        print ('hi')
+        print ('hiTeamviewerMeetingtokenView')
         data = {
             'type': 'None',
             'subject': 'subject',
@@ -327,7 +346,7 @@ class TeamviewerMeetingtokenView(APIView):
             print ('data',data.get('participant_web_link'),type(data))
             print ('data',data.get('refresh_token'),type(data))
             print('qaqaaccess_token',access_token)
-            r = requests.get('http://a159a767237c.ngrok.io/teamtemplate/')
+            r = requests.get('http://13.229.251.62:8000/teamtemplate/')
             print ('r',r)
             emails=['sales@kodecrux.com','shraddha456khandelwal@gmail.com','pawasiet@gmail.com']
             conversation = models.Conversation.objects.filter(id=conversation_id)

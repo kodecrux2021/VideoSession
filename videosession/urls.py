@@ -25,6 +25,7 @@ from django.conf.urls.static import static
 from rest_framework.authtoken import views
 from hire.views import Order
 
+
 admin.site.site_header = 'VideoSession admin'
 admin.site.site_title = 'VideoSession admin'
 admin.site.site_url = 'http://VideoSession.com/'

@@ -275,7 +275,21 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 PAYMENT_VARIANTS = {
     'razorpay': ('django_payments_razorpay.RazorPayProvider', {
-        'public_key': 'rzp_test_TVbCLwAp2V8lVn',
-        'secret_key': 'KyyHwi8ix0IAW4fEzYnYcAl0'})}
+        'public_key': 'rzp_test_LmOgpIykhftvK7',
+        'secret_key': 'rqWbFlWkSw3OaIeLZqEGgPFg'})}
 
 APPEND_SLASH = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mailendo.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'sales@kodecrux.com'
+EMAIL_HOST_PASSWORD = 'Arunaprasad@2020'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+# SMTP_Hostname = 'smtp.mailendo.com'
+# # EMAIL_HOST_USER = '7708db34-9af3-4b1d-9cca-eae97e8dd980'
+# SMTP_Password = 'Arunaprasad@2020'
+# SMTP_Username= 'sales@kodecrux.com'
+# SMTP_Port = 25
+# # SMTP_USE_TLS = True

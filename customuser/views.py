@@ -424,7 +424,7 @@ class ForgotPasswordEmailSecondVerificationViewSet(generics.ListAPIView):
             is_user.verification_code = code
             is_user.save()
             success = Moosend(email)
-            r = requests.get('http://f8f334c3909c.ngrok.io/password-email-verification/?email='+email+'&code='+str(code))
+            r = requests.get('http://13.229.251.62:8000/password-email-verification/?email='+email+'&code='+str(code))
             print ('r',r)
             # ForgotPasswordVerification(code, is_user.email)
         return user

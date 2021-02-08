@@ -53,6 +53,7 @@ export default class Trainers extends Component {
                     }
                 }
                 )
+                .catch(e=>console.log(e))
         }
         let auth = localStorage.getItem('token')
 
@@ -94,9 +95,10 @@ export default class Trainers extends Component {
                                 console.log('result', result)
                                 this.setState({ trainers: result, loading: false })
                             }
-                        )
+                        ).catch(e=>console.log(e))
                 }
             )
+            .catch(e=>console.log(e))
 
 
 
@@ -140,7 +142,7 @@ export default class Trainers extends Component {
             })
             .then((result) => {
                 console.log('result', result);
-            })
+            }).catch(e=>console.log(e))
 
 
 
@@ -228,8 +230,7 @@ export default class Trainers extends Component {
 
     render() {
         return (
-            <>
-                        <img src={kodecrux} style={{ height: '70px', position: 'absolute',left: '0', top: '0' }} onClick = {() =>this.props.history.push('/home')}/>
+            <>                      
                 <Navbar />
                 {
                     this.state.loading ?
@@ -239,6 +240,7 @@ export default class Trainers extends Component {
 
                         :
                         <div className='body__ctr'>
+                            <img src={kodecrux} style={{ height: '70px', position: 'absolute',left: '0', top: '0', zIndex: '2000' }} onClick = {() =>this.props.history.push('/home')}/>
                             <div className=" d-flex  p-3 flex-column" style={{ alignItems: "center" }}>
                                 
                                  {this.state.trainers.map((trainer) => (

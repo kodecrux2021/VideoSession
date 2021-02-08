@@ -4,8 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { Star, Dot } from 'react-bootstrap-icons';
 import Badge from '@material-ui/core/Badge';
 import StarsIcon from '@material-ui/icons/Stars';
-import { Modal  } from 'antd';
-import { Link, useHistory } from 'react-router-dom'
+import { message, Modal  } from 'antd';
+import { Link, Redirect, useHistory } from 'react-router-dom';
+import {url} from '../../Server/GlobalUrl'
 
 const styles = theme => ({
     customBadge: {
@@ -32,7 +33,26 @@ const styles = theme => ({
     }
 
     const LiveHandle = () => {
-
+        fetch(url + '/api/session/', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8',
+            },
+        })
+            .then((response) => {
+                console.log("response", response)
+                if (response['status'] === 201 || response['status'] === 200) {
+                    return response.json()
+                } else if (response['status'] === 400) {
+                    console.log('Something went wrong')
+                }
+            })
+            .then((result) => {
+                console.log('result', result[0].video);
+                window.open(result[0].video)
+            }).catch((e)=>{console.log(e);
+            message.info(e.message)});
     }
 
     const { classes } = props;
@@ -94,7 +114,7 @@ const styles = theme => ({
             
             :
             <div className="trainers__card__right">
-            <button type="button" class="btn btn-info" onClick={ id => LiveHandle(id) } >LIVE SESSION</button>
+            <button type="button" class="btn btn-info" onClick={ id => LiveHandle() } >LIVE SESSION</button>
             </div>
             }
 

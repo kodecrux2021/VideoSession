@@ -332,13 +332,15 @@ export default function Notifications(props) {
                                         }
                                     </Modal>): null}
                                             <div className='troubleshoot__details' >
-                                                {notification.type == 'HIRE'?
-                                                <span>{notification.sent_by_first_name} {notification.sent_by_last_name} wants to hire you</span>
+                                                {notification.type == 'HIRE' ?
+                                                notification.hiring_status == 'NOT_DONE'?
+                                                <span>{notification.sent_by_first_name} {notification.sent_by_last_name} wants to hire you</span>:
+                                                <span>{notification.sent_by_first_name} {notification.sent_by_last_name} has accepted your request to hire</span>
                                                 :
                                                 <span>{notification.user_first_name} {notification.user_last_name} has accepted your request</span>
                                                 }
                                                 </div>
-                                           {notification.type== 'HIRE'?
+                                           {notification.type== 'HIRE' ?
                                             <div className='friend__card__button' >
                                                  <button  style={{  backgroundColor:' #5964c9'}} onClick = {() =>props.show(notification.contract)}>Show</button>
                                              </div>

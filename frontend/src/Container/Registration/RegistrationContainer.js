@@ -172,7 +172,7 @@ class RegistrationContainer extends Component {
                 }
                  if(result){
                     if(this.state.position!=='customer'){
-                        fetch( url + '/api/educator/' , {
+                        fetch( url + '/api/educatorcreate/' , {
                             method: 'POST',
                             headers: {
                                 'Accept': 'application/json, text/plain',

@@ -134,11 +134,12 @@ fetch(url + '/api/conversation/'+conversation_id, {
           console.log('result',result)
           this.setState({reciever: result })
         }
-    )
+    ).catch((e)=> console.log(e))
 
 
     }
 )
+.catch((e)=> console.log(e))
 
 
 

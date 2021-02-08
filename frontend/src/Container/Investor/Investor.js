@@ -43,7 +43,7 @@ export default function Investor(props) {
 
     return (
         <div className='investor' > 
-        <div style={{maxWidth: '900px'}} >
+        <div style={{maxWidth: '900px', marginTop: '30px'}} >
         <div className='investor__head'>
                 <div className='investor__head__title'>
                 <Avatar src={props.pic} className={classes.large} />
@@ -65,7 +65,7 @@ export default function Investor(props) {
                 </div>
                 <span className='investor__head__detail' >This request you choose will be closed and no longer shown to mentors.</span>
                
-                <div style={{width: '70%', margin:'5px 0'}} >
+                <div style={{ margin:'5px 0'}} >
                 <Select
 
                 className="basic-multi-select"
@@ -109,9 +109,9 @@ export default function Investor(props) {
                 </div>
 
                 <span className='investor__head__detail' >Budget* (USD) </span>
-                <div style={{display:'flex', alignItems:'center', color:'gray'}} >
+                <div className = 'budget' >
                 <AttachMoneyIcon/>
-                <div style={{width: '40%', margin:'5px 20px 5px 0px'}} >
+                <div style={{ margin:'5px 20px 5px 0px'}} >
                 <input style={{backgroundColor:'whitesmoke'}} type="text" className="form__control"  placeholder="Enter Budget" onChange={(e) => props.handleChange('budget',e.target.value)}  />
                 </div>
                 <span className='investor__head__detail' > Maximum USD $2000 </span>

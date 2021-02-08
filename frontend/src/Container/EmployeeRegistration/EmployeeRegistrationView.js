@@ -70,7 +70,7 @@ export default function EmployeeRegistrationView(props) {
                         </Col>
                     </Row> */}
                     <br/>
-                    <Row>
+                    {/* <Row> */}
                         <Col>
                         <Select
                 className="react-selectcomponent"
@@ -89,6 +89,7 @@ export default function EmployeeRegistrationView(props) {
                 placeholder={'Technology'}
               />
                         </Col>
+                        <br/>
                         <Col>
                         <Select
                 className="react-selectcomponent"
@@ -107,9 +108,9 @@ export default function EmployeeRegistrationView(props) {
                 placeholder={'Sub Technology'}
               />
                         </Col>
-                    </Row>
+                    {/* </Row> */}
                     <br/>
-                    <Row>
+                    {/* <Row> */}
                         <Col>
                         <Select
                 className="react-selectcomponent"
@@ -125,11 +126,11 @@ export default function EmployeeRegistrationView(props) {
                 options={props.topic_list}
                 isSearchable={true}
                 openMenuOnClick={true}
-                placeholder={'Technology'}
+                placeholder={'Topic'}
               />
                         </Col>
                         <Col></Col>
-                    </Row>
+                    {/* </Row> */}
                     <br/>
                     <Row className='textwrapper'>
 <textarea className='employ__reg__textarea' placeholder='Enter Brief Summary' value={props.summary} onChange={(e) => props.handelData('summary', e.target.value)}  >
@@ -153,8 +154,8 @@ export default function EmployeeRegistrationView(props) {
         </div>
         <Modal title="Select Option" footer={null} visible={props.isModalVisible}  onCancel={props.handleCancel}>
             <div className='reg__modal__button' >
-            <button onClick={()=>history.push('/courses')} style={{  backgroundColor:' #5964c9'}} type="primary" size='large' >Reference Link</button>
-            <button onClick={()=>history.push('/trainers/live')} style={{  backgroundColor:' #76d2fd'}} type="primary" size='large' >Live Session</button>
+            <button onClick={()=>history.push('/courses')} style={{  backgroundColor:' #5964c9'}} type="primary" className = 'button'>Reference Link</button>
+            <button onClick={()=>history.push('/trainers/live')} style={{  backgroundColor:' #76d2fd'}} type="primary" className = 'button'>Live Session</button>
             </div>
 
 

@@ -94,9 +94,7 @@
 }
 
 @media (max-width: 500px) {
-  .chat__card {
-    display: inline;
-  }
+  
   .friend__card__button {
     padding-top: 2rem;
   }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import RegistrationDetailsContainer from './Container/RegistrationDetails/RegsitrationDetailsContainer';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
@@ -24,6 +24,16 @@ import Payment from './payment'
 
 
 function App() {
+
+  const [isSuthenticated, setAuth] = useState(false)
+
+  useEffect(() =>{
+   if(localStorage.getItem('token')){
+     setAuth(true)
+   }else{
+     setAuth(false)
+   }
+  })
 
   return (
     <div className="App">

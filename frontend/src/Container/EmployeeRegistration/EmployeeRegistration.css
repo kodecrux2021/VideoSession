@@ -4,6 +4,7 @@
             box-sizing: border-box;
 }
 
+
 .employ__reg__wrapper{
    
 height: 100vh;
@@ -357,10 +358,10 @@ justify-content: space-around;
 .reg__modal__button {
     padding: 40px 10px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
 }
 .reg__modal__button > button{
-    width: 200px;
+    width: 180px;
     height: 50px;
     padding: 5px;
     border-radius: 6px;
@@ -373,6 +374,9 @@ justify-content: space-around;
     .employ__reg__container{
         display: inline;
     }
+    .reg__modal__button > button{
+        width: 130px;
+    }
     .employ__reg__container__right {
         border-top-left-radius:0;
         border-bottom-left-radius: 0}
@@ -382,4 +386,5 @@ justify-content: space-around;
         .row .col{
             flex-basis: auto;
         }
+
 }

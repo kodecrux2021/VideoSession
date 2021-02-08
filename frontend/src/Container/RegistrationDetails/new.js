@@ -10,15 +10,16 @@ import Navbar from "../../components/Header/Navbar";
 import { url } from "../../Server/GlobalUrl";
 import { DatePicker, Space } from "antd";
 
+let file = '';
+
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
+    reader.onerror = error => reject(error);
   });
 }
-
 const experienceData = [
   { id: 2, name: "1 year", value: 1 },
   { id: 2, name: "2 years", value: 2 },
@@ -34,6 +35,7 @@ class New extends React.Component {
     previewImage: "",
     previewTitle: "",
     fileList: [],
+    imgUrl: '',
 
     desig: "",
     fees: null,
@@ -161,6 +163,7 @@ class New extends React.Component {
         fees: this.state.fees,
         designation: this.state.desig,
         rating: this.state.rating,
+        profile_pic: file
       };
 
       console.log("data_______________", data);
@@ -245,9 +248,11 @@ class New extends React.Component {
     console.log("file", file);
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
+      console.log(file.preview);
     }
 
     this.setState({
+
       previewImage: file.url || file.preview,
       previewVisible: true,
       previewTitle:
@@ -255,11 +260,20 @@ class New extends React.Component {
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  handleChange = async({ fileList }) => {
+    fileList[0].originFileObj.url = URL.createObjectURL(fileList[0].originFileObj);
+fileList[0].originFileObj.preview = await getBase64(fileList[0].originFileObj)
+this.setState({ fileList });
+console.log(this.state.fileList) };
+
+change = (e)=>{
+  console.log(e.target.files[0]);
+  file = e.target.files[0]
+}
 
   render() {
     const is_client = localStorage.getItem("is_client");
-    console.log(is_client);
+    //console.log(is_client);
     const { previewVisible, previewImage, fileList, previewTitle } = this.state;
     const uploadButton = (
       <div>
@@ -312,12 +326,13 @@ class New extends React.Component {
             <div className="registration__details__img">
               {/* <img src={icon} alt="KodeCrux"></img> */}
               <>
-                <Upload
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              <input type= 'file' onChange = {(e)=>this.change(e)}/>
+                {/* <Upload
+                  action="https://run.mocky.io/v3/633aec6e-f93a-44b2-94ee-1c9e64422ba0"
                   listType="picture-card"
                   fileList={fileList}
                   onPreview={this.handlePreview}
-                  onChange={this.handleChange}
+                  onChange={(e)=>this.handleChange(e)}
                 >
                   {fileList.length >= 1 ? null : uploadButton}
                 </Upload>
@@ -332,7 +347,7 @@ class New extends React.Component {
                     style={{ width: "100%" }}
                     src={previewImage}
                   />
-                </Modal>
+                </Modal> */}
               </>
               <span style={{ color: "grey", fontWeight: "500" }}>
                 Profile Picture{" "}

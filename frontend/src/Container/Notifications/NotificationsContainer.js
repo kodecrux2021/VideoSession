@@ -3,6 +3,7 @@ import Navbar from '../../components/Header/Navbar'
 import Notifications from './Notifications';
 import { url } from '../../Server/GlobalUrl';
 import { message } from 'antd';
+import { Redirect } from 'react-router-dom';
 
 let user_id = ''
 
@@ -97,6 +98,9 @@ export default class NotificationsContainer extends Component {
                     return response.json()
                 } else if (response['status'] === 400) {
                     console.log('Something is wrong')
+                }else if(response["status"]===401){
+                    message.info('auth token expired');
+                    this.props.history.push('/login')
                 }
             })
             .then((result) => {
@@ -147,8 +151,9 @@ export default class NotificationsContainer extends Component {
         })
         .then(response => { if (response["status"] === 201 || response["status"] === 200) {
             return response.json();
-          } else {
-            message.info("Something went wrong");
+          } else if(response["status"] === 401){
+            message.info("Please login, auth token expired");
+            this.props.history.push('/login')
           }})
         .then(
             (result) => {
@@ -173,14 +178,16 @@ export default class NotificationsContainer extends Component {
         })
         .then(response => { if (response["status"] === 201 || response["status"] === 200) {
             return response.json();
-          }}) 
-        .catch((e)=>message.info("Something went wrong"))  
+          }else if(response["status"] === 401){
+              message.info('Please login again, auth token expired');
+              <Redirect to = '/login'/>
+          }})  
         .then(
             (result) => {
               console.log('notification result',result)
                 this.setState({notifications: result})
             }
-        )
+        ).catch((e)=>message.info("Something went wrong")) 
     }
 
     getUser = () => {

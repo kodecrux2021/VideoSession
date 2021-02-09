@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from customuser.models import CustomUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from report.models import Report
 
 PAYMENT_STATUS = (
     ("SUCCESS", _("Success")),
@@ -27,6 +28,7 @@ class Hire(models.Model):
     additional_information = models.TextField(blank=True, null=True)
     budget = models.FloatField(blank=True, null=True)
     deadlines = models.DateTimeField(null=True, blank=True)
+    report = models.ForeignKey(Report,related_name="hires",on_delete=models.CASCADE,null=True,blank=True)
     payment_status = models.CharField(
         max_length=8,
         choices=PAYMENT_STATUS,

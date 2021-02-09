@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'rest_framework.authtoken',
     'notification',
+    'report'
 ]
 X_FRAME_OPTIONS='SAMEORIGIN' # only if django version >= 3.0
 SITE_ID = 1

@@ -36,6 +36,7 @@ class CustomUserSerializers(serializers.ModelSerializer):
             is_freelancer=validated_data['is_freelancer'],
             is_codeexpert=validated_data['is_codeexpert'],
             is_client=validated_data['is_client'],
+            profile_pic=validated_data['profile_pic'],
         )
         user.set_password(validated_data['password'])
         user.save()

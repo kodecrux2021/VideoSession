@@ -59,20 +59,54 @@ def update_request(sender, instance, **kwargs):
                         accepted = None)
         Notification.objects.create(request=request,user=instance.recieved_by,sent_by=instance.sent_by,accepted_by=instance.recieved_by)
     elif Request.objects.filter(type="HIRE",contract=instance,
-        sent_by=instance.sent_by,recieved_by=instance.recieved_by).exists() :
-        request = Request.objects.filter(sent_by=instance.sent_by,recieved_by=instance.recieved_by,type="HIRE",contract=instance).first()
-        if instance.hiring_status == "HIRED":
-            request.accepted = True
-            request.save()
-            Notification.objects.create(sent_by=instance.sent_by,request=request,user=instance.sent_by,accepted_by=instance.recieved_by,
-                )
-        elif instance.hiring_status == "INSTRUCTOR_DECLINED":
-            request.accepted = False
-            request.save()
-            Notification.objects.create(sent_by=instance.sent_by,request=request,user=instance.sent_by,accepted_by=instance.recieved_by)
-    # if instance.accepted:
+        sent_by=instance.sent_by,recieved_by=instance.recieved_by).exists():
+        request = Request.objects.filter(sent_by=instance.sent_by,recieved_by=instance.recieved_by,type="HIRE",contract=instance,
+                        accepted = None).first()
+        # request.accepted = True
+        # request.save()
+        # Notification.objects.create(request=request,user=request.sent_by,accepted_by=request.recieved_by)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from notification.models import Request
+
+# @receiver(post_save, sender=Hire, dispatch_uid="update_stock_count")
+# def update_request(sender, instance, **kwargs):
+#     from notification.models import Notification
+#     print("Request not accepted",instance,instance.sent_by,instance.recieved_by )
+#     print("Request accepted",instance,instance.sent_by,instance.recieved_by )
+#     if not Request.objects.filter(type="HIRE",contract=instance,
+#         sent_by=instance.sent_by,recieved_by=instance.recieved_by).exists():
+#         print("Request Sent",instance,instance.sent_by,instance.recieved_by )
+#         request = Request.objects.create(sent_by=instance.sent_by,recieved_by=instance.recieved_by,type="HIRE",contract=instance,
+#                         accepted = None)
+#         Notification.objects.create(request=request,user=instance.recieved_by,sent_by=instance.sent_by,accepted_by=instance.recieved_by)
+#     elif Request.objects.filter(type="HIRE",contract=instance,
+#         sent_by=instance.sent_by,recieved_by=instance.recieved_by).exists() :
+#         request = Request.objects.filter(sent_by=instance.sent_by,recieved_by=instance.recieved_by,type="HIRE",contract=instance).first()
+#         if instance.hiring_status == "HIRED":
+#             request.accepted = True
+#             request.save()
+#             Notification.objects.create(sent_by=instance.sent_by,request=request,user=instance.sent_by,accepted_by=instance.recieved_by,
+#                 )
+#         elif instance.hiring_status == "INSTRUCTOR_DECLINED":
+#             request.accepted = False
+#             request.save()
+#             Notification.objects.create(sent_by=instance.sent_by,request=request,user=instance.sent_by,accepted_by=instance.recieved_by)
+#     # if instance.accepted:
 
 
 

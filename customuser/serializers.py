@@ -92,13 +92,13 @@ class CustomUsersecondSerializers(serializers.ModelSerializer):
             relevant_experience=validated_data['relevant_experience'],
             date_of_birth=validated_data['date_of_birth'],
             profile_pic=validated_data['profile_pic'],
-            technology=validated_data['technology'],
-            sub_technology=validated_data['sub_technology'],
-            topic=validated_data['topic'],
 
         )
         user.is_active=True
         user.save()
+        user.technology.set()
+        user.sub_technology.set()
+        user.topic.set()
         return user
 
 

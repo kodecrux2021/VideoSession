@@ -19,7 +19,7 @@ from message.models import Conversation
 import json
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
-
+34
 
 class EducatorViewset(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
@@ -100,6 +100,26 @@ class EducatorViewset(viewsets.ModelViewSet):
 #            # print('conv',context)
 #         #some extra filtering
 #         return context
+class EducatorCreateViewset(viewsets.ModelViewSet):
+    # permission_classes = (IsAuthenticated,)
+    queryset = models.Educator.objects.all()
+    serializer_class = serializers.EducatorSerializer
+    permission_classes = [permissions.AllowAny]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ('technology', 'sub_technology', 'topic')
+    http_method_names = ['post', 'put']
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        print("request.data", request.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        serializer.save()
+
 
 class EducatorView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -276,10 +296,10 @@ class ClientViewset(viewsets.ModelViewSet):
 # #         #some extra filtering
 # #         return context
 #
-class EducatorCreateViewset(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
-    queryset = models.Educator.objects.all()
-    serializer_class = serializers.EducatorCreateSerializer
+# class EducatorCreateViewset(viewsets.ModelViewSet):
+#     permission_classes = (IsAuthenticated,)
+#     queryset = models.Educator.objects.all()
+#     serializer_class = serializers.EducatorCreateSerializer
 #
 #
 #

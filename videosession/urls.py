@@ -24,7 +24,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.authtoken import views
 from hire.views import Order
-
+from report import views as report_views
 
 admin.site.site_header = 'VideoSession admin'
 admin.site.site_title = 'VideoSession admin'
@@ -64,6 +64,7 @@ urlpatterns = [
     path('teamviewer-meeting/', message_views.TeamviewerMeetingtokenView.as_view(), name='teamviewer-meeting'),
     path('teamtemplate/', message_views.TeamViewerTemplateViewSet.as_view(),
          name='teamtemplate'),
+    path('report/',report_views.Report),
 
 ]
 

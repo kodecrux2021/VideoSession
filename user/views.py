@@ -104,9 +104,7 @@ class EducatorCreateViewset(viewsets.ModelViewSet):
     queryset = models.Educator.objects.all()
     serializer_class = serializers.EducatorSerializer
     permission_classes = [permissions.AllowAny]
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ('technology', 'sub_technology', 'topic')
-    http_method_names = ['post', 'put']
+    http_method_names = ['post', 'put',]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

@@ -63,7 +63,11 @@ export default function Email() {
                     .then((result)=>{
                         showModal()
                         console.log(result)
-                        localStorage.setItem('verif', result[0].verification_code)})    
+                        localStorage.setItem('verif', result[0]?.verification_code)})    
+                        .catch((e)=>{
+                            message.info('Something went wrong')
+                            console.log(e);
+                        })
             
 
             //             fetch(url + 'password-email-verification/?email=' + email, {

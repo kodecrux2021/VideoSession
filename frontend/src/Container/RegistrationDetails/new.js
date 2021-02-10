@@ -9,8 +9,8 @@ import { message } from "antd";
 import Navbar from "../../components/Header/Navbar";
 import { url } from "../../Server/GlobalUrl";
 import { DatePicker, Space } from "antd";
+import axios from 'axios';
 
-let file = '';
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -36,10 +36,12 @@ class New extends React.Component {
     previewTitle: "",
     fileList: [],
     imgUrl: '',
+    file: null,
+   
 
     desig: "",
-    fees: null,
-    rating: null,
+    fees: 0,
+    rating: 0,
 
     tech_list: [],
     subtech_list: [],
@@ -51,12 +53,12 @@ class New extends React.Component {
     city: "",
     total_experience: null,
     relevant_experience: null,
-    date_of_birth: null,
+    date_of_birth: "",
   };
 
   onChange = (date, dateString) => {
-    console.log(date, dateString);
-    this.setState({ date_of_birth: date });
+    console.log(date,dateString);
+    this.setState({ date_of_birth: dateString });
   };
 
   componentDidMount() {
@@ -88,7 +90,7 @@ class New extends React.Component {
         });
     }
 
-    let auth = localStorage.getItem("token");
+    //let auth = localStorage.getItem("token");
 
     fetch(url + "/api/technology/", {
       method: "GET",
@@ -151,6 +153,21 @@ class New extends React.Component {
 
       tech.push(parseInt(this.state.technology?.id));
       sub_tech.push(parseInt(this.state.sub_technology?.id));
+       let formData = new FormData();
+
+      formData.append('pincode', this.state.pincode);
+      formData.append('city', this.state.city);
+      formData.append('state', this.state.state);
+      formData.append('technology', [this.state.technology?.id]);
+      formData.append('sub_technology',[this.state.sub_technology?.id] );
+      formData.append('total_experience', this.state.total_experience?.value);
+      formData.append('relevant_experience', this.state.relevant_experience?.value);
+      formData.append('date_of_birth',  this.state.date_of_birth);
+      formData.append('fees', this.state.fees);
+      formData.append('designation', this.state.desig);
+      formData.append('rating', this.state.rating);
+      this.state.file !== null && formData.append('profile_pic', this.state.file);
+      // formData.append('profile_pic', this.state.file)
       let data = {
         pincode: this.state.pincode,
         city: this.state.city,
@@ -163,43 +180,48 @@ class New extends React.Component {
         fees: this.state.fees,
         designation: this.state.desig,
         rating: this.state.rating,
-        profile_pic: file
+        profile_pic: this.state.file
       };
+      
 
-      console.log("data_______________", data);
+
+      console.log("data_______________", formData);
       console.log(tech, sub_tech);
       console.log(this.state.sub_technology?.id);
       let id = localStorage.getItem("educator_id");
       let user_id = localStorage.getItem("user_id");
 
-      await fetch(url + "/api/customusersecond/" + user_id + "/", {
+
+      fetch(url + "/api/customusersecond/" + user_id + "/", {
         method: "PUT",
         headers: {
-          Accept: "application/json, text/plain",
-          "Content-Type": "application/json;charset=UTF-8",
+          "Accept": "application/json, text/plain",
+         // "Content-Type": `multipart/form-data`,
         },
-        body: JSON.stringify(data),
+        body: formData,
       })
         .then((response) => {
           console.log("response", response);
           if (response["status"] === 201 || response["status"] === 200) {
             return response.json();
-          } else if (response["status"] === 400) {
+          } else if (response["status"] === 400 ||  response["status"] === 500) {
+            message.info('Something went wrong')
             console.log("Something is wrong");
           }
         })
-        .then((result) => {
+        .then(async(result) => {
+          //console.log(result);
+
           let auth = localStorage.getItem("token");
-          console.log(result);
-          if (!localStorage.getItem("is_client")) {
-            fetch(url + "/api/educatorcreate/" + id + "/", {
+          if (localStorage.getItem("is_client")) {
+           await fetch(url + "/api/educatorcreate/" + id + "/", {
               method: "PUT",
               headers: {
-                Accept: "application/json, text/plain",
-                "Content-Type": "application/json;charset=UTF-8",
-                Authorization: "Bearer" + auth,
+                "Accept": "application/json, text/plain",
+                //"Content-Type": "application/json;charset=UTF-8",
+                "Authorization": "Bearer" + auth,
               },
-              body: JSON.stringify(data),
+              body: formData,
             })
               .then((response) => {
                 console.log("response", response);
@@ -210,7 +232,9 @@ class New extends React.Component {
                 }
               })
               .then((result) => {
-                //  fetch( url + '/api/educator/' , {
+                console.log(result);
+                this.props.history.push("/verification");
+                // fetch( url + '/api/educator/' , {
                 //     method: 'POST',
                 //     headers: {
                 //         'Accept': 'application/json, text/plain',
@@ -230,15 +254,16 @@ class New extends React.Component {
                 // .then((result) => {
                 //     console.log('result', result);
                 // })
-                console.log("result", result);
+                //console.log("result", result);
                
               });
           }
-        });
+        })
+        .catch(e =>console.log(e));
 
         
 
-      this.props.history.push("/verification");
+  //     this.props.history.push("/verification");
     }
   };
 
@@ -261,14 +286,16 @@ class New extends React.Component {
   };
 
   handleChange = async({ fileList }) => {
-    fileList[0].originFileObj.url = URL.createObjectURL(fileList[0].originFileObj);
-fileList[0].originFileObj.preview = await getBase64(fileList[0].originFileObj)
+    //fileList[0].originFileObj.url = URL.createObjectURL(fileList[0].originFileObj);
+//fileList[0].originFileObj.preview = await getBase64(fileList[0].originFileObj)
 this.setState({ fileList });
 console.log(this.state.fileList) };
 
-change = (e)=>{
-  console.log(e.target.files[0]);
-  file = e.target.files[0]
+change = async(e)=>{
+  e.persist();
+  console.log(e.target.files);
+  await this.setState({file: e.target.files[0]})
+  console.log(this.state.file);
 }
 
   render() {
@@ -326,7 +353,10 @@ change = (e)=>{
             <div className="registration__details__img">
               {/* <img src={icon} alt="KodeCrux"></img> */}
               <>
-              <input type= 'file' onChange = {(e)=>this.change(e)}/>
+              <span style={{ color: "grey", fontWeight: "500" }}>
+                Profile Picture{" "}
+              </span>
+              <input type= 'file' onChange = {(e)=>this.change(e)} />
                 {/* <Upload
                   action="https://run.mocky.io/v3/633aec6e-f93a-44b2-94ee-1c9e64422ba0"
                   listType="picture-card"
@@ -349,9 +379,7 @@ change = (e)=>{
                   />
                 </Modal> */}
               </>
-              <span style={{ color: "grey", fontWeight: "500" }}>
-                Profile Picture{" "}
-              </span>
+             
             </div>
             <Col style={{ marginTop: "10px" }}>
               <div class="form__group">
@@ -480,7 +508,7 @@ change = (e)=>{
                   <div class="form__group">
                     <label>Fees</label>
                     <input
-                      type="text"
+                      type="number"
                       value={this.state.fees}
                       onChange={(e) => this.handelData("fees", e.target.value)}
                       className="form__control"
@@ -490,7 +518,7 @@ change = (e)=>{
                   <div class="form__group">
                     <label>Rating</label>
                     <input
-                      type="text"
+                      type="number"
                       value={this.state.rating}
                       onChange={(e) =>
                         this.handelData("rating", e.target.value)
@@ -506,7 +534,7 @@ change = (e)=>{
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <label>Date of Birth</label>
                   <div style={{ margin: "0 60px" }}>
-                    <DatePicker onChange={this.onChange} size="large" />
+                    <DatePicker onChange={this.onChange} size="large" showTime/>
                   </div>
                 </div>
               </div>

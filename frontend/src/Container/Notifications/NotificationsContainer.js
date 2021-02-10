@@ -347,6 +347,10 @@ export default class NotificationsContainer extends Component {
         this.props.history.push('/chat')
     }
 
+    pay = (id) =>{
+        localStorage.setItem('pay_id', id)
+        this.props.history.push('/payment')
+    }
 
     render() {
         return (
@@ -367,6 +371,7 @@ export default class NotificationsContainer extends Component {
                 hire={this.state.hire}
                 acceptHire={this.acceptHire}
                 declineHire={this.declineHire}
+                pay={this.pay}
                 />
             </div>
         )

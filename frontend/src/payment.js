@@ -61,7 +61,7 @@ function Payment() {
           "Content-Type": "application/json",
         },
       })
-        .then((res) => {
+        .then(() => {
           console.log("Everything is OK!");
           setName("");
           setAmount("");
@@ -74,7 +74,6 @@ function Payment() {
     }
   };
 
-  // this will load a script tag which will open up Razorpay payment card to make transactions
   const loadScript = () => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -84,14 +83,13 @@ function Payment() {
   const showRazorpay = async () => {
     const res = await loadScript();
 
-    let bodyData = new FormData();
+    // let bodyData = new FormData();
 
-    // we will pass the amount and product name to the backend using form data
-    bodyData.append("amount", amount.toString());
-    bodyData.append("name", name);
+    // bodyData.append("amount", amount.toString());
+    // bodyData.append("name", name);
 
     const data = await Axios({
-      url: `${url}/order/?hire_id=15`,
+      url: `${url}/order/?hire_id=${localStorage.getItem('pay_id')}`,
       method: "GET",
       headers: {
         "Accept": "application/json",
@@ -113,11 +111,10 @@ function Payment() {
       currency: "INR",
       name: "Org. Name",
       description: "Test transaction",
-      image: "", // add image url
+      image: "",
       order_id: data.data,
       handler: function (response) {
-        // we will handle success by calling handlePaymentSuccess method and
-        // will pass the response that we've got from razorpay
+        
         handlePaymentSuccess(response);
       },
       prefill: {

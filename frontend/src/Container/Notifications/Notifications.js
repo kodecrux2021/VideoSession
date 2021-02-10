@@ -310,7 +310,7 @@ export default function Notifications(props) {
 
                                 return (
                                     <div className='chat__card' key={notification.id}>
-                                    <Avatar src={notification.user_profile_pic} className={classes.large}/>
+                                    <Avatar src={ notification?.recieved_by_profile_pic} className={classes.large}/>
                                    {props.hire !== null ? (<Modal title="Hiring Application" visible={props.isModalVisible}  onCancel={props.handleCancel}
                                     footer={[
                                         <Button onClick={() =>props.acceptHire(props.hire.id)}>
@@ -341,9 +341,13 @@ export default function Notifications(props) {
                                                 }
                                                 </div>
                                            {notification.type== 'HIRE' ?
+                                           notification.hiring_status == 'NOT_DONE'?
                                             <div className='friend__card__button' >
                                                  <button  style={{  backgroundColor:' #5964c9'}} onClick = {() =>props.show(notification.contract)}>Show</button>
-                                             </div>
+                                             </div>:
+                                             <div className='friend__card__button' >
+                                             <button  style={{  backgroundColor:' #5964c9'}} onClick = {() =>props.pay(notification.contract)}>Pay Now</button>
+                                         </div>
                                             :
                                             null
                                     }

@@ -8,7 +8,6 @@ import './Navbar.css'
 
 export default function Navbar(props) {
 
-
   const history = useHistory();
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
@@ -51,17 +50,7 @@ export default function Navbar(props) {
             :
             <Link to='/registration'><p><h5>SIGN UP</h5></p></Link>
         }
-
-
-
-
-
       </Drawer>
     </div>
-
-
-
-
-
   )
 }

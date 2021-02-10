@@ -167,6 +167,7 @@ class RegistrationContainer extends Component {
                     "rating": null,
                     "designation": null,
                     "profile_pic": null,
+                    "user_email": this.state.email
                     
                             
                 }

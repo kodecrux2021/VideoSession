@@ -19,7 +19,6 @@ from message.models import Conversation
 import json
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
-34
 
 class EducatorViewset(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)

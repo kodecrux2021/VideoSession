@@ -92,8 +92,6 @@ class CustomUsersecondSerializers(serializers.ModelSerializer):
             total_experience=validated_data['total_experience'],
             relevant_experience=validated_data['relevant_experience'],
             date_of_birth=validated_data['date_of_birth'],
-            profile_pic=validated_data['profile_pic'],
-
         )
         user.is_active=True
         user.save()

@@ -32,7 +32,7 @@ SECRET_KEY = 'p_w#!6jui_dlu78z7*ne8^y2z$+2q0u%2kqm*hg(ij9a2=1w^1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['d395242b1f2f.ngrok.io','127.0.0.1','0.0.0.0','*']
+ALLOWED_HOSTS = ['8faa73a47f51.ngrok.io','127.0.0.1','0.0.0.0','*']
 
 
 # Application definition
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'hire',
     'message',
     'corsheaders',
+    'import_export',
     'oauth2_provider',
     'social_django',
     'rest_framework_social_oauth2',
@@ -69,6 +70,7 @@ INSTALLED_APPS = [
     'notification',
     'report'
 ]
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 X_FRAME_OPTIONS='SAMEORIGIN' # only if django version >= 3.0
 SITE_ID = 1
 REST_USE_JWT = True    # this is for djangorestframework-jwt

@@ -16,7 +16,7 @@ class CustomUserSerializers(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         # read_only_fields = ('id','pincode','state','city','otp','email','first_name','last_name','technology','sub_technology','topic','last_seen','profile_pic','total_experience','relevant_experience','date_of_birth')
-        fields = ('id','username','pincode','state','city','otp','password','email','first_name','last_name','phone','is_instructor','is_freelancer','is_codeexpert','is_client','technology','sub_technology','topic','last_seen','profile_pic','total_experience','relevant_experience','date_of_birth')
+        fields = ('id','username','pincode','state','city','otp','password','email','first_name','last_name','phone','is_instructor','is_freelancer','is_codeexpert','is_client','technology','sub_technology','topic','last_seen','total_experience','relevant_experience','date_of_birth')
         extra_kwargs = {'password': {'write_only': True}}
 
     def perform_create(self, serializer):
@@ -36,7 +36,6 @@ class CustomUserSerializers(serializers.ModelSerializer):
             is_freelancer=validated_data['is_freelancer'],
             is_codeexpert=validated_data['is_codeexpert'],
             is_client=validated_data['is_client'],
-            profile_pic=validated_data['profile_pic'],
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -92,6 +91,8 @@ class CustomUsersecondSerializers(serializers.ModelSerializer):
             total_experience=validated_data['total_experience'],
             relevant_experience=validated_data['relevant_experience'],
             date_of_birth=validated_data['date_of_birth'],
+            profile_pic=validated_data['profile_pic'],
+
         )
         user.is_active=True
         user.save()

@@ -166,7 +166,7 @@ class New extends React.Component {
       formData.append('fees', this.state.fees);
       formData.append('designation', this.state.desig);
       formData.append('rating', this.state.rating);
-      this.state.file !== null && formData.append('profile_pic', this.state.file);
+      this.state.fileList.length > 0 && formData.append('profile_pic', this.state.fileList[0].originFileObj);
       // formData.append('profile_pic', this.state.file)
       let data = {
         pincode: this.state.pincode,
@@ -257,6 +257,8 @@ class New extends React.Component {
                 //console.log("result", result);
                
               });
+          }else{
+            this.props.history.push("/verification");
           }
         })
         .catch(e =>console.log(e));
@@ -356,8 +358,8 @@ change = async(e)=>{
               <span style={{ color: "grey", fontWeight: "500" }}>
                 Profile Picture{" "}
               </span>
-              <input type= 'file' onChange = {(e)=>this.change(e)} />
-                {/* <Upload
+              {/* <input type= 'file' onChange = {(e)=>this.change(e)} /> */}
+                <Upload
                   action="https://run.mocky.io/v3/633aec6e-f93a-44b2-94ee-1c9e64422ba0"
                   listType="picture-card"
                   fileList={fileList}
@@ -377,7 +379,7 @@ change = async(e)=>{
                     style={{ width: "100%" }}
                     src={previewImage}
                   />
-                </Modal> */}
+                </Modal>
               </>
              
             </div>

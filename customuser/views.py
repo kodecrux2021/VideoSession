@@ -106,7 +106,7 @@ def Moosend(email):
                 # "WebLocation": "http://13.229.251.62:8000/password-email-verification/" ,
                 # "WebLocation": "http://0.0.0.0:81/password-email-verification/",
                 # "WebLocation": "https://f8f334c3909c.ngrok.io/password-email/?email="+email,
-                "WebLocation": "https://8faa73a47f51.ngrok.io/password-email-verification/?email="+email,
+                "WebLocation": "http://13.229.251.62:8000/password-email-verification/?email="+email,
 
                 "MailingLists": [
                     {

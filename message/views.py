@@ -122,6 +122,7 @@ def MoosendTeam(emails):
                 'https://api.moosend.com/v3/subscribers/'+ mail_id +'/subscribe.json?apikey=7708db34-9af3-4b1d-9cca-eae97e8dd980&MailingListID='+ mail_id +'&Format=json',
                 json=payload,
                 headers={'Content-Type': 'application/json', 'Accept': 'application/json'}, )
+            print('email125',email)
             print (resp.text)
         if resp.status_code != 201:
             print ('send_mail1', send_mail)
@@ -146,10 +147,12 @@ def MoosendTeam(emails):
                 "SenderEmail": "sales@kodecrux.com",
                 "ReplyToEmail": "sales@kodecrux.com",
                 "ConfirmationToEmail": "sales@kodecrux.com",
-                "WebLocation": "http://13.229.251.62:8000/teamtemplate/",
+                # "WebLocation": "https://127daaa57c8b.ngrok.io/teamtemplate/",
                 # "WebLocation": "http://13.229.251.62:8000/password-email-verification/" ,
                 # "WebLocation": "http://0.0.0.0:81/password-email-verification/",
                 # "WebLocation": "http://0.0.0.0:81/teamtemplate/?email="+emails,
+                "WebLocation": "http://13.229.251.62:8000/teamtemplate/?email="+email,
+
                 "MailingLists": [
                     {
                         "MailingListID": mail_id

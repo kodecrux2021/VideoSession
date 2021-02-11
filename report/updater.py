@@ -4,5 +4,5 @@ from .something_update import update_something
 
 def start():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(update_something, 'interval', seconds=5)
+    scheduler.add_job(update_something, 'interval', days=7)
     scheduler.start()

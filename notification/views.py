@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 class NotificationViewset(viewsets.ModelViewSet):
     queryset = models.Notification.objects.all()
     serializer_class = serializers.NotificationSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = (IsAuthenticated,)
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['user']
     http_method_names = ['get', ]

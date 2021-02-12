@@ -167,9 +167,7 @@ class RegistrationContainer extends Component {
                     "rating": null,
                     "designation": null,
                     "profile_pic": null,
-                    "user_email": this.state.email
-                    
-                            
+                    "user_email": this.state.email              
                 }
                  if(result){
                     if(this.state.position!=='customer'){
@@ -198,7 +196,7 @@ class RegistrationContainer extends Component {
                     }
                     localStorage.setItem('user_id', result?.id);
                     localStorage.setItem('is_client', result?.is_client);
-                    this.props.history.push("/details2");
+                    this.props.history.push("/details");
                 }
                 
             })

@@ -117,7 +117,8 @@ export default class Trainers extends Component {
 
         let data = {
             "sent_by": this.state.user.id,
-            "recieved_by": id
+            "recieved_by": id,
+            "accepted": false
         }
 
         console.log('data_______________', data);
@@ -267,6 +268,7 @@ export default class Trainers extends Component {
                                         isModalVisible={this.state.isModalVisible}
                                         hireHandle={this.hireHandle}
                                         rec_id={this.state.rec_id}
+                                        video={trainer?.bill[0]?.video}
                                         // badge={false}
                                     />
                                 ))} 

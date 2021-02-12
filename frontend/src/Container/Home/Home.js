@@ -11,7 +11,8 @@ import home3 from '../../assets/images/home3.jpg'
 import home4 from '../../assets/images/home4.jpg'
 import home5 from '../../assets/images/home5.jpg'
 import Navbar from '../../components/Header/Navbar';
-import {Modal} from 'antd';
+import {message, Modal} from 'antd';
+import { Redirect } from 'react-router-dom'
 
 
 export default class Home extends Component {
@@ -21,6 +22,14 @@ export default class Home extends Component {
         content: null,
 
     }
+
+    componentDidMount(){
+        if(!localStorage.getItem('token')){
+            message.info('Please login')
+            this.props.history.push('/login')
+        }
+    }
+    
     about = () =>{
         this.setState({visible: true,
         title: 'About Us',

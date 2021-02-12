@@ -1,8 +1,9 @@
 import Axios from "axios";
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import {url} from './Server/GlobalUrl'
-import { Table, Tag, Space } from 'antd';
+import { Table, Tag, Space, message } from 'antd';
 import { Checkbox } from 'antd';
+import { useHistory } from "react-router-dom";
 
 function onChange(e) {
   console.log(`checked = ${e.target.checked}`);
@@ -42,8 +43,18 @@ const dataSource = [
   ];
 
 function Payment() {
-  const [name, setName] = useState("");
-  const [amount, setAmount] = useState("");
+
+  var history = useHistory()
+  useLayoutEffect(() =>{
+    if(!localStorage.getItem('token') || !localStorage.getItem('refresh')){
+     history.goBack();
+    };
+    return () =>{
+      localStorage.removeItem('pay_id')
+    }
+  })
+  // const [name, setName] = useState("");
+  // const [amount, setAmount] = useState("");
 
   const handlePaymentSuccess = async (response) => {
     try {
@@ -63,10 +74,13 @@ function Payment() {
       })
         .then(() => {
           console.log("Everything is OK!");
-          setName("");
-          setAmount("");
+          message.info('Payment was successful')
+          this.props.history.push('/home')
+          // setName("");
+          // setAmount("");
         })
         .catch((err) => {
+          message.info('Something went wrong, payment was unsuccessful')
           console.log(err);
         });
     } catch (error) {
@@ -107,9 +121,9 @@ function Payment() {
     var options = {
       key_id: process.env.REACT_APP_PUBLIC_KEY, 
       key_secret: process.env.REACT_APP_SECRET_KEY,
-      amount: amount,
-      currency: "INR",
-      name: "Org. Name",
+      //amount: amount,
+      currency: "USD",
+      name: "Ekodecrux",
       description: "Test transaction",
       image: "",
       order_id: data.data,
@@ -123,7 +137,7 @@ function Payment() {
         contact: "User's phone",
       },
       notes: {
-        address: "Razorpay Corporate Office",
+        address: "Ekodecrux Corporate Office",
       },
       theme: {
         color: "#3399cc",
@@ -136,7 +150,7 @@ function Payment() {
   };
 
   return (
-    <div className="container" style={{ marginTop: "10vh" }}>
+    localStorage.getItem('pay_id')!==null && <div className="container" style={{ marginTop: "10vh" }}>
       <form style={{ marginBottom: "10vh" }}>
         <div style={{textAlign: 'center'}}>
         <h1>Payment Dashboard</h1>

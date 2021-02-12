@@ -32,27 +32,29 @@ const styles = theme => ({
         console.log(props.id);
     }
 
-    const LiveHandle = () => {
-        fetch(url + '/api/session/', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json;charset=UTF-8',
-            },
-        })
-            .then((response) => {
-                console.log("response", response)
-                if (response['status'] === 201 || response['status'] === 200) {
-                    return response.json()
-                } else if (response['status'] === 400) {
-                    console.log('Something went wrong')
-                }
-            })
-            .then((result) => {
-                console.log('result', result[0].video);
-                window.open(result[0].video)
-            }).catch((e)=>{console.log(e);
-            message.info(e.message)});
+    const LiveHandle = (video) => {
+        console.log(video);
+        video !== undefined && window.open(`${url}${video}`)
+        // fetch(url + '/api/session/', {
+        //     method: 'GET',
+        //     headers: {
+        //         'Accept': 'application/json, text/plain',
+        //         'Content-Type': 'application/json;charset=UTF-8',
+        //     },
+        // })
+        //     .then((response) => {
+        //         console.log("response", response)
+        //         if (response['status'] === 201 || response['status'] === 200) {
+        //             return response.json()
+        //         } else if (response['status'] === 400) {
+        //             console.log('Something went wrong')
+        //         }
+        //     })
+        //     .then((result) => {
+        //         console.log('result', result[0].video);
+        //         window.open(result[0].video)
+        //     }).catch((e)=>{console.log(e);
+        //     message.info(e.message)});
     }
 
     const { classes } = props;
@@ -114,7 +116,7 @@ const styles = theme => ({
             
             :
             <div className="trainers__card__right">
-            <button type="button" class="btn btn-info" onClick={ id => LiveHandle() } >LIVE SESSION</button>
+            <button type="button" class="btn btn-info" onClick={ id => LiveHandle(props?.video) } >LIVE SESSION</button>
             </div>
             }
 

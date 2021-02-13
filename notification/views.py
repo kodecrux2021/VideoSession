@@ -15,7 +15,7 @@ class NotificationViewset(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['user']
-    http_method_names = ['get', ]
+    http_method_names = ['get']
 
     def list(self, request):
         queryset = self.queryset.filter(user=self.request.user)
@@ -37,6 +37,8 @@ class NotificationViewset(viewsets.ModelViewSet):
                 element["user"] = ""
                 element['sent_by'] = ""
         return Response(data)
+
+
 
 
 class RequestViewset(viewsets.ModelViewSet):

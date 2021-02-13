@@ -14,11 +14,13 @@ class HireSerializer(serializers.ModelSerializer):
 
     def get_sent_by(self, obj):
         if obj.sent_by:
+            print('obj.sent_by',obj.sent_by)
             return obj.sent_by.first_name + " " + obj.sent_by.last_name
 
     def get_recieved_by(self, obj):
         if obj.recieved_by:
             return obj.recieved_by.first_name + " " + obj.recieved_by.last_name
+
     def update(self, instance, validated_data):
         # Update the Foo instance
         instance.hiring_status = validated_data['hiring_status']

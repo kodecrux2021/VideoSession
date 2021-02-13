@@ -50,8 +50,6 @@ function App() {
           <Route path="/verification" exact component={VerificationContainer} />
           {/* <Route path="/details" exact component={RegistrationDetailsContainer} /> */}
           {/* <Route path="/details" exact component={Pagetwo} /> */}
-          {localStorage.getItem('token') && (
-            <>
           <Route path="/home" exact component={Home} />
           <Route path="/trainers"  component={Trainers} />
           <Route path="/course-registration" exact component={EmployeeRegistrationComponent} />
@@ -63,7 +61,6 @@ function App() {
           <Route path="/investor" exact component={InvestorContainer} />
           <Route path="/notifications" component={NotificationsContainer} /> 
            <Route path="/payment" exact component={Payment} />
-        </>)}
         <Route render={() => <Redirect to = '/login'/> }/>
         </Switch>
       </Router>

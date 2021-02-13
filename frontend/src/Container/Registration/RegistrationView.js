@@ -189,7 +189,7 @@ let data = {"token": response.accessToken}
                       <input type="text" className="form__control"  placeholder="Enter Your Last Name" value={props.last_name} onChange={(e) => props.handelData('last_name', e.target.value)}  />
                       </div>
                       <div className="form__group">
-                          <input type="text" value={props.email} onChange={(e) => props.handelData('email', e.target.value)} className="form__control" id="uname" placeholder="Enter Your Email Address" name="uname" />
+                          <input type="email" value={props.email} onChange={(e) => props.handelData('email', e.target.value)} className="form__control" id="uname" placeholder="Enter Your Email Address" name="uname" />
 
                       </div>
   

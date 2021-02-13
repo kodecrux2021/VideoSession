@@ -51,7 +51,7 @@ export default function Investor(props) {
                 </div>
                 <div className='investor__head__detail'>
                  Congratulations on finding a mentor for your project! To make sure
-                 that you and {props.investor__name} are on the same page, please discuss project 
+                 that you and {props?.investor__name} are on the same page, please discuss project 
                  deliverables and deadline with then fill in the information below to create the freelance job.
                 </div>
             </div>

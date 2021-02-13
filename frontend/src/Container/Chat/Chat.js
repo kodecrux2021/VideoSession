@@ -166,7 +166,7 @@ export default function Chat(props) {
            
 <div className='chat__msg__container'>
                 <div className='chat__date'>
-                    <p>{dateFormat(props.conversation.last_message_datetime, "mmmm dS, yyyy")}</p>
+                    <p>{dateFormat(props?.conversation?.last_message_datetime, "mmmm dS, yyyy")}</p>
                 </div>
                 {/*
                  <div className='message__container'>

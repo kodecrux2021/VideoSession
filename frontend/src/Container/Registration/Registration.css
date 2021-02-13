@@ -8,6 +8,10 @@ input {
     border-color: blue;
   }
 
+  input::-webkit-input-placeholder{
+      opacity: 100;
+  }
+
 textarea {
     outline: 0;
     border-width: 0 0 0;

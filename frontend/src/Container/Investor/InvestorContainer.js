@@ -109,8 +109,6 @@ export default class InvestorContainer extends Component {
         if(isNaN(value)){
           //console.log(isNaN(value));
           this.setState({budget_validate:'Please enter a valid budget'})
-        }else if(value>2000){
-          this.setState({budget_validate:'Budget should be less than 2000'})
         }else{
           this.setState({budget_validate:''})
         }

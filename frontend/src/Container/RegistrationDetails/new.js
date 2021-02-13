@@ -1,16 +1,14 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import "./style.css";
 import { Upload, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Select from "react-select";
-import icon from "../../assets/images/reg2.jpeg";
+// import icon from "../../assets/images/reg2.jpeg";
 import { message } from "antd";
 import Navbar from "../../components/Header/Navbar";
 import { url } from "../../Server/GlobalUrl";
-import { DatePicker, Space } from "antd";
-import axios from 'axios';
-
+import { DatePicker} from "antd";
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -536,7 +534,7 @@ change = async(e)=>{
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <label>Date of Birth</label>
                   <div style={{ margin: "0 60px" }}>
-                    <DatePicker onChange={this.onChange} size="large" showTime/>
+                    <DatePicker onChange={this.onChange} format="YYYY-MM-DD HH:mm:ss"/>
                   </div>
                 </div>
               </div>

@@ -64,9 +64,10 @@ def update_request(sender, instance, **kwargs):
         sent_by=instance.sent_by,recieved_by=instance.recieved_by).exists():
         request = Request.objects.filter(sent_by=instance.sent_by,recieved_by=instance.recieved_by,type="HIRE",contract=instance,
                         accepted = None).first()
-        request.accepted = True
-        request.save()
-        Notification.objects.create(request=request,user=request.sent_by,accepted_by=request.recieved_by)
+        if request:
+            request.accepted = True
+            request.save()
+            Notification.objects.create(request=request,user=request.sent_by,accepted_by=request.recieved_by)
 
 
 

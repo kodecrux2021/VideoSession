@@ -46,10 +46,14 @@ class HireViewset(viewsets.ModelViewSet):
         serializer = serializers.HireSerializer(contract)
         return Response(serializer.data)
 
-    def update(self, request, pk=None):
+    def update(self, instance, pk=None):
+        # print('50',self.request.data['hiring_status'])
+        # instance.hiring_status=self.request.data['hiring_status']
         queryset = self.queryset
         contract = get_object_or_404(queryset, pk=pk)
-        serializer = serializers.HireSerializer(contract)
+        serializer = serializers.HireSerializer(contract,data=self.request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
         data = serializer.data
         print('data', type(data))
         try:

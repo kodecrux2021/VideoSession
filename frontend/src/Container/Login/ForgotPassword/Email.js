@@ -61,9 +61,10 @@ export default function Email() {
                               }}
                               )
                     .then((result)=>{
-                        showModal()
-                        console.log(result)
-                        localStorage.setItem('verif', result[0]?.verification_code)})    
+                        
+                        //console.log(result)
+                        localStorage.setItem('verif', result[0]?.verification_code)})  
+                        showModal()  
                         .catch((e)=>{
                             message.info('Something went wrong')
                             console.log(e);

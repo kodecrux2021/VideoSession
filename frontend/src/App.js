@@ -25,15 +25,17 @@ import Payment from './payment'
 
 function App() {
 
-  // let [isAuthenticated, setAuth] = useState(false)
+  let [isAuthenticated, setAuth] = useState(false)
 
-  // useEffect(() =>{
-  //  if(localStorage.getItem('token')){
-  //    setAuth(true)
-  //  }else{
-  //    setAuth(false)
-  //  }
-  // })
+  useEffect(() =>{
+   if(localStorage.getItem('token')){
+     setAuth(true)
+     console.log(isAuthenticated);
+   }else{
+     setAuth(false)
+     console.log(isAuthenticated);
+   }
+  })
 
 
   return (
@@ -43,12 +45,12 @@ function App() {
           <Route path="/registration" exact component={RegistrationContainer} />
           <Route path="/forgot-password" exact component={Email} />
           <Route path="/reset" exact component={Reset} />
-          <Route path="/home" exact component={Home} />
           <Route path="/login" exact component={Login} />
           {/* <Route path="/details" exact component={RegistrationDetailsContainer} /> */}
           {/* <Route path="/details" exact component={Pagetwo} /> */}
           {localStorage.getItem('token') && (
             <>
+            <Route path="/home" exact component={Home} />
           <Route path="/details" exact component={New} />
           <Route path="/verification" exact component={VerificationContainer} />
           <Route path="/trainers"  component={Trainers} />

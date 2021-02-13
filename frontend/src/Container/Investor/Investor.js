@@ -47,7 +47,7 @@ export default function Investor(props) {
         <div className='investor__head'>
                 <div className='investor__head__title'>
                 <Avatar src={props.pic} className={classes.large} />
-                <span className='invester__heading' >Create a freelance job for {props.investor__name}</span>
+                <span className='invester__heading' >Create a freelance job for {props?.investor__name}</span>
                 </div>
                 <div className='investor__head__detail'>
                  Congratulations on finding a mentor for your project! To make sure
@@ -108,13 +108,14 @@ export default function Investor(props) {
                <p className='invester__heading' >Budget and deadline</p>
                 </div>
 
-                <span className='investor__head__detail' >Budget* (USD) </span>
+                <span className='investor__head__detail' >Budget* (INR) </span>
                 <div className = 'budget' >
-                <AttachMoneyIcon/>
+                {/* <AttachMoneyIcon/> */}
+
                 <div style={{ margin:'5px 20px 5px 0px'}} >
                 <input style={{backgroundColor:'whitesmoke'}} type="text" className="form__control"  placeholder="Enter Budget" onChange={(e) => props.handleChange('budget',e.target.value)}  />
                 </div>
-                <span className='investor__head__detail' > Maximum USD $2000 </span>
+                {/* <span className='investor__head__detail' > Maximum  INR 2000 </span> */}
                 <div style={{marginLeft:'5px'}} >
                 <HelpOutlineIcon/>
                 </div>

@@ -122,7 +122,7 @@ export default class InvestorContainer extends Component {
     }
 
     componentDidMount(){
-      // if (localStorage.getItem("token")){
+      if (localStorage.getItem("hire_id")){
        
        console.log(auth);
        auth = localStorage.getItem('token')
@@ -180,6 +180,10 @@ export default class InvestorContainer extends Component {
 
         
     }
+    else{
+      this.props.history.push('/home')
+    }}
+    
 
     render() {
         return (

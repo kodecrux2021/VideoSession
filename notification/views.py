@@ -17,17 +17,25 @@ class NotificationViewset(viewsets.ModelViewSet):
     filter_fields = ['user']
     http_method_names = ['get', ]
 
-    def list(self, request, pk=None):
-        queryset = models.Notification.objects.filter(user=request.user)
+    def list(self, request):
+        queryset = self.queryset.filter(user=self.request.user)
         serializer = serializers.NotificationSerializer(queryset, many=True)
         data = serializer.data
+        print('data',data)
         for element in data:
+            print('element',element)
             try:
                 user = CustomUser.objects.get(id=element["user"])
+                sent_by_user = CustomUser.objects.get(id=element["sent_by"])
                 name = f'{user.first_name} {user.last_name}'
+                sent_by_user_name = f'{sent_by_user.first_name} {sent_by_user.last_name}'
+                print('name',name)
+                print('sent_by',sent_by_user_name)
                 element["user"] = name
+                element['sent_by'] = sent_by_user_name
             except:
                 element["user"] = ""
+                element['sent_by'] = ""
         return Response(data)
 
 

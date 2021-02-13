@@ -24,7 +24,7 @@ class NotificationSerializer(serializers.ModelSerializer):
         fields = ('id','request','user','seen_by','created_at','conversation',
             'sent_by_first_name','sent_by_last_name','sent_by_profile_pic',
             'recieved_by_first_name','recieved_by_last_name','recieved_by_profile_pic',
-            "type","contract","hiring_status"
+            "type","contract","hiring_status","sent_by"
             )
     def get_sent_by_profile_pic(self, obj):
         if obj.sent_by:

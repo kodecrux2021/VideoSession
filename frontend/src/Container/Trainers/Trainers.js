@@ -25,7 +25,7 @@ export default class Trainers extends Component {
     //     }
 
     componentDidMount() {
-        console.log('previous token', localStorage.getItem("token"))
+        // console.log('previous token', localStorage.getItem("token"))
         if (localStorage.getItem("token")) {
             let data_refresh = { 'refresh': localStorage.getItem('refresh') }
 
@@ -48,7 +48,7 @@ export default class Trainers extends Component {
                 })
                 .then((result) => {
                     if (result) {
-                        console.log('result.access', result.access)
+                        // console.log('result.access', result.access)
                         localStorage.setItem('token', result.access)
                     }
                 }
@@ -69,7 +69,7 @@ export default class Trainers extends Component {
             .then(
                 (result) => {
 
-                    console.log('current user result', result.user)
+                    // console.log('current user result', result.user)
                     this.setState({ user: result.user })
                     let param = ""
                     result.user.technology.map((tech) => (
@@ -80,7 +80,7 @@ export default class Trainers extends Component {
                     ))
                     let new_param = param.substring(1);
 
-                    console.log('param', new_param)
+                    // console.log('param', new_param)
                     fetch(url + '/api/educator/?' + new_param, {
                         method: 'GET',
                         headers: {
@@ -92,7 +92,7 @@ export default class Trainers extends Component {
                         .then(res => res.json())
                         .then(
                             (result) => {
-                                console.log('result', result)
+                                // console.log('result', result)
                                 this.setState({ trainers: result, loading: false })
                             }
                         ).catch(e=>console.log(e))
@@ -113,7 +113,7 @@ export default class Trainers extends Component {
 
     messageHandle = (id) => {
 
-        console.log('data', id)
+        // console.log('data', id)
 
         let data = {
             "sent_by": this.state.user.id,
@@ -121,7 +121,7 @@ export default class Trainers extends Component {
             "accepted": false
         }
 
-        console.log('data_______________', data);
+        // console.log('data_______________', data);
         let auth = localStorage.getItem('token');
         fetch(url + '/api/request/', {
             method: 'POST',
@@ -133,17 +133,16 @@ export default class Trainers extends Component {
             body: JSON.stringify(data)
         })
             .then((response) => {
-                console.log("response", response)
+                // console.log("response", response)
                 if (response['status'] === 201 || response['status'] === 200) {
                     message.info('request has been sent')
                     return response.json()
                 } else if (response['status'] === 400) {
-                    console.log('Something is wrong')
+                    message.info('Something went wrong!');
+                    // console.log('Something is wrong')
                 }
             })
-            .then((result) => {
-                console.log('result', result);
-            }).catch(e=>console.log(e))
+            .catch(e=>console.log(e))
 
 
 
@@ -216,7 +215,7 @@ export default class Trainers extends Component {
     }
 
     showModal = (id) => {
-        console.log('show')
+        // console.log('show')
         this.setState({rec_id: id})
         this.setState({ isModalVisible: true })
     };

@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component } from 'react'
 import Carousel from 'react-bootstrap/Carousel'  
 import './Home.css'
 import elearn from '../../assets/images/elearn.jpg'
@@ -12,7 +12,6 @@ import home4 from '../../assets/images/home4.jpg'
 import home5 from '../../assets/images/home5.jpg'
 import Navbar from '../../components/Header/Navbar';
 import {message, Modal} from 'antd';
-import { Redirect } from 'react-router-dom'
 
 
 export default class Home extends Component {

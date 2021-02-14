@@ -55,7 +55,7 @@ class Pagetwo extends React.Component {
 
       
    onChange=(date, dateString) => {
-    console.log(date, dateString);
+    //console.log(date, dateString);
     this.setState({date_of_birth: date})
   }
 
@@ -71,12 +71,12 @@ class Pagetwo extends React.Component {
       .then(res => res.json())
       .then(
           (result) => {
-            console.log('result',result)
+            //console.log('result',result)
             this.setState({technology_list: result })
           }
       )
         
-        console.log('previous token',localStorage.getItem("token"));
+       // console.log('previous token',localStorage.getItem("token"));
         if (localStorage.getItem("token")){
         let data_refresh = {'refresh': localStorage.getItem('refresh')}
 
@@ -99,14 +99,13 @@ class Pagetwo extends React.Component {
             })
             .then((result) => {
                 if (result){
-                console.log('result.access',result.access)
+               // console.log('result.access',result.access)
                 localStorage.setItem('token',result.access)
                 }
             }
             )   
     }
 
-    let auth = localStorage.getItem("token")
 
         fetch(url + '/api/technology/', {
             method:'GET',
@@ -118,7 +117,7 @@ class Pagetwo extends React.Component {
         .then(res => res.json())
         .then(
             (result) => {
-              console.log('result',result)
+              //console.log('result',result)
               this.setState({tech_list: result })
             }
         )
@@ -129,8 +128,8 @@ class Pagetwo extends React.Component {
     }
 
     handelData  = (identity,data) =>{
-        console.log('identity',identity)
-        console.log('data',data)
+       // console.log('identity',identity)
+        //console.log('data',data)
         if (identity === 'pincode'){
             this.setState({'pincode' : data})
         }else if(identity === 'state'){
@@ -186,7 +185,7 @@ class Pagetwo extends React.Component {
                 "date_of_birth": this.state.date_of_birth
             }
             
-           console.log('data_______________', data)
+          // console.log('data_______________', data)
             let id = localStorage.getItem('user_id')
            await fetch( url + '/api/customusersecond/' + id + '/' , {
             method: 'PUT',
@@ -198,11 +197,11 @@ class Pagetwo extends React.Component {
             body: JSON.stringify(data)
         })
         .then((response) => {
-            console.log("response", response)
+            //console.log("response", response)
             if (response['status'] === 201 || response['status'] === 200) {
                 return response.json()
             } else if (response['status'] === 400) {
-                    console.log('Something is wrong')
+                    message.info('Something is wrong')
             }
         })
         .then((result) => {
@@ -226,7 +225,7 @@ class Pagetwo extends React.Component {
         // .then((result) => {
         //     console.log('result', result);
         // })
-            console.log('result', result);
+            //console.log('result', result);
          })
 
         
@@ -241,7 +240,7 @@ class Pagetwo extends React.Component {
       handleCancel = () => this.setState({ previewVisible: false });
 
       handlePreview = async file => {
-          console.log('file', file)
+         // console.log('file', file)
         if (!file.url && !file.preview) {
           file.preview = await getBase64(file.originFileObj);
         }

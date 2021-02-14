@@ -34,7 +34,7 @@ export default class EmployeeRegistrationComponent extends Component {
       }
 
       showModal = () => {
-          console.log('show')
+         // console.log('show')
         this.setState({isModalVisible: true})
       };
       handleCancel = () => {
@@ -43,7 +43,7 @@ export default class EmployeeRegistrationComponent extends Component {
 
 
       componentDidMount() {
-        console.log('previous token',localStorage.getItem("token"))
+       // console.log('previous token',localStorage.getItem("token"))
         if (localStorage.getItem("token")){
         let data_refresh = {'refresh': localStorage.getItem('refresh')}
 
@@ -66,7 +66,7 @@ export default class EmployeeRegistrationComponent extends Component {
             })
             .then((result) => {
                 if (result){
-                console.log('result.access',result.access)
+                //console.log('result.access',result.access)
                 localStorage.setItem('token',result.access)
                 }
             }
@@ -83,7 +83,7 @@ export default class EmployeeRegistrationComponent extends Component {
         .then(res => res.json())
         .then(
             (result) => {
-              console.log('result',result)
+              //console.log('result',result)
               this.setState({tech_list: result })
             }
         )
@@ -93,32 +93,7 @@ export default class EmployeeRegistrationComponent extends Component {
 
 
     handelData  = (identity,data) => {
-        console.log('identity',identity)
-        console.log('data',data)
-        // if (identity === 'first_name'){
-        //     this.setState({'first_name' : data})
-        // }
-        // else if (identity === 'last_name'){
-        //     this.setState({'last_name' : data})
-        // }
-        // else if (identity === 'email'){
-        //     this.setState({'email' : data})
-        //     if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.toLowerCase())) {
-        //         this.setState({ setemail_validate: '' })
-        //       }
-        //       else {
-        //         this.setState({ setemail_validate: 'Please enter a valid email' })
-        //       }
-        // }
-        // if (identity === 'phone_no'){
-        //     this.setState({'phone_no' : data})
-        //     if (/^(\+\d{1,3}[- ]?)?\d{10}$/.test(data)) {
-        //         this.setState({ setmobile_validate: '' })
-        //       }
-        //       else {
-        //         this.setState({ setmobile_validate: 'Please enter a valid mobile number' })
-        //       }
-        // }
+        
         
          if (identity === 'technology'){
             this.setState({'technology' : data, subtech_list : data.sub_technology})
@@ -138,18 +113,7 @@ export default class EmployeeRegistrationComponent extends Component {
         handleSubmit =async(e) =>{
             e.preventDefault();
             if ( this.state.summary === '' || this.state.technology === '' || this.state.sub_technology === '' || this.state.topic === '' ){
-                // if (this.state.first_name === ''){
-                //     message.info('Please Fill First Name');    
-                // }
-                // else if (this.state.last_name === ''){
-                //     message.info('Please Fill last Name');    
-                // }
-                // else if(this.state.email === ''){
-                //     message.info('Please Fill Email');
-                // }
-                // else if(this.state.phone_no === ''){
-                //     message.info('Please Fill Mobile Number');
-                // }
+                
                 if(this.state.technology === ''){
                     message.info('Please Fill Technology');
                 }
@@ -162,12 +126,7 @@ export default class EmployeeRegistrationComponent extends Component {
                 else if(this.state.summary === ''){
                     message.info('Please Fill Summary');
                 }
-                // else if(this.state.setemail_validate !== ''){
-                //     message.info(this.state.setemail_validate);
-                // }
-                // else if(this.state.setmobile_validate !== ''){
-                //     message.info(this.state.setmobile_validate);
-                // }
+                
             }
             else {
                 let tech = []
@@ -202,7 +161,7 @@ export default class EmployeeRegistrationComponent extends Component {
                 body: JSON.stringify(data)
             })
             .then((response) => {
-                console.log("response", response)
+               //console.log("response", response)
                 if (response['status'] === 201 || response['status'] === 200) {
                     return response.json()
                 } else if (response['status'] === 400) {
@@ -210,7 +169,7 @@ export default class EmployeeRegistrationComponent extends Component {
                 }
             })
             .then((result) => {
-                console.log('result', result);
+                // console.log('result', result);
              
                     this.showModal();
     

@@ -33,7 +33,7 @@ export default class HelpForm3 extends Component {
       .then(res => res.json())
       .then(
         (result) => {
-          console.log('result', result)
+         // console.log('result', result)
           this.setState({ technology_list: result })
         }
       )
@@ -47,9 +47,9 @@ export default class HelpForm3 extends Component {
   }
 
   handleRecommendedSelect(val) {
-    console.log(val);
+    //console.log(val);
     let selected = [...this.state.recommended_selected]
-    console.log('selected', selected)
+   // console.log('selected', selected)
     const index = selected.findIndex(
       (Item) => Item === val
     );
@@ -86,7 +86,7 @@ export default class HelpForm3 extends Component {
         "sub_technology": sub_tech,
       }
 
-      console.log('data_______________', data);
+      //console.log('data_______________', data);
       let auth = localStorage.getItem('token');
       let id = localStorage.getItem('user_id');
       fetch(url + '/api/customuserthird/' + id + '/', {
@@ -99,15 +99,16 @@ export default class HelpForm3 extends Component {
         body: JSON.stringify(data)
       })
         .then((response) => {
-          console.log("response", response)
+          //console.log("response", response)
           if (response['status'] === 201 || response['status'] === 200) {
             return response.json()
           } else if (response['status'] === 400) {
-            console.log('Something is wrong')
+            message.info('Something went wrong!')
+            //console.log('Something is wrong')
           }
         })
         .then((result) => {
-          console.log('result', result);
+         // console.log('result', result);
         })
 
       this.props.history.push('/trainers/message');

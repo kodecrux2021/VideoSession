@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import './Help.css'
-import VideocamOutlinedIcon from '@material-ui/icons/VideocamOutlined';
-import NextWeekOutlinedIcon from '@material-ui/icons/NextWeekOutlined';
-import PageviewOutlinedIcon from '@material-ui/icons/PageviewOutlined';
 import Navbar from '../../components/Header/Navbar';
 import kodecrux from '../../assets/images/reg2.jpeg';
 import design from '../../assets/images/design.png';
@@ -14,7 +11,7 @@ export default class HelpForm1 extends Component {
 
 
     handelData  = (identity) =>{
-        console.log('identity',identity)
+        //console.log('identity',identity)
         if (identity === 'livehelp'){
             this.props.history.push('/help/2')
         }

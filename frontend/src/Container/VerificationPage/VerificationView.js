@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import './Verification.css'
 import OtpInput from 'react-otp-input';
 import icon from '../../assets/images/reg4.jpeg'

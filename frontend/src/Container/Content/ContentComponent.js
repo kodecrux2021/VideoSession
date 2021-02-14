@@ -68,12 +68,12 @@ export default class ContentComponent extends Component {
     
       // set selected value
       handleSelect(val) {
-          console.log(val);
+          //console.log(val);
         this.setState({ selected: val });
       }
 
       handleInputChange=(e)=>{
-          console.log('input cahnge ', e.target.value)
+         // console.log('input cahnge ', e.target.value)
 this.setState({input: e.target.value})
       }
     
@@ -107,7 +107,7 @@ this.setState({input: e.target.value})
           .then(res => res.json())
           .then(
               (result) => {
-                console.log('result',result)
+                //console.log('result',result)
                 this.setState({categories: result })
               }
           )

@@ -80,16 +80,19 @@ export default class InvestorContainer extends Component {
           body: JSON.stringify(data)
       })
           .then((response) => {
-            console.log(auth);
-              console.log("response", response)
+            //console.log(auth);
+              //console.log("response", response)
               if (response['status'] === 201 || response['status'] === 200) {
                   return response.json()
               } else if (response['status'] === 400) {
-                  console.log('Something is wrong')
+                message.info('Something went wrong!')
+                 // console.log('Something is wrong')
               }
           })
           .then((result) => {
               console.log('result', result);
+              message.info('Request has been sent!')
+              this.props.history.push('/home')
           })
       }
     }
@@ -169,7 +172,7 @@ export default class InvestorContainer extends Component {
             })
             .then((result) => {
                 if (result){
-                console.log('result.access',result.access)
+                //console.log('result.access',result.access)
                 localStorage.setItem('token',result.access)
                 }
             }

@@ -1,15 +1,12 @@
 import React, {useState} from 'react'
 import './Investor.css'
-import { Avatar, IconButton,  } from '@material-ui/core';
-import avatar from '../../assets/images/avatar2.jpeg'
+import { Avatar  } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Select from 'react-select';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import { DatePicker, Space } from 'antd';
+import { DatePicker } from 'antd';
 import 'antd/dist/antd.css';
 import {Modal } from 'antd';
-import { SkipEnd } from 'react-bootstrap-icons';
 
 const useStyles = makeStyles((theme) => ({
     large: {
@@ -29,7 +26,7 @@ export default function Investor(props) {
 
     const hire = () =>{
         setVisible(true);
-        console.log(isModalVisible);
+        //console.log(isModalVisible);
     }  
 
     const send = () =>{
@@ -52,7 +49,7 @@ export default function Investor(props) {
                 <div className='investor__head__detail'>
                  Congratulations on finding a mentor for your project! To make sure
                  that you and {props?.investor__name} are on the same page, please discuss project 
-                 deliverables and deadline with then fill in the information below to create the freelance job.
+                 deliverables and deadline , then fill in the information below to create the freelance job.
                 </div>
             </div>
             <div className='investor__body'>
@@ -142,7 +139,7 @@ export default function Investor(props) {
                 </div>
                <p className='invester__heading' >Additional information</p>
                 </div>
-                <span className='investor__head__detail' >Project backgroud, links, and addtional terms </span>
+                <span className='investor__head__detail' >Project background, links, and addtional terms </span>
                 
                 <textarea style={{backgroundColor:'whitesmoke'}} className="employ__reg__textarea"  placeholder='Enter Information' onChange={(e) => props.handleChange('info',e.target.value)}>
                 </textarea>
@@ -151,7 +148,7 @@ export default function Investor(props) {
 
             </div>
 
-            <span className='investor__head__detail' > * The details of the freelance job will be final after it's been created. Please make sure all the information above is correct. </span>
+            <span className='investor__head__detail' > * The details of the freelance job will be final after it has been created. Please make sure all the information above is correct. </span>
 
             </div>
             <div className="form-actions">

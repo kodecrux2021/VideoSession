@@ -65,7 +65,7 @@ export default function Reset() {
                     })
                     .then((result) => {
                         if (result){
-                        console.log('result',result)
+                        //console.log('result',result)
                         message.info('Password Reset Successful! Please login.'); 
                         history.push('/login')
                         }

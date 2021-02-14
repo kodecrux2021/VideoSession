@@ -29,11 +29,11 @@ const styles = theme => ({
   const hireHandle = () => {
         localStorage.setItem('hire_id', props.reciever_id)
         props.hireHandle();
-        console.log(props.id);
+        // console.log(props.id);
     }
 
     const LiveHandle = (video) => {
-        console.log(video);
+        // console.log(video);
         video !== undefined && window.open(`${url}${video}`)
         // fetch(url + '/api/session/', {
         //     method: 'GET',
@@ -63,7 +63,7 @@ const styles = theme => ({
     let initial = new Date(props.lastseen);
     let final = new Date();
     let seconds = (final.getTime()-initial.getTime())
-    console.log('seconds diffrence',seconds)
+    // console.log('seconds diffrence',seconds)
  
 
     const modal = (<Modal title="Select Option" footer={null} visible={props.isModalVisible}  onCancel={props.handleCancel}>

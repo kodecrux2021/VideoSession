@@ -6,16 +6,12 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import Popover from '@material-ui/core/Popover';
-import {DatePicker, Space} from 'antd'
+import {DatePicker} from 'antd'
 import VideocamOutlinedIcon from '@material-ui/icons/VideocamOutlined';
 import { Drawer } from 'antd';
-import MenuIcon from '@material-ui/icons/Menu';
-import NextWeekOutlinedIcon from '@material-ui/icons/NextWeekOutlined';
-import PageviewOutlinedIcon from '@material-ui/icons/PageviewOutlined';
-import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
 import { Link, useHistory } from 'react-router-dom';
 import dateFormat from 'dateformat';
-import {Modal, Button} from 'antd/lib';
+import {Modal} from 'antd/lib';
 
 
 
@@ -72,11 +68,6 @@ export default function Chat(props) {
         localStorage.clear();
         history.push('/login')
     }
-
-    const onChange = (dates, dateStrings) => {
-        console.log('From: ', dates[0], ', to: ', dates[1]);
-        console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
-      }
 
     return (
         <div className='chat'>
@@ -168,22 +159,7 @@ export default function Chat(props) {
                 <div className='chat__date'>
                     <p>{dateFormat(props?.conversation?.last_message_datetime, "mmmm dS, yyyy")}</p>
                 </div>
-                {/*
-                 <div className='message__container'>
-                <span><Avatar src={props.img} className={classes.msgicon}/></span>
-                <p className='chat__message tri-right left-top'>
-                    <img className='msg__img' src={props.img} alt='img' />
-                    <p>Here is my pic</p>
-                    </p>
-                </div>
-                
-                <div className={`message__container ${true && "reciever__container"}`}>
-                <span><Avatar src={props.user_img} className={classes.msgicon}/></span>
-                <p className={`chat__message ${true && "chat__reciever tri-right right-top"}`}>
                
-                    Hi Prasad</p>
-                </div>
-                 */}
                  {
                     props.messages.length > 0 && props.messages.map((message)=>(
                         <div className={`message__container ${(props.reciever_id!==message.user_id) && "reciever__container"}`}>

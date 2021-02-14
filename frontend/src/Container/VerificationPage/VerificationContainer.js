@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import Navbar from '../../components/Header/Navbar'
-import RegistrationLayout from '../../components/RegistrationLayout/RegistrationLayout'
+// import RegistrationLayout from '../../components/RegistrationLayout/RegistrationLayout'
 import VerificationView from './VerificationView'
 import { message } from 'antd';
-import {url} from '../../Server/GlobalUrl'
+
 class VerificationContainer extends Component {
     state = {
         otp: "",
@@ -11,17 +11,15 @@ class VerificationContainer extends Component {
 
 
     onChangeValue = otp => {
-        console.log("state", this.state.otp)
+        // console.log("state", this.state.otp)
         this.setState({otp})
     }
 
     onSubmit=(e)=> 
     {
         e.preventDefault();
-        let data={
     
-        }
-        console.log('the otp ----------------', this.state.otp)
+        // console.log('the otp ----------------', this.state.otp)
         message.info('Registered successfull! Please login.'); 
         this.props.history.push('/login');
 

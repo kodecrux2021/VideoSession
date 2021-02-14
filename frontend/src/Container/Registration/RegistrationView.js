@@ -28,7 +28,7 @@ export default function Registration(props) {
             body: JSON.stringify(data)
         })
         .then((response) => {
-            console.log("response", response)
+            //console.log("response", response)
             if (response['status'] === 201 || response['status'] === 200) {
                 return response.json()
             } else if (response['status'] === 400) {
@@ -36,7 +36,7 @@ export default function Registration(props) {
             }
         })
         .then((result) => {
-            console.log('result', result);
+            //console.log('result', result);
             if(result){
               localStorage.setItem('token',result.access_token)
               localStorage.setItem('refresh',result.refresh_token)
@@ -58,7 +58,7 @@ export default function Registration(props) {
       .then(res => res.json())
       .then(
           (result) => {
-            console.log('result',result)
+            //console.log('result',result)
             if(result){
               localStorage.setItem('user_id', result.user?.id);
               localStorage.setItem('user_name', result.user?.first_name);
@@ -66,7 +66,7 @@ export default function Registration(props) {
           }
       )
             
-           console.log("success")
+           //console.log("success")
           //  history.replace('/home')
          }
          else if(response.status=='unknown') {
@@ -98,7 +98,7 @@ let data = {"token": response.accessToken}
           }
       })
       .then((result) => {
-          console.log('result', result);
+          //console.log('result', result);
           if(result){
             localStorage.setItem('token',result.access_token)
             localStorage.setItem('refresh',result.refresh_token)
@@ -119,7 +119,7 @@ let data = {"token": response.accessToken}
     .then(res => res.json())
     .then(
         (result) => {
-          console.log('result',result)
+          //console.log('result',result)
           if(result){
             localStorage.setItem('user_id', result.user?.id);
             localStorage.setItem('user_name', result.user?.first_name);
@@ -128,7 +128,7 @@ let data = {"token": response.accessToken}
     )
 
 
-        console.log("success")
+        //console.log("success")
         message.info('Logged In Succsessfully!!!');
         history.push('/details2')
         // history.replace('/home')  

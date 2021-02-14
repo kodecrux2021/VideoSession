@@ -1,7 +1,7 @@
 import Axios from "axios";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect } from "react";
 import {url} from './Server/GlobalUrl'
-import { Table, Tag, Space, message } from 'antd';
+import { Table, message } from 'antd';
 import { Checkbox } from 'antd';
 import { useHistory } from "react-router-dom";
 
@@ -56,36 +56,38 @@ function Payment() {
   // const [name, setName] = useState("");
   // const [amount, setAmount] = useState("");
 
-  const handlePaymentSuccess = async (response) => {
-    try {
-      let bodyData = new FormData();
+  const handlePaymentSuccess = () => {
+    message.info('Payment was successful!')
+    history.push('/home')
+    // try {
+    //   let bodyData = new FormData();
 
-      // we will send the response we've got from razorpay to the backend to validate the payment
-      bodyData.append("response", JSON.stringify(response));
+    //   // we will send the response we've got from razorpay to the backend to validate the payment
+    //   bodyData.append("response", JSON.stringify(response));
 
-      await Axios({
-        url: `${url}/razorpay/payment/success/`,
-        method: "POST",
-        data: bodyData,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-        .then(() => {
-          console.log("Everything is OK!");
-          message.info('Payment was successful')
-          this.props.history.push('/home')
-          // setName("");
-          // setAmount("");
-        })
-        .catch((err) => {
-          message.info('Something went wrong, payment was unsuccessful')
-          console.log(err);
-        });
-    } catch (error) {
-      console.log(console.error());
-    }
+    //   await Axios({
+    //     url: `${url}/razorpay/payment/success/`,
+    //     method: "POST",
+    //     data: bodyData,
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //   })
+    //     .then(() => {
+    //       console.log("Everything is OK!");
+    //       message.info('Payment was successful')
+    //       this.props.history.push('/home')
+    //       // setName("");
+    //       // setAmount("");
+    //     })
+    //     .catch((err) => {
+    //       message.info('Something went wrong, payment was unsuccessful')
+    //       console.log(err);
+    //     });
+    // } catch (error) {
+    //   console.log(console.error());
+    // }
   };
 
   const loadScript = () => {
@@ -97,11 +99,6 @@ function Payment() {
   const showRazorpay = async () => {
     const res = await loadScript();
 
-    // let bodyData = new FormData();
-
-    // bodyData.append("amount", amount.toString());
-    // bodyData.append("name", name);
-
     const data = await Axios({
       url: `${url}/order/?hire_id=${localStorage.getItem('pay_id')}`,
       method: "GET",
@@ -109,7 +106,6 @@ function Payment() {
         "Accept": "application/json",
         "Content-Type": "application/json",
       },
-      //data: bodyData,
     }).then((res) => {
       return res
     });
@@ -121,15 +117,13 @@ function Payment() {
     var options = {
       key_id: process.env.REACT_APP_PUBLIC_KEY, 
       key_secret: process.env.REACT_APP_SECRET_KEY,
-      //amount: amount,
       currency: "USD",
       name: "Ekodecrux",
       description: "Test transaction",
       image: "",
       order_id: data.data,
       handler: function (response) {
-        
-        handlePaymentSuccess(response);
+        handlePaymentSuccess();
       },
       prefill: {
         name: "User's name",

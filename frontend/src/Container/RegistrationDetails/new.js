@@ -82,7 +82,7 @@ class New extends React.Component {
         })
         .then((result) => {
           if (result) {
-            console.log("result.access", result.access);
+            //console.log("result.access", result.access);
             localStorage.setItem("token", result.access);
           }
         });
@@ -99,14 +99,14 @@ class New extends React.Component {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log("result", result);
+        //console.log("result", result);
         this.setState({ tech_list: result });
       });
   }
 
   handelData = (identity, data) => {
-    console.log("identity", identity);
-    console.log("data", data);
+   // console.log("identity", identity);
+    //console.log("data", data);
     if (identity === "pincode") {
       this.setState({ pincode: data });
     } else if (identity === "state") {
@@ -183,9 +183,9 @@ class New extends React.Component {
       
 
 
-      console.log("data_______________", formData);
-      console.log(tech, sub_tech);
-      console.log(this.state.sub_technology?.id);
+      // console.log("data_______________", formData);
+      // console.log(tech, sub_tech);
+      // console.log(this.state.sub_technology?.id);
       let id = localStorage.getItem("educator_id");
       let user_id = localStorage.getItem("user_id");
 
@@ -199,12 +199,12 @@ class New extends React.Component {
         body: formData,
       })
         .then((response) => {
-          console.log("response", response);
+          //console.log("response", response);
           if (response["status"] === 201 || response["status"] === 200) {
             return response.json();
           } else if (response["status"] === 400 ||  response["status"] === 500) {
             message.info('Something went wrong')
-            console.log("Something is wrong");
+            //console.log("Something is wrong");
           }
         })
         .then(async(result) => {
@@ -222,15 +222,16 @@ class New extends React.Component {
               body: formData,
             })
               .then((response) => {
-                console.log("response", response);
+               // console.log("response", response);
                 if (response["status"] === 201 || response["status"] === 200) {
                   return response.json();
                 } else if (response["status"] === 400) {
-                  console.log("Something is wrong");
+                  message.info('Something went wrong!');
+                 // console.log("Something is wrong");
                 }
               })
               .then((result) => {
-                console.log(result);
+                //console.log(result);
                 this.props.history.push("/verification");
                 // fetch( url + '/api/educator/' , {
                 //     method: 'POST',
@@ -270,10 +271,10 @@ class New extends React.Component {
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async (file) => {
-    console.log("file", file);
+    //console.log("file", file);
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
-      console.log(file.preview);
+     // console.log(file.preview);
     }
 
     this.setState({
@@ -289,13 +290,14 @@ class New extends React.Component {
     //fileList[0].originFileObj.url = URL.createObjectURL(fileList[0].originFileObj);
 //fileList[0].originFileObj.preview = await getBase64(fileList[0].originFileObj)
 this.setState({ fileList });
-console.log(this.state.fileList) };
+// console.log(this.state.fileList) 
+};
 
 change = async(e)=>{
   e.persist();
-  console.log(e.target.files);
+  // console.log(e.target.files);
   await this.setState({file: e.target.files[0]})
-  console.log(this.state.file);
+  // console.log(this.state.file);
 }
 
   render() {

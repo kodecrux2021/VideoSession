@@ -24,7 +24,8 @@ export default class NotificationsContainer extends Component {
 
     acceptHire = (id) =>{
         let data = {
-            hiring_status: "INSTRUCTOR_ACCEPTED"
+            hiring_status: "INSTRUCTOR_ACCEPTED",
+            //seen_by: true
         }
         console.log(id);
         
@@ -43,11 +44,12 @@ export default class NotificationsContainer extends Component {
                 if (response['status'] === 201 || response['status'] === 200) {
                     return response.json()
                 } else if (response['status'] === 400) {
-                    console.log('Something is wrong')
+                    message.info('Something went wrong!')
+                    //console.log('Something is wrong')
                 }
             })
             .then((result) => {
-                console.log('result', result);
+                //console.log('result', result);
                 this.setState({isModalVisible: false})
             })  .catch((e)=>console.log(e));  
     }
@@ -57,7 +59,7 @@ export default class NotificationsContainer extends Component {
         let data = {
             'hiring_status': 'NOT_DONE'
         }
-        console.log(id);
+        //console.log(id);
         let auth = localStorage.getItem('token')
         fetch(url + '/api/hire/'+id+'/', {
             method: 'PUT',
@@ -73,11 +75,12 @@ export default class NotificationsContainer extends Component {
                 if (response['status'] === 201 || response['status'] === 200) {
                     return response.json()
                 } else if (response['status'] === 400) {
-                    console.log('Something is wrong')
+                    message.info('Something went wrong!')
+                    //console.log('Something is wrong')
                 }
             })
             .then((result) => {
-                console.log('result', result);
+                //console.log('result', result);
                 this.setState({isModalVisible: false})
             })  .catch((e)=>console.log(e));  
     }
@@ -93,24 +96,25 @@ export default class NotificationsContainer extends Component {
             }
         })
             .then((response) => {
-                console.log("response", response)
+                //console.log("response", response)
                 if (response['status'] === 201 || response['status'] === 200) {
                     return response.json()
                 } else if (response['status'] === 400) {
-                    console.log('Something is wrong')
+                    message.info('Something went wrong!');
+                    //console.log('Something is wrong')
                 }else if(response["status"]===401){
                     message.info('auth token expired');
                     this.props.history.push('/login')
                 }
             })
             .then((result) => {
-                console.log('result', result);
+               // console.log('result', result);
                 this.setState({isModalVisible: true, hire: result})
             }) .catch((e)=>console.log(e));   
     }
     
     getMessage = () =>{
-        console.log(user_id);
+        //console.log(user_id);
         fetch(url+'/api/conversation/?includes='+user_id,{
             method: 'GET',
             headers: {
@@ -122,8 +126,8 @@ export default class NotificationsContainer extends Component {
         .then(res => res.json())
         .then(
             (result) => {
-                console.log(user_id);
-              console.log('convo',result)
+                //console.log(user_id);
+              //console.log('convo',result)
 
               
               this.setState({message: result})
@@ -134,7 +138,7 @@ export default class NotificationsContainer extends Component {
     }
 
     selectHandler = (data) => {
-        console.log('data', data)
+        //console.log('data', data)
         this.props.history.push(data)
         this.setState({selected: data})
     }
@@ -157,7 +161,7 @@ export default class NotificationsContainer extends Component {
           }})
         .then(
             (result) => {
-              console.log('request result',result)
+              //console.log('request result',result)
               this.setState({requests: result})
              // console.log(this.state.requests);
 
@@ -184,7 +188,7 @@ export default class NotificationsContainer extends Component {
           }})  
         .then(
             (result) => {
-              console.log('notification result',result)
+              //console.log('notification result',result)
                 this.setState({notifications: result})
             }
         ).catch((e)=>message.info("Something went wrong")) 
@@ -213,7 +217,7 @@ export default class NotificationsContainer extends Component {
               })
               .then((result) => {
                 if (result) {
-                  console.log("result.access", result.access);
+                 // console.log("result.access", result.access);
                   localStorage.setItem("token", result.access);
                 }
               })
@@ -291,7 +295,7 @@ export default class NotificationsContainer extends Component {
             "accepted": true
         }
 
-        console.log('data_______________', data);
+        //console.log('data_______________', data);
         let auth = localStorage.getItem('token') ;
         fetch(url + '/api/request/'+ id + '/', {
             method: 'PUT',
@@ -303,18 +307,17 @@ export default class NotificationsContainer extends Component {
             body: JSON.stringify(data)
         })
             .then((response) => {
-                console.log("response", response)
+                //console.log("response", response)
                 if (response['status'] === 201 || response['status'] === 200) {
                     message.info('Request Accepted! Go to messages to chat')
                     this.getReqList()
                     return response.json()
                 } else if (response['status'] === 400) {
-                    console.log('Something is wrong')
+                    message.info('Something went wrong!')
+                    //console.log('Something is wrong')
                 }
             })
-            .then((result) => {
-                console.log('result', result);
-            }).catch((e)=>console.log(e));
+            .catch((e)=>console.log(e));
     }
 
 
@@ -335,12 +338,11 @@ export default class NotificationsContainer extends Component {
                     this.getReqList()
                     return response.json()
                 } else if (response['status'] === 400) {
-                    console.log('Something is wrong')
+                    message.info('Something went wrong!');
+                    //console.log('Something is wrong')
                 }
             })
-            .then((result) => {
-                console.log('result', result);
-            }).catch((e)=>console.log(e));
+            .catch((e)=>console.log(e));
     }
 
     chatHandler = () =>{

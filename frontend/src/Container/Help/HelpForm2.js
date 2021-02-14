@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined'; 
 import BugReportOutlinedIcon from '@material-ui/icons/BugReportOutlined';
 import LibraryBooksOutlinedIcon from '@material-ui/icons/LibraryBooksOutlined';
-import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import Navbar from '../../components/Header/Navbar';
 import kodecrux from '../../assets/images/reg2.jpeg'
@@ -21,7 +20,7 @@ export default class HelpForm2 extends Component {
     }
 
     onClickHandler = (data) => {
-        console.log('data', data)
+       // console.log('data', data)
         this.setState({selected:data})
     }
 

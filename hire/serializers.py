@@ -21,11 +21,11 @@ class HireSerializer(serializers.ModelSerializer):
         if obj.recieved_by:
             return obj.recieved_by.first_name + " " + obj.recieved_by.last_name
 
-    def update(self, instance, validated_data):
-        # Update the Foo instance
-        instance.hiring_status = validated_data['hiring_status']
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+    #     # Update the Foo instance
+    #     instance.hiring_status = validated_data['hiring_status']
+    #     instance.save()
+    #     return instance
 
 
 

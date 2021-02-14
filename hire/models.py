@@ -52,6 +52,7 @@ from notification.models import Request
 @receiver(post_save, sender=Hire, dispatch_uid="update_stock_count")
 def update_request(sender, instance, **kwargs):
     from notification.models import Notification
+
     print("Request not accepted",instance,instance.sent_by,instance.recieved_by )
     print("Request accepted",instance,instance.sent_by,instance.recieved_by )
     if not Request.objects.filter(type="HIRE",contract=instance,
@@ -59,15 +60,19 @@ def update_request(sender, instance, **kwargs):
         print("Request Sent",instance,instance.sent_by,instance.recieved_by )
         request = Request.objects.create(sent_by=instance.sent_by,recieved_by=instance.recieved_by,type="HIRE",contract=instance,
                         accepted = None)
-        Notification.objects.create(request=request,user=instance.recieved_by,sent_by=instance.sent_by,accepted_by=instance.recieved_by)
+        print('62request',request.id)
+        notification=Notification.objects.create(request=request,user=instance.recieved_by,sent_by=instance.sent_by,accepted_by=instance.recieved_by)
+        print('notification64',notification.id)
     elif Request.objects.filter(type="HIRE",contract=instance,
         sent_by=instance.sent_by,recieved_by=instance.recieved_by).exists():
-        request = Request.objects.filter(sent_by=instance.sent_by,recieved_by=instance.recieved_by,type="HIRE",contract=instance,
-                        accepted = None).first()
-        if request:
-            request.accepted = True
-            request.save()
-            Notification.objects.create(request=request,user=request.sent_by,accepted_by=request.recieved_by)
+        request = Request.objects.filter(sent_by=instance.sent_by,recieved_by=instance.recieved_by,type="HIRE",contract=instance).first()
+        print('request',request.sent_by)
+
+        request.accepted = True
+        request.save()
+        notification = Notification.objects.create(request=request,user=request.sent_by,accepted_by=request.recieved_by,sent_by=request.sent_by)
+        print('notification',notification.id)
+        print('notification',notification.user)
 
 
 

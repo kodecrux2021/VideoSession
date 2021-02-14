@@ -47,7 +47,7 @@ class HireViewset(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def update(self, instance, pk=None):
-        # print('50',self.request.data['hiring_status'])
+        print('50',self.request.data['hiring_status'])
         # instance.hiring_status=self.request.data['hiring_status']
         queryset = self.queryset
         contract = get_object_or_404(queryset, pk=pk)

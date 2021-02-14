@@ -19,7 +19,7 @@ class NotificationSerializer(serializers.ModelSerializer):
     #user_first_name = ReadOnlyField(source='sent_by.first_name')
     class Meta:
         model = Notification
-        read_only_fields = ('id','request','seen_by','created_at','accepted_by',
+        read_only_fields = ('id','request','created_at','accepted_by',
             "type","contract")
         fields = ('id','request','user','seen_by','created_at','conversation',
             'sent_by_first_name','sent_by_last_name','sent_by_profile_pic',

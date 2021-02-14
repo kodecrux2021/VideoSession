@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions, status, views
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+
 
 
 class NotificationViewset(viewsets.ModelViewSet):
@@ -15,7 +17,7 @@ class NotificationViewset(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['user']
-    http_method_names = ['get']
+    http_method_names = ['get','put']
 
     def list(self, request):
         queryset = self.queryset.filter(user=self.request.user)
@@ -28,14 +30,37 @@ class NotificationViewset(viewsets.ModelViewSet):
                 user = CustomUser.objects.get(id=element["user"])
                 sent_by_user = CustomUser.objects.get(id=element["sent_by"])
                 name = f'{user.first_name} {user.last_name}'
-                sent_by_user_name = f'{sent_by_user.first_name} {sent_by_user.last_name}'
                 print('name',name)
+                sent_by_user_name = f'{sent_by_user.first_name} {sent_by_user.last_name}'
+                print('sent_by_user_name',sent_by_user_name)
                 print('sent_by',sent_by_user_name)
                 element["user"] = name
                 element['sent_by'] = sent_by_user_name
             except:
                 element["user"] = ""
                 element['sent_by'] = ""
+        return Response(data)
+
+    def update(self, instance, pk=None):
+        print('50',self.request.data['seen_by'])
+        # instance.hiring_status=self.request.data['hiring_status']
+        queryset = self.queryset
+        contract = get_object_or_404(queryset, pk=pk)
+        serializer = serializers.NotificationSerializer(contract,data=self.request.data,partial=True)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+        data = serializer.data
+        print('data', type(data))
+        print('data',data)
+
+        try:
+            sent_by_user = CustomUser.objects.get(id=data["sent_by"])
+            sent_by_user_name = f'{sent_by_user.first_name} {sent_by_user.last_name}'
+            print('sent_by', sent_by_user_name)
+            data['sent_by'] = sent_by_user_name
+        except:
+            data['sent_by'] = ""
         return Response(data)
 
 

@@ -3,10 +3,11 @@ import './Chat.css'
 import { Avatar, CircularProgress, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+// import AttachFileIcon from '@material-ui/icons/AttachFile';
+// import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import Popover from '@material-ui/core/Popover';
-import {DatePicker} from 'antd'
+import SendIcon from '@material-ui/icons/Send';
+// import {DatePicker} from 'antd'
 import VideocamOutlinedIcon from '@material-ui/icons/VideocamOutlined';
 import { Drawer } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
@@ -179,10 +180,10 @@ export default function Chat(props) {
             <div className='chat__footer'>
                 <form>
                     <input placeholder='Type a message' value={props.message} onChange={(e)=>props.handleData('message', e.target.value)} type="text" />
-                    <button type='submit' onClick={(e)=>props.sendMessage(e)}>Send a message</button>
+                    {/* <button type='submit' onClick={(e)=>props.sendMessage(e)}>Send a message</button> */}
                 </form>
-                <IconButton><AttachFileIcon className="svg_icons"/></IconButton>
-                <IconButton><PictureAsPdfIcon className="svg_icons"/></IconButton>                          
+                <IconButton onClick={(e)=>props.sendMessage(e)}><SendIcon className="svg_icons"/></IconButton>
+                {/* <IconButton><PictureAsPdfIcon className="svg_icons"/></IconButton>                           */}
             </div>
 
             <Drawer

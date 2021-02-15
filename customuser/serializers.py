@@ -15,8 +15,8 @@ class SocialSerializer(serializers.Serializer):
 class CustomUserSerializers(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        # read_only_fields = ('id','pincode','state','city','otp','email','first_name','last_name','technology','sub_technology','topic','last_seen','profile_pic','total_experience','relevant_experience','date_of_birth')
-        fields = ('id','username','pincode','state','city','otp','password','email','first_name','last_name','phone','is_instructor','is_freelancer','is_codeexpert','is_client','technology','sub_technology','topic','last_seen','total_experience','relevant_experience','date_of_birth')
+        read_only_fields = ('profile_pic',)
+        fields = ('id','username','pincode','state','city','otp','password','email','first_name','last_name','phone','is_instructor','is_freelancer','is_codeexpert','is_client','technology','sub_technology','topic','last_seen','total_experience','relevant_experience','date_of_birth','profile_pic',)
         extra_kwargs = {'password': {'write_only': True}}
 
     def perform_create(self, serializer):

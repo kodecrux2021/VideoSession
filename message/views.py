@@ -351,7 +351,7 @@ class TeamviewerMeetingtokenView(APIView):
             print('qaqaaccess_token',access_token)
             r = requests.get('http://13.229.251.62:8000/teamtemplate/')
             print ('r',r)
-            emails=['sales@kodecrux.com','shraddha456khandelwal@gmail.com','pawasiet@gmail.com']
+            emails=['kodecrux@gmail.com']
             conversation = models.Conversation.objects.filter(id=conversation_id)
             if conversation.exists():
                 conversation= conversation.first()

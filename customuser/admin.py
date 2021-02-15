@@ -11,7 +11,7 @@ class SampleAdminModel(admin.ModelAdmin):
     fieldsets =(
             ('Required information',{
                 'description' : 'These fields are compulsory',
-                'fields':(('username','pincode','state','city','otp','password','email','first_name','last_name','phone','is_instructor','is_freelancer','is_codeexpert','is_client','technology','sub_technology','topic','last_seen','profile_pic','total_experience','relevant_experience','date_of_birth'),)
+                'fields':(('username','verification_code','pincode','state','city','otp','password','email','first_name','last_name','phone','is_instructor','is_freelancer','is_codeexpert','is_client','technology','sub_technology','topic','last_seen','profile_pic','total_experience','relevant_experience','date_of_birth'),)
             }),
     )
     list_display =('id','username','email')

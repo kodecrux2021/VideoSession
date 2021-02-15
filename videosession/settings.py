@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import datetime
-from datetime import timedelta
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -33,7 +32,7 @@ SECRET_KEY = 'p_w#!6jui_dlu78z7*ne8^y2z$+2q0u%2kqm*hg(ij9a2=1w^1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['62930597f334.ngrok.io','127.0.0.1','0.0.0.0','*']
+ALLOWED_HOSTS = ['b4813c8e515d.ngrok.io','127.0.0.1','0.0.0.0','*']
 
 
 # Application definition
@@ -197,7 +196,6 @@ JWT_AUTH = {
     # this is the maximum time AFTER the token was issued that
     # it can be refreshed.  exprired tokens can't be refreshed.
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=2),
     'JWT_PAYLOAD_HANDLER':
         'rest_framework_jwt.utils.jwt_payload_handler',
 'JWT_ENCODE_HANDLER':

@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Modal, Button, notification} from 'antd'
 import kodecrux from '../../assets/images/reg2.jpeg'
 import { useHistory } from 'react-router-dom';
+import { url } from '../../Server/GlobalUrl';
 
 let user_id = ''
 let rec = '';
@@ -88,13 +89,13 @@ export default function Notifications(props) {
                                 return(
                                    
                                 <div key = {user.id}className='chat__card' onClick = {()=>{
-                                    console.log(rec.first_name);
+                                    // console.log(rec.first_name);
 
                                     localStorage.setItem('conversation_id', user.id);
                                     props.chatHandler()
                                 }}>
                             <div className='chat__card__left' >
-                            <Avatar src={props.img} className={classes.large}/>
+                            <Avatar src={rec.profile_pic!== null ? rec.profile_pic : props.img} className={classes.large}/>
                                 <div className='chat__card__details' >
                                     <span>{rec.first_name} {rec.last_name}</span>
                                 </div>
@@ -244,7 +245,7 @@ export default function Notifications(props) {
                                 null :
                                 <div className='chat__card' key={request.id}>
                                 <div className='chat__card__left' >
-                                <Avatar src={request.user_profile_pic} className={classes.large}/>
+                                <Avatar src={request.user?.profile_pic!== null ?`${url}${request.user_profile_pic}`: props.img} className={classes.large}/>
                                             <div className='chat__card__details' >
                                                 <span>{request.user_first_name} {request.user_last_name} sent you a request.</span>
                                             </div>
@@ -310,7 +311,7 @@ export default function Notifications(props) {
 
                                 return (
                                     <div className='chat__card' key={notification.id}>
-                                    <Avatar src={ notification?.recieved_by_profile_pic} className={classes.large}/>
+                                    <Avatar src={ notification?.sent_by_profile_pic} className={classes.large}/>
                                    {props.hire !== null ? (<Modal title="Hiring Application" visible={props.isModalVisible}  onCancel={props.handleCancel}
                                     footer={[
                                         <Button onClick={() =>props.acceptHire(props.hire.id)}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import kodecrux from '../../assets/images/reg2.jpeg'
 import { url } from '../../Server/GlobalUrl';
@@ -12,17 +12,7 @@ function Login() {
     const [password, setPassword] = useState('');
     const [emailValidate, setEmailValidate] = useState('');
 
-    const handelData = (data) => {
 
-        console.log('data', data)
-        setEmail(data);
-        if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.toLowerCase())) {
-            setEmailValidate('')
-        }
-        else {
-            setEmailValidate('Please enter a valid email')
-        }
-    }
 
     const signIn = async (e) => {
         e.preventDefault();
@@ -40,7 +30,7 @@ function Login() {
         }
         else {
             const data = { 'username': email, 'password': password }
-            console.log('data', data)
+            // console.log('data', data)
 
             await fetch(url + '/api/token/', {
                 method: 'POST',
@@ -56,27 +46,27 @@ function Login() {
                         return response.json()
                     } else if (response['status'] === 401) {
                         if (response['statusText'] === 'Unauthorized') {
-                            console.log('username or password you have provided is Incorrect')
+                            // console.log('username or password you have provided is Incorrect')
                             message.info('Username or password you have provided is incorrect!!!');
                         }
                         else {
-                            console.log('No active account found with the given credentials')
+                            // console.log('No active account found with the given credentials')
                             message.info('No active account found with the given credentials!!!');
 
                         }
                     }
                 })
                 .then((result) => {
-                    console.log('access', result)
+                    // console.log('access', result)
                     if (result) {
 
                         if (result.access) {
                             localStorage.setItem('token', result.access)
-                            console.log('result.access', result.access)
+                            // console.log('result.access', result.access)
                         }
                         if (result.refresh) {
                             localStorage.setItem('refresh', result.refresh)
-                            console.log('result.refresh', result.refresh)
+                            // console.log('result.refresh', result.refresh)
                         }
 
                         let auth = localStorage.getItem('token')
@@ -91,11 +81,11 @@ function Login() {
                             .then(res => res.json())
                             .then(
                                 (result) => {
-                                    console.log('result', result)
+                                    // console.log('result', result)
                                     if (result) {
                                         localStorage.setItem('user_id', result.user?.id);
                                         localStorage.setItem('user_name', result.user?.first_name);
-                                        console.log(localStorage.getItem('user_id'));
+                                        // console.log(localStorage.getItem('user_id'));
                                     }
                                 }
                             )
@@ -115,6 +105,8 @@ function Login() {
         e.preventDefault();
         history.push('/registration')
     }
+
+
 
 
 

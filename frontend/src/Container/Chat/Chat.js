@@ -51,8 +51,8 @@ export default function Chat(props) {
     const classes = useStyles();
 
     const today = Date.now();
-    console.log(today)
-    console.log(dateFormat(props.lastseen, "mmmm dS, yyyy"));
+    // console.log(today)
+    // console.log(dateFormat(props.lastseen, "mmmm dS, yyyy"));
 
 
     const [visible, setVisible] = useState(false);
@@ -72,7 +72,7 @@ export default function Chat(props) {
     return (
         <div className='chat'>
             <div className='chat__header'>
-                <Avatar src={props.reciever_img} className={classes.large}/>
+                <Avatar src={props?.reciever_img} className={classes.large}/>
                 <div className='chat__header__info'>
                     <h4>{props.name}</h4>
                     <span>{dateFormat(props.lastseen, "mmmm dS, h:MM TT")} </span>
@@ -161,11 +161,13 @@ export default function Chat(props) {
                 </div>
                
                  {
+                   
                     props.messages.length > 0 && props.messages.map((message)=>(
+                      
                         <div className={`message__container ${(props.reciever_id!==message.user_id) && "reciever__container"}`}>
-                        <span><Avatar src={props.user_img} className={classes.msgicon}/></span>
+                        <span><Avatar src={props.reciever_id!==message.user_id ? props.user_img : props.reciever_img} className={classes.msgicon}/></span>
                         <p className={`chat__message tri-right ${(props.reciever_id!==message.user_id) ? "chat__reciever  right-top" :"left-top"}`}>
-                       
+                  
                             {message.message}</p>
                         </div> 
                      ))

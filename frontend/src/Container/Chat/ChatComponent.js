@@ -127,7 +127,7 @@ fetch(url + '/api/conversation/'+conversation_id, {
     .then(res => res.json())
     .then(
         (result) => {
-          //console.log('result',result)
+          console.log('result',result)
           this.setState({reciever: result })
         }
     ).catch((e)=> console.log(e))
@@ -150,7 +150,7 @@ fetch(url + '/currentuser/', {
 .then(res => res.json())
 .then(
     (result) => {
-      //console.log('result',result)
+      console.log('result',result)
       this.setState({user: result })
     }
 )
@@ -228,7 +228,7 @@ sendMessage = async(e) => {
         }
     })
     .then((result) => {
-        //console.log('result', result);
+        console.log('result', result);
     })
     .catch((e)=>console.log(e))
 
@@ -252,8 +252,8 @@ handleCancel = () => {
                 loading={this.state.loading}
                 clicked={this.state.clicked}
                 dropHandle={this.dropHandle}
-                reciever_img={this.state.reciever?.profile_pic}
-                user_img={this.state.user?.profile_pic}
+                reciever_img={this.state.reciever.profile_pic!==null ? `${this.state.reciever?.profile_pic}`:null}
+                user_img={this.state.user.profile_pic !== null ?`${url}${this.state.user?.profile_pic}`: null}
                 name={`${this.state.reciever?.first_name} ${this.state.reciever?.last_name}`}
                 reciever_id={this.state.reciever.id}
                 lastseen={this.state.reciever.last_seen}

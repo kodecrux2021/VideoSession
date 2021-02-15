@@ -161,7 +161,7 @@ export default class NotificationsContainer extends Component {
           }})
         .then(
             (result) => {
-              //console.log('request result',result)
+              console.log('request result',result)
               this.setState({requests: result})
              // console.log(this.state.requests);
 
@@ -188,7 +188,7 @@ export default class NotificationsContainer extends Component {
           }})  
         .then(
             (result) => {
-              //console.log('notification result',result)
+              console.log('notification result',result)
                 this.setState({notifications: result})
             }
         ).catch((e)=>message.info("Something went wrong")) 

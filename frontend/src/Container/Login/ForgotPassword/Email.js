@@ -20,7 +20,7 @@ export default function Email() {
 
     const handelData = (data) => {
 
-        console.log('data', data)
+       // console.log('data', data)
         setEmail(data);
         if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.toLowerCase())) {
             setEmailValidate('')
@@ -52,22 +52,22 @@ export default function Email() {
                         'Content-Type': 'application/json',
                     },
                 }).then((response) =>
-                {console.log("response", response)
+                {//console.log("response", response)
                               if (response['status'] === 201 || response['status'] === 200) {
                                   return response.json()
                               } else if (response['status'] === 400) {
-                                      console.log('Something is wrong')
+                                     // console.log('Something is wrong')
                                       message.info('Something went wrong, try again later')
                               }}
                               )
                     .then((result)=>{
                         
                         //console.log(result)
-                        localStorage.setItem('verif', result[0]?.verification_code)})  
-                        showModal()  
+                        localStorage.setItem('verif', result[0]?.verification_code)
+                        showModal()  })
                         .catch((e)=>{
                             message.info('Something went wrong')
-                            console.log(e);
+                            
                         })
             
 
@@ -112,7 +112,7 @@ export default function Email() {
     }
 
     const showModal = () => {
-        console.log('show')
+        //console.log('show')
         setModalVisible(true)
 
     };

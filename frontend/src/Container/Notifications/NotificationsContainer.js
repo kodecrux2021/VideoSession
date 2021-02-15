@@ -239,7 +239,7 @@ export default class NotificationsContainer extends Component {
             .then(
                 (result) => {
 
-                    console.log('current user result', result.user)
+                    // console.log('current user result', result.user)
                     this.getNotifications(result.user?.id);
                     this.setState({ user: result?.user })
 
@@ -252,7 +252,7 @@ export default class NotificationsContainer extends Component {
          user_id = localStorage.getItem('user_id')
         const uri = window.location.href.split('/').pop()
         this.setState({selected: uri})
-        console.log('previous token',localStorage.getItem("token"))
+        // console.log('previous token',localStorage.getItem("token"))
         if (localStorage.getItem("token")){
         let data_refresh = {'refresh': localStorage.getItem('refresh')}
 

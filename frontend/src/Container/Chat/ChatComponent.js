@@ -81,7 +81,7 @@ componentDidMount() {
         })
         .then((result) => {
             if (result){
-            console.log('result.access',result.access)
+            // console.log('result.access',result.access)
             localStorage.setItem('token',result.access)
             }
         }
@@ -105,7 +105,7 @@ fetch(url + '/api/conversation/'+conversation_id, {
 }})
 .then(
     (result) => {
-      console.log('result',result)
+    //   console.log('result',result)
       this.setState({conversation: result})
 
       let id = result?.includes[0].id ;
@@ -127,7 +127,7 @@ fetch(url + '/api/conversation/'+conversation_id, {
     .then(res => res.json())
     .then(
         (result) => {
-          console.log('result',result)
+        //   console.log('result',result)
           this.setState({reciever: result })
         }
     ).catch((e)=> console.log(e))
@@ -150,8 +150,10 @@ fetch(url + '/currentuser/', {
 .then(res => res.json())
 .then(
     (result) => {
-      console.log('result',result)
-      this.setState({user: result })
+    //   console.log('result',result)
+      
+      this.setState({user: result.user })
+
     }
 )
 
@@ -226,9 +228,6 @@ sendMessage = async(e) => {
             message.info('Something went wrong!')
                // console.log('Something is wrong')
         }
-    })
-    .then((result) => {
-        console.log('result', result);
     })
     .catch((e)=>console.log(e))
 

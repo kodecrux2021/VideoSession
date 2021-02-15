@@ -79,7 +79,7 @@ export default function Notifications(props) {
                                 if(user.includes[0].id == user_id && user.includes.length > 1){
                                     
                                         rec = user.includes[1]
-                                        console.log(rec);
+                                        // console.log(rec);
                                     
                                    
                                 }else{

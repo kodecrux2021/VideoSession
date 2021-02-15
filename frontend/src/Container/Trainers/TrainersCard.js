@@ -116,7 +116,7 @@ const styles = theme => ({
             
             :
             <div className="trainers__card__right">
-            <button type="button" class="btn btn-info" onClick={ id => LiveHandle(props?.video) } >LIVE SESSION</button>
+            <button type="button" class="btn btn-info" onClick={ id => LiveHandle(props?.video) } >RECORDED SESSION</button>
             </div>
             }
 

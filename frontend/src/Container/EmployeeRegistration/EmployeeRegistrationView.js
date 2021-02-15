@@ -6,6 +6,7 @@ import Select from 'react-select';
 import { Modal  } from 'antd';
 import { useHistory } from 'react-router-dom';
 
+
 export default function EmployeeRegistrationView(props) {
     const history = useHistory();
 
@@ -30,7 +31,7 @@ export default function EmployeeRegistrationView(props) {
                     </div>
                 </Row> */}
                 
-                <h1>Register for a course</h1>
+                <h1>Choose your favourite topic / course </h1>
                 <form  >
                     {/* <Row className="row">
                         <Col>
@@ -154,8 +155,8 @@ export default function EmployeeRegistrationView(props) {
         </div>
         <Modal title="Select Option" footer={null} visible={props.isModalVisible}  onCancel={props.handleCancel}>
             <div className='reg__modal__button' >
-            <button onClick={()=>history.push('/courses')} style={{  backgroundColor:' #5964c9'}} type="primary" className = 'button'>Reference Link</button>
-            <button onClick={()=>history.push('/trainers/live')} style={{  backgroundColor:' #76d2fd'}} type="primary" className = 'button'>Live Session</button>
+            {/* <button onClick={()=>history.push('/courses')} style={{  backgroundColor:' #5964c9'}} type="primary" className = 'button'>Reference Link</button> */}
+            <button onClick={()=>history.push('/trainers/live')} style={{  backgroundColor:' #76d2fd'}} type="primary" className = 'button'>E-Library</button>
             </div>
 
 

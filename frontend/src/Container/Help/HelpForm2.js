@@ -39,8 +39,8 @@ export default class HelpForm2 extends Component {
                 <p>Please share summary of your problem, we are happy to help you</p>
                 </div>
 
-                <div className='HelpForm2__body'>
-                    <div className={`select__btn ${this.state.selected==='Troubleshooting' && "select__btn__active"}`} onClick={() => this.onClickHandler('Troubleshooting')}  >
+                {/* <div className='HelpForm2__body'> */}
+                    {/* <div className={`select__btn ${this.state.selected==='Troubleshooting' && "select__btn__active"}`} onClick={() => this.onClickHandler('Troubleshooting')}  >
                     <ReportProblemOutlinedIcon className='mg__rt' />
                     <span>Quick Help</span>
                     </div>
@@ -51,12 +51,12 @@ export default class HelpForm2 extends Component {
                     <div className={`select__btn ${this.state.selected==='Tutoring' && "select__btn__active"}`} onClick={() => this.onClickHandler('Tutoring')} >
                     <LibraryBooksOutlinedIcon className='mg__rt' />
                     <span>Gig workers & Free lancers </span>
-                    </div>
+                    </div> */}
                     {/* <div className={`select__btn ${this.state.selected==='Other' && "select__btn__active"}`} onClick={() => this.onClickHandler('Other')} >
                     <CreateOutlinedIcon className='mg__rt' />
                     <span>Add others</span>
                     </div> */}
-                </div>
+                {/* </div> */}
                 <div className='HelpForm2__footer'>
                     {this.state.selected==='Other' ?
                     

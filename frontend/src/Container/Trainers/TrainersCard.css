@@ -40,7 +40,7 @@ margin : 13px 0;
 
 .trainers__card__right > button {
   margin: 5px;
-  height: 35px;
+  /* height: 35px; */
   width: 130px;
   font-weight: bold;
 }

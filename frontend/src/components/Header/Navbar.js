@@ -36,7 +36,7 @@ export default function Navbar(props) {
         visible={visible}
       >
         <Link to='/home' ><p><h5>HOME</h5></p></Link>
-        <Link to='/courses' ><p><h5>COURSES</h5></p></Link>
+        <Link to='/courses' ><p><h5>E-LEARNING MARKETPLACE</h5></p></Link>
         <Link to='/notifications/messages' ><p><h5>NOTIFICATIONS</h5></p></Link>
         {
           (localStorage.token) ?

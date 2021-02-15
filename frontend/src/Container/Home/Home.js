@@ -12,6 +12,8 @@ import home4 from '../../assets/images/home4.jpg'
 import home5 from '../../assets/images/home5.jpg'
 import Navbar from '../../components/Header/Navbar';
 import {message, Modal} from 'antd';
+import kodecrux from '../../assets/images/reg2.jpeg';
+
 
 
 export default class Home extends Component {
@@ -212,7 +214,7 @@ export default class Home extends Component {
         return (
         <>
         <Navbar/>
-        
+        <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px', zIndex: 1000}} onClick = {() =>this.props.history.push('/home')}/>
         <div className='body__ctr'>
               <div className="home_container">
       <Carousel controls={false} interval={10000} indicators={false} pause={false} fade={true}>
@@ -257,6 +259,31 @@ export default class Home extends Component {
   </Carousel.Item>
 </Carousel>
 
+<div className="button__container">
+                
+                <div className="button__card">
+                    <div className="button__card__img">
+                        <img src={study} alt="" />
+                    </div>
+                    <div className= 'button__card__details'>
+                        <h2>Study Room</h2>
+                        <p>Online tutoring platform with best experts are being onboarded to help your academic needs.</p>
+                        <button style={{  backgroundColor:' #5964c9'}} onClick={()=>this.props.history.push('/course-registration')} >Study Room</button>
+                    </div>
+              
+                </div>
+                <div className="button__card">
+                    <div className="button__card__img">
+                        <img src={study} alt="" />
+                    </div>
+                    <div className= 'button__card__details'>
+                        <h2>Solution Room</h2>
+                        <p>Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs.</p>
+                        <button style={{  backgroundColor:' #76d2fd'}} onClick={()=>this.props.history.push('/help/1')} >Solution Room</button>
+                    </div>
+                </div>
+            </div>
+
         <div className="cards__container">
             <div className="_card">
                 <img src={elearn} alt=""/>
@@ -293,41 +320,14 @@ export default class Home extends Component {
             <div  style ={{display: 'inline'}}>
                     <div className= 'button__card__details'>
                         <h1>Blogs by Kodecrux</h1>
-                        <h3>Topic</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            <a><e>Read More...</e></a>
+                        <p>Gig economy statistics show a free market system where organizations and independent workers engage in short-term work arrangements. BLS data suggest that in 2017 the US gig economy had 55 million participants. It's estimated that 36% of US workers take part in the gig economy and 33% of companies extensively use gig workers.
                         </p>
         
                     </div>
             </div>
             </div>
 
-            <div className="button__container">
-                
-                <div className="button__card">
-                    <div className="button__card__img">
-                        <img src={study} alt="" />
-                    </div>
-                    <div className= 'button__card__details'>
-                        <h2>Study Room</h2>
-                        <p>ndustry's standard dummy text ever since the 1500s
-                            , when an unknown printer took</p>
-                        <button style={{  backgroundColor:' #5964c9'}} onClick={()=>this.props.history.push('/course-registration')} >Study Room</button>
-                    </div>
-              
-                </div>
-                <div className="button__card">
-                    <div className="button__card__img">
-                        <img src={study} alt="" />
-                    </div>
-                    <div className= 'button__card__details'>
-                        <h2>Solution Room</h2>
-                        <p>Industry's standard dummy text ever since the 1500s
-                            , when an unknown printer took</p>
-                        <button style={{  backgroundColor:' #76d2fd'}} onClick={()=>this.props.history.push('/help/1')} >Solution Room</button>
-                    </div>
-                </div>
-            </div>
+            
             
         
         <div className="_footer">

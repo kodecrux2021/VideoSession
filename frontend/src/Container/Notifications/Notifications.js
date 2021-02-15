@@ -338,7 +338,7 @@ export default function Notifications(props) {
                                                 <span>{notification.sent_by_first_name} {notification.sent_by_last_name} wants to hire you</span>:
                                                 <span>{notification.sent_by_first_name} {notification.sent_by_last_name} has accepted your request to hire</span>
                                                 :
-                                                <span>{notification.user_first_name} {notification.user_last_name} has accepted your request</span>
+                                                <span>{notification.sent_by_first_name} {notification.sent_by_last_name} has accepted your request</span>
                                                 }
                                                 </div>
                                            {notification.type== 'HIRE' ?

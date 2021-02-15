@@ -254,7 +254,7 @@ handleCancel = () => {
                 dropHandle={this.dropHandle}
                 reciever_img={this.state.reciever.profile_pic!==null ? `${this.state.reciever?.profile_pic}`:null}
                 user_img={this.state.user.profile_pic !== null ?`${url}${this.state.user?.profile_pic}`: null}
-                name={`${this.state.reciever?.first_name} ${this.state.reciever?.last_name}`}
+                name={`${this.state?.reciever?.first_name} ${this.state?.reciever?.last_name}`}
                 reciever_id={this.state.reciever.id}
                 lastseen={this.state.reciever.last_seen}
                 rate='$20/15 mins'

@@ -15,7 +15,7 @@ import {Modal} from 'antd/lib';
 
 
 
-const { RangePicker } = DatePicker;
+// const { RangePicker } = DatePicker;
 const useStyles = makeStyles((theme) => ({
     largeIcon: {
         width: 80,
@@ -74,7 +74,7 @@ export default function Chat(props) {
             <div className='chat__header'>
                 <Avatar src={props?.reciever_img} className={classes.large}/>
                 <div className='chat__header__info'>
-                    <h4>{props.name}</h4>
+                    <h4>{props?.name}</h4>
                     <span>{dateFormat(props.lastseen, "mmmm dS, h:MM TT")} </span>
                 </div>
                 <div className='chat__header__right'>
@@ -173,25 +173,16 @@ export default function Chat(props) {
                      ))
                  }
 
-                    
-                
-
 </div>
-           
-              
-                
-                   
-                   
+               
             </div>
             <div className='chat__footer'>
                 <form>
                     <input placeholder='Type a message' value={props.message} onChange={(e)=>props.handleData('message', e.target.value)} type="text" />
-                    <button type='submit' onClick={(e)=>props.sendMessage(e)} >Send a message</button>
+                    <button type='submit' onClick={(e)=>props.sendMessage(e)}>Send a message</button>
                 </form>
-                <IconButton > <AttachFileIcon className="svg_icons" /> </IconButton>
-                <IconButton><PictureAsPdfIcon className="svg_icons" /></IconButton>
-                
-                
+                <IconButton><AttachFileIcon className="svg_icons"/></IconButton>
+                <IconButton><PictureAsPdfIcon className="svg_icons"/></IconButton>                          
             </div>
 
             <Drawer
@@ -222,7 +213,7 @@ export default function Chat(props) {
         
       </Drawer>
       {props.meetId !== '' && <Modal title="Session Information" onOk={props.handleOk} visible={props.isModalVisible} onCancel={props.handleCancel}>
-            <h5>Meeting-ID: {props.meetId}</h5>
+            <h5>check your mail to start meeting</h5>
             <h5>Meeting Link: <a>https://go.teamviewer.com/v15/en/</a></h5>
         </Modal>}
         </div>

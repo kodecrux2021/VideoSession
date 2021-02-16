@@ -16,10 +16,10 @@ export default class HelpForm1 extends Component {
             this.props.history.push('/help/2')
         }
     else if (identity === 'freelancejob'){
-           
+        this.props.history.push('/help/2')
     }
     else if (identity === 'codereviewed'){
-       
+        this.props.history.push('/help/2')
     }
 
 

@@ -323,7 +323,7 @@ export default class NotificationsContainer extends Component {
 
     rejectReq = (id) => {
         let auth = localStorage.getItem('token') ;
-        fetch(url + '/api/request_read/'+ id + '/', {
+        fetch(url + '/api/request/'+ id + '/', {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json, text/plain',

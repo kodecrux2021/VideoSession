@@ -1,0 +1,371 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* header */
+
+/* .body__container {
+    margin-top: 80px;
+} */
+
+.css-2b097c-container{
+    width: 100% !important;
+    font-size: 16px !important;
+}
+
+.css-yk16xz-control{
+   border: none !important;
+ outline: none !important;
+ border-bottom: 1px solid rgb(151, 151, 151) !important;
+ /* background-color: rgb(244, 244, 244) !important; */
+}
+
+.css-yk16xz-control:hover {
+    border-bottom: 1px solid rgb(73, 209, 101) !important;
+}
+
+.css-1pahdxg-control:hover {
+    border: none !important;
+    border-bottom: 1px solid rgb(73, 209, 101) !important;
+}
+
+.css-1pahdxg-control {
+    /* background-color: rgb(244, 244, 244) !important; */
+    border: none !important;
+    background-color: transparent;
+    box-shadow: none !important;
+    font-size: 16px !important;
+    border-bottom: 1px solid rgb(151, 151, 151) !important;
+}
+
+.css-1okebmr-indicatorSeparator {
+    display: none !important;
+}
+
+/* .css-6q0nyr-Svg{
+    display: none !important;
+} */
+
+
+.search__icon {
+    transform: scale(1.1);
+    color: rgb(125, 123, 123);
+    position: relative;
+    top:4px;
+    left: 10px;
+}
+
+.header__searchbar {
+    width: 100%;
+}
+
+.header__searchbar > input {
+    width: 100%;
+    height: 30px;
+    font-size: 20px;
+    background-color: rgb(244, 244, 244);
+    padding-left: 20px;
+}
+
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.content__header {
+    position: relative;
+    width: 100%;
+    padding: 10px ;
+  display: flex;
+  border-bottom: 1px solid lightgray;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08);
+    z-index: 100;
+}
+
+/* @media(mix-width: 1200px){
+    .content__header{
+        padding: 10px 100px;
+    }
+} */
+
+.content__header__left {
+    flex: 0.3;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.content__header__right {
+    flex: 0.65;
+    display: flex;
+    align-items: center;
+}
+
+
+.right__search__container {
+    flex: 1;
+    padding: 10px 10px;
+    display: flex;
+    border: 1px solid rgb(155, 155, 155);
+    border-radius: 50px;
+    background-color: rgb(244, 244, 244);
+}
+
+.right__search__container > div > div > input {
+    border: none !important;
+    box-shadow: none;
+    background-color: rgb(244, 244, 244);
+}
+
+.right__search__container > .select-search > .select-search__value::after {
+    content: none;
+}
+
+.left__search__container > .select-search > .select-search__value::after {
+    content: none;
+}
+
+.left__search__container > div > div > input {
+    border: none !important;
+    box-shadow: none;
+}
+
+
+
+
+/* banner */
+
+.content__body {
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1200px;
+}
+
+.content__banner {
+    width: 100% ;
+}
+
+.content__body__container {
+    width: 100%;
+}
+
+
+
+
+.techdetail {
+  padding: 10px 30px !important;
+}
+
+.techdetail__select__container {
+    display: flex;
+    
+}
+
+.techdetail__select__container > button {
+    height: 60px;
+    padding: 10px 20px;
+    background-color: white;
+    font-size: 16px;
+    font-weight: bolder;
+   
+}
+
+.techdetail__select__button__notactive {
+    border-bottom: 1px solid lightgray !important ;
+    color: rgb(138, 138, 138);
+}
+
+.techdetail__select__button__active{
+
+  border-bottom: 1px solid black !important;
+    color: black;
+}
+
+.techdetail__description {
+    
+padding: 20px ;
+background-color: rgb(249, 239, 224);
+}
+
+.techdetail__description__right {
+    padding: 10px;
+}
+
+.techdetail__description__left {
+    padding: 20px;
+}
+
+.techdetail__description__left > p {
+    font-size: 15px;
+}
+
+.techdetail__description__left > span {
+    font-size: 18px;
+    font-weight:600;
+    color: rgb(2, 157, 199);
+}
+
+.techdetail__description__right > img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+border-radius: 50%;
+}
+
+.techdetail__rating {
+    display: flex;
+    align-items: center;
+}
+
+.techdetail__cards {
+    padding: 55px 10px;
+}
+
+.techdetail__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.techdetail__card > img {
+    width: 250px;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    margin-bottom: 7px;
+}
+
+.techdetail__bestseller {
+    background-color: #ffe799;
+    color: #593d00;
+    padding: 6px;
+    width: fit-content;
+    border-radius: 7px;
+}
+
+.chevron__arrow {
+    transform: scale(1.5);
+}
+
+/* //topcategories */
+
+.topcategories {
+    padding: 0px 35px;
+}
+
+.topcategories__card {
+    padding: 0;
+    padding-bottom: 40px ;
+margin: 20px 20px;
+border: 1px solid lightgray;
+border-radius: 5px;
+}
+
+.topcategories__card >img {
+    width: 100%;
+  
+    }
+
+.topcategories__card__title{
+    padding: 20px;
+}
+
+.topcategories__card__title >span {
+    font-size: 20px;
+    font-weight: 700;
+
+    }
+
+
+/* instructor */
+
+.instructor{
+    padding: 55px 35px;
+    display: grid;
+    place-items: center;
+}
+
+.instructor__warpper{
+    display: flex;
+    /* width: 1300px; */
+}
+
+.instructor__left__video{
+display: grid;
+place-items: center;
+}
+
+.instructor__left > img {
+width: 350px;
+}
+
+.instructor__right{
+margin: auto 0;
+} 
+
+.instructor__detail {
+padding: 40px 50px 60px 130px;
+background-color: #f9f9dd;
+
+}
+
+.instructor__detail__video{
+    padding: 80px 40px 80px 80px;
+    /* background-color: #eef7fc; */
+}
+
+.instructor__detail > span {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.instructor__detail__video > span {
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.instructor__detail__video > p {
+    font-size: 20px;
+
+}
+
+.instructor__detail > p {
+    font-size: 20px;
+
+}
+
+.instructor__detail > button {
+    font-size: 16px;
+    background-color: #0f7c90;
+    color: #fff;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bolder;
+}
+
+@media(max-width: 500px){
+    
+    .instructor__warpper{
+        display: inline;
+    }
+    .instructor__left > img{
+        width: 300px;
+    }
+    .instructor__detail{
+        padding: 30px;
+    }
+    .topcategories__card{
+        margin: 20px 0;
+    }
+}
+
+@media(min-width: 700px){
+    .techdetail__description{
+        display: flex;
+    }
+}

@@ -70,12 +70,12 @@ export default class HelpForm3 extends Component {
 
     if (this.state.selected.length !== null && this.state.selected.length > 0) {
       message.info('Submitted Successfully!!!');
-      console.log('state', this.state);
+      // console.log('state', this.state);
 
 
       let tech = []
       let sub_tech = []
-      console.log(this.state.recommended_selected);
+      // console.log(this.state.recommended_selected);
       this.state.selected.map((item) => (
         tech.push(parseInt(item.id))
       ))

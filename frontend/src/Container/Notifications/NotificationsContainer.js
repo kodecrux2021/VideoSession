@@ -188,7 +188,7 @@ export default class NotificationsContainer extends Component {
           }})  
         .then(
             (result) => {
-              console.log('notification result',result)
+            //   console.log('notification result',result)
                 this.setState({notifications: result})
             }
         ).catch((e)=>message.info("Something went wrong")) 

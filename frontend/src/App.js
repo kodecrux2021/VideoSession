@@ -61,7 +61,7 @@ function App() {
           <Route path="/investor" exact component={InvestorContainer} />
           <Route path="/notifications" component={NotificationsContainer} /> 
            <Route path="/payment" exact component={Payment} />
-        <Route render={() => <Redirect to = '/login'/> }/>
+        <Route render={() => <Redirect to = '/home'/> }/>
         </Switch>
       </Router>
       

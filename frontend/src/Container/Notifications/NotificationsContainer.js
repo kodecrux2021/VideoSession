@@ -161,7 +161,7 @@ export default class NotificationsContainer extends Component {
           }})
         .then(
             (result) => {
-              console.log('request result',result)
+            //   console.log('request result',result)
               this.setState({requests: result})
              // console.log(this.state.requests);
 

@@ -24,12 +24,12 @@ export default class Home extends Component {
 
     }
 
-    componentDidMount(){
-        if(!localStorage.getItem('token')){
-            message.info('Please login')
-            this.props.history.push('/login')
-        }
-    }
+    // componentDidMount(){
+    //     if(!localStorage.getItem('token')){
+    //         message.info('Please login')
+    //         this.props.history.push('/login')
+    //     }
+    // }
     
     about = () =>{
         this.setState({visible: true,

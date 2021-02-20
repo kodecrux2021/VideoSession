@@ -32,7 +32,7 @@ SECRET_KEY = 'p_w#!6jui_dlu78z7*ne8^y2z$+2q0u%2kqm*hg(ij9a2=1w^1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['b4813c8e515d.ngrok.io','127.0.0.1','0.0.0.0','*']
+ALLOWED_HOSTS = ['14d7e927b2e1.ngrok.io','127.0.0.1','0.0.0.0','*']
 
 
 # Application definition
@@ -265,7 +265,7 @@ EMAIL_USE_TLS = True
 STATIC_URL = '/static/'
 STATIC_DIR= os.path.join(BASE_DIR,'static')
 MEDIA_DIR = os.path.join(BASE_DIR,'media')
-STATICFILES_DIRS=[STATIC_DIR]
+STATICFILES_DIRS=[STATIC_DIR,"/home/ubuntu/video-session/myvenv/11b/python3.8/site-packages/django/contrib/admin/static/"]
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 print("MEDIA_URL",MEDIA_URL)

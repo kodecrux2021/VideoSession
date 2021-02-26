@@ -92,7 +92,7 @@ export default class Trainers extends Component {
                         .then(res => res.json())
                         .then(
                             (result) => {
-                                 console.log('result', result)
+                                //  console.log('result', result)
                                 this.setState({ trainers: result, loading: false })
                             }
                         ).catch(e=>console.log(e))

@@ -41,6 +41,7 @@ export default function Registration(props) {
               localStorage.setItem('token',result.access_token)
               localStorage.setItem('refresh',result.refresh_token)
               localStorage.setItem('username',result.username)
+              history.push('/home')
             }
             
         })
@@ -103,6 +104,7 @@ let data = {"token": response.accessToken}
             localStorage.setItem('token',result.access_token)
             localStorage.setItem('refresh',result.refresh_token)
             localStorage.setItem('username',result.username)
+            history.push('/home')
             
           }
           

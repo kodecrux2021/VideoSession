@@ -265,7 +265,7 @@ export default class Home extends Component {
                     <div className="button__card__img">
                         <img src={study} alt="" />
                     </div>
-                    <div className= 'button__card__details'>
+                    <div className= 'button__card__details' style ={{bottom: '0'}}>
                         <h2>Study Room</h2>
                         <p>Online tutoring platform with best experts are being onboarded to help your academic needs.</p>
                         <button style={{  backgroundColor:' #5964c9'}} onClick={()=>this.props.history.push('/course-registration')} >Study Room</button>

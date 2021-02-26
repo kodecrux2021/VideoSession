@@ -131,7 +131,7 @@ class RegistrationContainer extends Component {
 
             let data2 = null;
            
-            console.log('data', data, data2)
+            // console.log('data', data, data2)
 
             let auth = localStorage.getItem('token');
             await fetch( url + '/api/customuser/' , {

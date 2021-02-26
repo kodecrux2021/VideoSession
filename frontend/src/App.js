@@ -50,7 +50,7 @@ function App() {
           <Route path="/verification" exact component={VerificationContainer} />
           {/* <Route path="/details" exact component={RegistrationDetailsContainer} /> */}
           {/* <Route path="/details" exact component={Pagetwo} /> */}
-          <Route path="/home" exact component={Home} />
+          <Route path="/home" exact component={Home} default />
           <Route path="/trainers"  component={Trainers} />
           <Route path="/course-registration" exact component={EmployeeRegistrationComponent} />
           <Route path="/chat"  component={ChatComponent} />

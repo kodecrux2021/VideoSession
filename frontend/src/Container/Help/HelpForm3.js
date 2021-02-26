@@ -109,9 +109,10 @@ export default class HelpForm3 extends Component {
         })
         .then((result) => {
          // console.log('result', result);
+         this.props.history.push('/trainers/message');
         })
 
-      this.props.history.push('/trainers/message');
+      
     }
 
 

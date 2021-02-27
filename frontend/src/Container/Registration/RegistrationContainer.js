@@ -149,7 +149,7 @@ class RegistrationContainer extends Component {
                     return response.json()
                 } else if (response['status'] === 400) {
                         console.log('A user with that username already exists.')
-                        message.info('A user with that username already exists!!!');
+                        message.info('A user with that email already exists!!!');
                 }
             })
             .then((result) => {

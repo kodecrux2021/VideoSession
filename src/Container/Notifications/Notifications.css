@@ -1,0 +1,101 @@
+.notifications {
+  background-color: rgb(223, 242, 255);
+  height: 100vh;
+  overflow: scroll;
+}
+
+.notifications__header {
+  background-color: #fff;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.notifications__header > span {
+  padding: 15px 35px;
+  cursor: pointer;
+}
+
+.span__active {
+  border-bottom: 3px solid blue;
+}
+
+.icon__active {
+  color: blue !important;
+}
+
+.Notifications__header__icon {
+  color: grey;
+}
+
+.notifications__body {
+  margin: 80px auto 20px;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 630px;
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  border-radius: 10px;
+  box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.15);
+}
+.notifications__body__chat > h2 {
+  text-align: center;
+}
+.chat__card {
+  display: flex;
+  padding: 15px 10px;
+  align-items: center;
+  /* justify-content: space-between; */
+  border-bottom: 1px solid #ccc;
+}
+
+.chat__card__left {
+  display: flex;
+  align-items: center;
+}
+
+.chat__card__details {
+  padding: 0 30px;
+  color: grey;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.chat__card__time {
+  color: grey;
+}
+
+.friend__cards {
+}
+
+.friend__card__button {
+  display: flex;
+}
+
+.friend__card__button > button {
+  width: 75px;
+  height: 33px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 500;
+  margin: 0 5px;
+}
+
+.troubleshoot__details {
+  padding: 10px 15px;
+  font-size: 15px;
+  color: grey;
+}
+
+@media (max-width: 500px) {
+  
+  .friend__card__button {
+    padding-top: 2rem;
+  }
+}

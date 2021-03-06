@@ -248,7 +248,7 @@ export default class Trainers extends Component {
                                     <TrainersCard
                                         key = {trainer.id}
                                         name={`${trainer.user_first_name} ${trainer.user_last_name}`}
-                                        img={trainer.profile_pic !== null?`${url}${trainer.profile_pic}`: ''}
+                                        img={trainer.profile_pic !== null?`${trainer.profile_pic}`: ''}
                                         img2={avatar}
                                         online={false}
                                         rating={trainer.rating}

@@ -104,8 +104,7 @@ let data = {"token": response.accessToken}
             localStorage.setItem('token',result.access_token)
             localStorage.setItem('refresh',result.refresh_token)
             localStorage.setItem('username',result.username)
-            // history.push('/home')
-            
+            history.push('/home')           
           }
           
       })
@@ -125,6 +124,7 @@ let data = {"token": response.accessToken}
           if(result){
             localStorage.setItem('user_id', result.user?.id);
             localStorage.setItem('user_name', result.user?.first_name);
+            history.replace('/home')  
         }
         }
     )
@@ -201,8 +201,8 @@ let data = {"token": response.accessToken}
                       </div>
                       <div className="select__container" >
                                   <button className={props.position==="codeexpert"?'select__button__active':'select__button'}  value="codeexpert" onClick={props.onChangeValue}>CODE EXPERT</button>
-                                  <button className={props.position==="instructor"?'select__button__active':'select__button'} value="instructor" onClick={props.onChangeValue}>INSTRUCTOR</button>
-                                  <button className={props.position==="freelancer"?'select__button__active':'select__button'} value="freelancer" onClick={props.onChangeValue} >FREELANCER</button>
+                                  {/* <button className={props.position==="instructor"?'select__button__active':'select__button'} value="instructor" onClick={props.onChangeValue}>INSTRUCTOR</button> */}
+                                  {/* <button className={props.position==="freelancer"?'select__button__active':'select__button'} value="freelancer" onClick={props.onChangeValue} >FREELANCER</button> */}
                                   <button className={props.position==="customer"?'select__button__active':'select__button'} value="customer" onClick={props.onChangeValue} >CUSTOMER</button>
                       </div>
                       <div className="form__group">

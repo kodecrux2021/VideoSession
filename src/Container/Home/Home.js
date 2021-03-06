@@ -30,7 +30,22 @@ export default class Home extends Component {
     //         this.props.history.push('/login')
     //     }
     // }
-    
+    links = () =>{
+        this.setState({
+            visible: true,
+            title: 'Socials',
+            content: <div>
+                <a>https://www.linkedin.com/in/ekode-crux-a59694208/</a><br/>
+                <a>https://www.facebook.com/ekode.crux/</a><br/>
+                <a>https://www.instagram.com/ekodecrux/</a><br/>
+                <a>https://twitter.com/ekodecrux</a><br/>
+                <a>https://www.quora.com/profile/Ekode-Crux</a><br/>
+                <a>https://medium.com/@ekodecrux</a><br/>
+            </div>
+            
+        })
+    }
+
     about = () =>{
         this.setState({visible: true,
         title: 'About Us',
@@ -342,12 +357,14 @@ export default class Home extends Component {
                 <span onClick = {this.refund}><a>Refund and return</a></span>
                 {/* <span onClick = {this.shipping}><a>Shipping and Delivery Policy</a></span> */}
                 <span onClick = {this.price}><a>Price and Payment</a></span>
+                <span onClick = {this.links}><a>Links</a></span>
             </div>
             <div className="footer__cards">
                 <h3>HELP</h3>
                 <span onClick = {this.policy}><a>Privacy Policy</a></span>
                 <span onClick = {this.terms}><a>Terms and Services</a></span>
                 <span onClick = {this.registration}><a>Registration name of Business</a></span>
+                
             </div>
         </div>
     </div>

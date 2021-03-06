@@ -26,6 +26,7 @@ export default class InvestorContainer extends Component {
           info: '',
           deadline: '',
           req: '',
+          pic: '',
 
           investor__name: '',
 

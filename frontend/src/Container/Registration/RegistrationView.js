@@ -41,7 +41,7 @@ export default function Registration(props) {
               localStorage.setItem('token',result.access_token)
               localStorage.setItem('refresh',result.refresh_token)
               localStorage.setItem('username',result.username)
-              history.push('/home')
+            //  history.push('/home')
             }
             
         })
@@ -68,7 +68,7 @@ export default function Registration(props) {
       )
             
            //console.log("success")
-          //  history.replace('/home')
+        history.replace('/home')
          }
          else if(response.status=='unknown') {
            alert('No user Found')  
@@ -104,7 +104,7 @@ let data = {"token": response.accessToken}
             localStorage.setItem('token',result.access_token)
             localStorage.setItem('refresh',result.refresh_token)
             localStorage.setItem('username',result.username)
-            history.push('/home')
+            // history.push('/home')
             
           }
           
@@ -132,8 +132,8 @@ let data = {"token": response.accessToken}
 
         //console.log("success")
         message.info('Logged In Succsessfully!!!');
-        history.push('/details2')
-        // history.replace('/home')  
+        // history.push('/details2')
+        history.replace('/home')  
       }
       else if(response.status=='unknown') {
         // alert('No user Found')  

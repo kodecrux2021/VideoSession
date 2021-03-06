@@ -149,7 +149,7 @@ class RegistrationContainer extends Component {
                     return response.json()
                 } else if (response['status'] === 400) {
                         console.log('A user with that username already exists.')
-                        message.info('A user with that email already exists!!!');
+                        message.info('A user with that username already exists!!!');
                 }
             })
             .then((result) => {
@@ -185,14 +185,14 @@ class RegistrationContainer extends Component {
                             if (response['status'] === 201 || response['status'] === 200) {
                                 return response.json()
                             } else if (response['status'] === 400) {
-                                    console.log('A user with that email already exists.')
-                                    message.info('A user with that email already exists!!!');
+                                    console.log('A user with that username already exists.')
+                                    message.info('A user with that username already exists!!!');
                             }
                         })
                         .then((result) =>{
                             localStorage.setItem('educator_id', result?.id)
                             console.log('result', result)})
-                            //  this.props.history.push("/details");
+                            
                     }
                     localStorage.setItem('user_id', result?.id);
                     localStorage.setItem('is_client', result?.is_client);

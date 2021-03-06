@@ -51,7 +51,7 @@ export default class ChatComponent extends Component {
             }
         )
         .catch((e)=>console.log(e));
-    }, 20000)
+    }, 3000)
     
 
     componentWillUnmount(){

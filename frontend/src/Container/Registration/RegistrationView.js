@@ -63,12 +63,13 @@ export default function Registration(props) {
             if(result){
               localStorage.setItem('user_id', result.user?.id);
               localStorage.setItem('user_name', result.user?.first_name);
+              history.replace('/home')
           }
           }
       )
             
            //console.log("success")
-        history.replace('/home')
+        
          }
          else if(response.status=='unknown') {
            alert('No user Found')  
@@ -104,7 +105,8 @@ let data = {"token": response.accessToken}
             localStorage.setItem('token',result.access_token)
             localStorage.setItem('refresh',result.refresh_token)
             localStorage.setItem('username',result.username)
-            history.push('/home')           
+            console.log('ok')
+//             history.push('/home')           
           }
           
       })

@@ -193,7 +193,7 @@ export default function Chat(props) {
         onClose={onClose}
         visible={visible}
       >
-        <Link to='/home' ><p><strong>HOME</strong></p></Link>
+        <Link to='/' ><p><strong>HOME</strong></p></Link>
         <Link to='/trainers' ><p><strong>TEACHERS</strong></p></Link>
         <Link to='/courses' ><p><strong>COURSES</strong></p></Link>
         <Link to='/chat' ><p><strong>CHAT</strong></p></Link>

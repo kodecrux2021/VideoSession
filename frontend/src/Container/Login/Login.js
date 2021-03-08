@@ -93,7 +93,7 @@ function Login() {
 
 
                         message.info('Logged In Succsessfully!!!');
-                        history.push('/home')
+                        history.push('/')
                     }
                 })
         }
@@ -118,7 +118,7 @@ function Login() {
 
                     <div className='login__container'>
 
-                        <Link to='/home'>
+                        <Link to='/'>
                             <img
                                 className="login__logo"
                                 src={kodecrux}

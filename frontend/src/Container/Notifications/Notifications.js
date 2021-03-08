@@ -53,7 +53,7 @@ export default function Notifications(props) {
     return (
         <div className='notifications' >
             <div className='notifications__header' >
-            <img src={kodecrux} style={{ height: '70px', position: 'absolute',left: '0', top: '0' }} onClick = {() =>history.push('/home')}/>
+            <img src={kodecrux} style={{ height: '70px', position: 'absolute',left: '0', top: '0' }} onClick = {() =>history.push('/')}/>
 
                 <span className={`${props.selected==='messages' && "span__active"}`} onClick={()=>props.selectHandler('messages')}  >
                     <ChatIcon className={`Notifications__header__icon ${props.selected==='messages' && "icon__active" } `}/>

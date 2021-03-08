@@ -63,12 +63,14 @@ export default function Registration(props) {
             if(result){
               localStorage.setItem('user_id', result.user?.id);
               localStorage.setItem('user_name', result.user?.first_name);
+              message.info('Logged in successfully!')
+              history.replace('/')
           }
           }
       )
             
            //console.log("success")
-        history.replace('/home')
+       
          }
          else if(response.status=='unknown') {
            alert('No user Found')  
@@ -81,7 +83,7 @@ export default function Registration(props) {
       console.log('google',response);
       if (response.accessToken) {
 let data = {"token": response.accessToken}
-        await fetch( url + '/google/', {
+        await fetch('http://63.35.252.151:8080/'+ url + '/google/', {
           method: 'POST',
           headers: {
               'Accept': 'application/json, text/plain',
@@ -104,7 +106,7 @@ let data = {"token": response.accessToken}
             localStorage.setItem('token',result.access_token)
             localStorage.setItem('refresh',result.refresh_token)
             localStorage.setItem('username',result.username)
-            history.push('/home')           
+            // history.push('/')           
           }
           
       })
@@ -124,16 +126,15 @@ let data = {"token": response.accessToken}
           if(result){
             localStorage.setItem('user_id', result.user?.id);
             localStorage.setItem('user_name', result.user?.first_name);
-            history.replace('/home')  
+            message.info('Logged In Succsessfully!!!');
+            history.replace('/')  
         }
         }
     )
 
 
         //console.log("success")
-        message.info('Logged In Succsessfully!!!');
-        // history.push('/details2')
-        history.replace('/home')  
+        // history.push('/details2')  
       }
       else if(response.status=='unknown') {
         // alert('No user Found')  

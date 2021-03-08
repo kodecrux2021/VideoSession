@@ -81,7 +81,7 @@ export default function Registration(props) {
       console.log('google',response);
       if (response.accessToken) {
 let data = {"token": response.accessToken}
-        await fetch( url + '/google/', {
+        await fetch( 'http://63.35.252.151:8080/'+ url + '/google/', {
           method: 'POST',
           headers: {
               'Accept': 'application/json, text/plain',

@@ -35,7 +35,7 @@ export default function Navbar(props) {
         onClose={onClose}
         visible={visible}
       >
-        <Link to='/home' ><p><h5>HOME</h5></p></Link>
+        <Link to='/' ><p><h5>HOME</h5></p></Link>
         <Link to='/courses' ><p><h5>E-LEARNING MARKETPLACE</h5></p></Link>
         <Link to='/notifications/messages' ><p><h5>NOTIFICATIONS</h5></p></Link>
         {

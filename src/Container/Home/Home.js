@@ -224,12 +224,31 @@ export default class Home extends Component {
     handleCancel = () =>{
        this.setState({visible: false})
       } 
-    render() {
+
+      studyRoomClick = () =>{
+        if(localStorage.getItem('token')){
+            this.props.history.push('/course-registration')
+        }  
+        else{
+            alert('Please login to go ahead!')
+        }
+       
+      }
+
+      solutionRoomClick = () =>{
+        if(localStorage.getItem('token')){
+            this.props.history.push('/help/1')
+        }  
+        else{
+            alert('Please login to go ahead!')
+        }
+      }
+      render() {
 
         return (
         <>
         <Navbar/>
-        <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px', zIndex: 1000}} onClick = {() =>this.props.history.push('/home')}/>
+        <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px', zIndex: 1000}} onClick = {() =>this.props.history.push('/')}/>
         <div className='body__ctr'>
               <div className="home_container">
       <Carousel controls={false} interval={10000} indicators={false} pause={false} fade={true}>
@@ -283,7 +302,7 @@ export default class Home extends Component {
                     <div className= 'button__card__details' style ={{bottom: '0'}}>
                         <h2>Study Room</h2>
                         <p>Online tutoring platform with best experts are being onboarded to help your academic needs.</p>
-                        <button style={{  backgroundColor:' #5964c9'}} onClick={()=>this.props.history.push('/course-registration')} >Study Room</button>
+                        <button style={{  backgroundColor:' #5964c9'}} onClick={this.studyRoomClick} >Study Room</button>
                     </div>
               
                 </div>
@@ -294,7 +313,7 @@ export default class Home extends Component {
                     <div className= 'button__card__details'>
                         <h2>Solution Room</h2>
                         <p>Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs.</p>
-                        <button style={{  backgroundColor:' #76d2fd'}} onClick={()=>this.props.history.push('/help/1')} >Solution Room</button>
+                        <button style={{  backgroundColor:' #76d2fd'}} onClick={this.solutionRoomClick} >Solution Room</button>
                     </div>
                 </div>
             </div>

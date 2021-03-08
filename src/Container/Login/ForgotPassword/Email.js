@@ -132,7 +132,7 @@ export default function Email() {
 
                     <div className='login__container'>
 
-                        <Link to='/home'>
+                        <Link to='/'>
                             <img
                                 style={{ width: '200px' }}
                                 src={kodecrux}

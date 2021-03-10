@@ -63,8 +63,9 @@ class New extends React.Component {
   };
 
   onChange = (date, dateString) => {
-    console.log(date,dateString);
-    this.setState({ date_of_birth: dateString });
+    // console.log(date,dateString);
+    // this.setState({ date_of_birth: dateString });
+    this.handelData('date_of_birth', dateString)
   };
 
   componentDidMount() {
@@ -136,6 +137,9 @@ class New extends React.Component {
     } else if (identity === "rating") {
       this.setState({ rating: data });
     }
+    else if (identity === "date_of_birth") {
+      this.setState({ date_of_birth: data });
+    }
   };
 
   onSubmit = async (e) => {
@@ -144,7 +148,8 @@ class New extends React.Component {
     if (
       this.state.pincode === null ||
       this.state.city === "" ||
-      this.state.state === ""
+      this.state.state === ""||
+      this.state.date_of_birth === ""
     ) {
       if (this.state.pincode === "") {
         message.info("Please Fill Pincode");
@@ -152,6 +157,10 @@ class New extends React.Component {
         message.info("Please Fill City");
       } else if (this.state.state === "") {
         message.info("Please Fill State");
+      }
+      else if(this.state.date_of_birth === ""){
+        message.info("Please Fill Date of birth");
+
       }
     } else {
       let tech = [];
@@ -573,7 +582,7 @@ change = async(e)=>{
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <label>Date of Birth</label>
                   <div style={{ margin: "0 60px" }}>
-                    <DatePicker onChange={this.onChange} format="YYYY-MM-DD HH:mm:ss"/>
+                    <DatePicker onChange={this.onChange} format="YYYY-MM-DD"/>
                   </div>
                 </div>
               </div>

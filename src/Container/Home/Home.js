@@ -55,7 +55,7 @@ export default class Home extends Component {
     contact = () =>{
         this.setState({visible: true,
         title: 'Contact Us',
-        content: <p>email - support@kodecrux.com<br/> Our Corporate Address -<br/> Expert aid technologies private limited Plot-44,<br/> Beeramguda,<br/> Hyderabad -502032</p>})
+        content: <p>email - support@kodecrux.com<br/> Our Corporate Address -<br/> Expert aid technologies private limited Plot-44,<br/> Beeramguda,<br/> Hyderabad -502032<br/>Contact number - 95730 17223</p>})
     }
 
     service= () =>{

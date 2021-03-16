@@ -4,6 +4,8 @@ import kodecrux from '../../assets/images/reg2.jpeg'
 import { url } from '../../Server/GlobalUrl';
 import './Login.css'
 import { message } from 'antd';
+import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 import Navbar from '../../components/Header/Navbar';
 
 function Login() {
@@ -106,6 +108,137 @@ function Login() {
         history.push('/registration')
     }
 
+    const responseFacebook = async (response) => {
+        console.log('respose',response)
+         if (response.accessToken) {
+           let data = {
+            "access_token" : response.accessToken,
+            "provider" : "facebook"
+        }
+
+           await fetch( url + '/facebook', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8',
+    
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            //console.log("response", response)
+            if (response['status'] === 201 || response['status'] === 200) {
+                return response.json()
+            } else if (response['status'] === 400) {
+               
+            }
+        })
+        .then((result) => {
+            //console.log('result', result);
+            if(result){
+              localStorage.setItem('token',result.access_token)
+              localStorage.setItem('refresh',result.refresh_token)
+              localStorage.setItem('username',result.username)
+            //  history.push('/home')
+            }
+            
+        })
+
+
+        let auth = localStorage.getItem('token')
+        await fetch(url + '/currentuser/', {
+          method:'GET',
+          headers: {
+            'Accept': 'application/json',
+           'Content-Type': 'application/json',
+           'Authorization': 'Bearer ' + auth,
+         },
+      })
+      .then(res => res.json())
+      .then(
+          (result) => {
+            //console.log('result',result)
+            if(result){
+              localStorage.setItem('user_id', result.user?.id);
+              localStorage.setItem('user_name', result.user?.first_name);
+              message.info('Logged in successfully!')
+              history.replace('/')
+          }
+          }
+      )
+            
+           //console.log("success")
+       
+         }
+         else if(response.status=='unknown') {
+           alert('No user Found')  
+         }
+    }
+
+
+
+    const responseGoogle = async(response) => {
+      console.log('google',response);
+      if (response.accessToken) {
+let data = {"token": response.accessToken}
+        await fetch(url + '/google/', {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-Type': 'application/json;charset=UTF-8',
+  
+          },
+          body: JSON.stringify(data)
+      })
+      .then((response) => {
+          console.log("response", response)
+          if (response['status'] === 201 || response['status'] === 200) {
+              return response.json()
+          } else if (response['status'] === 400) {
+             console.log('errorrr')
+          }
+      })
+      .then((result) => {
+          //console.log('result', result);
+          if(result){
+            localStorage.setItem('token',result.access_token)
+            localStorage.setItem('refresh',result.refresh_token)
+            localStorage.setItem('username',result.username)
+            // history.push('/')           
+          }
+          
+      })
+      let auth = localStorage.getItem('token')
+      await fetch(url + '/currentuser/', {
+        method:'GET',
+        headers: {
+          'Accept': 'application/json',
+         'Content-Type': 'application/json',
+         'Authorization': 'Bearer ' + auth,
+       },
+    })
+    .then(res => res.json())
+    .then(
+        (result) => {
+          //console.log('result',result)
+          if(result){
+            localStorage.setItem('user_id', result.user?.id);
+            localStorage.setItem('user_name', result.user?.first_name);
+            message.info('Logged In Succsessfully!!!');
+            history.replace('/')  
+        }
+        }
+    )
+
+
+        //console.log("success")
+        // history.push('/details2')  
+      }
+      else if(response.status=='unknown') {
+        // alert('No user Found')  
+        message.info('No user Found!!!');
+      }
+    }
 
 
 
@@ -125,6 +258,28 @@ function Login() {
                             />
                         </Link>
                         <h1>Login</h1>
+                        <p>With</p>
+                        <div className = "header__button">
+                      <GoogleLogin 
+                      className = 'google'
+                      clientId="515126473370-emg4305tflmvetsklioachjblbekk066.apps.googleusercontent.com" //CLIENTID NOT CREATED YET
+                      buttonText="Google"
+                      onSuccess={responseGoogle}
+                      onFailure={responseGoogle}
+                      icon= {false}
+                      // style={inStyle}    
+                        />
+                      <FacebookLogin
+                      cssClass = 'facebook'
+                      appId="375577453526335" //APP ID NOT CREATED YET
+                      textButton ="Facebook"
+                      fields="name,email,picture"
+                      callback={responseFacebook}
+                      />
+                      {/* <button style={{backgroundColor:'#DB4437'}}>GOOGLE</button>
+                      <button style={{backgroundColor: "#4267B2"}}>FACEBOOK</button> */}
+                 </div>
+                 <p>Or</p>
 
                         <form>
                             <h4>Email</h4>

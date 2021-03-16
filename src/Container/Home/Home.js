@@ -13,6 +13,8 @@ import home5 from '../../assets/images/home5.jpg'
 import Navbar from '../../components/Header/Navbar';
 import {message, Modal} from 'antd';
 import kodecrux from '../../assets/images/reg2.jpeg';
+import {AiFillMediumSquare,AiFillFacebook, AiFillInstagram, AiFillTwitterSquare, AiFillLinkedin} from 'react-icons/ai';
+import {FaQuora} from 'react-icons/fa'
 
 
 
@@ -376,7 +378,12 @@ export default class Home extends Component {
                 <span onClick = {this.refund}><a>Refund and return</a></span>
                 {/* <span onClick = {this.shipping}><a>Shipping and Delivery Policy</a></span> */}
                 <span onClick = {this.price}><a>Price and Payment</a></span>
-                <span onClick = {this.links}><a>Links</a></span>
+                <span className = "socials"> <a href = 'https://www.facebook.com/ekode.crux/'><AiFillFacebook/></a>
+                <a href = 'https://www.instagram.com/ekodecrux/'><AiFillInstagram/> </a>
+                <a href = 'https://twitter.com/ekodecrux/'><AiFillTwitterSquare/></a> 
+                <a href = 'https://www.linkedin.com/in/ekode-crux-a59694208/'><AiFillLinkedin/></a> 
+                <a href = 'https://www.quora.com/profile/Ekode-Crux'><FaQuora/></a> 
+                <a href = 'https://medium.com/@ekodecrux'><AiFillMediumSquare/></a></span>
             </div>
             <div className="footer__cards">
                 <h3>HELP</h3>

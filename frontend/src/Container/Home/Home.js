@@ -13,6 +13,8 @@ import home5 from '../../assets/images/home5.jpg'
 import Navbar from '../../components/Header/Navbar';
 import {message, Modal} from 'antd';
 import kodecrux from '../../assets/images/reg2.jpeg';
+import {AiFillMediumSquare,AiFillFacebook, AiFillInstagram, AiFillTwitterSquare, AiFillLinkedin} from 'react-icons/ai';
+import {FaQuora} from 'react-icons/fa'
 
 
 
@@ -55,7 +57,7 @@ export default class Home extends Component {
     contact = () =>{
         this.setState({visible: true,
         title: 'Contact Us',
-        content: <p>email - support@kodecrux.com<br/> Our Corporate Address -<br/> Expert aid technologies private limited Plot-44,<br/> Beeramguda,<br/> Hyderabad -502032</p>})
+        content: <p>email - support@kodecrux.com<br/> Our Corporate Address -<br/> Expert aid technologies private limited Plot-44,<br/> Beeramguda,<br/> Hyderabad -502032<br/>Contact number - 95730 17223</p>})
     }
 
     service= () =>{
@@ -224,12 +226,31 @@ export default class Home extends Component {
     handleCancel = () =>{
        this.setState({visible: false})
       } 
-    render() {
+
+      studyRoomClick = () =>{
+        if(localStorage.getItem('token')){
+            this.props.history.push('/course-registration')
+        }  
+        else{
+            alert('Please login to go ahead!')
+        }
+       
+      }
+
+      solutionRoomClick = () =>{
+        if(localStorage.getItem('token')){
+            this.props.history.push('/help/1')
+        }  
+        else{
+            alert('Please login to go ahead!')
+        }
+      }
+      render() {
 
         return (
         <>
         <Navbar/>
-        <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px', zIndex: 1000}} onClick = {() =>this.props.history.push('/home')}/>
+        <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px', zIndex: 1000}} onClick = {() =>this.props.history.push('/')}/>
         <div className='body__ctr'>
               <div className="home_container">
       <Carousel controls={false} interval={10000} indicators={false} pause={false} fade={true}>
@@ -283,7 +304,7 @@ export default class Home extends Component {
                     <div className= 'button__card__details' style ={{bottom: '0'}}>
                         <h2>Study Room</h2>
                         <p>Online tutoring platform with best experts are being onboarded to help your academic needs.</p>
-                        <button style={{  backgroundColor:' #5964c9'}} onClick={()=>this.props.history.push('/course-registration')} >Study Room</button>
+                        <button style={{  backgroundColor:' #5964c9'}} onClick={this.studyRoomClick} >Study Room</button>
                     </div>
               
                 </div>
@@ -294,7 +315,7 @@ export default class Home extends Component {
                     <div className= 'button__card__details'>
                         <h2>Solution Room</h2>
                         <p>Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs.</p>
-                        <button style={{  backgroundColor:' #76d2fd'}} onClick={()=>this.props.history.push('/help/1')} >Solution Room</button>
+                        <button style={{  backgroundColor:' #76d2fd'}} onClick={this.solutionRoomClick} >Solution Room</button>
                     </div>
                 </div>
             </div>
@@ -357,7 +378,12 @@ export default class Home extends Component {
                 <span onClick = {this.refund}><a>Refund and return</a></span>
                 {/* <span onClick = {this.shipping}><a>Shipping and Delivery Policy</a></span> */}
                 <span onClick = {this.price}><a>Price and Payment</a></span>
-                <span onClick = {this.links}><a>Links</a></span>
+                <span className = "socials"> <a href = 'https://www.facebook.com/ekode.crux/'><AiFillFacebook/></a>
+                <a href = 'https://www.instagram.com/ekodecrux/'><AiFillInstagram/> </a>
+                <a href = 'https://twitter.com/ekodecrux/'><AiFillTwitterSquare/></a> 
+                <a href = 'https://www.linkedin.com/in/ekode-crux-a59694208/'><AiFillLinkedin/></a> 
+                <a href = 'https://www.quora.com/profile/Ekode-Crux'><FaQuora/></a> 
+                <a href = 'https://medium.com/@ekodecrux'><AiFillMediumSquare/></a></span>
             </div>
             <div className="footer__cards">
                 <h3>HELP</h3>

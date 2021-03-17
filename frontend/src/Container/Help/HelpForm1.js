@@ -9,7 +9,6 @@ import quickhelp from '../../assets/images/quickhelp.png'
 export default class HelpForm1 extends Component {
 
 
-
     handelData  = (identity) =>{
         //console.log('identity',identity)
         if (identity === 'livehelp'){
@@ -27,8 +26,9 @@ export default class HelpForm1 extends Component {
 
     render() {
         return (
+            
             <>
-            <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px'}} onClick = {() =>this.props.history.push('/home')}/>
+            <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px'}} onClick = {() =>this.props.history.push('/')}/>
             <Navbar/>
             <div className='body__ctr'>
             <div className='help__form__container'>

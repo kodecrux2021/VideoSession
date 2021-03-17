@@ -182,7 +182,7 @@ export default function Chat(props) {
                     <input placeholder='Type a message' value={props.message} onChange={(e)=>props.handleData('message', e.target.value)} type="text" />
                     {/* <button type='submit' onClick={(e)=>props.sendMessage(e)}>Send a message</button> */}
                 </form>
-                <IconButton onClick={(e)=>props.sendMessage(e)}><SendIcon className="svg_icons"/></IconButton>
+                <IconButton type = 'submit' onSubmit={(e)=>props.sendMessage(e)}><SendIcon className="svg_icons"/></IconButton>
                 {/* <IconButton><PictureAsPdfIcon className="svg_icons"/></IconButton>                           */}
             </div>
 
@@ -193,7 +193,7 @@ export default function Chat(props) {
         onClose={onClose}
         visible={visible}
       >
-        <Link to='/home' ><p><strong>HOME</strong></p></Link>
+        <Link to='/' ><p><strong>HOME</strong></p></Link>
         <Link to='/trainers' ><p><strong>TEACHERS</strong></p></Link>
         <Link to='/courses' ><p><strong>COURSES</strong></p></Link>
         <Link to='/chat' ><p><strong>CHAT</strong></p></Link>
@@ -211,12 +211,13 @@ export default function Chat(props) {
         :
         <Link to='/registration'><p><strong>SIGN UP</strong></p></Link>   
          }
-        
+       
       </Drawer>
-      {props.meetId !== '' && <Modal title="Session Information" onOk={props.handleOk} visible={props.isModalVisible} onCancel={props.handleCancel}>
+      {props.meetId !== '' &&
+      <Modal title="Session Information" onOk={props.handleOk} visible={props.isModalVisible} onCancel={props.handleCancel}>
             <h5>check your mail to start meeting</h5>
             <h5>Meeting Link: <a>https://go.teamviewer.com/v15/en/</a></h5>
-        </Modal>}
+      </Modal>}
         </div>
     )
 }

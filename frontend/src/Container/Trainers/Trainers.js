@@ -240,7 +240,7 @@ export default class Trainers extends Component {
 
                         :
                         <div className='body__ctr'>
-                            <img src={kodecrux} style={{ height: '70px', position: 'absolute',left: '0', top: '0', zIndex: '2000' }} onClick = {() =>this.props.history.push('/home')}/>
+                            <img src={kodecrux} style={{ height: '70px', position: 'absolute',left: '0', top: '0', zIndex: '2000' }} onClick = {() =>this.props.history.push('/')}/>
                             <div className=" d-flex  p-3 flex-column" style={{ alignItems: "center" }}>
                                 
                                  {this.state.trainers.map((trainer) => (

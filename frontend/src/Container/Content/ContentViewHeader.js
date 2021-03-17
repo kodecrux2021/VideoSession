@@ -32,7 +32,7 @@ export default function ContentViewHeader(props) {
 
                 <div className='content__header__left'>
 
-                    <img src={kodecrux} style={{ height: '70px' }} onClick = {() =>history.push('/home')}/>
+                    <img src={kodecrux} style={{ height: '70px' }} onClick = {() =>history.push('/')}/>
 
                     <div className='left__search__container'>
                         <Menu availableModules={props.availableModules} />
@@ -61,7 +61,7 @@ export default function ContentViewHeader(props) {
                         onClose={onClose}
                         visible={visible}
                     >
-                        <Link to='/home' ><p><h5>HOME</h5></p></Link>
+                        <Link to='/' ><p><h5>HOME</h5></p></Link>
                         <Link to='/notifications/messages' ><p><h5>NOTIFICATIONS</h5></p></Link>
                         {
                             (localStorage.token) ?

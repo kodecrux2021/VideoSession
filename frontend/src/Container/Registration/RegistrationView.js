@@ -63,22 +63,14 @@ export default function Registration(props) {
             if(result){
               localStorage.setItem('user_id', result.user?.id);
               localStorage.setItem('user_name', result.user?.first_name);
-<<<<<<< HEAD
               message.info('Logged in successfully!')
               history.replace('/')
-=======
-              history.replace('/home')
->>>>>>> e03f85710e8a31068ca6980515d327e30ae86865
           }
           }
       )
             
            //console.log("success")
-<<<<<<< HEAD
        
-=======
-        
->>>>>>> e03f85710e8a31068ca6980515d327e30ae86865
          }
          else if(response.status=='unknown') {
            alert('No user Found')  

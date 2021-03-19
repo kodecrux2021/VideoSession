@@ -67,7 +67,9 @@ export default class Home extends Component {
         <br/>
         <b>Below is the service catalogue</b><br/>
         <b>Study room</b> : To cater needs to IT graduate, Freshers, job seekers, on job employes in terms of certification, training, expert sessions, market place for e-training<br/>
-        <b>Solution room</b> : To cater needs to IT graduate, Freshers, job seekers, on job employes in terms of on job expert advice, project reviews, project/web site creation services .</p>})
+        <b>Solution room</b> : To cater needs to IT graduate, Freshers, job seekers, on job employes in terms of on job expert advice, project reviews, project/web site creation services .
+        <br/><b>Pricing  :</b>
+Cost of the services will be charged in currency INR. Study room and solution room charges as per the technology combination and usage duration ranges from 10 INR /Minute till 25 INR / Minute . The costs will be displayed to user via email and accordingly user can choose and proceed .</p>})
     }
     refund = () => {
         this.setState({visible: true,
@@ -220,7 +222,13 @@ export default class Home extends Component {
         <br/>
         <b>Registered Name of Business</b><br/>
         Expert aid technologies private limited <br/>
-        Plot-44, Beeramguda, Hyderabad -502032</p>})
+        Plot-44, Beeramguda, Hyderabad -502032<br/>
+        <b>Cancellation policy :</b>
+
+You as a customer can cancel services anytime up to the cut-off time of the slot ( 4 hours after availing service )   by calling our customer service or writing to sales@kodecrux.com . In such a case we will review and refund any payments already made by you .<br/>
+<b>Refund policy :</b>
+
+If as a user, you wish to refund the payment if they do not meet thier required target , they can give rating accordingly and ask for refund of thier amount. Admin team will review and process refund accordingly . Once cancelled or refund requested , refund will be processed in the original mode of payment, which will be credited within 7 to 10 working days</p>})
     }
 
     handleCancel = () =>{

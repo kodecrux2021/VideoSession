@@ -12,6 +12,7 @@ const Timer = () => {
     const start = ()=>{
         if(!playing){
             setPlaying(true)
+            
              watch.current = setInterval(() => {
                 
                 setCurrentSec(prevCurrentSec => prevCurrentSec+1)

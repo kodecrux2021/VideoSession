@@ -274,9 +274,8 @@ handleCancel = () => {
         return (
             <>
         
-            <div style={{backgroundColor: '#ededed', height: '100vh'}}>
+            <div style={{backgroundColor: '#ededed', height: '100vh'}} className="wrapper">
                 <Navbar/>
-                <div className = "wrapper">
                 <Chat
                 loading={this.state.loading}
                 clicked={this.state.clicked}
@@ -300,7 +299,6 @@ handleCancel = () => {
                 handleOk = {this.handleCancel}
                 />
                 <Timer/>
-                </div>
             </div>
             </>
             

@@ -1,12 +1,6 @@
 .chat {
     display: flex;
     flex-direction: column;
-    width: 70%;
-}
-
-.wrapper{
-  display: flex;
-  flex-direction: row;
 }
 
 .chat__header {

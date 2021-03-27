@@ -4,7 +4,6 @@ import avatar from '../../assets/images/avatar2.jpeg'
 import { message, Spin } from 'antd';
 import { url } from '../../Server/GlobalUrl';
 import Navbar from '../../components/Header/Navbar';
-import Timer from './Timer';
 // import {DatePicker} from 'antd'
 // import moment from 'moment';
 // import { CircularProgress } from '@material-ui/core';
@@ -276,7 +275,6 @@ handleCancel = () => {
         
             <div style={{backgroundColor: '#ededed', height: '100vh'}}>
                 <Navbar/>
-                <div className = "wrapper">
                 <Chat
                 loading={this.state.loading}
                 clicked={this.state.clicked}
@@ -299,8 +297,6 @@ handleCancel = () => {
                 handleCancel={this.handleCancel}
                 handleOk = {this.handleCancel}
                 />
-                <Timer/>
-                </div>
             </div>
             </>
             

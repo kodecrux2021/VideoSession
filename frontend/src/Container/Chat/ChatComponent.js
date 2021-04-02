@@ -298,7 +298,7 @@ handleCancel = () => {
                 handleCancel={this.handleCancel}
                 handleOk = {this.handleCancel}
                 />
-                <Timer/>
+                {/* <Timer/> */}
             </div>
             </>
             

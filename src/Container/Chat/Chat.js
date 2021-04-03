@@ -180,7 +180,7 @@ export default function Chat(props) {
             <div className='chat__footer'>
                 <form>
                     <input placeholder='Type a message' value={props.message} onChange={(e)=>props.handleData('message', e.target.value)} type="text" />
-                    {/* <button type='submit' onClick={(e)=>props.sendMessage(e)}>Send a message</button> */}
+                    <button type='submit' onClick={(e)=>props.sendMessage(e)}>Send a message</button>
                 </form>
                 <IconButton type = 'submit' onSubmit={(e)=>props.sendMessage(e)}><SendIcon className="svg_icons"/></IconButton>
                 {/* <IconButton><PictureAsPdfIcon className="svg_icons"/></IconButton>                           */}

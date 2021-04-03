@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { url } from '../../Server/GlobalUrl';
 import './Timer.css'
 
 const Timer = () => {
@@ -9,6 +10,17 @@ const Timer = () => {
     // console.log('sdfgh', !playing.toString());
     let watch = useRef(null);
 
+    useEffect(()=>{
+        if(currentSec >= 60 ){
+            setCurrentSec(0)
+            setCurrentMin(prevCurrentMin => prevCurrentMin+1)
+        }
+        if(currentMin >= 60){
+            setCurrentMin(0)
+            setCurrentHr(prevCurrentHr => prevCurrentHr+1)
+        }
+    },[currentHr,currentMin, currentSec])
+
     const start = ()=>{
         if(!playing){
             setPlaying(true)
@@ -17,14 +29,6 @@ const Timer = () => {
                 
                 setCurrentSec(prevCurrentSec => prevCurrentSec+1)
                 
-                if(currentSec >= 60 ){
-                    setCurrentSec(0)
-                    setCurrentMin(prevCurrentMin => prevCurrentMin+1)
-                }
-                if(currentMin >= 60){
-                    setCurrentMin(0)
-                    setCurrentHr(prevCurrentHr => prevCurrentHr+1)
-                }
                  console.log(currentHr, currentMin, currentSec)
             }, 1000)
         }
@@ -53,6 +57,16 @@ const Timer = () => {
         setCurrentSec(0)
         setPlaying(false)
         clearInterval(watch.current)
+        let auth = localStorage.getItem('token')
+        fetch(url+'/api/educator',{
+            method: 'GET',
+        headers: {
+           'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + auth,
+        }
+        }).then((response)=> {return response.json()})
+        .then((res)=> console.log(res))
     }
 
     const format = (val) =>{

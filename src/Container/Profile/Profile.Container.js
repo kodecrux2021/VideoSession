@@ -7,9 +7,9 @@ import { Col } from "react-bootstrap";
 import { Upload, Modal } from "antd";
 
 import { message, Button } from "antd";
-import { Alert } from "react-bootstrap";
+
 import EditIcon from "@material-ui/icons/Edit";
-import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 
 import Navbar from "../../components/Header/Navbar";
 
@@ -70,52 +70,60 @@ class Profile extends Component {
 
     alert: false,
     sucess: true,
+
+    setemail_validate: "",
+
+    mobile: "",
+    setmobile_validate: "",
   };
 
   UserData = async () => {
     let id = localStorage.getItem("user_id");
     let auth = localStorage.getItem("token");
-
-    if (id) {
-      await fetch(url + "/api/customusersecond/" + id + "/")
-        .then((response) => response.json())
-        .then((data) => {
-          this.setState({
-            Date_Of_Birth: data.date_of_birth,
-            profile_pic: data.profile_pic,
-            pincode: data.pincode,
-            state: data.state,
-            city: data.city,
-            total_experience: data.total_experience,
-            relevant_experience: data.relevant_experience,
-            technology: data.technology[0],
-            sub_technology: data.sub_technology[0],
-          });
-        })
-        .then((data) =>
-          fetch(url + "/currentuser/", {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + auth,
-            },
+    try {
+      if (id) {
+        await fetch(url + "/api/customusersecond/" + id + "/")
+          .then((response) => response.json())
+          .then((data) => {
+            this.setState({
+              Date_Of_Birth: data.date_of_birth,
+              profile_pic: data.profile_pic,
+              pincode: data.pincode,
+              state: data.state,
+              city: data.city,
+              total_experience: data.total_experience,
+              relevant_experience: data.relevant_experience,
+              technology: data.technology[0],
+              sub_technology: data.sub_technology[0],
+            });
           })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data) {
-                this.setState({
-                  First_Name: data.user.first_name,
-                  Last_Name: data.user.last_name,
-                  Email: data.user.email,
-                  Phone: data.user.phone,
-                  relevant_experience: data.user.relevant_experience,
-                });
-              }
+          .then((data) =>
+            fetch(url + "/currentuser/", {
+              method: "GET",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + auth,
+              },
             })
-        );
-    } else {
-      return;
+              .then((res) => res.json())
+              .then((data) => {
+                if (data) {
+                  this.setState({
+                    First_Name: data.user.first_name,
+                    Last_Name: data.user.last_name,
+                    Email: data.user.email,
+                    Phone: data.user.phone,
+                    relevant_experience: data.user.relevant_experience,
+                  });
+                }
+              })
+          );
+      } else {
+        return;
+      }
+    } catch (error) {
+      console.log("error");
     }
   };
 
@@ -212,18 +220,47 @@ class Profile extends Component {
 
   onSubmit = async (e) => {
     e.preventDefault();
-
     if (
+      this.state.email === "" ||
+      this.state.position === "" ||
+      this.state.setemail_validate !== "" ||
+      this.state.setmobile_validate !== "" ||
+      this.state.technology === "" ||
+      this.state.First_Name === "" ||
+      this.state.Last_Name === "" ||
+      this.state.Date_Of_Birth === "" ||
       this.state.pincode === "" ||
+      this.state.state === "" ||
       this.state.city === "" ||
-      this.state.state === ""
+      this.state.total_experience === "" ||
+      this.state.relevant_experience === ""
     ) {
-      if (this.state.pincode === "") {
-        message.info("Please Fill Pincode");
+      if (this.state.email === "") {
+        message.warning("Please Fill Email");
+      } else if (this.state.setemail_validate !== "") {
+        message.warning(this.state.setemail_validate);
+      } else if (this.state.setmobile_validate !== "") {
+        message.warning(this.state.setmobile_validate);
+      } else if (this.state.pincode === "") {
+        message.warning("Please Fill Pincode");
       } else if (this.state.city === "") {
-        message.info("Please Fill City");
+        message.warning("Please Fill City");
       } else if (this.state.state === "") {
-        message.info("Please Fill State");
+        message.warning("Please Fill State");
+      } else if (this.state.technology === "") {
+        message.warning("Please Fill technology");
+      } else if (this.state.sub_technology === "") {
+        message.warning("Please Fill sub technology");
+      } else if (this.state.total_experience === "") {
+        message.warning("Please Fill total_experience");
+      } else if (this.state.relevant_experience === "") {
+        message.warning("Please Fill relevant_experience");
+      } else if (this.state.Date_Of_Birth === "") {
+        message.warning("Please Fill Date_Of_Birth");
+      } else if (this.state.First_Name === "") {
+        message.warning("Please Fill First Name");
+      } else if (this.state.Last_Name === "") {
+        message.warning("Please Fill Last Name");
       }
     } else {
       let tech = [];
@@ -288,11 +325,11 @@ class Profile extends Component {
         .then((response) => {
           //console.log("response", response);
           if (response["status"] === 201 || response["status"] === 200) {
-            message.info("Saved");
+            message.success("Saved");
             window.location.reload();
             return response.json();
           } else if (response["status"] === 400 || response["status"] === 500) {
-            message.info("Something went wrong");
+            message.error("Something went wrong");
             //console.log("Something is wrong");
           }
         })
@@ -312,11 +349,11 @@ class Profile extends Component {
             }).then((response) => {
               // console.log("response", response);
               if (response["status"] === 201 || response["status"] === 200) {
-                message.info("Saved");
+                message.success("Saved");
                 window.location.reload();
                 return response.json();
               } else if (response["status"] === 400) {
-                message.info("Something went wrong!");
+                message.error("Something went wrong!");
                 // console.log("Something is wrong");
               }
             });
@@ -358,6 +395,26 @@ class Profile extends Component {
       this.setState({ total_experience: data });
     } else if (identity === "relevant_experience") {
       this.setState({ relevant_experience: data });
+    } else if (identity === "Email") {
+      this.setState({ Email: data });
+      if (
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+          data.toLowerCase()
+        )
+      ) {
+        this.setState({ setemail_validate: "" });
+      } else {
+        this.setState({ setemail_validate: "Please enter a valid email" });
+      }
+    } else if (identity === "Phone") {
+      this.setState({ Phone: data });
+      if (/^(\+\d{1,3}[- ]?)?\d{10}$/.test(data)) {
+        this.setState({ setmobile_validate: "" });
+      } else {
+        this.setState({
+          setmobile_validate: "Please enter a valid mobile number",
+        });
+      }
     }
   };
 
@@ -532,7 +589,9 @@ class Profile extends Component {
                           id="email"
                           name="Email"
                           placeholder="Your Email Here"
-                          onChange={this.handleChange}
+                          onChange={(e) =>
+                            this.handleData("Email", e.target.value)
+                          }
                           value={Email}
                         />
                       </div>
@@ -545,7 +604,9 @@ class Profile extends Component {
                           id="Phone"
                           placeholder="Enter Mobile Number"
                           name="Phone"
-                          onChange={this.handleChange}
+                          onChange={(e) =>
+                            this.handleData("Phone", e.target.value)
+                          }
                           value={Phone}
                         />
                       </div>

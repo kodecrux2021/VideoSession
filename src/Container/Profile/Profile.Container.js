@@ -105,9 +105,9 @@ class Profile extends Component {
       );
   };
 
-  // componentDidUpdate() {
-  //   console.log(this.state);
-  // }
+  componentDidUpdate() {
+    console.log(this.state);
+  }
 
   componentDidMount() {
     this.UserData();
@@ -215,11 +215,12 @@ class Profile extends Component {
 
   onSubmit = async (e) => {
     e.preventDefault();
+
     let tech = [];
     let sub_tech = [];
 
-    tech.push(parseInt(this.state.technology.id));
-    sub_tech.push(parseInt(this.state.sub_technology.id));
+    tech.push(parseInt(this.state.technology[0].id));
+    sub_tech.push(parseInt(this.state.sub_technology[0].id));
 
     if (
       this.state.pincode === "" ||
@@ -263,6 +264,7 @@ class Profile extends Component {
         console.log("response", response);
         if (response["status"] === 201 || response["status"] === 200) {
           message.info("Saved");
+          window.location.reload();
           return response.json();
         } else if (response["status"] === 400) {
           message.info("Something is wrong");

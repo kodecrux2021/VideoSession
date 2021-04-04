@@ -5,6 +5,14 @@
   position: relative;
 }
 
+.Profile__logo {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 80px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .Profile__container {
   width: 50rem;
   margin-top: 10vh;
@@ -23,12 +31,6 @@
 .Profile__title h6 {
   color: rgb(172, 165, 165);
 }
-
-/* .Profile__section {
-  display: flex;
-  justify-content: space-evenly;
-  margin-top: 5px;
-} */
 
 .profile__image {
   color: white;

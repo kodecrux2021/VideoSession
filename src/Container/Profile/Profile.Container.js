@@ -15,6 +15,8 @@ import Navbar from "../../components/Header/Navbar";
 
 import "./Profile.css";
 import { Redirect } from "react-router";
+import kodecrux from "../../assets/images/reg2.jpeg";
+import { Link } from "react-router-dom";
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -24,6 +26,12 @@ function getBase64(file) {
     reader.onerror = (error) => reject(error);
   });
 }
+
+const dummyRequest = ({ file, onSuccess }) => {
+  setTimeout(() => {
+    onSuccess("ok");
+  }, 0);
+};
 
 const experienceData = [
   { id: 2, name: "1 year", value: 1 },
@@ -40,6 +48,8 @@ class Profile extends Component {
     previewImage: "",
     previewTitle: "",
     fileList: [],
+
+    profile_pic: "",
 
     tech_list: [],
     subtech_list: [],
@@ -66,64 +76,51 @@ class Profile extends Component {
     let id = localStorage.getItem("user_id");
     let auth = localStorage.getItem("token");
 
-    await fetch(url + "/api/customusersecond/" + id + "/")
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({
-          Date_Of_Birth: data.date_of_birth,
-          previewImage: data.profile_pic,
-          pincode: data.pincode,
-          state: data.state,
-          city: data.city,
-          total_experience: data.total_experience,
-          relevant_experience: data.relevant_experience,
-          technology: data.technology[0],
-          sub_technology: data.sub_technology[0],
-        });
-      })
-      .then((data) =>
-        fetch(url + "/currentuser/", {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + auth,
-          },
+    if (id) {
+      await fetch(url + "/api/customusersecond/" + id + "/")
+        .then((response) => response.json())
+        .then((data) => {
+          this.setState({
+            Date_Of_Birth: data.date_of_birth,
+            profile_pic: data.profile_pic,
+            pincode: data.pincode,
+            state: data.state,
+            city: data.city,
+            total_experience: data.total_experience,
+            relevant_experience: data.relevant_experience,
+            technology: data.technology[0],
+            sub_technology: data.sub_technology[0],
+          });
         })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data) {
-              this.setState({
-                First_Name: data.user.first_name,
-                Last_Name: data.user.last_name,
-                Email: data.user.email,
-                Phone: data.user.phone,
-                relevant_experience: data.user.relevant_experience,
-              });
-            }
+        .then((data) =>
+          fetch(url + "/currentuser/", {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + auth,
+            },
           })
-      );
+            .then((res) => res.json())
+            .then((data) => {
+              if (data) {
+                this.setState({
+                  First_Name: data.user.first_name,
+                  Last_Name: data.user.last_name,
+                  Email: data.user.email,
+                  Phone: data.user.phone,
+                  relevant_experience: data.user.relevant_experience,
+                });
+              }
+            })
+        );
+    } else {
+      return;
+    }
   };
-
-  componentDidUpdate() {
-    console.log(this.state);
-  }
 
   componentDidMount() {
     this.UserData();
-
-    // fetch(url + "/api/notification/", {
-    //   method: "GET",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    // })
-    //   .then((res) => res.json())
-    //   .then((result) => {
-    //     console.log(result);
-    //     this.setState({ technology_list: result });
-    //   });
 
     if (localStorage.getItem("token")) {
       let data_refresh = { refresh: localStorage.getItem("refresh") };
@@ -184,7 +181,7 @@ class Profile extends Component {
       return this.state.sub_technology === value.id;
     });
 
-    this.setState({ sub_technology: dataa });
+    this.setState({ sub_technology: dataa[0] });
   };
 
   UpdateTech = async () => {
@@ -192,7 +189,7 @@ class Profile extends Component {
       return this.state.technology === value.id;
     });
 
-    this.setState({ technology: dataa });
+    this.setState({ technology: dataa[0] });
   };
 
   UpdateTotalExp = async () => {
@@ -200,7 +197,7 @@ class Profile extends Component {
       return this.state.total_experience === value.value;
     });
 
-    this.setState({ total_experience: dataa });
+    this.setState({ total_experience: dataa[0] });
   };
 
   UpdateRelevantExp = async () => {
@@ -209,18 +206,12 @@ class Profile extends Component {
         return this.state.relevant_experience === value.value;
       });
 
-      this.setState({ relevant_experience: dataa });
+      this.setState({ relevant_experience: dataa[0] });
     }, 1000);
   };
 
   onSubmit = async (e) => {
     e.preventDefault();
-
-    let tech = [];
-    let sub_tech = [];
-
-    tech.push(parseInt(this.state.technology[0].id));
-    sub_tech.push(parseInt(this.state.sub_technology[0].id));
 
     if (
       this.state.pincode === "" ||
@@ -235,7 +226,38 @@ class Profile extends Component {
         message.info("Please Fill State");
       }
     } else {
-      console.log(tech, sub_tech);
+      let tech = [];
+      let sub_tech = [];
+
+      tech.push(parseInt(this.state.technology.id));
+      sub_tech.push(parseInt(this.state.sub_technology.id));
+      console.log(
+        "tech",
+        "sub_tech",
+        this.state.total_experience?.value,
+        this.state.relevant_experience.value
+      );
+      let formData = new FormData();
+
+      formData.append("pincode", this.state.pincode);
+      formData.append("city", this.state.city);
+      formData.append("state", this.state.state);
+      formData.append("technology", [tech]);
+      formData.append("sub_technology", [sub_tech]);
+      formData.append("total_experience", this.state.total_experience.value);
+      formData.append(
+        "relevant_experience",
+        this.state.relevant_experience.value
+      );
+      formData.append("date_of_birth", this.state.Date_Of_Birth);
+      formData.append("First_Name", this.state.First_Name);
+      formData.append("Last_Name", this.state.Last_Name);
+      formData.append("Email", this.state.Email);
+      formData.append("Phone", this.state.Phone);
+      formData.append("Email", this.state.Email);
+      this.state.fileList.length > 0 &&
+        formData.append("profile_pic", this.state.fileList[0].originFileObj);
+
       let data = {
         technology: tech,
         sub_technology: sub_tech,
@@ -252,28 +274,61 @@ class Profile extends Component {
         relevant_experience: this.state.relevant_experience.value,
       };
 
-      let id = localStorage.getItem("user_id");
-      await fetch(url + "/api/customusersecond/" + id + "/", {
+      let id = localStorage.getItem("educator_id");
+      let user_id = localStorage.getItem("user_id");
+
+      fetch(url + "/api/customusersecond/" + user_id + "/", {
         method: "PUT",
         headers: {
           Accept: "application/json, text/plain",
-          "Content-Type": "application/json;charset=UTF-8",
+          // "Content-Type": `multipart/form-data`,
         },
-        body: JSON.stringify(data),
-      }).then((response) => {
-        console.log("response", response);
-        if (response["status"] === 201 || response["status"] === 200) {
-          message.info("Saved");
-          window.location.reload();
-          return response.json();
-        } else if (response["status"] === 400) {
-          message.info("Something is wrong");
-        }
-      });
+        body: formData,
+      })
+        .then((response) => {
+          //console.log("response", response);
+          if (response["status"] === 201 || response["status"] === 200) {
+            message.info("Saved");
+            window.location.reload();
+            return response.json();
+          } else if (response["status"] === 400 || response["status"] === 500) {
+            message.info("Something went wrong");
+            //console.log("Something is wrong");
+          }
+        })
+        .then(async (result) => {
+          //console.log(result);
+
+          let auth = localStorage.getItem("token");
+          if (localStorage.getItem("is_client")) {
+            await fetch(url + "/api/educatorcreate/" + id + "/", {
+              method: "PUT",
+              headers: {
+                Accept: "application/json, text/plain",
+                //"Content-Type": "application/json;charset=UTF-8",
+                Authorization: "Bearer" + auth,
+              },
+              body: formData,
+            }).then((response) => {
+              // console.log("response", response);
+              if (response["status"] === 201 || response["status"] === 200) {
+                message.info("Saved");
+                window.location.reload();
+                return response.json();
+              } else if (response["status"] === 400) {
+                message.info("Something went wrong!");
+                // console.log("Something is wrong");
+              }
+            });
+          }
+        });
     }
   };
+
+  handleCancel = () => this.setState({ previewVisible: false });
+
   handlePreview = async (file) => {
-    // console.log('file', file)
+    console.log("file", file);
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -285,7 +340,10 @@ class Profile extends Component {
         file.name || file.url.substring(file.url.lastIndexOf("/") + 1),
     });
   };
-  HandleImageChange = ({ fileList }) => this.setState({ fileList });
+
+  HandleImageChange = async ({ fileList }) => {
+    this.setState({ fileList }, () => console.log(fileList.response));
+  };
 
   handleData = (identity, data) => {
     if (identity === "technology") {
@@ -312,6 +370,10 @@ class Profile extends Component {
     this.setState({ date_of_birth: date });
   };
 
+  componentDidUpdate() {
+    console.log(this.state);
+  }
+
   render() {
     const is_client = localStorage.getItem("is_client");
 
@@ -330,12 +392,27 @@ class Profile extends Component {
       technology,
       tech_list,
       subtech_list,
-
+      profile_pic,
       sub_technology,
       fileList,
       previewVisible,
       previewTitle,
     } = this.state;
+
+    const props = {
+      action: "//jsonplaceholder.typicode.com/posts/",
+      listType: "picture",
+      previewFile(file) {
+        console.log("Your upload file:", file);
+        // Your process logic. Here we just mock to the same file
+        return fetch("https://next.json-generator.com/api/json/get/4ytyBoLK8", {
+          method: "POST",
+          body: file,
+        })
+          .then((res) => res.json())
+          .then(({ thumbnail }) => thumbnail);
+      },
+    };
 
     const uploadButton = (
       <div>
@@ -346,258 +423,285 @@ class Profile extends Component {
     return (
       <div>
         <Navbar />
-        <div className="Profile">
-          <div className="Profile__container">
-            <div className="Profile__title">
-              <h2>Profile</h2>
-              <h6>Add/edit Information about yourself</h6>
-            </div>
-            <div className="Profile__section">
-              <div className="profile__image">
-                {" "}
-                <img src={`${previewImage}`} />
+        <Link to="/">
+          <img className="Profile__logo" src={kodecrux} />
+        </Link>
+        {localStorage.getItem("user_id") ? (
+          <div className="Profile">
+            <div className="Profile__container">
+              <div className="Profile__title">
+                <h2>Profile</h2>
+                <h6>Add/edit Information about yourself</h6>
               </div>
-              <div className="profile__input_Fields">
-                <form onSubmit={this.onSubmit}>
-                  <Col>
-                    <div style={{ textAlign: "center", margin: "10px" }}>
-                      <Upload
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                        listType="picture-card"
-                        fileList={fileList}
-                        onChange={this.HandleImageChange}
-                        onPreview={this.handlePreview}
-                      >
-                        <div>
-                          <UploadOutlined />
-                          <div style={{ marginTop: 8 }}>Upload</div>
-                        </div>
-                        {/* <Button icon={<UploadOutlined />}>
-                          Click to Upload
-                        </Button> */}
-                      </Upload>
-                    </div>
+              <div className="Profile__section">
+                <div className="profile__image">
+                  {" "}
+                  <img src={`${profile_pic}`} />
+                </div>
+                <div className="profile__input_Fields">
+                  <form onSubmit={this.onSubmit}>
+                    <Col>
+                      <div style={{ textAlign: "center", margin: "10px" }}>
+                        <Upload
+                          beforeUpload={(file) => {
+                            const isJPG =
+                              file.type === "image/jpeg" ||
+                              file.type === "image/png";
+                            if (!isJPG) {
+                              message.error(
+                                "You can only upload JPG or PNG file!"
+                              );
+                              return false;
+                            } else {
+                              return true;
+                            }
+                          }}
+                          customRequest={dummyRequest}
+                          //  action="https://next.json-generator.com/api/json/get/4ytyBoLK8"
+                          listType="picture-card"
+                          fileList={fileList}
+                          onPreview={this.handlePreview}
+                          onChange={(e) => this.HandleImageChange(e)}
+                        >
+                          {fileList.length >= 1 ? null : uploadButton}
+                        </Upload>
+                        {/* <Upload {...props}>
+                  <Button icon={<UploadOutlined />}>Upload</Button>
+                </Upload> */}
+                        <Modal
+                          visible={previewVisible}
+                          title={previewTitle}
+                          footer={null}
+                          onCancel={this.handleCancel}
+                        >
+                          <img
+                            alt="example"
+                            style={{ width: "100%" }}
+                            src={previewImage}
+                          />
+                        </Modal>
+                      </div>
 
-                    <div className="form__group">
-                      <label>First Name</label>
-                      <input
-                        type="text"
-                        className="form__control"
-                        placeholder="First Name"
-                        name="First_Name"
-                        value={First_Name}
-                        onChange={this.handleChange}
-                      />
-                    </div>
-                    <div className="form__group">
-                      <label>Last Name</label>
-                      <input
-                        type="text"
-                        className="form__control"
-                        placeholder="Last Name"
-                        name="Last_Name"
-                        defaultValue={Last_Name}
-                        // value={Last_Name}
-                        onChange={this.handleChange}
-                      />
-                    </div>
-                    <div class="form__group">
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <label>Date of Birth</label>
-                        {Date_Of_Birth ? (
-                          <div style={{ margin: "0 60px" }}>
-                            <DatePicker
-                              onChange={this.onChange}
-                              size="large"
-                              format="YYYY-MM-DD"
-                              defaultValue={
-                                Date_Of_Birth ? moment(Date_Of_Birth) : ""
-                              }
-                            />
-                          </div>
+                      <div className="form__group">
+                        <label>First Name</label>
+                        <input
+                          type="text"
+                          className="form__control"
+                          placeholder="First Name"
+                          name="First_Name"
+                          value={First_Name}
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div className="form__group">
+                        <label>Last Name</label>
+                        <input
+                          type="text"
+                          className="form__control"
+                          placeholder="Last Name"
+                          name="Last_Name"
+                          defaultValue={Last_Name}
+                          // value={Last_Name}
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div class="form__group">
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <label>Date of Birth</label>
+                          {Date_Of_Birth ? (
+                            <div style={{ margin: "0 60px" }}>
+                              <DatePicker
+                                onChange={this.onChange}
+                                size="large"
+                                format="YYYY-MM-DD"
+                                defaultValue={
+                                  Date_Of_Birth ? moment(Date_Of_Birth) : ""
+                                }
+                              />
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </div>
+                      <div className="form__group">
+                        <label>Email</label>
+                        <input
+                          type="email"
+                          className="form__control"
+                          id="email"
+                          name="Email"
+                          placeholder="Your Email Here"
+                          onChange={this.handleChange}
+                          value={Email}
+                        />
+                      </div>
+
+                      <div className="form__group">
+                        <label>Phone no</label>
+                        <input
+                          type="text"
+                          className="form__control"
+                          id="Phone"
+                          placeholder="Enter Mobile Number"
+                          name="Phone"
+                          onChange={this.handleChange}
+                          value={Phone}
+                        />
+                      </div>
+
+                      <div class="form__group">
+                        <label>Pin Code</label>
+                        <input
+                          className="form__control"
+                          value={pincode}
+                          name="pincode"
+                          type="text"
+                          placeholder="Enter Your Postal Code"
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div class="form__group">
+                        <label>State</label>
+                        <input
+                          className="form__control"
+                          value={state}
+                          name="state"
+                          type="text"
+                          placeholder="Enter Your state"
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div class="form__group">
+                        <label>City</label>
+                        <input
+                          className="form__control"
+                          value={city}
+                          name="city"
+                          type="text"
+                          placeholder="Enter Your city"
+                          onChange={this.handleChange}
+                        />
+                      </div>
+
+                      <div class="form__group">
+                        <label>Technology</label>
+                        {technology ? (
+                          <Select
+                            className="react-selectcomponent"
+                            classNamePrefix="name-select"
+                            onChange={(value) =>
+                              this.handleData("technology", value)
+                            }
+                            options={tech_list}
+                            getOptionLabel={(option) => `${option.name}`}
+                            getOptionValue={(option) => `${option}`}
+                            isOptionSelected={(option) =>
+                              this.state.technology === option.name
+                                ? true
+                                : false
+                            }
+                            isSearchable={true}
+                            openMenuOnClick={true}
+                            placeholder={"Choose Technology"}
+                            value={technology}
+                          />
                         ) : (
                           ""
                         )}
                       </div>
-                    </div>
-                    <div className="form__group">
-                      <label>Email</label>
-                      <input
-                        type="email"
-                        className="form__control"
-                        id="email"
-                        name="Email"
-                        placeholder="Your Email Here"
-                        onChange={this.handleChange}
-                        value={Email}
-                      />
-                    </div>
 
-                    <div className="form__group">
-                      <label>Phone no</label>
-                      <input
-                        type="text"
-                        className="form__control"
-                        id="Phone"
-                        placeholder="Enter Mobile Number"
-                        name="Phone"
-                        onChange={this.handleChange}
-                        value={Phone}
-                      />
-                    </div>
+                      <div class="form__group">
+                        <label> Sub Technology</label>
+                        {technology ? (
+                          <Select
+                            className="react-selectcomponent"
+                            classNamePrefix="name-select"
+                            onChange={(value) =>
+                              this.handleData("sub_technology", value)
+                            }
+                            options={subtech_list}
+                            getOptionLabel={(option) => `${option.name}`}
+                            getOptionValue={(option) => `${option}`}
+                            isOptionSelected={(option) =>
+                              this.state.sub_technology === option.name
+                                ? true
+                                : false
+                            }
+                            isSearchable={true}
+                            openMenuOnClick={true}
+                            placeholder={"Choose Sub Technology"}
+                            value={this.state.sub_technology}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </div>
 
-                    <div class="form__group">
-                      <label>Pin Code</label>
-                      <input
-                        className="form__control"
-                        value={pincode}
-                        name="pincode"
-                        type="text"
-                        placeholder="Enter Your Postal Code"
-                        onChange={this.handleChange}
-                      />
-                    </div>
-                    <div class="form__group">
-                      <label>State</label>
-                      <input
-                        className="form__control"
-                        value={state}
-                        name="state"
-                        type="text"
-                        placeholder="Enter Your state"
-                        onChange={this.handleChange}
-                      />
-                    </div>
-                    <div class="form__group">
-                      <label>City</label>
-                      <input
-                        className="form__control"
-                        value={city}
-                        name="city"
-                        type="text"
-                        placeholder="Enter Your city"
-                        onChange={this.handleChange}
-                      />
-                    </div>
+                      <div class="form__group">
+                        <label>Total Experience</label>
+                        {total_experience ? (
+                          <Select
+                            className="react-selectcomponent"
+                            classNamePrefix="name-select"
+                            onChange={(value) =>
+                              this.handleData("total_experience", value)
+                            }
+                            getOptionLabel={(option) => `${option.name}`}
+                            getOptionValue={(option) => `${option}`}
+                            isOptionSelected={(option) =>
+                              this.state.sub_technology === option.name
+                                ? true
+                                : false
+                            }
+                            options={experienceData}
+                            isSearchable={true}
+                            openMenuOnClick={true}
+                            placeholder={"Years of Experince"}
+                            value={total_experience}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </div>
 
-                    <div class="form__group">
-                      <label>Technology</label>
-                      {technology ? (
-                        <Select
-                          className="react-selectcomponent"
-                          classNamePrefix="name-select"
-                          onChange={(value) =>
-                            this.handleData("technology", value)
-                          }
-                          options={tech_list}
-                          getOptionLabel={(option) => `${option.name}`}
-                          getOptionValue={(option) => `${option}`}
-                          isOptionSelected={(option) =>
-                            this.state.technology === option.name ? true : false
-                          }
-                          isSearchable={true}
-                          openMenuOnClick={true}
-                          placeholder={"Choose Technology"}
-                          value={technology}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </div>
-
-                    <div class="form__group">
-                      <label> Sub Technology</label>
-                      {technology ? (
-                        <Select
-                          className="react-selectcomponent"
-                          classNamePrefix="name-select"
-                          onChange={(value) =>
-                            this.handleData("sub_technology", value)
-                          }
-                          options={subtech_list}
-                          getOptionLabel={(option) => `${option.name}`}
-                          getOptionValue={(option) => `${option}`}
-                          isOptionSelected={(option) =>
-                            this.state.sub_technology === option.name
-                              ? true
-                              : false
-                          }
-                          isSearchable={true}
-                          openMenuOnClick={true}
-                          placeholder={"Choose Sub Technology"}
-                          value={this.state.sub_technology}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </div>
-
-                    <div class="form__group">
-                      <label>Total Experience</label>
-                      {total_experience ? (
-                        <Select
-                          className="react-selectcomponent"
-                          classNamePrefix="name-select"
-                          onChange={(value) =>
-                            this.handleData("total_experience", value)
-                          }
-                          getOptionLabel={(option) => `${option.name}`}
-                          getOptionValue={(option) => `${option}`}
-                          isOptionSelected={(option) =>
-                            this.state.sub_technology === option.name
-                              ? true
-                              : false
-                          }
-                          options={experienceData}
-                          isSearchable={true}
-                          openMenuOnClick={true}
-                          placeholder={"Years of Experince"}
-                          value={total_experience}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </div>
-
-                    <div class="form__group">
-                      <label>Relevant Experience</label>
-                      {relevant_experience ? (
-                        <Select
-                          className="react-selectcomponent"
-                          classNamePrefix="name-select"
-                          onChange={(value) =>
-                            this.handleData("relevant_experience", value)
-                          }
-                          getOptionLabel={(option) => `${option.name}`}
-                          getOptionValue={(option) => `${option}`}
-                          isOptionSelected={(option) =>
-                            this.state.sub_technology === option.name
-                              ? true
-                              : false
-                          }
-                          options={experienceData}
-                          isSearchable={true}
-                          openMenuOnClick={true}
-                          placeholder={"Years of Experince"}
-                          value={relevant_experience}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  </Col>
-                  <Col className="registration__details__footer">
-                    <button type="submit">Save</button>
-                  </Col>
-                </form>
+                      <div class="form__group">
+                        <label>Relevant Experience</label>
+                        {relevant_experience ? (
+                          <Select
+                            className="react-selectcomponent"
+                            classNamePrefix="name-select"
+                            onChange={(value) =>
+                              this.handleData("relevant_experience", value)
+                            }
+                            getOptionLabel={(option) => `${option.name}`}
+                            getOptionValue={(option) => `${option}`}
+                            isOptionSelected={(option) =>
+                              this.state.sub_technology === option.name
+                                ? true
+                                : false
+                            }
+                            options={experienceData}
+                            isSearchable={true}
+                            openMenuOnClick={true}
+                            placeholder={"Years of Experince"}
+                            value={relevant_experience}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </Col>
+                    <Col className="registration__details__footer">
+                      <button type="submit">Save</button>
+                    </Col>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {localStorage.getItem("user_id") ? (
-          " "
         ) : (
-          <Redirect to={`${url} + /login`} />
+          <Redirect to="/login" />
         )}
       </div>
     );

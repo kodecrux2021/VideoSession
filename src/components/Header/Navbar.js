@@ -38,11 +38,16 @@ export default function Navbar(props) {
             <h5>HOME</h5>
           </p>
         </Link>
-        <Link to="/profile">
-          <p>
-            <h5>PROFILE</h5>
-          </p>
-        </Link>
+
+        {localStorage.token ? (
+          <Link to="/profile">
+            <p>
+              <h5>PROFILE</h5>
+            </p>
+          </Link>
+        ) : (
+          ""
+        )}
         <Link to="/courses">
           <p>
             <h5>E-LEARNING MARKETPLACE</h5>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Select from "react-select";
 import { url } from "../../Server/GlobalUrl";
-import { DatePicker, Space } from "antd";
+import { DatePicker } from "antd";
 import moment from "moment";
 import { Col } from "react-bootstrap";
 import { Upload, Modal } from "antd";
@@ -9,11 +9,21 @@ import { Upload, Modal } from "antd";
 import { message, Button } from "antd";
 import { Alert } from "react-bootstrap";
 import EditIcon from "@material-ui/icons/Edit";
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
 
 import Navbar from "../../components/Header/Navbar";
 
 import "./Profile.css";
+import { Redirect } from "react-router";
+
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+}
 
 const experienceData = [
   { id: 2, name: "1 year", value: 1 },
@@ -33,6 +43,7 @@ class Profile extends Component {
 
     tech_list: [],
     subtech_list: [],
+    subtech_list1: [],
     technology: "",
     sub_technology: "",
 
@@ -47,8 +58,6 @@ class Profile extends Component {
     total_experience: null,
     relevant_experience: null,
 
-    FilteredTechList: null,
-
     alert: false,
     sucess: true,
   };
@@ -60,14 +69,9 @@ class Profile extends Component {
     await fetch(url + "/api/customusersecond/" + id + "/")
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
         this.setState({
           Date_Of_Birth: data.date_of_birth,
           previewImage: data.profile_pic,
-          First_Name: "",
-          Last_Name: "",
-          Email: "",
-          Phone: "",
           pincode: data.pincode,
           state: data.state,
           city: data.city,
@@ -98,35 +102,28 @@ class Profile extends Component {
               });
             }
           })
-          .then((data) => this.SetSubTech())
       );
   };
 
-  SetSubTech = () =>
-    this.state.tech_list.map((value) => {
-      if (this.state.technology === value.id) {
-        this.setState({ subtech_list: value.sub_technology });
-      }
-    });
-
-  componentDidUpdate() {
-    console.log(this.state);
-  }
+  // componentDidUpdate() {
+  //   console.log(this.state);
+  // }
 
   componentDidMount() {
     this.UserData();
 
-    fetch(url + "/api/notification/", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        this.setState({ technology_list: result });
-      });
+    // fetch(url + "/api/notification/", {
+    //   method: "GET",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    //   .then((res) => res.json())
+    //   .then((result) => {
+    //     console.log(result);
+    //     this.setState({ technology_list: result });
+    //   });
 
     if (localStorage.getItem("token")) {
       let data_refresh = { refresh: localStorage.getItem("refresh") };
@@ -165,12 +162,136 @@ class Profile extends Component {
       .then((res) => res.json())
       .then((result) => {
         this.setState({ tech_list: result });
-      });
+      })
+      .then((data) => this.SetSubTech())
+      .then((res) => this.UpdateTech())
+      .then((res) => this.updateSubtech())
+      .then((res) => this.UpdateTotalExp())
+      .then((res) => this.UpdateRelevantExp());
   }
+
+  SetSubTech = () =>
+    this.state.tech_list.map((value) => {
+      if (this.state.technology === value.id) {
+        this.setState({
+          subtech_list: value.sub_technology,
+        });
+      }
+    });
+
+  updateSubtech = async () => {
+    const dataa = await this.state.subtech_list.filter((value) => {
+      return this.state.sub_technology === value.id;
+    });
+
+    this.setState({ sub_technology: dataa });
+  };
+
+  UpdateTech = async () => {
+    const dataa = await this.state.tech_list.filter((value) => {
+      return this.state.technology === value.id;
+    });
+
+    this.setState({ technology: dataa });
+  };
+
+  UpdateTotalExp = async () => {
+    const dataa = await experienceData.filter((value) => {
+      return this.state.total_experience === value.value;
+    });
+
+    this.setState({ total_experience: dataa });
+  };
+
+  UpdateRelevantExp = async () => {
+    setTimeout(() => {
+      const dataa = experienceData.filter((value) => {
+        return this.state.relevant_experience === value.value;
+      });
+
+      this.setState({ relevant_experience: dataa });
+    }, 1000);
+  };
+
+  onSubmit = async (e) => {
+    e.preventDefault();
+    let tech = [];
+    let sub_tech = [];
+
+    tech.push(parseInt(this.state.technology.id));
+    sub_tech.push(parseInt(this.state.sub_technology.id));
+
+    if (
+      this.state.pincode === "" ||
+      this.state.city === "" ||
+      this.state.state === ""
+    ) {
+      if (this.state.pincode === "") {
+        message.info("Please Fill Pincode");
+      } else if (this.state.city === "") {
+        message.info("Please Fill City");
+      } else if (this.state.state === "") {
+        message.info("Please Fill State");
+      }
+    } else {
+      console.log(tech, sub_tech);
+      let data = {
+        technology: tech,
+        sub_technology: sub_tech,
+
+        First_Name: this.state.First_Name,
+        Last_Name: this.state.Last_Name,
+        Date_Of_Birth: this.state.Date_Of_Birth,
+        Email: this.state.Email,
+        Phone: this.state.Phone,
+        pincode: this.state.pincode,
+        state: this.state.state,
+        city: this.state.city,
+        total_experience: this.state.total_experience.value,
+        relevant_experience: this.state.relevant_experience.value,
+      };
+
+      let id = localStorage.getItem("user_id");
+      await fetch(url + "/api/customusersecond/" + id + "/", {
+        method: "PUT",
+        headers: {
+          Accept: "application/json, text/plain",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+        body: JSON.stringify(data),
+      }).then((response) => {
+        console.log("response", response);
+        if (response["status"] === 201 || response["status"] === 200) {
+          message.info("Saved");
+          return response.json();
+        } else if (response["status"] === 400) {
+          message.info("Something is wrong");
+        }
+      });
+    }
+  };
+  handlePreview = async (file) => {
+    // console.log('file', file)
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+
+    this.setState({
+      previewImage: file.url || file.preview,
+      previewVisible: true,
+      previewTitle:
+        file.name || file.url.substring(file.url.lastIndexOf("/") + 1),
+    });
+  };
+  HandleImageChange = ({ fileList }) => this.setState({ fileList });
 
   handleData = (identity, data) => {
     if (identity === "technology") {
-      this.setState({ technology: data, subtech_list: data.sub_technology });
+      this.setState({
+        technology: data,
+        subtech_list: data.sub_technology,
+        sub_technology: "",
+      });
     } else if (identity === "sub_technology") {
       this.setState({ sub_technology: data });
     } else if (identity === "total_experience") {
@@ -187,64 +308,6 @@ class Profile extends Component {
 
   onChange = (date, dateString) => {
     this.setState({ date_of_birth: date });
-  };
-
-  onSubmit = async (e) => {
-    e.preventDefault();
-
-    if (
-      this.state.pincode === "" ||
-      this.state.city === "" ||
-      this.state.state === ""
-    ) {
-      if (this.state.pincode === "") {
-        message.info("Please Fill Pincode");
-      } else if (this.state.city === "") {
-        message.info("Please Fill City");
-      } else if (this.state.state === "") {
-        message.info("Please Fill State");
-      }
-    } else {
-      let tech = [];
-      let sub_tech = [];
-
-      let data = {
-        technology: this.state.technology,
-        sub_technology: this.state.sub_technology,
-
-        First_Name: this.state.First_Name,
-        Last_Name: this.state.Last_Name,
-        Date_Of_Birth: this.state.Date_Of_Birth,
-        Email: this.state.Email,
-        Phone: this.state.Phone,
-        pincode: this.state.pincode,
-        state: this.state.state,
-        city: this.state.city,
-        total_experience: this.state.total_experience,
-        relevant_experience: this.state.relevant_experience,
-      };
-
-      // console.log('data_______________', data)
-      let id = localStorage.getItem("user_id");
-      await fetch(url + "/api/customusersecond/" + id + "/", {
-        method: "PUT",
-        headers: {
-          Accept: "application/json, text/plain",
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-        body: JSON.stringify(data),
-      }).then((response) => {
-        //console.log("response", response)
-        if (response["status"] === 201 || response["status"] === 200) {
-          return response.json();
-        } else if (response["status"] === 400) {
-          message.info("Something is wrong");
-        }
-      });
-    }
-  };
-  imagechange = (e) => {
-    this.setState({ files: e.target.files[0] });
   };
 
   render() {
@@ -265,52 +328,19 @@ class Profile extends Component {
       technology,
       tech_list,
       subtech_list,
+
       sub_technology,
       fileList,
       previewVisible,
       previewTitle,
     } = this.state;
 
-    const FilteredTechList = tech_list.map((value) => {
-      if (technology === value.id) {
-        return value;
-      } else {
-        return technology;
-      }
-    });
-
-    // minor bug
-    // filtered Subtech not working
-    //SubTech is bugged
-    //Upoad function is pending
-
-    const FilteredSubtechnologies = subtech_list.map(async (value) => {
-      if (sub_technology === value.id) {
-        // console.log(value);
-        return value;
-      }
-      //   } else {
-      //     return sub_technology;
-      //   }
-    });
-
-    const FilteredTotalExperience = experienceData.map((value) => {
-      if (total_experience === value.value) {
-        // console.log("id", value);
-        return value;
-      } else {
-        return total_experience;
-      }
-    });
-    const FilteredRelevantExperience = experienceData.map((value) => {
-      if (relevant_experience === value.value) {
-        // console.log("value", value);
-        return value;
-      } else {
-        return relevant_experience;
-      }
-    });
-
+    const uploadButton = (
+      <div>
+        <PlusOutlined />
+        <div style={{ marginTop: 8 }}>Upload</div>
+      </div>
+    );
     return (
       <div>
         <Navbar />
@@ -329,10 +359,20 @@ class Profile extends Component {
                 <form onSubmit={this.onSubmit}>
                   <Col>
                     <div style={{ textAlign: "center", margin: "10px" }}>
-                      <Upload>
-                        <Button icon={<UploadOutlined />}>
+                      <Upload
+                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        listType="picture-card"
+                        fileList={fileList}
+                        onChange={this.HandleImageChange}
+                        onPreview={this.handlePreview}
+                      >
+                        <div>
+                          <UploadOutlined />
+                          <div style={{ marginTop: 8 }}>Upload</div>
+                        </div>
+                        {/* <Button icon={<UploadOutlined />}>
                           Click to Upload
-                        </Button>
+                        </Button> */}
                       </Upload>
                     </div>
 
@@ -354,7 +394,8 @@ class Profile extends Component {
                         className="form__control"
                         placeholder="Last Name"
                         name="Last_Name"
-                        value={Last_Name}
+                        defaultValue={Last_Name}
+                        // value={Last_Name}
                         onChange={this.handleChange}
                       />
                     </div>
@@ -441,6 +482,8 @@ class Profile extends Component {
                       <label>Technology</label>
                       {technology ? (
                         <Select
+                          className="react-selectcomponent"
+                          classNamePrefix="name-select"
                           onChange={(value) =>
                             this.handleData("technology", value)
                           }
@@ -453,7 +496,7 @@ class Profile extends Component {
                           isSearchable={true}
                           openMenuOnClick={true}
                           placeholder={"Choose Technology"}
-                          value={FilteredTechList}
+                          value={technology}
                         />
                       ) : (
                         ""
@@ -462,13 +505,14 @@ class Profile extends Component {
 
                     <div class="form__group">
                       <label> Sub Technology</label>
-                      {sub_technology ? (
+                      {technology ? (
                         <Select
                           className="react-selectcomponent"
                           classNamePrefix="name-select"
                           onChange={(value) =>
                             this.handleData("sub_technology", value)
                           }
+                          options={subtech_list}
                           getOptionLabel={(option) => `${option.name}`}
                           getOptionValue={(option) => `${option}`}
                           isOptionSelected={(option) =>
@@ -476,11 +520,10 @@ class Profile extends Component {
                               ? true
                               : false
                           }
-                          options={subtech_list}
                           isSearchable={true}
                           openMenuOnClick={true}
                           placeholder={"Choose Sub Technology"}
-                          value={FilteredSubtechnologies}
+                          value={this.state.sub_technology}
                         />
                       ) : (
                         ""
@@ -507,7 +550,7 @@ class Profile extends Component {
                           isSearchable={true}
                           openMenuOnClick={true}
                           placeholder={"Years of Experince"}
-                          value={FilteredTotalExperience}
+                          value={total_experience}
                         />
                       ) : (
                         ""
@@ -534,7 +577,7 @@ class Profile extends Component {
                           isSearchable={true}
                           openMenuOnClick={true}
                           placeholder={"Years of Experince"}
-                          value={FilteredRelevantExperience}
+                          value={relevant_experience}
                         />
                       ) : (
                         ""
@@ -549,6 +592,11 @@ class Profile extends Component {
             </div>
           </div>
         </div>
+        {localStorage.getItem("user_id") ? (
+          " "
+        ) : (
+          <Redirect to={`${url} + /login`} />
+        )}
       </div>
     );
   }

@@ -1,22 +1,19 @@
 import React, { Component } from "react";
 import Select from "react-select";
-import { url } from "../../Server/GlobalUrl";
+import { Col } from "react-bootstrap";
 import { DatePicker } from "antd";
 import moment from "moment";
-import { Col } from "react-bootstrap";
 import { Upload, Modal } from "antd";
-
 import { message, Button } from "antd";
-
-import EditIcon from "@material-ui/icons/Edit";
 import { PlusOutlined } from "@ant-design/icons";
-
-import Navbar from "../../components/Header/Navbar";
-
-import "./Profile.css";
 import { Redirect } from "react-router";
-import kodecrux from "../../assets/images/reg2.jpeg";
 import { Link } from "react-router-dom";
+
+import Default_Image from "../../assets/images/blank-profile.svg";
+import { url } from "../../Server/GlobalUrl";
+import kodecrux from "../../assets/images/reg2.jpeg";
+import Navbar from "../../components/Header/Navbar";
+import "./Profile.css";
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -68,11 +65,9 @@ class Profile extends Component {
     total_experience: null,
     relevant_experience: null,
 
-    alert: false,
-    sucess: true,
+    client: false,
 
     setemail_validate: "",
-
     mobile: "",
     setmobile_validate: "",
   };
@@ -85,9 +80,10 @@ class Profile extends Component {
         await fetch(url + "/api/customusersecond/" + id + "/")
           .then((response) => response.json())
           .then((data) => {
+            console.log("data.profile_pic", data);
             this.setState({
               Date_Of_Birth: data.date_of_birth,
-              profile_pic: data.profile_pic,
+              profile_pic: data.profile_pic ? data.profile_pic : Default_Image,
               pincode: data.pincode,
               state: data.state,
               city: data.city,
@@ -117,6 +113,13 @@ class Profile extends Component {
                     relevant_experience: data.user.relevant_experience,
                   });
                 }
+              })
+              .then((data) => {
+                const is_client = localStorage.getItem("is_client");
+                if (is_client) {
+                  this.setState({ client: true });
+                }
+                return;
               })
           );
       } else {
@@ -645,113 +648,119 @@ class Profile extends Component {
                         />
                       </div>
 
-                      <div class="form__group">
-                        <label>Technology</label>
-                        {technology ? (
-                          <Select
-                            className="react-selectcomponent"
-                            classNamePrefix="name-select"
-                            onChange={(value) =>
-                              this.handleData("technology", value)
-                            }
-                            options={tech_list}
-                            getOptionLabel={(option) => `${option.name}`}
-                            getOptionValue={(option) => `${option}`}
-                            isOptionSelected={(option) =>
-                              this.state.technology === option.name
-                                ? true
-                                : false
-                            }
-                            isSearchable={true}
-                            openMenuOnClick={true}
-                            placeholder={"Choose Technology"}
-                            value={technology}
-                          />
-                        ) : (
-                          ""
-                        )}
-                      </div>
+                      {this.state.client ? (
+                        " "
+                      ) : (
+                        <>
+                          <div class="form__group">
+                            <label>Technology</label>
+                            {technology ? (
+                              <Select
+                                className="react-selectcomponent"
+                                classNamePrefix="name-select"
+                                onChange={(value) =>
+                                  this.handleData("technology", value)
+                                }
+                                options={tech_list}
+                                getOptionLabel={(option) => `${option.name}`}
+                                getOptionValue={(option) => `${option}`}
+                                isOptionSelected={(option) =>
+                                  this.state.technology === option.name
+                                    ? true
+                                    : false
+                                }
+                                isSearchable={true}
+                                openMenuOnClick={true}
+                                placeholder={"Choose Technology"}
+                                value={technology}
+                              />
+                            ) : (
+                              ""
+                            )}
+                          </div>
 
-                      <div class="form__group">
-                        <label> Sub Technology</label>
-                        {technology ? (
-                          <Select
-                            className="react-selectcomponent"
-                            classNamePrefix="name-select"
-                            onChange={(value) =>
-                              this.handleData("sub_technology", value)
-                            }
-                            options={subtech_list}
-                            getOptionLabel={(option) => `${option.name}`}
-                            getOptionValue={(option) => `${option}`}
-                            isOptionSelected={(option) =>
-                              this.state.sub_technology === option.name
-                                ? true
-                                : false
-                            }
-                            isSearchable={true}
-                            openMenuOnClick={true}
-                            placeholder={"Choose Sub Technology"}
-                            value={this.state.sub_technology}
-                          />
-                        ) : (
-                          ""
-                        )}
-                      </div>
+                          <div class="form__group">
+                            <label> Sub Technology</label>
+                            {technology ? (
+                              <Select
+                                className="react-selectcomponent"
+                                classNamePrefix="name-select"
+                                onChange={(value) =>
+                                  this.handleData("sub_technology", value)
+                                }
+                                options={subtech_list}
+                                getOptionLabel={(option) => `${option.name}`}
+                                getOptionValue={(option) => `${option}`}
+                                isOptionSelected={(option) =>
+                                  this.state.sub_technology === option.name
+                                    ? true
+                                    : false
+                                }
+                                isSearchable={true}
+                                openMenuOnClick={true}
+                                placeholder={"Choose Sub Technology"}
+                                value={this.state.sub_technology}
+                              />
+                            ) : (
+                              ""
+                            )}
+                          </div>
 
-                      <div class="form__group">
-                        <label>Total Experience</label>
-                        {total_experience ? (
-                          <Select
-                            className="react-selectcomponent"
-                            classNamePrefix="name-select"
-                            onChange={(value) =>
-                              this.handleData("total_experience", value)
-                            }
-                            getOptionLabel={(option) => `${option.name}`}
-                            getOptionValue={(option) => `${option}`}
-                            isOptionSelected={(option) =>
-                              this.state.sub_technology === option.name
-                                ? true
-                                : false
-                            }
-                            options={experienceData}
-                            isSearchable={true}
-                            openMenuOnClick={true}
-                            placeholder={"Years of Experince"}
-                            value={total_experience}
-                          />
-                        ) : (
-                          ""
-                        )}
-                      </div>
+                          <div class="form__group">
+                            <label>Total Experience</label>
+                            {total_experience ? (
+                              <Select
+                                className="react-selectcomponent"
+                                classNamePrefix="name-select"
+                                onChange={(value) =>
+                                  this.handleData("total_experience", value)
+                                }
+                                getOptionLabel={(option) => `${option.name}`}
+                                getOptionValue={(option) => `${option}`}
+                                isOptionSelected={(option) =>
+                                  this.state.sub_technology === option.name
+                                    ? true
+                                    : false
+                                }
+                                options={experienceData}
+                                isSearchable={true}
+                                openMenuOnClick={true}
+                                placeholder={"Years of Experince"}
+                                value={total_experience}
+                              />
+                            ) : (
+                              ""
+                            )}
+                          </div>
 
-                      <div class="form__group">
-                        <label>Relevant Experience</label>
-                        {relevant_experience ? (
-                          <Select
-                            className="react-selectcomponent"
-                            classNamePrefix="name-select"
-                            onChange={(value) =>
-                              this.handleData("relevant_experience", value)
-                            }
-                            getOptionLabel={(option) => `${option.name}`}
-                            getOptionValue={(option) => `${option}`}
-                            isOptionSelected={(option) =>
-                              this.state.sub_technology === option.name
-                                ? true
-                                : false
-                            }
-                            options={experienceData}
-                            isSearchable={true}
-                            openMenuOnClick={true}
-                            placeholder={"Years of Experince"}
-                            value={relevant_experience}
-                          />
-                        ) : (
-                          ""
-                        )}
-                      </div>
+                          <div class="form__group">
+                            <label>Relevant Experience</label>
+                            {relevant_experience ? (
+                              <Select
+                                className="react-selectcomponent"
+                                classNamePrefix="name-select"
+                                onChange={(value) =>
+                                  this.handleData("relevant_experience", value)
+                                }
+                                getOptionLabel={(option) => `${option.name}`}
+                                getOptionValue={(option) => `${option}`}
+                                isOptionSelected={(option) =>
+                                  this.state.sub_technology === option.name
+                                    ? true
+                                    : false
+                                }
+                                options={experienceData}
+                                isSearchable={true}
+                                openMenuOnClick={true}
+                                placeholder={"Years of Experince"}
+                                value={relevant_experience}
+                              />
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </>
+                      )}
                     </Col>
                     <Col className="registration__details__footer">
                       <button type="submit">Save</button>

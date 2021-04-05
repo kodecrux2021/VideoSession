@@ -26,6 +26,7 @@ import Pagetwo from "./Container/RegistrationDetails";
 import New from "./Container/RegistrationDetails/new";
 import Payment from "./payment";
 import Profile from "./Container/Profile/Profile.Container";
+import PaymentSucess from "./Container/PaymentSucessFull/Payment.Sucess";
 
 function App() {
   // let [isAuthenticated, setAuth] = useState(false)
@@ -68,6 +69,7 @@ function App() {
           <Route path="/notifications" component={NotificationsContainer} />
           <Route path="/payment" exact component={Payment} />
           <Route path="/Profile" exact component={Profile} />
+          <Route path="/paymentsucess" exact component={PaymentSucess} />
 
           <Route render={() => <Redirect to="/" />} />
         </Switch>

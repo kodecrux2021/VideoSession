@@ -3,13 +3,16 @@ import Select from "react-select";
 import { Col } from "react-bootstrap";
 import { DatePicker } from "antd";
 import moment from "moment";
-import { Upload, Modal } from "antd";
+import { Upload, Modal, Image, Spin, Space } from "antd";
 import { message, Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import {
+  UploadOutlined,
+  LoadingOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 
-import Default_Image from "../../assets/images/blank-profile.svg";
 import { url } from "../../Server/GlobalUrl";
 import kodecrux from "../../assets/images/reg2.jpeg";
 import Navbar from "../../components/Header/Navbar";
@@ -70,6 +73,10 @@ class Profile extends Component {
     setemail_validate: "",
     mobile: "",
     setmobile_validate: "",
+
+    loading: false,
+    PageLoading: false,
+    Uploading: false,
   };
 
   UserData = async () => {
@@ -80,10 +87,10 @@ class Profile extends Component {
         await fetch(url + "/api/customusersecond/" + id + "/")
           .then((response) => response.json())
           .then((data) => {
-            console.log("data.profile_pic", data);
+            console.log("data", data);
             this.setState({
               Date_Of_Birth: data.date_of_birth,
-              profile_pic: data.profile_pic ? data.profile_pic : Default_Image,
+              profile_pic: data.profile_pic,
               pincode: data.pincode,
               state: data.state,
               city: data.city,
@@ -105,21 +112,16 @@ class Profile extends Component {
               .then((res) => res.json())
               .then((data) => {
                 if (data) {
+                  console.log(data);
                   this.setState({
                     First_Name: data.user.first_name,
                     Last_Name: data.user.last_name,
                     Email: data.user.email,
                     Phone: data.user.phone,
                     relevant_experience: data.user.relevant_experience,
+                    client: data.user.is_client,
                   });
                 }
-              })
-              .then((data) => {
-                const is_client = localStorage.getItem("is_client");
-                if (is_client) {
-                  this.setState({ client: true });
-                }
-                return;
               })
           );
       } else {
@@ -132,7 +134,7 @@ class Profile extends Component {
 
   componentDidMount() {
     this.UserData();
-
+    this.setState({ PageLoading: true });
     if (localStorage.getItem("token")) {
       let data_refresh = { refresh: localStorage.getItem("refresh") };
 
@@ -175,7 +177,8 @@ class Profile extends Component {
       .then((res) => this.UpdateTech())
       .then((res) => this.updateSubtech())
       .then((res) => this.UpdateTotalExp())
-      .then((res) => this.UpdateRelevantExp());
+      .then((res) => this.UpdateRelevantExp())
+      .then((res) => this.setState({ PageLoading: false }));
   }
 
   SetSubTech = () =>
@@ -228,15 +231,12 @@ class Profile extends Component {
       this.state.position === "" ||
       this.state.setemail_validate !== "" ||
       this.state.setmobile_validate !== "" ||
-      this.state.technology === "" ||
       this.state.First_Name === "" ||
       this.state.Last_Name === "" ||
       this.state.Date_Of_Birth === "" ||
       this.state.pincode === "" ||
       this.state.state === "" ||
-      this.state.city === "" ||
-      this.state.total_experience === "" ||
-      this.state.relevant_experience === ""
+      this.state.city === ""
     ) {
       if (this.state.email === "") {
         message.warning("Please Fill Email");
@@ -250,14 +250,6 @@ class Profile extends Component {
         message.warning("Please Fill City");
       } else if (this.state.state === "") {
         message.warning("Please Fill State");
-      } else if (this.state.technology === "") {
-        message.warning("Please Fill technology");
-      } else if (this.state.sub_technology === "") {
-        message.warning("Please Fill sub technology");
-      } else if (this.state.total_experience === "") {
-        message.warning("Please Fill total_experience");
-      } else if (this.state.relevant_experience === "") {
-        message.warning("Please Fill relevant_experience");
       } else if (this.state.Date_Of_Birth === "") {
         message.warning("Please Fill Date_Of_Birth");
       } else if (this.state.First_Name === "") {
@@ -265,54 +257,77 @@ class Profile extends Component {
       } else if (this.state.Last_Name === "") {
         message.warning("Please Fill Last Name");
       }
+    } else if (
+      this.state.technology === "" ||
+      this.state.total_experience === "" ||
+      this.state.sub_technology === "" ||
+      this.state.relevant_experience === ""
+    ) {
+      if (this.state.technology === "") {
+        message.warning("Please Fill technology");
+      } else if (this.state.sub_technology === "") {
+        message.warning("Please Fill sub technology");
+      } else if (this.state.total_experience === "") {
+        message.warning("Please Fill total_experience");
+      } else if (this.state.relevant_experience === "") {
+        message.warning("Please Fill relevant_experience");
+      }
     } else {
+      this.setState({ loading: true });
+
       let tech = [];
       let sub_tech = [];
 
-      tech.push(parseInt(this.state.technology.id));
-      sub_tech.push(parseInt(this.state.sub_technology.id));
-      console.log(
-        "tech",
-        "sub_tech",
-        this.state.total_experience?.value,
-        this.state.relevant_experience.value
-      );
+      if (!this.state.client) {
+        tech.push(parseInt(this.state.technology.id));
+        sub_tech.push(parseInt(this.state.sub_technology.id));
+      }
+      // console.log(
+      //   "tech",
+      //   "sub_tech",
+      //   this.state.total_experience?.value,
+      //   this.state.relevant_experience.value
+      // );
       let formData = new FormData();
+
+      if (!this.state.client) {
+        formData.append("technology", [tech]);
+        formData.append("sub_technology", [sub_tech]);
+        formData.append("total_experience", this.state.total_experience.value);
+        formData.append(
+          "relevant_experience",
+          this.state.relevant_experience.value
+        );
+      }
 
       formData.append("pincode", this.state.pincode);
       formData.append("city", this.state.city);
       formData.append("state", this.state.state);
-      formData.append("technology", [tech]);
-      formData.append("sub_technology", [sub_tech]);
-      formData.append("total_experience", this.state.total_experience.value);
-      formData.append(
-        "relevant_experience",
-        this.state.relevant_experience.value
-      );
+
       formData.append("date_of_birth", this.state.Date_Of_Birth);
       formData.append("First_Name", this.state.First_Name);
       formData.append("Last_Name", this.state.Last_Name);
       formData.append("Email", this.state.Email);
       formData.append("Phone", this.state.Phone);
       formData.append("Email", this.state.Email);
-      this.state.fileList.length > 0 &&
-        formData.append("profile_pic", this.state.fileList[0].originFileObj);
+      // this.state.fileList.length > 0 &&
+      //   formData.append("profile_pic", this.state.fileList[0].originFileObj);
 
-      let data = {
-        technology: tech,
-        sub_technology: sub_tech,
+      // let data = {
+      //   technology: tech,
+      //   sub_technology: sub_tech,
 
-        First_Name: this.state.First_Name,
-        Last_Name: this.state.Last_Name,
-        Date_Of_Birth: this.state.Date_Of_Birth,
-        Email: this.state.Email,
-        Phone: this.state.Phone,
-        pincode: this.state.pincode,
-        state: this.state.state,
-        city: this.state.city,
-        total_experience: this.state.total_experience.value,
-        relevant_experience: this.state.relevant_experience.value,
-      };
+      //   First_Name: this.state.First_Name,
+      //   Last_Name: this.state.Last_Name,
+      //   Date_Of_Birth: this.state.Date_Of_Birth,
+      //   Email: this.state.Email,
+      //   Phone: this.state.Phone,
+      //   pincode: this.state.pincode,
+      //   state: this.state.state,
+      //   city: this.state.city,
+      //   total_experience: this.state.total_experience.value,
+      //   relevant_experience: this.state.relevant_experience.value,
+      // };
 
       let id = localStorage.getItem("educator_id");
       let user_id = localStorage.getItem("user_id");
@@ -368,7 +383,7 @@ class Profile extends Component {
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async (file) => {
-    console.log("file", file);
+    // console.log("file", file);
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -382,7 +397,62 @@ class Profile extends Component {
   };
 
   HandleImageChange = async ({ fileList }) => {
-    this.setState({ fileList }, () => console.log(fileList.response));
+    this.setState({ fileList });
+    this.setState({ Uploading: true });
+
+    let id = localStorage.getItem("educator_id");
+    let user_id = localStorage.getItem("user_id");
+
+    let formData = new FormData();
+    this.state.fileList.length > 0 &&
+      formData.append("profile_pic", this.state.fileList[0].originFileObj);
+
+    fetch(url + "/api/customusersecond/" + user_id + "/", {
+      method: "PUT",
+      headers: {
+        Accept: "application/json, text/plain",
+        // "Content-Type": `multipart/form-data`,
+      },
+      body: formData,
+    })
+      .then((response) => {
+        //console.log("response", response);
+        if (response["status"] === 201 || response["status"] === 200) {
+          message.success("Saved");
+          window.location.reload();
+          return response.json();
+        } else if (response["status"] === 400 || response["status"] === 500) {
+          message.error("Something went wrong");
+          //console.log("Something is wrong");
+        }
+      })
+      .then(async (result) => {
+        //console.log(result);
+
+        let auth = localStorage.getItem("token");
+        if (localStorage.getItem("is_client")) {
+          await fetch(url + "/api/educatorcreate/" + id + "/", {
+            method: "PUT",
+            headers: {
+              Accept: "application/json, text/plain",
+              //"Content-Type": "application/json;charset=UTF-8",
+              Authorization: "Bearer" + auth,
+            },
+            body: formData,
+          }).then((response) => {
+            // console.log("response", response);
+            if (response["status"] === 201 || response["status"] === 200) {
+              message.success("Saved");
+              window.location.reload();
+              return response.json();
+            } else if (response["status"] === 400) {
+              message.error("Something went wrong!");
+              // console.log("Something is wrong");
+            }
+          });
+        }
+      });
+    // .then((data) => this.setState({ Uploading: false }));
   };
 
   handleData = (identity, data) => {
@@ -435,8 +505,6 @@ class Profile extends Component {
   }
 
   render() {
-    const is_client = localStorage.getItem("is_client");
-
     const {
       First_Name,
       Last_Name,
@@ -457,13 +525,15 @@ class Profile extends Component {
       fileList,
       previewVisible,
       previewTitle,
+      loading,
+      client,
     } = this.state;
 
     const props = {
       action: "//jsonplaceholder.typicode.com/posts/",
       listType: "picture",
       previewFile(file) {
-        console.log("Your upload file:", file);
+        // console.log("Your upload file:", file);
         // Your process logic. Here we just mock to the same file
         return fetch("https://next.json-generator.com/api/json/get/4ytyBoLK8", {
           method: "POST",
@@ -476,17 +546,26 @@ class Profile extends Component {
 
     const uploadButton = (
       <div>
-        <PlusOutlined />
-        <div style={{ marginTop: 8 }}>Upload</div>
+        <Button icon={<EditOutlined />}> Change Profile Photo </Button>
+
+        {/* <UploadOutlined /> */}
+        {/* <div style={{ marginTop: 8 }}>Upload</div> */}
       </div>
     );
+
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     return (
       <div>
         <Navbar />
         <Link to="/">
           <img className="Profile__logo" src={kodecrux} />
         </Link>
-        {localStorage.getItem("user_id") ? (
+
+        {this.state.PageLoading ? (
+          <div className="Spinner_Loading">
+            <Spin size="large" />
+          </div>
+        ) : localStorage.getItem("user_id") ? (
           <div className="Profile">
             <div className="Profile__container">
               <div className="Profile__title">
@@ -496,50 +575,64 @@ class Profile extends Component {
               <div className="Profile__section">
                 <div className="profile__image">
                   {" "}
-                  <img src={`${profile_pic}`} />
+                  {profile_pic ? (
+                    <Image width={200} height={200} src={`${profile_pic}`} />
+                  ) : (
+                    <Image
+                      width={200}
+                      height={200}
+                      src="error"
+                      fallback="data:image/png;base64,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"
+                    />
+                  )}
+                  {this.state.Uploading ? (
+                    <div style={{ color: "grey" }}>
+                      Uploading <LoadingOutlined />{" "}
+                    </div>
+                  ) : (
+                    <Upload
+                      beforeUpload={(file) => {
+                        const isJPG =
+                          file.type === "image/jpeg" ||
+                          file.type === "image/png";
+                        if (!isJPG) {
+                          message.error("You can only upload JPG or PNG file!");
+                          return false;
+                        } else {
+                          return true;
+                        }
+                      }}
+                      customRequest={dummyRequest}
+                      //  action="https://next.json-generator.com/api/json/get/4ytyBoLK8"
+                      // listType="picture-card"
+                      fileList={fileList}
+                      onPreview={this.handlePreview}
+                      onChange={(e) => this.HandleImageChange(e)}
+                    >
+                      {fileList.length >= 1 ? null : uploadButton}
+                    </Upload>
+                  )}
+                  {/* <img src={`${profile_pic}`} /> */}
                 </div>
                 <div className="profile__input_Fields">
                   <form onSubmit={this.onSubmit}>
                     <Col>
                       <div style={{ textAlign: "center", margin: "10px" }}>
-                        <Upload
-                          beforeUpload={(file) => {
-                            const isJPG =
-                              file.type === "image/jpeg" ||
-                              file.type === "image/png";
-                            if (!isJPG) {
-                              message.error(
-                                "You can only upload JPG or PNG file!"
-                              );
-                              return false;
-                            } else {
-                              return true;
-                            }
-                          }}
-                          customRequest={dummyRequest}
-                          //  action="https://next.json-generator.com/api/json/get/4ytyBoLK8"
-                          listType="picture-card"
-                          fileList={fileList}
-                          onPreview={this.handlePreview}
-                          onChange={(e) => this.HandleImageChange(e)}
-                        >
-                          {fileList.length >= 1 ? null : uploadButton}
-                        </Upload>
                         {/* <Upload {...props}>
-                  <Button icon={<UploadOutlined />}>Upload</Button>
-                </Upload> */}
-                        <Modal
-                          visible={previewVisible}
-                          title={previewTitle}
-                          footer={null}
-                          onCancel={this.handleCancel}
-                        >
-                          <img
-                            alt="example"
-                            style={{ width: "100%" }}
-                            src={previewImage}
-                          />
-                        </Modal>
+                    <Button icon={<UploadOutlined />}>Upload</Button>
+                  </Upload> */}
+                        {/* <Modal
+                            visible={previewVisible}
+                            title={previewTitle}
+                            footer={null}
+                            onCancel={this.handleCancel}
+                          >
+                            <img
+                              alt="example"
+                              style={{ width: "100%" }}
+                              src={previewImage}
+                            />
+                          </Modal> */}
                       </div>
 
                       <div className="form__group">
@@ -648,122 +741,112 @@ class Profile extends Component {
                         />
                       </div>
 
-                      {this.state.client ? (
+                      {client ? (
                         " "
                       ) : (
                         <>
                           <div class="form__group">
                             <label>Technology</label>
-                            {technology ? (
-                              <Select
-                                className="react-selectcomponent"
-                                classNamePrefix="name-select"
-                                onChange={(value) =>
-                                  this.handleData("technology", value)
-                                }
-                                options={tech_list}
-                                getOptionLabel={(option) => `${option.name}`}
-                                getOptionValue={(option) => `${option}`}
-                                isOptionSelected={(option) =>
-                                  this.state.technology === option.name
-                                    ? true
-                                    : false
-                                }
-                                isSearchable={true}
-                                openMenuOnClick={true}
-                                placeholder={"Choose Technology"}
-                                value={technology}
-                              />
-                            ) : (
-                              ""
-                            )}
+
+                            <Select
+                              className="react-selectcomponent"
+                              classNamePrefix="name-select"
+                              onChange={(value) =>
+                                this.handleData("technology", value)
+                              }
+                              options={tech_list}
+                              getOptionLabel={(option) => `${option.name}`}
+                              getOptionValue={(option) => `${option}`}
+                              isOptionSelected={(option) =>
+                                this.state.technology === option.name
+                                  ? true
+                                  : false
+                              }
+                              isSearchable={true}
+                              openMenuOnClick={true}
+                              placeholder={"Choose Technology"}
+                              value={technology}
+                            />
                           </div>
 
                           <div class="form__group">
                             <label> Sub Technology</label>
-                            {technology ? (
-                              <Select
-                                className="react-selectcomponent"
-                                classNamePrefix="name-select"
-                                onChange={(value) =>
-                                  this.handleData("sub_technology", value)
-                                }
-                                options={subtech_list}
-                                getOptionLabel={(option) => `${option.name}`}
-                                getOptionValue={(option) => `${option}`}
-                                isOptionSelected={(option) =>
-                                  this.state.sub_technology === option.name
-                                    ? true
-                                    : false
-                                }
-                                isSearchable={true}
-                                openMenuOnClick={true}
-                                placeholder={"Choose Sub Technology"}
-                                value={this.state.sub_technology}
-                              />
-                            ) : (
-                              ""
-                            )}
+
+                            <Select
+                              className="react-selectcomponent"
+                              classNamePrefix="name-select"
+                              onChange={(value) =>
+                                this.handleData("sub_technology", value)
+                              }
+                              options={subtech_list}
+                              getOptionLabel={(option) => `${option.name}`}
+                              getOptionValue={(option) => `${option}`}
+                              isOptionSelected={(option) =>
+                                this.state.sub_technology === option.name
+                                  ? true
+                                  : false
+                              }
+                              isSearchable={true}
+                              openMenuOnClick={true}
+                              placeholder={"Choose Sub Technology"}
+                              value={this.state.sub_technology}
+                            />
                           </div>
 
                           <div class="form__group">
                             <label>Total Experience</label>
-                            {total_experience ? (
-                              <Select
-                                className="react-selectcomponent"
-                                classNamePrefix="name-select"
-                                onChange={(value) =>
-                                  this.handleData("total_experience", value)
-                                }
-                                getOptionLabel={(option) => `${option.name}`}
-                                getOptionValue={(option) => `${option}`}
-                                isOptionSelected={(option) =>
-                                  this.state.sub_technology === option.name
-                                    ? true
-                                    : false
-                                }
-                                options={experienceData}
-                                isSearchable={true}
-                                openMenuOnClick={true}
-                                placeholder={"Years of Experince"}
-                                value={total_experience}
-                              />
-                            ) : (
-                              ""
-                            )}
+
+                            <Select
+                              className="react-selectcomponent"
+                              classNamePrefix="name-select"
+                              onChange={(value) =>
+                                this.handleData("total_experience", value)
+                              }
+                              getOptionLabel={(option) => `${option.name}`}
+                              getOptionValue={(option) => `${option}`}
+                              isOptionSelected={(option) =>
+                                this.state.sub_technology === option.name
+                                  ? true
+                                  : false
+                              }
+                              options={experienceData}
+                              isSearchable={true}
+                              openMenuOnClick={true}
+                              placeholder={"Years of Experince"}
+                              value={total_experience}
+                            />
                           </div>
 
                           <div class="form__group">
                             <label>Relevant Experience</label>
-                            {relevant_experience ? (
-                              <Select
-                                className="react-selectcomponent"
-                                classNamePrefix="name-select"
-                                onChange={(value) =>
-                                  this.handleData("relevant_experience", value)
-                                }
-                                getOptionLabel={(option) => `${option.name}`}
-                                getOptionValue={(option) => `${option}`}
-                                isOptionSelected={(option) =>
-                                  this.state.sub_technology === option.name
-                                    ? true
-                                    : false
-                                }
-                                options={experienceData}
-                                isSearchable={true}
-                                openMenuOnClick={true}
-                                placeholder={"Years of Experince"}
-                                value={relevant_experience}
-                              />
-                            ) : (
-                              " "
-                            )}
+
+                            <Select
+                              className="react-selectcomponent"
+                              classNamePrefix="name-select"
+                              onChange={(value) =>
+                                this.handleData("relevant_experience", value)
+                              }
+                              getOptionLabel={(option) => `${option.name}`}
+                              getOptionValue={(option) => `${option}`}
+                              isOptionSelected={(option) =>
+                                this.state.sub_technology === option.name
+                                  ? true
+                                  : false
+                              }
+                              options={experienceData}
+                              isSearchable={true}
+                              openMenuOnClick={true}
+                              placeholder={"Years of Experince"}
+                              value={relevant_experience}
+                            />
                           </div>
                         </>
                       )}
                     </Col>
                     <Col className="registration__details__footer">
-                      <button type="submit">Save</button>
+                      <button type="submit">
+                        {loading ? <Spin indicator={antIcon} /> : "Save"}
+                      </button>
                     </Col>
                   </form>
                 </div>

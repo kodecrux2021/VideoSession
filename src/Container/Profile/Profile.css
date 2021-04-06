@@ -1,21 +1,33 @@
-.Profile {
+.Spinner_Loading {
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.Profile {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   position: relative;
 }
 
 .Profile__logo {
+  position: absolute;
   margin-top: 20px;
   margin-bottom: 20px;
   width: 80px;
   margin-right: auto;
   margin-left: auto;
+  transition: 0.3s ease;
+  cursor: pointer;
+  z-index: 1;
 }
 
 .Profile__container {
-  width: 50rem;
-  margin-top: 10vh;
+  width: 40rem;
+  margin-top: 5rem;
   background: white;
   border: 1px solid #dedfe0;
   padding: 20px;
@@ -86,5 +98,10 @@
   }
   .profile__image {
     margin: 10px;
+  }
+  .Profile__logo {
+    width: 50px;
+
+    z-index: 1;
   }
 }

@@ -82,6 +82,7 @@ class Profile extends Component {
   UserData = async () => {
     let id = localStorage.getItem("user_id");
     let auth = localStorage.getItem("token");
+
     try {
       if (id) {
         await fetch(url + "/api/customusersecond/" + id + "/")
@@ -282,12 +283,7 @@ class Profile extends Component {
         tech.push(parseInt(this.state.technology.id));
         sub_tech.push(parseInt(this.state.sub_technology.id));
       }
-      // console.log(
-      //   "tech",
-      //   "sub_tech",
-      //   this.state.total_experience?.value,
-      //   this.state.relevant_experience.value
-      // );
+
       let formData = new FormData();
 
       if (!this.state.client) {

@@ -5,6 +5,7 @@ import { Table, message } from "antd";
 import { Checkbox } from "antd";
 import { Redirect, useHistory } from "react-router-dom";
 import PaymentSucess from "./Container/PaymentSucessFull/Payment.Sucess";
+import Navbar from "./components/Header/Navbar";
 
 function onChange(e) {
   console.log(`checked = ${e.target.checked}`);
@@ -180,72 +181,115 @@ function Payment() {
 
   useEffect(() => {
     let id = localStorage.getItem("user_id");
-    if (id) {
-      fetch(url + "/api/notification/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + auth,
-        },
-      })
-        .then((response) => {
-          if (response["status"] === 201 || response["status"] === 200) {
-            return response.json();
-          } else if (response["status"] === 401) {
-            message.info("Please login again, auth token expired");
-            <Redirect to="/login" />;
-          }
-        })
-        .then((result) => {
-          sethireID(result[0].id);
-          setcustomerName(result[0].user);
 
-          console.log("notification result", result[0]);
+    if (localStorage.getItem("token")) {
+      if (id) {
+        fetch("http://e346635b8c21.ngrok.io" + "/api/notification/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + auth,
+          },
         })
-        .then((data) => {
-          fetch(url + "/currentuser/", {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + auth,
-            },
+          .then((response) => {
+            if (response["status"] === 201 || response["status"] === 200) {
+              return response.json();
+            } else if (response["status"] === 401) {
+              message.info("Please login again, auth token expired");
+              <Redirect to="/login" />;
+            }
           })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data) {
-                setcustomerPhone(data.user.phone);
-                setcustomerEmail(data.user.email);
-              }
-            });
-        })
+          .then((result) => {
+            console.log("lool", result);
+            sethireID(result[0].contract);
+            setcustomerName(result[0].user);
 
-        .catch((e) => message.info("Something went wrong"));
+            console.log("notification result", result[0]);
+          })
+          .then((data) => {
+            fetch(url + "/currentuser/", {
+              method: "GET",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + auth,
+              },
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data) {
+                  setcustomerPhone(data.user.phone);
+                  setcustomerEmail(data.user.email);
+                }
+              });
+          })
+
+          .catch((e) => message.info("Something went wrong"));
+      }
+    } else {
+      return <Redirect to="/login" />;
     }
   }, []);
 
   const onPayNow = async (e) => {
     e.preventDefault();
-    const data = {
+    console.log(auth);
+    console.log(hireID, customerEmail, customerName, customerPhone);
+    const userData = {
       hire_id: hireID,
       customerEmail: customerEmail,
       customerName: customerName,
       customerPhone: customerPhone,
     };
-    fetch(url + "/order/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain",
-        "Content-Type": "application/json, charset=UTF-8",
-        Authorization: "Bearer " + auth,
-      },
-      body: JSON.stringify(data),
-    }).then((res) => console.log(res));
+
+    if (localStorage.getItem("token")) {
+      let data_refresh = { refresh: localStorage.getItem("refresh") };
+
+      fetch(url + "/api/token/refresh/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data_refresh),
+      })
+        .then((response) => {
+          if (response["status"] === 201 || response["status"] === 200) {
+            return response.json();
+          } else if (response["status"] === 401) {
+            message.info("Something went wrong");
+            localStorage.removeItem("refresh");
+            localStorage.removeItem("access");
+          }
+        })
+        .then((result) => {
+          if (result) {
+            //console.log("result.access", result.access);
+            localStorage.setItem("token", result.access);
+          }
+        })
+        .then((data) => {
+          let auth1 = localStorage.getItem("token");
+          console.log("auth1", auth1);
+          fetch("http://e346635b8c21.ngrok.io/order/?hire_id=" + hireID, {
+            method: "POST",
+            headers: {
+              Accept: "application/json, text/plain",
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + auth1,
+            },
+            body: JSON.stringify(userData),
+          })
+            .then((res) => res.json())
+            .then((data) => console.log(data));
+        });
+    }
   };
 
   return (
     localStorage.getItem("pay_id") !== null && (
       <div className="container" style={{ marginTop: "10vh" }}>
+        <Navbar />
         {Sucess ? (
           <PaymentSucess orderid={OrderID} />
         ) : (
@@ -255,15 +299,15 @@ function Payment() {
                 <h1>Payment Dashboard</h1>
               </div>
 
-              <h3>Payment card addition</h3>
+              <h3>Select Card</h3>
 
               <Table dataSource={dataSource} columns={columns} />
-              <button
+              {/* <button
                 className="btn btn-primary btn-block"
                 style={{ width: "90px", height: "30px", fontSize: "15px" }}
               >
                 Add Card
-              </button>
+              </button> */}
             </form>
             <button
               onClick={onPayNow}

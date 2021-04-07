@@ -3,13 +3,9 @@ import Select from "react-select";
 import { Col } from "react-bootstrap";
 import { DatePicker } from "antd";
 import moment from "moment";
-import { Upload, Modal, Image, Spin, Space } from "antd";
+import { Upload, Image, Spin } from "antd";
 import { message, Button } from "antd";
-import {
-  UploadOutlined,
-  LoadingOutlined,
-  EditOutlined,
-} from "@ant-design/icons";
+import { LoadingOutlined, EditOutlined } from "@ant-design/icons";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 
@@ -124,6 +120,7 @@ class Profile extends Component {
                   });
                 }
               })
+              .then((res) => this.setState({ PageLoading: false }))
           );
       } else {
         return;
@@ -178,8 +175,7 @@ class Profile extends Component {
       .then((res) => this.UpdateTech())
       .then((res) => this.updateSubtech())
       .then((res) => this.UpdateTotalExp())
-      .then((res) => this.UpdateRelevantExp())
-      .then((res) => this.setState({ PageLoading: false }));
+      .then((res) => this.UpdateRelevantExp());
   }
 
   SetSubTech = () =>
@@ -844,6 +840,19 @@ class Profile extends Component {
                         {loading ? <Spin indicator={antIcon} /> : "Save"}
                       </button>
                     </Col>
+                    <div className="registration__view__footer">
+                      <Link
+                        to={{
+                          pathname: "/payout-details",
+                          state: {
+                            prevPath: this.props.history.location.pathname,
+                          },
+                        }}
+                      >
+                        {" "}
+                        MAnage Bank Accounts
+                      </Link>
+                    </div>
                   </form>
                 </div>
               </div>

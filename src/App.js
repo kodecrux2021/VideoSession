@@ -27,6 +27,7 @@ import New from "./Container/RegistrationDetails/new";
 import Payment from "./payment";
 import Profile from "./Container/Profile/Profile.Container";
 import PaymentSucess from "./Container/PaymentSucessFull/Payment.Sucess";
+import Payoutdetails from "./Container/RegistrationDetails/payout-details";
 
 function App() {
   // let [isAuthenticated, setAuth] = useState(false)
@@ -51,6 +52,7 @@ function App() {
           <Route path="/login" exact component={Login} />
           <Route path="/details" exact component={New} />
           <Route path="/verification" exact component={VerificationContainer} />
+          <Route path="/payout-details" exact component={Payoutdetails} />
           {/* <Route path="/details" exact component={RegistrationDetailsContainer} /> */}
           {/* <Route path="/details" exact component={Pagetwo} /> */}
           <Route path="/" exact component={Home} default />

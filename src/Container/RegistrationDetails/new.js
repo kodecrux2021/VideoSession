@@ -8,16 +8,16 @@ import Select from "react-select";
 import { message } from "antd";
 import Navbar from "../../components/Header/Navbar";
 import { url } from "../../Server/GlobalUrl";
-import { DatePicker} from "antd";
-import { UploadOutlined } from '@ant-design/icons';
-
+import { DatePicker } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { Redirect } from "react-router";
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
+    reader.onerror = (error) => reject(error);
   });
 }
 const experienceData = [
@@ -41,9 +41,8 @@ class New extends React.Component {
     previewImage: "",
     previewTitle: "",
     fileList: [],
-    imgUrl: '',
+    imgUrl: "",
     file: null,
-   
 
     desig: "",
     fees: 0,
@@ -65,7 +64,7 @@ class New extends React.Component {
   onChange = (date, dateString) => {
     // console.log(date,dateString);
     // this.setState({ date_of_birth: dateString });
-    this.handelData('date_of_birth', dateString)
+    this.handelData("date_of_birth", dateString);
   };
 
   componentDidMount() {
@@ -114,7 +113,7 @@ class New extends React.Component {
   }
 
   handelData = (identity, data) => {
-   // console.log("identity", identity);
+    // console.log("identity", identity);
     //console.log("data", data);
     if (identity === "pincode") {
       this.setState({ pincode: data });
@@ -136,8 +135,7 @@ class New extends React.Component {
       this.setState({ fees: data });
     } else if (identity === "rating") {
       this.setState({ rating: data });
-    }
-    else if (identity === "date_of_birth") {
+    } else if (identity === "date_of_birth") {
       this.setState({ date_of_birth: data });
     }
   };
@@ -148,7 +146,7 @@ class New extends React.Component {
     if (
       this.state.pincode === null ||
       this.state.city === "" ||
-      this.state.state === ""||
+      this.state.state === "" ||
       this.state.date_of_birth === ""
     ) {
       if (this.state.pincode === "") {
@@ -157,10 +155,8 @@ class New extends React.Component {
         message.info("Please Fill City");
       } else if (this.state.state === "") {
         message.info("Please Fill State");
-      }
-      else if(this.state.date_of_birth === ""){
+      } else if (this.state.date_of_birth === "") {
         message.info("Please Fill Date of birth");
-
       }
     } else {
       let tech = [];
@@ -168,20 +164,24 @@ class New extends React.Component {
 
       tech.push(parseInt(this.state.technology?.id));
       sub_tech.push(parseInt(this.state.sub_technology?.id));
-       let formData = new FormData();
+      let formData = new FormData();
 
-      formData.append('pincode', this.state.pincode);
-      formData.append('city', this.state.city);
-      formData.append('state', this.state.state);
-      formData.append('technology', [this.state.technology?.id]);
-      formData.append('sub_technology',[this.state.sub_technology?.id] );
-      formData.append('total_experience', this.state.total_experience?.value);
-      formData.append('relevant_experience', this.state.relevant_experience?.value);
-      formData.append('date_of_birth',  this.state.date_of_birth);
-      formData.append('fees', this.state.fees);
-      formData.append('designation', this.state.desig);
-      formData.append('rating', this.state.rating);
-      this.state.fileList.length > 0 && formData.append('profile_pic', this.state.fileList[0].originFileObj);
+      formData.append("pincode", this.state.pincode);
+      formData.append("city", this.state.city);
+      formData.append("state", this.state.state);
+      formData.append("technology", [this.state.technology?.id]);
+      formData.append("sub_technology", [this.state.sub_technology?.id]);
+      formData.append("total_experience", this.state.total_experience?.value);
+      formData.append(
+        "relevant_experience",
+        this.state.relevant_experience?.value
+      );
+      formData.append("date_of_birth", this.state.date_of_birth);
+      formData.append("fees", this.state.fees);
+      formData.append("designation", this.state.desig);
+      formData.append("rating", this.state.rating);
+      this.state.fileList.length > 0 &&
+        formData.append("profile_pic", this.state.fileList[0].originFileObj);
       // formData.append('profile_pic', this.state.file)
       let data = {
         pincode: this.state.pincode,
@@ -195,10 +195,8 @@ class New extends React.Component {
         fees: this.state.fees,
         designation: this.state.desig,
         rating: this.state.rating,
-        profile_pic: this.state.file
+        profile_pic: this.state.file,
       };
-      
-
 
       // console.log("data_______________", formData);
       // console.log(tech, sub_tech);
@@ -206,12 +204,11 @@ class New extends React.Component {
       let id = localStorage.getItem("educator_id");
       let user_id = localStorage.getItem("user_id");
 
-
       fetch(url + "/api/customusersecond/" + user_id + "/", {
         method: "PUT",
         headers: {
-          "Accept": "application/json, text/plain",
-         // "Content-Type": `multipart/form-data`,
+          Accept: "application/json, text/plain",
+          // "Content-Type": `multipart/form-data`,
         },
         body: formData,
       })
@@ -219,43 +216,49 @@ class New extends React.Component {
           //console.log("response", response);
           if (response["status"] === 201 || response["status"] === 200) {
             return response.json();
-          } else if (response["status"] === 400 ||  response["status"] === 500) {
-            message.info('Something went wrong')
+          } else if (response["status"] === 400 || response["status"] === 500) {
+            message.info("Something went wrong");
             //console.log("Something is wrong");
           }
         })
-        .then(async(result) => {
+        .then(async (result) => {
           //console.log(result);
 
           let auth = localStorage.getItem("token");
           if (localStorage.getItem("is_client")) {
-           await fetch(url + "/api/educatorcreate/" + id + "/", {
+            await fetch(url + "/api/educatorcreate/" + id + "/", {
               method: "PUT",
               headers: {
-                "Accept": "application/json, text/plain",
+                Accept: "application/json, text/plain",
                 //"Content-Type": "application/json;charset=UTF-8",
-                "Authorization": "Bearer" + auth,
+                Authorization: "Bearer" + auth,
               },
               body: formData,
             })
               .then((response) => {
-               // console.log("response", response);
+                // console.log("response", response);
                 if (response["status"] === 201 || response["status"] === 200) {
                   return response.json();
                 } else if (response["status"] === 400) {
-                  message.info('Something went wrong!');
-                 // console.log("Something is wrong");
+                  message.info("Something went wrong!");
+                  // console.log("Something is wrong");
                 }
               })
               .then((result) => {
                 //console.log(result);
-                this.props.history.push("/verification");
+                if (localStorage.getItem("educator_id")) {
+                  this.props.history.push({
+                    pathname: "/payout-details",
+                    state: { prevPath: this.props.history.location.pathname },
+                  });
+                } else {
+                  this.props.history.push("/verification");
+                }
                 // fetch( url + '/api/educator/' , {
                 //     method: 'POST',
                 //     headers: {
                 //         'Accept': 'application/json, text/plain',
                 //         'Content-Type': 'application/json;charset=UTF-8',
-
                 //     },
                 //     body: JSON.stringify(data)
                 // })
@@ -271,17 +274,14 @@ class New extends React.Component {
                 //     console.log('result', result);
                 // })
                 //console.log("result", result);
-               
               });
-          }else{
-            this.props.history.push("/verification");
+          } else {
+            this.props.history.push("/payout-details");
           }
         })
-        .catch(e =>console.log(e));
+        .catch((e) => console.log(e));
 
-        
-
-  //     this.props.history.push("/verification");
+      //     this.props.history.push("/verification");
     }
   };
 
@@ -291,11 +291,10 @@ class New extends React.Component {
     //console.log("file", file);
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
-     // console.log(file.preview);
+      // console.log(file.preview);
     }
 
     this.setState({
-
       previewImage: file.url || file.preview,
       previewVisible: true,
       previewTitle:
@@ -303,34 +302,32 @@ class New extends React.Component {
     });
   };
 
-  handleChange = async({ fileList }) => {
+  handleChange = async ({ fileList }) => {
     //fileList[0].originFileObj.url = URL.createObjectURL(fileList[0].originFileObj);
-//fileList[0].originFileObj.preview = await getBase64(fileList[0].originFileObj)
-this.setState({ fileList });
-// console.log(this.state.fileList) 
-};
+    //fileList[0].originFileObj.preview = await getBase64(fileList[0].originFileObj)
+    this.setState({ fileList });
+    // console.log(this.state.fileList)
+  };
 
-change = async(e)=>{
-  e.persist();
-  // console.log(e.target.files);
-  await this.setState({file: e.target.files[0]})
-  // console.log(this.state.file);
-}
-
-
+  change = async (e) => {
+    e.persist();
+    // console.log(e.target.files);
+    await this.setState({ file: e.target.files[0] });
+    // console.log(this.state.file);
+  };
 
   render() {
-   const props = {
-      action: '//jsonplaceholder.typicode.com/posts/',
-      listType: 'picture',
+    const props = {
+      action: "//jsonplaceholder.typicode.com/posts/",
+      listType: "picture",
       previewFile(file) {
-        console.log('Your upload file:', file);
+        console.log("Your upload file:", file);
         // Your process logic. Here we just mock to the same file
-        return fetch('https://next.json-generator.com/api/json/get/4ytyBoLK8', {
-          method: 'POST',
+        return fetch("https://next.json-generator.com/api/json/get/4ytyBoLK8", {
+          method: "POST",
           body: file,
         })
-          .then(res => res.json())
+          .then((res) => res.json())
           .then(({ thumbnail }) => thumbnail);
       },
     };
@@ -388,26 +385,27 @@ change = async(e)=>{
             <div className="registration__details__img">
               {/* <img src={icon} alt="KodeCrux"></img> */}
               <>
-              <span style={{ color: "grey", fontWeight: "500" }}>
-                Profile Picture{" "}
-              </span>
-              {/* <input type= 'file' onChange = {(e)=>this.change(e)} /> */}
+                <span style={{ color: "grey", fontWeight: "500" }}>
+                  Profile Picture{" "}
+                </span>
+                {/* <input type= 'file' onChange = {(e)=>this.change(e)} /> */}
                 <Upload
-                beforeUpload = {(file) => {
-                  const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
-                      if (!isJPG) {
-                          message.error('You can only upload JPG or PNG file!');
-                          return false;
-                      } else {
-                          return true;
-                      }
+                  beforeUpload={(file) => {
+                    const isJPG =
+                      file.type === "image/jpeg" || file.type === "image/png";
+                    if (!isJPG) {
+                      message.error("You can only upload JPG or PNG file!");
+                      return false;
+                    } else {
+                      return true;
+                    }
                   }}
                   customRequest={dummyRequest}
                   //  action="https://next.json-generator.com/api/json/get/4ytyBoLK8"
                   listType="picture-card"
                   fileList={fileList}
                   onPreview={this.handlePreview}
-                  onChange={(e)=>this.handleChange(e)}
+                  onChange={(e) => this.handleChange(e)}
                 >
                   {fileList.length >= 1 ? null : uploadButton}
                 </Upload>
@@ -427,7 +425,6 @@ change = async(e)=>{
                   />
                 </Modal>
               </>
-             
             </div>
             <Col style={{ marginTop: "10px" }}>
               <div class="form__group">
@@ -582,7 +579,7 @@ change = async(e)=>{
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <label>Date of Birth</label>
                   <div style={{ margin: "0 60px" }}>
-                    <DatePicker onChange={this.onChange} format="YYYY-MM-DD"/>
+                    <DatePicker onChange={this.onChange} format="YYYY-MM-DD" />
                   </div>
                 </div>
               </div>

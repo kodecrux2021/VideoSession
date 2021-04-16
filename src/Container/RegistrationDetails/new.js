@@ -1,7 +1,7 @@
 import React from "react";
 import { Col } from "react-bootstrap";
 import "./style.css";
-import { Upload, Modal } from "antd";
+import { Upload, Modal, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Select from "react-select";
 // import icon from "../../assets/images/reg2.jpeg";
@@ -9,6 +9,8 @@ import { message } from "antd";
 import Navbar from "../../components/Header/Navbar";
 import { url } from "../../Server/GlobalUrl";
 import { DatePicker} from "antd";
+import { UploadOutlined } from '@ant-design/icons';
+
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -26,6 +28,12 @@ const experienceData = [
   { id: 2, name: "5 years", value: 5 },
   { id: 4, name: "5+ years", value: 6 },
 ];
+
+const dummyRequest = ({ file, onSuccess }) => {
+  setTimeout(() => {
+    onSuccess("ok");
+  }, 0);
+};
 
 class New extends React.Component {
   state = {
@@ -55,8 +63,9 @@ class New extends React.Component {
   };
 
   onChange = (date, dateString) => {
-    console.log(date,dateString);
-    this.setState({ date_of_birth: dateString });
+    // console.log(date,dateString);
+    // this.setState({ date_of_birth: dateString });
+    this.handelData('date_of_birth', dateString)
   };
 
   componentDidMount() {
@@ -128,6 +137,9 @@ class New extends React.Component {
     } else if (identity === "rating") {
       this.setState({ rating: data });
     }
+    else if (identity === "date_of_birth") {
+      this.setState({ date_of_birth: data });
+    }
   };
 
   onSubmit = async (e) => {
@@ -136,7 +148,8 @@ class New extends React.Component {
     if (
       this.state.pincode === null ||
       this.state.city === "" ||
-      this.state.state === ""
+      this.state.state === ""||
+      this.state.date_of_birth === ""
     ) {
       if (this.state.pincode === "") {
         message.info("Please Fill Pincode");
@@ -144,6 +157,10 @@ class New extends React.Component {
         message.info("Please Fill City");
       } else if (this.state.state === "") {
         message.info("Please Fill State");
+      }
+      else if(this.state.date_of_birth === ""){
+        message.info("Please Fill Date of birth");
+
       }
     } else {
       let tech = [];
@@ -300,7 +317,23 @@ change = async(e)=>{
   // console.log(this.state.file);
 }
 
+
+
   render() {
+   const props = {
+      action: '//jsonplaceholder.typicode.com/posts/',
+      listType: 'picture',
+      previewFile(file) {
+        console.log('Your upload file:', file);
+        // Your process logic. Here we just mock to the same file
+        return fetch('https://next.json-generator.com/api/json/get/4ytyBoLK8', {
+          method: 'POST',
+          body: file,
+        })
+          .then(res => res.json())
+          .then(({ thumbnail }) => thumbnail);
+      },
+    };
     const is_client = localStorage.getItem("is_client");
     //console.log(is_client);
     const { previewVisible, previewImage, fileList, previewTitle } = this.state;
@@ -360,7 +393,17 @@ change = async(e)=>{
               </span>
               {/* <input type= 'file' onChange = {(e)=>this.change(e)} /> */}
                 <Upload
-                  action="https://run.mocky.io/v3/633aec6e-f93a-44b2-94ee-1c9e64422ba0"
+                beforeUpload = {(file) => {
+                  const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+                      if (!isJPG) {
+                          message.error('You can only upload JPG or PNG file!');
+                          return false;
+                      } else {
+                          return true;
+                      }
+                  }}
+                  customRequest={dummyRequest}
+                  //  action="https://next.json-generator.com/api/json/get/4ytyBoLK8"
                   listType="picture-card"
                   fileList={fileList}
                   onPreview={this.handlePreview}
@@ -368,6 +411,9 @@ change = async(e)=>{
                 >
                   {fileList.length >= 1 ? null : uploadButton}
                 </Upload>
+                {/* <Upload {...props}>
+                  <Button icon={<UploadOutlined />}>Upload</Button>
+                </Upload> */}
                 <Modal
                   visible={previewVisible}
                   title={previewTitle}
@@ -536,7 +582,7 @@ change = async(e)=>{
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <label>Date of Birth</label>
                   <div style={{ margin: "0 60px" }}>
-                    <DatePicker onChange={this.onChange} format="YYYY-MM-DD HH:mm:ss"/>
+                    <DatePicker onChange={this.onChange} format="YYYY-MM-DD"/>
                   </div>
                 </div>
               </div>

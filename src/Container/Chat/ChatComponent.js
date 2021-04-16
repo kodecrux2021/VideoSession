@@ -4,6 +4,7 @@ import avatar from '../../assets/images/avatar2.jpeg'
 import { message, Spin } from 'antd';
 import { url } from '../../Server/GlobalUrl';
 import Navbar from '../../components/Header/Navbar';
+import Timer from './Timer';
 // import {DatePicker} from 'antd'
 // import moment from 'moment';
 // import { CircularProgress } from '@material-ui/core';
@@ -30,6 +31,34 @@ export default class ChatComponent extends Component {
     }
 
     fetchMessages = setInterval(() => {
+        if (localStorage.getItem("token")){
+            let data_refresh = {'refresh': localStorage.getItem('refresh')}
+          fetch(url + '/api/token/refresh/', {
+                method: 'POST',
+                headers: {
+                   'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data_refresh)
+            })
+                .then((response) => {
+                 if (response['status'] === 201 || response['status'] === 200) {
+                    return response.json()
+                } else if (response['status'] === 401) {
+                    message.info('Something went wrong');  
+                    localStorage.removeItem('refresh')
+                    localStorage.removeItem('access')
+                }
+                })
+                .then((result) => {
+                    if (result){
+                    // console.log('result.access',result.access)
+                    localStorage.setItem('token',result.access)
+                    }
+                }
+                ) 
+                .catch((e)=>console.log(e))  
+        }
 
         let auth = localStorage.getItem('token')
         let conversation_id = localStorage.getItem('conversation_id')
@@ -45,7 +74,7 @@ export default class ChatComponent extends Component {
         .then(res => res.json())
         .then(
             (result) => {
-              //console.log('result',result)
+              console.log('result',result)
               this.setState({messages:result})
         
             }
@@ -245,14 +274,14 @@ handleCancel = () => {
         return (
             <>
         
-            <div style={{backgroundColor: '#ededed', height: '100vh'}}>
+            <div style={{backgroundColor: '#ededed', height: '100vh'}} className="wrapper">
                 <Navbar/>
                 <Chat
                 loading={this.state.loading}
                 clicked={this.state.clicked}
                 dropHandle={this.dropHandle}
                 reciever_img={this.state.reciever.profile_pic!==null ? `${this.state.reciever?.profile_pic}`:null}
-                user_img={this.state.user.profile_pic !== null ?`${url}${this.state.user?.profile_pic}`: null}
+                user_img={this.state.user.profile_pic !== null ?`${this.state.user?.profile_pic}`: null}
                 name={`${this.state?.reciever?.first_name} ${this.state?.reciever?.last_name}`}
                 reciever_id={this.state.reciever.id}
                 lastseen={this.state.reciever.last_seen}
@@ -260,7 +289,7 @@ handleCancel = () => {
                 chattime='Nov 27, 7:30 PM'
                 handleData={this.handleData}
                 message={this.state.message}
-                messages= {this.state.messages}
+                messages= {this.state.messages.sort((a,b)=> (a.id > b.id ? 1 : -1))}
                 sendMessage={this.sendMessage}
                 conversation={this.state.conversation}
                 schedule = {this.schedule}
@@ -269,6 +298,7 @@ handleCancel = () => {
                 handleCancel={this.handleCancel}
                 handleOk = {this.handleCancel}
                 />
+                <Timer/>
             </div>
             </>
             

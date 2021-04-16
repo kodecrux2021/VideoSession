@@ -31,7 +31,7 @@ export default class HelpForm2 extends Component {
     render() {
         return ( 
             <>
-            <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px' }} onClick = {() =>this.props.history.push('/home')}/>
+            <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px' }} onClick = {() =>this.props.history.push('/')}/>
             <Navbar/>
             <div className='help__form__container'>
             <div className='HelpForm1'>

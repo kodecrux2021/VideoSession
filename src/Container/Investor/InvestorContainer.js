@@ -26,6 +26,7 @@ export default class InvestorContainer extends Component {
           info: '',
           deadline: '',
           req: '',
+          pic: '',
 
           investor__name: '',
 
@@ -92,7 +93,7 @@ export default class InvestorContainer extends Component {
           .then((result) => {
               console.log('result', result);
               message.info('Request has been sent!')
-              this.props.history.push('/home')
+              this.props.history.push('/')
           })
       }
     }
@@ -182,14 +183,14 @@ export default class InvestorContainer extends Component {
         
     }
     else{
-      this.props.history.push('/home')
+      this.props.history.push('/')
     }}
     
 
     render() {
         return (
             <div>
-              <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '20px', top: '0' }} onClick = {() =>this.props.history.push('/home')}/>
+              <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '20px', top: '0' }} onClick = {() =>this.props.history.push('/')}/>
               <Navbar/>
                 <Investor
                 investor__name={this.state.investor__name}

@@ -41,7 +41,7 @@ export default function Registration(props) {
               localStorage.setItem('token',result.access_token)
               localStorage.setItem('refresh',result.refresh_token)
               localStorage.setItem('username',result.username)
-              history.push('/home')
+            //  history.push('/home')
             }
             
         })
@@ -63,12 +63,14 @@ export default function Registration(props) {
             if(result){
               localStorage.setItem('user_id', result.user?.id);
               localStorage.setItem('user_name', result.user?.first_name);
+              message.info('Logged in successfully!')
+              history.replace('/')
           }
           }
       )
             
            //console.log("success")
-          //  history.replace('/home')
+       
          }
          else if(response.status=='unknown') {
            alert('No user Found')  
@@ -81,7 +83,7 @@ export default function Registration(props) {
       console.log('google',response);
       if (response.accessToken) {
 let data = {"token": response.accessToken}
-        await fetch( url + '/google/', {
+        await fetch(url + '/google/', {
           method: 'POST',
           headers: {
               'Accept': 'application/json, text/plain',
@@ -104,8 +106,7 @@ let data = {"token": response.accessToken}
             localStorage.setItem('token',result.access_token)
             localStorage.setItem('refresh',result.refresh_token)
             localStorage.setItem('username',result.username)
-            history.push('/home')
-            
+            // history.push('/')           
           }
           
       })
@@ -125,15 +126,15 @@ let data = {"token": response.accessToken}
           if(result){
             localStorage.setItem('user_id', result.user?.id);
             localStorage.setItem('user_name', result.user?.first_name);
+            message.info('Logged In Succsessfully!!!');
+            history.replace('/')  
         }
         }
     )
 
 
         //console.log("success")
-        message.info('Logged In Succsessfully!!!');
-        history.push('/details2')
-        // history.replace('/home')  
+        // history.push('/details2')  
       }
       else if(response.status=='unknown') {
         // alert('No user Found')  
@@ -201,8 +202,8 @@ let data = {"token": response.accessToken}
                       </div>
                       <div className="select__container" >
                                   <button className={props.position==="codeexpert"?'select__button__active':'select__button'}  value="codeexpert" onClick={props.onChangeValue}>CODE EXPERT</button>
-                                  <button className={props.position==="instructor"?'select__button__active':'select__button'} value="instructor" onClick={props.onChangeValue}>INSTRUCTOR</button>
-                                  <button className={props.position==="freelancer"?'select__button__active':'select__button'} value="freelancer" onClick={props.onChangeValue} >FREELANCER</button>
+                                  {/* <button className={props.position==="instructor"?'select__button__active':'select__button'} value="instructor" onClick={props.onChangeValue}>INSTRUCTOR</button> */}
+                                  {/* <button className={props.position==="freelancer"?'select__button__active':'select__button'} value="freelancer" onClick={props.onChangeValue} >FREELANCER</button> */}
                                   <button className={props.position==="customer"?'select__button__active':'select__button'} value="customer" onClick={props.onChangeValue} >CUSTOMER</button>
                       </div>
                       <div className="form__group">

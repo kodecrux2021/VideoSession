@@ -240,7 +240,7 @@ export default class Trainers extends Component {
 
                         :
                         <div className='body__ctr'>
-                            <img src={kodecrux} style={{ height: '70px', position: 'absolute',left: '0', top: '0', zIndex: '2000' }} onClick = {() =>this.props.history.push('/home')}/>
+                            <img src={kodecrux} style={{ height: '70px', position: 'absolute',left: '0', top: '0', zIndex: '2000' }} onClick = {() =>this.props.history.push('/')}/>
                             <div className=" d-flex  p-3 flex-column" style={{ alignItems: "center" }}>
                                 
                                  {this.state.trainers.map((trainer) => (
@@ -248,7 +248,7 @@ export default class Trainers extends Component {
                                     <TrainersCard
                                         key = {trainer.id}
                                         name={`${trainer.user_first_name} ${trainer.user_last_name}`}
-                                        img={trainer.profile_pic !== null?`${url}${trainer.profile_pic}`: ''}
+                                        img={trainer.profile_pic !== null?`${trainer.profile_pic}`: ''}
                                         img2={avatar}
                                         online={false}
                                         rating={trainer.rating}

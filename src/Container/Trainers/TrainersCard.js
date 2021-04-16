@@ -34,7 +34,7 @@ const styles = theme => ({
 
     const LiveHandle = (video) => {
         // console.log(video);
-        video !== undefined && window.open(`${url}${video}`)
+        video !== undefined && window.open(`${video}`)
         // fetch(url + '/api/session/', {
         //     method: 'GET',
         //     headers: {
@@ -115,6 +115,7 @@ const styles = theme => ({
             </div>
             
             :
+            props.video &&
             <div className="trainers__card__right">
             <button type="button" class="btn btn-info" onClick={ id => LiveHandle(props?.video) } >RECORDED SESSION</button>
             </div>

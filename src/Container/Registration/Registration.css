@@ -192,13 +192,13 @@ height: auto;
 
 .select__container {
 display: flex;
-justify-content: space-between;
+justify-content: space-evenly;
 padding: 10px 0 10px 0;
 }
 
 
 .select__button {
-    width: 110px;
+    width: 210px;
     height: 45px;
     font-size: 14px;
     border-radius: 2px;
@@ -210,7 +210,7 @@ padding: 10px 0 10px 0;
 }
 
 .select__button__active {
-    width: 110px;
+    width: 210px;
     height: 45px;
     font-size: 14px;
     border-radius: 2px;

@@ -50,10 +50,10 @@ function App() {
           <Route path="/verification" exact component={VerificationContainer} />
           {/* <Route path="/details" exact component={RegistrationDetailsContainer} /> */}
           {/* <Route path="/details" exact component={Pagetwo} /> */}
-          <Route path="/home" exact component={Home} default />
+          <Route path="/" exact component={Home} default />
           <Route path="/trainers"  component={Trainers} />
           <Route path="/course-registration" exact component={EmployeeRegistrationComponent} />
-          <Route path="/chat"  component={ChatComponent} />
+           <Route path="/chat"  component={ChatComponent} />
           <Route path="/courses" exact component={ContentComponent} />
           <Route path="/help/1" exact component={HelpForm1} />
           <Route path="/help/2" exact component={HelpForm2} />
@@ -61,7 +61,7 @@ function App() {
           <Route path="/investor" exact component={InvestorContainer} />
           <Route path="/notifications" component={NotificationsContainer} /> 
            <Route path="/payment" exact component={Payment} />
-        <Route render={() => <Redirect to = '/home'/> }/>
+        <Route render={() => <Redirect to = '/'/> }/>
         </Switch>
       </Router>
       

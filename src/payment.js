@@ -1,13 +1,15 @@
 import Axios from "axios";
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {url} from './Server/GlobalUrl'
 import { Table, message } from 'antd';
 import { Checkbox } from 'antd';
-import { useHistory } from "react-router-dom";
+import { Link,Redirect, useHistory } from "react-router-dom";
 
 function onChange(e) {
   console.log(`checked = ${e.target.checked}`);
 }
+
+
 
 const dataSource = [
     {
@@ -47,14 +49,15 @@ function Payment() {
   var history = useHistory()
   useLayoutEffect(() =>{
     if(!localStorage.getItem('token') || !localStorage.getItem('refresh')){
+      console.log("hello");
      history.goBack();
     };
     return () =>{
       localStorage.removeItem('pay_id')
     }
   })
-  // const [name, setName] = useState("");
-  // const [amount, setAmount] = useState("");
+
+
 
   const handlePaymentSuccess = () => {
     message.info('Payment was successful!')
@@ -98,14 +101,17 @@ function Payment() {
 
   const showRazorpay = async () => {
     const res = await loadScript();
-
+    console.log(localStorage.getItem('pay_id'));
     const data = await Axios({
-      url: `${url}/order/?hire_id=${localStorage.getItem('pay_id')}`,
-      method: "GET",
+      url: `${url}/order/`,
+      method: "POST",
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
       },
+      data : {
+        hire_id:localStorage.getItem('pay_id')
+      }
     }).then((res) => {
       return res
     });
@@ -114,34 +120,39 @@ function Payment() {
     //that has been made by the user
 
     console.log(data);
+    console.log(process.env.REACT_APP_PUBLIC_KEY);
     var options = {
-      key_id: process.env.REACT_APP_PUBLIC_KEY, 
-      key_secret: process.env.REACT_APP_SECRET_KEY,
-      currency: "USD",
-      name: "Ekodecrux",
-      description: "Test transaction",
-      image: "",
-      order_id: data.data,
-      handler: function (response) {
-        handlePaymentSuccess();
-      },
-      prefill: {
-        name: "User's name",
-        email: "User's email",
-        contact: "User's phone",
-      },
-      notes: {
-        address: "Ekodecrux Corporate Office",
-      },
-      theme: {
-        color: "#3399cc",
-      },
+      "appId": process.env.REACT_APP_PUBLIC_KEY, 
+      "order_id": data.data,
+      "orderAmount": 100,
+      "customerName": "Ekodecrux",
+      "customerPhone": "User's phone",
+      "customerEmail":"User's email",
+      "customerPhone": "8997996877" ,
+      "retunrURL": "/",
+      "orderCurrency" : "INR",
+      "orderNote": "Test transaction"
     };
-    console.log(options);
 
-    var rzp1 = new window.Razorpay(options);
-    rzp1.open();
+    
   };
+  const handlePayment = async() => {
+    const data = await Axios({
+      url: `${url}/order/`,
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      data : {
+        hire_id:localStorage.getItem('pay_id')
+      }
+    }).then((res) => {
+      return res
+    });
+    const link=data.data.paymentLink;
+    window.location.replace(link);
+  }
 
   return (
     localStorage.getItem('pay_id')!==null && <div className="container" style={{ marginTop: "10vh" }}>
@@ -150,40 +161,18 @@ function Payment() {
         <h1>Payment Dashboard</h1>
         </div>
 
-        <h3>Payment card addition</h3>
-
-        <Checkbox onChange={onChange}>Reccuring payments for default payment methods</Checkbox>
+      </form>
+      
+      <Checkbox onChange={onChange}>Reccuring payments for default payment methods</Checkbox>
         <Table dataSource={dataSource} columns={columns} />
         <button onClick={showRazorpay} className="btn btn-primary btn-block" style = {{width: '90px', height: '30px', fontSize: '15px'}}>
        Add Card
       </button>
-
-        {/* <div className="form-group">
-          <label htmlFor="name">Product name</label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="exampleInputPassword1">Amount</label>
-          <input
-            type="text"
-            className="form-control"
-            id="amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-        </div> */}
-      </form>
-      <button onClick={showRazorpay} className="btn btn-primary btn-block" style = {{width: '125px'}}>
-        Pay Now
+      <button onClick={handlePayment} className="btn btn-primary btn-block" style = {{width: '90px', height: '30px', fontSize: '15px'}}>
+       Pay Now
       </button>
     </div>
-  );
+    )
 }
 
 export default Payment;

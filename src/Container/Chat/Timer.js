@@ -63,7 +63,7 @@ const Timer = () => {
         headers: {
            'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + auth,
+          'Authorization': 'Bearer' + auth,
         }
         }).then((response)=> {return response.json()})
         .then((res)=> console.log(res))

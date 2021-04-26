@@ -24,9 +24,9 @@ export default function Navbar(props) {
   }
 
   return (
-    <div className='sidebar__btn' >
+    <div className="sidebar__btn">
       <IconButton>
-        <MenuIcon className='sidebar_icon' onClick={showDrawer} />
+        <MenuIcon className="sidebar_icon" onClick={showDrawer} />
       </IconButton>
       <Drawer
         title="Navigation"
@@ -35,22 +35,47 @@ export default function Navbar(props) {
         onClose={onClose}
         visible={visible}
       >
-        <Link to='/' ><p><h5>HOME</h5></p></Link>
-        <Link to='/courses' ><p><h5>E-LEARNING MARKETPLACE</h5></p></Link>
-        <Link to='/notifications/messages' ><p><h5>NOTIFICATIONS</h5></p></Link>
-        {
-          (localStorage.token) ?
-            <Link><p onClick={logout} ><h5>LOG OUT</h5></p></Link>
-            :
-            <Link to='/login'><p><h5>LOG IN</h5></p></Link>
-        }
-        {
-          (localStorage.token) ?
-            null
-            :
-            <Link to='/registration'><p><h5>SIGN UP</h5></p></Link>
-        }
+        <Link to="/">
+          <p>
+            <h5>HOME</h5>
+          </p>
+        </Link>
+        <Link to="/courses">
+          <p>
+            <h5>E-LEARNING MARKETPLACE</h5>
+          </p>
+        </Link>
+        <Link to="/notifications/messages">
+          <p>
+            <h5>NOTIFICATIONS</h5>
+          </p>
+        </Link>
+        <Link to="/refund">
+          <p>
+            <h5>WITHDRAW REFUND</h5>
+          </p>
+        </Link>
+        {localStorage.token ? (
+          <Link>
+            <p onClick={logout}>
+              <h5>LOG OUT</h5>
+            </p>
+          </Link>
+        ) : (
+          <Link to="/login">
+            <p>
+              <h5>LOG IN</h5>
+            </p>
+          </Link>
+        )}
+        {localStorage.token ? null : (
+          <Link to="/registration">
+            <p>
+              <h5>SIGN UP</h5>
+            </p>
+          </Link>
+        )}
       </Drawer>
     </div>
-  )
+  );
 }

@@ -12,7 +12,7 @@ import home4 from '../../assets/images/home4.jpg'
 import home5 from '../../assets/images/home5.jpg'
 import Navbar from '../../components/Header/Navbar';
 import {message, Modal} from 'antd';
-import kodecrux from '../../assets/images/reg2.jpeg';
+import ekodecrux from '../../assets/images/ekodecrux.jpeg';
 import {AiFillMediumSquare,AiFillFacebook, AiFillInstagram, AiFillTwitterSquare, AiFillLinkedin} from 'react-icons/ai';
 import {FaQuora} from 'react-icons/fa'
 
@@ -258,7 +258,7 @@ If as a user, you wish to refund the payment if they do not meet thier required 
         return (
         <>
         <Navbar/>
-        <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px', zIndex: 1000}} onClick = {() =>this.props.history.push('/')}/>
+        <img src={ekodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px', zIndex: 1000}} onClick = {() =>this.props.history.push('/')}/>
         <div className='body__ctr'>
               <div className="home_container">
       <Carousel controls={false} interval={10000} indicators={false} pause={false} fade={true}>

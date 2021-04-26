@@ -72,6 +72,8 @@ function Login() {
                         }
 
                         let auth = localStorage.getItem('token')
+                        console.log(auth);
+                        
                         fetch(url + '/currentuser/', {
                             method: 'GET',
                             headers: {
@@ -87,6 +89,10 @@ function Login() {
                                     if (result) {
                                         localStorage.setItem('user_id', result.user?.id);
                                         localStorage.setItem('user_name', result.user?.first_name);
+                                        console.log(
+                                          result.user?.id,
+                                          result.user?.first_name
+                                        );
                                         // console.log(localStorage.getItem('user_id'));
                                     }
                                 }

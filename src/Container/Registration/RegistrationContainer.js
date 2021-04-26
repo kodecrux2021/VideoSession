@@ -131,9 +131,10 @@ class RegistrationContainer extends Component {
 
             let data2 = null;
            
-            // console.log('data', data, data2)
+            console.log('data', data, data2)
 
             let auth = localStorage.getItem('token');
+            console.log(auth)
             await fetch( url + '/api/customuser/' , {
                 method: 'POST',
                 headers: {
@@ -191,11 +192,13 @@ class RegistrationContainer extends Component {
                         })
                         .then((result) =>{
                             localStorage.setItem('educator_id', result?.id)
-                            console.log('result', result)})
+                            console.log(localStorage.getItem("educator_id"));
+                            console.log('result1', result)})
                             //  this.props.history.push("/details");
                     }
                     localStorage.setItem('user_id', result?.id);
                     localStorage.setItem('is_client', result?.is_client);
+                    console.log(localStorage.getItem("is_client"));
                     this.props.history.push("/details");
                 }
                 

@@ -89,7 +89,6 @@ export default function Notifications(props) {
                                 return(
                                    
                                 <div key = {user.id}className='chat__card' onClick = {()=>{
-                                    // console.log(rec.first_name);
 
                                     localStorage.setItem('conversation_id', user.id);
                                     props.chatHandler()
@@ -236,7 +235,6 @@ export default function Notifications(props) {
                     <div className='notifications__body__chat' >
                     <h2>Requests</h2>
                     <div className='friend__cards' >
-
                        {
                            props.request!==null && props.requests.map((request)=> 
                             {
@@ -259,7 +257,7 @@ export default function Notifications(props) {
             
                                             </div>
                                 </div>
-                                
+
 
                                 return (
                                     data
@@ -332,31 +330,25 @@ export default function Notifications(props) {
                                           </div>) : null
                                         }
                                     </Modal>): null}
+                                        {console.log(notification)}
                                             <div className='troubleshoot__details' >
-                                                {notification.type == 'HIRE' ?
-                                                notification.hiring_status == 'NOT_DONE'?
-                                                <span>{notification.sent_by_first_name} {notification.sent_by_last_name} wants to hire you</span>:
-                                                <span>{notification.sent_by_first_name} {notification.sent_by_last_name} has accepted your request to hire</span>
+                                                {notification.type === 'HIRE' ?
+                                                notification.user===notification.recieved_by_first_name.concat(' '+notification.recieved_by_last_name)?
+                                                <span>{notification.sent_by_first_name} {notification.sent_by_last_name} wants to hire you<div className='friend__card__button' >
+                                                <button  style={{  backgroundColor:' #5964c9'}} onClick = {() =>props.show(notification.contract)}>Show</button>
+                                                </div></span>:
+                                                <span>{notification.sent_by_first_name} {notification.sent_by_last_name} has accepted your request to hire<div className='friend__card__button' >
+                                                <button  style={{  backgroundColor:' #5964c9'}} onClick = {() =>props.pay(notification.contract)}>Pay Now</button>
+                                               </div></span>
                                                 :
                                                 <span>{notification.sent_by_first_name} {notification.sent_by_last_name} has accepted your request</span>
                                                 }
-                                                </div>
-                                           {notification.type== 'HIRE' ?
-                                           notification.hiring_status == 'NOT_DONE'?
-                                            <div className='friend__card__button' >
-                                                 <button  style={{  backgroundColor:' #5964c9'}} onClick = {() =>props.show(notification.contract)}>Show</button>
-                                             </div>:
-                                             <div className='friend__card__button' >
-                                             <button  style={{  backgroundColor:' #5964c9'}} onClick = {() =>props.pay(notification.contract)}>Pay Now</button>
-                                         </div>
-                                            :
-                                            null
-                                    }
-                                    </div>
+                                            </div>
+                                    
+                                            </div>
                                 );
                             })
                         }
-
 
             </div>   
             </div>

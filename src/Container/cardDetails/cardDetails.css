@@ -1,0 +1,22 @@
+.heading{
+    text-align: center;
+    font-size: 3vw;
+    margin: 2vw auto;
+    text-transform: uppercase;
+}
+.container{
+    margin-top: 20px;
+}
+.key{
+    font-size: 1.5vw;
+    font-weight: bolder;
+}
+.Submitbtn{
+    text-align: center;
+    margin: 2vw auto;
+    
+}
+.Submitbtn Button {
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}

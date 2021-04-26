@@ -191,7 +191,7 @@ class Pagetwo extends React.Component {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json;charset=UTF-8',
+                // 'Content-Type': 'application/json;charset=UTF-8',
     
             },
             body: JSON.stringify(data)

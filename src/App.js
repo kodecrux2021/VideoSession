@@ -20,6 +20,7 @@ import Reset from './Container/Login/ForgotPassword/Reset';
 import Pagetwo from './Container/RegistrationDetails';
 import New from './Container/RegistrationDetails/new';
 import Payment from './payment'
+import cardDetails from './Container/cardDetails/cardDetails';
 
 
 
@@ -47,6 +48,7 @@ function App() {
           <Route path="/reset" exact component={Reset} />
           <Route path="/login" exact component={Login} />
           <Route path="/details" exact component={New} />
+          <Route path='/refund' exact component={cardDetails}/>
           <Route path="/verification" exact component={VerificationContainer} />
           {/* <Route path="/details" exact component={RegistrationDetailsContainer} /> */}
           {/* <Route path="/details" exact component={Pagetwo} /> */}

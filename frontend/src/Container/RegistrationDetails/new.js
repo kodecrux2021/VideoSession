@@ -10,6 +10,11 @@ import Navbar from "../../components/Header/Navbar";
 import { url } from "../../Server/GlobalUrl";
 import { DatePicker} from "antd";
 import { UploadOutlined } from '@ant-design/icons';
+import CloseIcon from '@material-ui/icons/Close';
+import { Link } from 'react-router-dom';
+import { Card, TextField } from '@material-ui/core';
+import {ReactComponent as EkodeLogo} from '../../assets/eKodeLogo.svg';
+
 
 
 function getBase64(file) {
@@ -381,16 +386,23 @@ change = async(e)=>{
       ) : null;
     return (
       <>
-        <Navbar />
+        <div style={{position:'absolute', display:'flex', flex:1, width:'100%', alignItems:'flex-end',justifyContent:'flex-end', paddingRight:40}}>
+            <Link to='/'> <CloseIcon style={{fontSize:30, color:'black'}} /> </Link>
+        </div>
+        <div style={{marginTop:30, display:'flex', justifyContent:'center', marginBottom:10}}>
+            <Card elevation={2} style={{width:100, height:100, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
+                <Link to='/'>
+                    <EkodeLogo  />
+                </Link>
+            </Card>
+        </div>
 
         <div className="registration__page__two">
           <form className="registration__details__container">
             <div className="registration__details__img">
               {/* <img src={icon} alt="KodeCrux"></img> */}
               <>
-              <span style={{ color: "grey", fontWeight: "500" }}>
-                Profile Picture{" "}
-              </span>
+              
               {/* <input type= 'file' onChange = {(e)=>this.change(e)} /> */}
                 <Upload
                 beforeUpload = {(file) => {
@@ -426,42 +438,23 @@ change = async(e)=>{
                     src={previewImage}
                   />
                 </Modal>
+                <span style={{ color: "#3743B1", fontSize:12}}>
+                  Profile Picture
+                </span>
               </>
              
             </div>
+
             <Col style={{ marginTop: "10px" }}>
-              <div class="form__group">
-                <label>Pin Code</label>
-                <input
-                  className="form__control"
-                  type="number"
-                  value={this.state.pincode}
-                  onChange={(e) => this.handelData("pincode", e.target.value)}
-                  type="text"
-                  placeholder="Enter Your Postal Code"
-                />
-              </div>
-              <div class="form__group">
-                <label>State</label>
-                <input
-                  type="text"
-                  value={this.state.state}
-                  onChange={(e) => this.handelData("state", e.target.value)}
-                  className="form__control"
-                  placeholder="Enter Your State"
-                />
-              </div>
-              <div class="form__group">
-                <label>City</label>
-                <input
-                  type="text"
-                  value={this.state.city}
-                  onChange={(e) => this.handelData("city", e.target.value)}
-                  className="form__control"
-                  placeholder="Enter Your City"
-                />
+              <div class="form__group" style={{display:'flex', gap:20}}>
+                <TextField variant="outlined" className="form__control" label="PIN CODE" type="number" value={this.state.pincode} onChange={(e) => this.handelData("pincode", e.target.value)} />
+                <TextField variant="outlined" className="form__control" label="CITY" type="text" value={this.state.city} onChange={(e) => this.handelData("city", e.target.value)} />
               </div>
 
+              <div class="form__group">
+                <TextField variant="outlined" className="form__control" label="STATE" type="text" value={this.state.state} onChange={(e) => this.handelData("state", e.target.value)} />
+              </div>
+              
               {educator}
 
               {is_client === "true" ? null : (
@@ -553,7 +546,7 @@ change = async(e)=>{
                       placeholder="Designation"
                     />
                   </div>
-                  <div class="form__group">
+                  {/* <div class="form__group">
                     <label>Fees</label>
                     <input
                       type="number"
@@ -562,8 +555,8 @@ change = async(e)=>{
                       className="form__control"
                       placeholder="Fees"
                     />
-                  </div>
-                  <div class="form__group">
+                  </div> */}
+                  {/* <div class="form__group">
                     <label>Rating</label>
                     <input
                       type="number"
@@ -574,18 +567,18 @@ change = async(e)=>{
                       className="form__control"
                       placeholder="Rating"
                     />
-                  </div>
+                  </div> */}
                 </div>
               )}
 
-              <div class="form__group">
+              {/* <div class="form__group">
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <label>Date of Birth</label>
                   <div style={{ margin: "0 60px" }}>
                     <DatePicker onChange={this.onChange} format="YYYY-MM-DD"/>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </Col>
 
             <Col className="registration__details__footer">

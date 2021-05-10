@@ -92,19 +92,16 @@ function Login() {
                             .then(res => res.json())
                             .then(
                                 (result) => {
-                                    // console.log('result', result)
                                     if (result) {
                                         localStorage.setItem('user_id', result.user?.id);
                                         localStorage.setItem('user_name', result.user?.first_name);
+                                        localStorage.setItem('user_photo', result.user?.profile_pic);
                                         // console.log(localStorage.getItem('user_id'));
+                                        message.info('Logged In Succsessfully!!!');
+                                        history.push({pathname : '/'})
                                     }
                                 }
                             )
-
-
-
-                        message.info('Logged In Succsessfully!!!');
-                        history.push('/')
                     }
                 })
         }
@@ -254,7 +251,7 @@ let data = {"token": response.accessToken}
 
     return (
         <>
-        
+
             <div className='body__ctr'>
                 {/* Immortal ui mod */}
                 <div style={{position:'absolute', display:'flex', flex:1, width:'100%', alignItems:'flex-end',justifyContent:'flex-end', paddingRight:40}}>

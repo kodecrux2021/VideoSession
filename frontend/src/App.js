@@ -21,6 +21,8 @@ import Pagetwo from './Container/RegistrationDetails';
 import New from './Container/RegistrationDetails/new';
 import Payment from './payment'
 
+import { createBrowserHistory } from "history";
+
 
 
 function App() {
@@ -36,11 +38,11 @@ function App() {
   //    console.log(isAuthenticated);
   //  }
   // })
-
+  const history = createBrowserHistory()
 
   return (
     <div className="App">
-      <Router>
+      <Router history={history}>
         <Switch>
           <Route path="/registration" exact component={RegistrationContainer} />
           <Route path="/forgot-password" exact component={Email} />

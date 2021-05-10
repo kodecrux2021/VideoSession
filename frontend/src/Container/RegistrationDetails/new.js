@@ -12,7 +12,7 @@ import { DatePicker} from "antd";
 import { UploadOutlined } from '@ant-design/icons';
 import CloseIcon from '@material-ui/icons/Close';
 import { Link } from 'react-router-dom';
-import { Card, TextField } from '@material-ui/core';
+import { Card, Checkbox, TextField } from '@material-ui/core';
 import {ReactComponent as EkodeLogo} from '../../assets/eKodeLogo.svg';
 
 
@@ -65,6 +65,8 @@ class New extends React.Component {
     total_experience: null,
     relevant_experience: null,
     date_of_birth: "",
+
+    checked: false
   };
 
   onChange = (date, dateString) => {
@@ -153,8 +155,8 @@ class New extends React.Component {
     if (
       this.state.pincode === null ||
       this.state.city === "" ||
-      this.state.state === ""||
-      this.state.date_of_birth === ""
+      this.state.state === ""
+      // || this.state.date_of_birth === ""
     ) {
       if (this.state.pincode === "") {
         message.info("Please Fill Pincode");
@@ -163,17 +165,18 @@ class New extends React.Component {
       } else if (this.state.state === "") {
         message.info("Please Fill State");
       }
-      else if(this.state.date_of_birth === ""){
-        message.info("Please Fill Date of birth");
+      // else if(this.state.date_of_birth === ""){
+      //   message.info("Please Fill Date of birth");
 
-      }
+      // }
     } else {
       let tech = [];
       let sub_tech = [];
 
       tech.push(parseInt(this.state.technology?.id));
       sub_tech.push(parseInt(this.state.sub_technology?.id));
-       let formData = new FormData();
+      
+      let formData = new FormData();
 
       formData.append('pincode', this.state.pincode);
       formData.append('city', this.state.city);
@@ -182,12 +185,14 @@ class New extends React.Component {
       formData.append('sub_technology',[this.state.sub_technology?.id] );
       formData.append('total_experience', this.state.total_experience?.value);
       formData.append('relevant_experience', this.state.relevant_experience?.value);
-      formData.append('date_of_birth',  this.state.date_of_birth);
-      formData.append('fees', this.state.fees);
-      formData.append('designation', this.state.desig);
-      formData.append('rating', this.state.rating);
       this.state.fileList.length > 0 && formData.append('profile_pic', this.state.fileList[0].originFileObj);
+      formData.append('designation', this.state.desig);
+
+      // formData.append('date_of_birth',  this.state.date_of_birth);
+      // formData.append('fees', this.state.fees);
+      // formData.append('rating', this.state.rating);
       // formData.append('profile_pic', this.state.file)
+
       let data = {
         pincode: this.state.pincode,
         city: this.state.city,
@@ -211,8 +216,8 @@ class New extends React.Component {
       let id = localStorage.getItem("educator_id");
       let user_id = localStorage.getItem("user_id");
 
-
-      fetch(url + "/api/customusersecond/" + user_id + "/", {
+      
+      fetch(`${url}/api/customusersecond/${user_id}/`, {
         method: "PUT",
         headers: {
           "Accept": "application/json, text/plain",
@@ -234,7 +239,7 @@ class New extends React.Component {
 
           let auth = localStorage.getItem("token");
           if (localStorage.getItem("is_client")) {
-           await fetch(url + "/api/educatorcreate/" + id + "/", {
+           await fetch(`${url}/api/educatorcreate/${id}/`, {
               method: "PUT",
               headers: {
                 "Accept": "application/json, text/plain",
@@ -309,17 +314,17 @@ class New extends React.Component {
   };
 
   handleChange = async({ fileList }) => {
-    //fileList[0].originFileObj.url = URL.createObjectURL(fileList[0].originFileObj);
-//fileList[0].originFileObj.preview = await getBase64(fileList[0].originFileObj)
-this.setState({ fileList });
-// console.log(this.state.fileList) 
-};
+      //fileList[0].originFileObj.url = URL.createObjectURL(fileList[0].originFileObj);
+      //fileList[0].originFileObj.preview = await getBase64(fileList[0].originFileObj)
+      this.setState({ fileList });
+      // console.log(this.state.fileList) 
+      };
 
-change = async(e)=>{
-  e.persist();
-  // console.log(e.target.files);
-  await this.setState({file: e.target.files[0]})
-  // console.log(this.state.file);
+      change = async(e)=>{
+        e.persist();
+        // console.log(e.target.files);
+        await this.setState({file: e.target.files[0]})
+        // console.log(this.state.file);
 }
 
 
@@ -582,10 +587,8 @@ change = async(e)=>{
             </Col>
 
             <Col className="registration__details__footer">
-              <button type="submit" onClick={this.onSubmit}>
-                Done
-              </button>
               <div>
+                <Checkbox checked={this.state.checked} onChange={() => {this.setState({checked : !this.state.checked})}} />
                 <span>By register I agree To</span>
                 <span>
                   <a style={{ color: "#30b3f0", cursor: "pointer" }}>
@@ -597,6 +600,9 @@ change = async(e)=>{
                   </a>
                 </span>
               </div>
+              <button type="submit" disabled={!this.state.checked} style={!this.state.checked ? {backgroundColor:'#BBBBBB', color:'white', border:'none'} : null} onClick={this.onSubmit}>
+                DONE
+              </button>
             </Col>
           </form>
         </div>

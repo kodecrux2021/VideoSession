@@ -18,9 +18,7 @@ import {message, Modal} from 'antd';
 import kodecrux from '../../assets/images/reg2.jpeg';
 import {AiFillMediumSquare,AiFillFacebook, AiFillInstagram, AiFillTwitterSquare, AiFillLinkedin} from 'react-icons/ai';
 import {FaQuora} from 'react-icons/fa'
-import { AppBar, Button, Hidden, Typography } from '@material-ui/core'
-import { ReactComponent as EcodeLogo } from '../../assets/eKodeLogo.svg'
-import { Link } from 'react-router-dom'
+import { Typography } from '@material-ui/core'
 
 
 

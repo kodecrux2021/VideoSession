@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { IconButton } from '@material-ui/core'
+import React, { useState, useEffect  } from 'react'
+import { Avatar, ButtonBase, IconButton, Menu, MenuItem } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
 import { Drawer } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
@@ -10,9 +10,15 @@ import kodecrux from '../../assets/images/reg2.jpeg';
 
 
 export default function Navbar(props) {
-
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const history = useHistory();
   const [visible, setVisible] = useState(false);
+  const [userName, setUsername] = useState(localStorage.user_name)
+
+  useEffect(() => {
+    setUsername(localStorage.user_name)
+  })
+
   const showDrawer = () => {
     setVisible(true);
   };
@@ -34,6 +40,14 @@ export default function Navbar(props) {
     history.push('/registration')
   }
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
       <Hidden smDown>
@@ -46,10 +60,39 @@ export default function Navbar(props) {
                 <Link to='/'>
                     <EcodeLogo />
                 </Link>
-                <div style={{flex:1, display:'flex', justifyContent:'flex-end', gap:10}}>
-                    <Button className="loginButton" variant="outlined" onClick={handleLogin} style={{width:98, height:36, borderColor:'#3743b1', color:'#3743b1', outline:"none"}}>Log In</Button>
-                    <Button className="signupButton" variant="outlined" onClick={handleSignup} style={{width:98, height:36, backgroundColor:'#3743b1', color:'white', outline:"none"}}>Sign Up</Button>
-                </div>
+                {(localStorage.token) ?
+                      <div style={{flex:1, display:'flex', justifyContent:'flex-end', gap:40, alignItems:'center'}}>
+                        <div style={{display:'flex', alignItems:'center', gap:40}}>
+                          <Link className="_nav_link" to='/courses' >E-Learning Marketplace</Link>
+                          <Link className="_nav_link"  to='/notifications/messages' >Notification</Link>
+                        </div>
+                        <ButtonBase onClick={handleClick} style={{display:'flex', alignItems:'center', gap:10, outline:'none'}}>
+                          <Typography variant='caption' style={{color:'#3743b1',fontSize:14, fontFamily:'sans-serif'}}>{userName}</Typography>
+                          <Avatar alt={userName} src={localStorage.user_photo} style={{backgroundColor:'#3743b1'}} />
+                        </ButtonBase>
+                        
+
+                        <Menu
+                          style={{marginTop:18}}
+                          id="simple-menu"
+                          anchorEl={anchorEl}
+                          getContentAnchorEl={null}
+                          keepMounted
+                          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                          transformOrigin={{ vertical: "top", horizontal: "center" }}
+                          open={Boolean(anchorEl)}
+                          onClose={handleClose}
+                        >
+                          <MenuItem> <Link className="_nav_link" to='/courses' >Profile</Link> </MenuItem>
+                          <MenuItem> <Link className="_nav_link" to='/courses' >Withdraw Funds</Link> </MenuItem>
+                          <MenuItem> <Link className="_nav_link" onClick={logout} >Logout</Link> </MenuItem>
+                        </Menu>
+                      </div>
+                       :
+                      <div style={{flex:1, display:'flex', justifyContent:'flex-end', gap:10}}>
+                          <Button className="loginButton" variant="outlined" onClick={handleLogin} style={{width:98, height:36, borderColor:'#3743b1', color:'#3743b1', outline:"none"}}>Log In</Button>
+                          <Button className="signupButton" variant="outlined" onClick={handleSignup} style={{width:98, height:36, backgroundColor:'#3743b1', color:'white', outline:"none"}}>Sign Up</Button>
+                      </div>}
             </AppBar>
         </Hidden>
         <Hidden mdUp>

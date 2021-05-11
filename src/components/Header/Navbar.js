@@ -83,8 +83,8 @@ export default function Navbar(props) {
                           open={Boolean(anchorEl)}
                           onClose={handleClose}
                         >
-                          <MenuItem> <Link className="_nav_link" to='/courses' >Profile</Link> </MenuItem>
-                          <MenuItem> <Link className="_nav_link" to='/courses' >Withdraw Funds</Link> </MenuItem>
+                          <MenuItem> <Link className="_nav_link" to='/Profile' >Profile</Link> </MenuItem>
+                          <MenuItem> <Link className="_nav_link" to='/refund' >Withdraw Refunds</Link> </MenuItem>
                           <MenuItem> <Link className="_nav_link" onClick={logout} >Logout</Link> </MenuItem>
                         </Menu>
                       </div>
@@ -96,34 +96,73 @@ export default function Navbar(props) {
             </AppBar>
         </Hidden>
         <Hidden mdUp>
-              <div className='sidebar__btn' >
-                <IconButton>
-                  <MenuIcon className='sidebar_icon' onClick={showDrawer} />
-                </IconButton>
-                <Drawer
-                  title="Navigation"
-                  placement="right"
-                  closable={true}
-                  onClose={onClose}
-                  visible={visible}
-                >
-                <Link to='/' ><p><h5>HOME</h5></p></Link>
-                <Link to='/courses' ><p><h5>E-LEARNING MARKETPLACE</h5></p></Link>
-                <Link to='/notifications/messages' ><p><h5>NOTIFICATIONS</h5></p></Link>
-                {
-                  (localStorage.token) ?
-                    <Link><p onClick={logout} ><h5>LOG OUT</h5></p></Link>
-                    :
-                    <Link to='/login'><p><h5>LOG IN</h5></p></Link>
-                }
-                {
-                  (localStorage.token) ?
-                    null
-                    :
-                    <Link to='/registration'><p><h5>SIGN UP</h5></p></Link>
-                }
-              </Drawer>
-            </div>
+        <div className="sidebar__btn">
+          <IconButton>
+            <MenuIcon className="sidebar_icon" onClick={showDrawer} />
+          </IconButton>
+          <Drawer
+            title="Navigation"
+            placement="right"
+            closable={true}
+            onClose={onClose}
+            visible={visible}
+          >
+            <Link to="/">
+              <p>
+                <h5>HOME</h5>
+              </p>
+            </Link>
+            <Link to="/courses">
+              <p>
+                <h5>E-LEARNING MARKETPLACE</h5>
+              </p>
+            </Link>
+            {localStorage.token && (
+              <Link to="/notifications/messages">
+                <p>
+                  <h5>NOTIFICATIONS</h5>
+                </p>
+              </Link>
+            )}
+
+            {localStorage.token && (
+            <Link to="/Profile">
+              <p>
+                <h5>PROFILE</h5>
+              </p>
+            </Link>
+            )}
+
+            {localStorage.token && (
+            <Link to="/refund">
+              <p>
+                <h5>WITHDRAW REFUND</h5>
+              </p>
+            </Link>
+
+            )}
+            {localStorage.token ? (
+              <Link>
+                <p onClick={logout}>
+                  <h5>LOG OUT</h5>
+                </p>
+              </Link>
+            ) : (
+              <Link to="/login">
+                <p>
+                  <h5>LOG IN</h5>
+                </p>
+              </Link>
+            )}
+            {localStorage.token ? null : (
+              <Link to="/registration">
+                <p>
+                  <h5>SIGN UP</h5>
+                </p>
+              </Link>
+            )}
+          </Drawer>
+        </div>
             <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px', zIndex: 1000}} onClick = {() =>this.props.history.push('/')}/>
         </Hidden>
       

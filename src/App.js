@@ -23,6 +23,8 @@ import Payment from './payment'
 import cardDetails from './Container/cardDetails/cardDetails';
 import Profile from "./Container/Profile/Profile.Container";
 
+import { createBrowserHistory } from "history";
+
 
 
 function App() {
@@ -38,11 +40,11 @@ function App() {
   //    console.log(isAuthenticated);
   //  }
   // })
-
+  const history = createBrowserHistory()
 
   return (
     <div className="App">
-      <Router>
+      <Router history={history}>
         <Switch>
           <Route path="/registration" exact component={RegistrationContainer} />
           <Route path="/forgot-password" exact component={Email} />
@@ -54,22 +56,17 @@ function App() {
           {/* <Route path="/details" exact component={RegistrationDetailsContainer} /> */}
           {/* <Route path="/details" exact component={Pagetwo} /> */}
           <Route path="/" exact component={Home} default />
-          <Route path="/trainers" component={Trainers} />
-          <Route
-            path="/course-registration"
-            exact
-            component={EmployeeRegistrationComponent}
-          />
-          <Route path="/chat" component={ChatComponent} />
+          <Route path="/trainers"  component={Trainers} />
+          <Route path="/course-registration" exact component={EmployeeRegistrationComponent} />
+           <Route path="/chat"  component={ChatComponent} />
           <Route path="/courses" exact component={ContentComponent} />
           <Route path="/help/1" exact component={HelpForm1} />
           <Route path="/help/2" exact component={HelpForm2} />
           <Route path="/help/3" exact component={HelpForm3} />
           <Route path="/investor" exact component={InvestorContainer} />
-          <Route path="/notifications" component={NotificationsContainer} />
-          <Route path="/Profile" exact component={Profile} />
-          <Route path="/payment" exact component={Payment} />
-          <Route render={() => <Redirect to="/" />} />
+          <Route path="/notifications" component={NotificationsContainer} /> 
+           <Route path="/payment" exact component={Payment} />
+        <Route render={() => <Redirect to = '/'/> }/>
         </Switch>
       </Router>
       {/* <script>

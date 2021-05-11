@@ -8,8 +8,14 @@ import Select from "react-select";
 import { message } from "antd";
 import Navbar from "../../components/Header/Navbar";
 import { url } from "../../Server/GlobalUrl";
-import { DatePicker } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { DatePicker} from "antd";
+import { UploadOutlined } from '@ant-design/icons';
+import CloseIcon from '@material-ui/icons/Close';
+import { Link } from 'react-router-dom';
+import { Card, Checkbox, TextField } from '@material-ui/core';
+import {ReactComponent as EkodeLogo} from '../../assets/eKodeLogo.svg';
+
+
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -58,13 +64,14 @@ class New extends React.Component {
     total_experience: null,
     relevant_experience: null,
     date_of_birth: "",
-    resume:""
+
+    checked: false
   };
 
   onChange = (date, dateString) => {
     // console.log(date,dateString);
     // this.setState({ date_of_birth: dateString });
-    this.handelData("date_of_birth", dateString);
+    this.handelData('date_of_birth', dateString)
   };
 
   componentDidMount() {
@@ -138,6 +145,9 @@ class New extends React.Component {
     } else if (identity === "date_of_birth") {
       this.setState({ date_of_birth: data });
     }
+    else if (identity === "date_of_birth") {
+      this.setState({ date_of_birth: data });
+    }
   };
 
   // (statename ? stateFormat.test(statename) : true) &&
@@ -149,13 +159,8 @@ class New extends React.Component {
     if (
       this.state.pincode === null ||
       this.state.city === "" ||
-      this.state.state === "" ||
-      this.state.date_of_birth === "" ||
-      this.state.resume === "" ||
-      (this.state.desig ? !designationFormat.test(this.state.desig) : false) ||
-      this.state.fileList.length === 0 ||
-      this.state.total_experience === null ||
-      this.state.relevant_experience === null
+      this.state.state === ""
+      // || this.state.date_of_birth === ""
     ) {
       {
         console.log("hello");
@@ -183,32 +188,34 @@ class New extends React.Component {
       } else if(this.state.relevant_experience === null){
         message.info("Please Enter Relevant Experience");
       }
+      // else if(this.state.date_of_birth === ""){
+      //   message.info("Please Fill Date of birth");
+
+      // }
     } else {
       let tech = [];
       let sub_tech = [];
 
       tech.push(parseInt(this.state.technology?.id));
       sub_tech.push(parseInt(this.state.sub_technology?.id));
+      
       let formData = new FormData();
 
-      formData.append("pincode", this.state.pincode);
-      formData.append("city", this.state.city);
-      formData.append("state", this.state.state);
-      formData.append("technology", [this.state.technology?.id]);
-      formData.append("sub_technology", [this.state.sub_technology?.id]);
-      formData.append("total_experience", this.state.total_experience?.value);
-      formData.append(
-        "relevant_experience",
-        this.state.relevant_experience?.value
-      );
-      formData.append("date_of_birth", this.state.date_of_birth);
-      formData.append("fees", this.state.fees);
-      formData.append("designation", this.state.desig);
-      formData.append("rating", this.state.rating);
-      this.state.fileList.length > 0 &&
-        formData.append("profile_pic", this.state.fileList[0].originFileObj);
-      formData.append("resume", this.state.resume);
+      formData.append('pincode', this.state.pincode);
+      formData.append('city', this.state.city);
+      formData.append('state', this.state.state);
+      formData.append('technology', [this.state.technology?.id]);
+      formData.append('sub_technology',[this.state.sub_technology?.id] );
+      formData.append('total_experience', this.state.total_experience?.value);
+      formData.append('relevant_experience', this.state.relevant_experience?.value);
+      this.state.fileList.length > 0 && formData.append('profile_pic', this.state.fileList[0].originFileObj);
+      formData.append('designation', this.state.desig);
+
+      // formData.append('date_of_birth',  this.state.date_of_birth);
+      // formData.append('fees', this.state.fees);
+      // formData.append('rating', this.state.rating);
       // formData.append('profile_pic', this.state.file)
+
       let data = {
         pincode: this.state.pincode,
         city: this.state.city,
@@ -230,7 +237,8 @@ class New extends React.Component {
       let id = localStorage.getItem("educator_id");
       let user_id = localStorage.getItem("user_id");
 
-      fetch(url + "/api/customusersecond/" + user_id + "/", {
+      
+      fetch(`${url}/api/customusersecond/${user_id}/`, {
         method: "PUT",
         headers: {
           Accept: "application/json, text/plain",
@@ -252,7 +260,7 @@ class New extends React.Component {
 
           let auth = localStorage.getItem("token");
           if (localStorage.getItem("is_client")) {
-            await fetch(url + "/api/educatorcreate/" + id + "/", {
+           await fetch(`${url}/api/educatorcreate/${id}/`, {
               method: "PUT",
               headers: {
                 Accept: "application/json, text/plain",
@@ -323,40 +331,34 @@ class New extends React.Component {
     });
   };
 
-    handleResume = (e) => {
-      const file = e.target.files[0];
-      console.log(file);
-      this.setState({
-        resume: file,
-      });
-    };
+  handleChange = async({ fileList }) => {
+      //fileList[0].originFileObj.url = URL.createObjectURL(fileList[0].originFileObj);
+      //fileList[0].originFileObj.preview = await getBase64(fileList[0].originFileObj)
+      this.setState({ fileList });
+      // console.log(this.state.fileList) 
+      };
 
-  handleChange = async ({ fileList }) => {
-    //fileList[0].originFileObj.url = URL.createObjectURL(fileList[0].originFileObj);
-    //fileList[0].originFileObj.preview = await getBase64(fileList[0].originFileObj)
-    this.setState({ fileList });
-    // console.log(this.state.fileList)
-  };
+      change = async(e)=>{
+        e.persist();
+        // console.log(e.target.files);
+        await this.setState({file: e.target.files[0]})
+        // console.log(this.state.file);
+}
 
-  change = async (e) => {
-    e.persist();
-    // console.log(e.target.files);
-    await this.setState({ file: e.target.files[0] });
-    // console.log(this.state.file);
-  };
+
 
   render() {
-    const props = {
-      action: "//jsonplaceholder.typicode.com/posts/",
-      listType: "picture",
+   const props = {
+      action: '//jsonplaceholder.typicode.com/posts/',
+      listType: 'picture',
       previewFile(file) {
-        console.log("Your upload file:", file);
+        console.log('Your upload file:', file);
         // Your process logic. Here we just mock to the same file
-        return fetch("https://next.json-generator.com/api/json/get/4ytyBoLK8", {
-          method: "POST",
+        return fetch('https://next.json-generator.com/api/json/get/4ytyBoLK8', {
+          method: 'POST',
           body: file,
         })
-          .then((res) => res.json())
+          .then(res => res.json())
           .then(({ thumbnail }) => thumbnail);
       },
     };
@@ -407,27 +409,33 @@ class New extends React.Component {
       ) : null;
     return (
       <>
-        <Navbar />
+        <div style={{position:'absolute', display:'flex', flex:1, width:'100%', alignItems:'flex-end',justifyContent:'flex-end', paddingRight:40}}>
+            <Link to='/'> <CloseIcon style={{fontSize:30, color:'black'}} /> </Link>
+        </div>
+        <div style={{marginTop:30, display:'flex', justifyContent:'center', marginBottom:10}}>
+            <Card elevation={2} style={{width:100, height:100, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
+                <Link to='/'>
+                    <EkodeLogo  />
+                </Link>
+            </Card>
+        </div>
 
         <div className="registration__page__two">
           <form className="registration__details__container">
             <div className="registration__details__img">
               {/* <img src={icon} alt="KodeCrux"></img> */}
               <>
-                <span style={{ color: "grey", fontWeight: "500" }}>
-                  Profile Picture{" "}
-                </span>
-                {/* <input type= 'file' onChange = {(e)=>this.change(e)} /> */}
+              
+              {/* <input type= 'file' onChange = {(e)=>this.change(e)} /> */}
                 <Upload
-                  beforeUpload={(file) => {
-                    const isJPG =
-                      file.type === "image/jpeg" || file.type === "image/png";
-                    if (!isJPG) {
-                      message.error("You can only upload JPG or PNG file!");
-                      return false;
-                    } else {
-                      return true;
-                    }
+                beforeUpload = {(file) => {
+                  const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+                      if (!isJPG) {
+                          message.error('You can only upload JPG or PNG file!');
+                          return false;
+                      } else {
+                          return true;
+                      }
                   }}
                   customRequest={dummyRequest}
                   //  action="https://next.json-generator.com/api/json/get/4ytyBoLK8"
@@ -453,41 +461,22 @@ class New extends React.Component {
                     src={previewImage}
                   />
                 </Modal>
+                <span style={{ color: "#3743B1", fontSize:12}}>
+                  Profile Picture
+                </span>
               </>
             </div>
+
             <Col style={{ marginTop: "10px" }}>
-              <div class="form__group">
-                <label>Pin Code</label>
-                <input
-                  className="form__control"
-                  type="number"
-                  value={this.state.pincode}
-                  onChange={(e) => this.handelData("pincode", e.target.value)}
-                  type="text"
-                  placeholder="Enter Your Postal Code"
-                />
-              </div>
-              <div class="form__group">
-                <label>State</label>
-                <input
-                  type="text"
-                  value={this.state.state}
-                  onChange={(e) => this.handelData("state", e.target.value)}
-                  className="form__control"
-                  placeholder="Enter Your State"
-                />
-              </div>
-              <div class="form__group">
-                <label>City</label>
-                <input
-                  type="text"
-                  value={this.state.city}
-                  onChange={(e) => this.handelData("city", e.target.value)}
-                  className="form__control"
-                  placeholder="Enter Your City"
-                />
+              <div class="form__group" style={{display:'flex', gap:20}}>
+                <TextField variant="outlined" className="form__control" label="PIN CODE" type="number" value={this.state.pincode} onChange={(e) => this.handelData("pincode", e.target.value)} />
+                <TextField variant="outlined" className="form__control" label="CITY" type="text" value={this.state.city} onChange={(e) => this.handelData("city", e.target.value)} />
               </div>
 
+              <div class="form__group">
+                <TextField variant="outlined" className="form__control" label="STATE" type="text" value={this.state.state} onChange={(e) => this.handelData("state", e.target.value)} />
+              </div>
+              
               {educator}
 
               {is_client === "true" ? null : (
@@ -579,7 +568,7 @@ class New extends React.Component {
                       placeholder="Designation"
                     />
                   </div>
-                  <div class="form__group">
+                  {/* <div class="form__group">
                     <label>Fees</label>
                     <input
                       type="number"
@@ -588,8 +577,8 @@ class New extends React.Component {
                       className="form__control"
                       placeholder="Fees"
                     />
-                  </div>
-                  <div class="form__group">
+                  </div> */}
+                  {/* <div class="form__group">
                     <label>Rating</label>
                     <input
                       type="number"
@@ -600,38 +589,18 @@ class New extends React.Component {
                       className="form__control"
                       placeholder="Rating"
                     />
-                  </div>
+                  </div> */}
                 </div>
               )}
 
-              <div class="form__group">
+              {/* <div class="form__group">
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <label>Date of Birth</label>
                   <div style={{ margin: "0 60px" }}>
-                    <DatePicker onChange={this.onChange} format="YYYY-MM-DD" />
+                    <DatePicker onChange={this.onChange} format="YYYY-MM-DD"/>
                   </div>
                 </div>
-              </div>
-
-              <div class="form__group">
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <label style={{marginRight:'3vw'}}>Attach Resume</label>
-                  <input
-                    type="file"
-                    // className="form__control"
-                    onChange={(e) => this.handleResume(e)}
-                    accept="image/*, .pdf, .doc,.docx"
-                  />
-                </div>
-                {/* <input
-                  className="form__control"
-                  type="number"
-                  value={this.state.pincode}
-                  onChange={(e) => this.handelData("pincode", e.target.value)}
-                  type="text"
-                  placeholder="Enter Your Postal Code"
-                /> */}
-              </div>
+              </div> */}
             </Col>
             {/* <div>
               <label>Attach Resume</label>{" "}
@@ -646,10 +615,8 @@ class New extends React.Component {
             </div> */}
 
             <Col className="registration__details__footer">
-              <button type="submit" onClick={this.onSubmit}>
-                Done
-              </button>
               <div>
+                <Checkbox checked={this.state.checked} onChange={() => {this.setState({checked : !this.state.checked})}} />
                 <span>By register I agree To</span>
                 <span>
                   <a style={{ color: "#30b3f0", cursor: "pointer" }}>
@@ -661,6 +628,9 @@ class New extends React.Component {
                   </a>
                 </span>
               </div>
+              <button type="submit" disabled={!this.state.checked} style={!this.state.checked ? {backgroundColor:'#BBBBBB', color:'white', border:'none'} : null} onClick={this.onSubmit}>
+                DONE
+              </button>
             </Col>
           </form>
         </div>

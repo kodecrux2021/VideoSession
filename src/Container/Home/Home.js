@@ -2,9 +2,12 @@ import React, { Component } from 'react'
 import Carousel from 'react-bootstrap/Carousel'  
 import './Home.css'
 import elearn from '../../assets/images/elearn.jpg'
-import instruc from '../../assets/images/instructor.jpeg'
-import freelan from '../../assets/images/codeexpert.jpeg'
-import study from '../../assets/images/study.jpeg'
+import instruc from '../../assets/images/instructor.jpg'
+import freelan from '../../assets/images/codeexpert.jpg'
+
+import studyImg from '../../assets/studyRoom.png';
+import solutionImg from '../../assets/solutionRoom.png';
+
 import home1 from '../../assets/images/home1.jpg'
 import home2 from '../../assets/images/home2.jpg'
 import home3 from '../../assets/images/home3.jpg'
@@ -12,10 +15,10 @@ import home4 from '../../assets/images/home4.jpg'
 import home5 from '../../assets/images/home5.jpg'
 import Navbar from '../../components/Header/Navbar';
 import {message, Modal} from 'antd';
-import ekodecrux from '../../assets/images/reg2.jpeg';
+import kodecrux from '../../assets/images/reg2.jpeg';
 import {AiFillMediumSquare,AiFillFacebook, AiFillInstagram, AiFillTwitterSquare, AiFillLinkedin} from 'react-icons/ai';
 import {FaQuora} from 'react-icons/fa'
-import { Redirect } from "react-router";
+import { Typography } from '@material-ui/core'
 
 
 
@@ -236,142 +239,138 @@ If as a user, you wish to refund the payment if they do not meet thier required 
        this.setState({visible: false})
       } 
 
-      studyRoomClick = () =>{
+    studyRoomClick = () =>{
         if(localStorage.getItem('token')){
-            this.props.history.push("/courses");
+            this.props.history.push('/course-registration')
         }  
         else{
             alert('Please login to go ahead!')
-            this.props.history.push("/login");
-            //  {<Redirect to="/login" />}
         }
-       
-      }
+    
+    }
 
-      solutionRoomClick = () =>{
+    solutionRoomClick = () =>{
         if(localStorage.getItem('token')){
             this.props.history.push('/help/1')
         }  
         else{
             alert('Please login to go ahead!')
         }
-      }
-      render() {
-
+    }
+    render() {
         return (
         <>
-        <Navbar/>
-        <img src={ekodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px', zIndex: 1000}} onClick = {() =>this.props.history.push('/')}/>
+        <Navbar />
         <div className='body__ctr'>
-              <div className="home_container">
-      <Carousel controls={false} interval={10000} indicators={false} pause={false} fade={true}>
-  <Carousel.Item >
-    <img
-      className="d-block w-100"
-      src={home1}
-      alt="First slide"
-    />
-  </Carousel.Item>
-  <Carousel.Item >
-    <img
-      className="d-block w-100"
-      src={home2}
-      alt="Second slide"
-    />
-  
-  </Carousel.Item>
-  <Carousel.Item>
-    <img
-      className="d-block w-100"
-      src={home3}
-      alt="Third slide"
-    />
+            <div className="home_container">
+                <Carousel controls={false} interval={10000} indicators={true} pause={false} fade={true} style={{marginTop: -20}} >
+                    <Carousel.Item >
+                        <img
+                        className="d-block w-100"
+                        src={home1}
+                        alt="First slide"
+                        />
+                    </Carousel.Item>
+                    <Carousel.Item >
+                        <img
+                        className="d-block w-100"
+                        src={home2}
+                        alt="Second slide"
+                        />
+                    
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100"
+                        src={home3}
+                        alt="Third slide"
+                        />
 
-  </Carousel.Item>
-  <Carousel.Item>
-    <img
-      className="d-block w-100"
-      src={home4}
-      alt="Third slide"
-    />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100"
+                        src={home4}
+                        alt="Third slide"
+                        />
 
-  </Carousel.Item>
-  <Carousel.Item>
-    <img
-      className="d-block w-100"
-      src={home5}
-      alt="Third slide"
-    />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100"
+                        src={home5}
+                        alt="Third slide"
+                        />
 
-  </Carousel.Item>
-</Carousel>
-
-<div className="button__container">
-                
+                    </Carousel.Item>
+                </Carousel>
+            {/* immortal ui mod */}
+            <div className="button__container">
                 <div className="button__card">
                     <div className="button__card__img">
-                        <img src={study} alt="" />
+                        <img src={studyImg} alt="" />
                     </div>
                     <div className= 'button__card__details' style ={{bottom: '0'}}>
-                        <h2>Study Room</h2>
-                        <p>Online tutoring platform with best experts are being onboarded to help your academic needs.</p>
-                        <button style={{  backgroundColor:' #5964c9'}} onClick={this.studyRoomClick} >Study Room</button>
+                        <h2 style={{flex:0.2}}>Study Room</h2>
+                        <Typography style={{flex:0.6, fontSize:15, lineHeight:1.5, fontFamily:'Segoe UI'}}>Online tutoring platform with best experts are being onboarded to help your academic needs.</Typography>
+                        <div style={{flex:.2, display:'flex', alignItems:'center', paddingTop:10}}>
+                            <button onClick={this.studyRoomClick} >Study Room</button>
+                        </div>
                     </div>
-              
                 </div>
+
                 <div className="button__card">
                     <div className="button__card__img">
-                        <img src={study} alt="" />
+                        <img src={solutionImg} alt="" />
                     </div>
                     <div className= 'button__card__details'>
-                        <h2>Solution Room</h2>
-                        <p>Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs.</p>
-                        <button style={{  backgroundColor:' #76d2fd'}} onClick={this.solutionRoomClick} >Solution Room</button>
+                        <h2 style={{flex:0.2}}>Solution Room</h2>
+                        <Typography style={{flex:0.6, fontSize:15, lineHeight:1.5, fontFamily:'Segoe UI'}}>Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs.</Typography>
+                        <div style={{flex:0.2, display:'flex', alignItems:'center', paddingTop:10}}>
+                            <button onClick={this.solutionRoomClick} >Solution Room</button>
+                        </div>
                     </div>
                 </div>
             </div>
-
-        <div className="cards__container">
-            <div className="_card">
-                <img src={elearn} alt=""/>
-                <h3>
-                E-Learning market place
-                </h3>
-                <p>
-                Just a click-away to experience one-stop  solution for all your training ,learning and certification needs .  Our objective is to give best-in-class platform to access Industry's most prominent learning providers .  We offer solution for training needs of both Academic ,On-job experts  with seemless integration features .
-                </p>
-            </div>
-
-            <div className="_card">
-                <img src={instruc} alt=""/>
-                <h3>
-                   Instructor
-                </h3>
-                <p>
-                Online tutoring platform with best experts are being onboarded to help your academic needs.  Our specialization includes Computer science, software Programming ,  Information technology with salient features of Video and Audio based interactive sessions.
-                </p>
-            </div>
-            <div className="_card">
-                <img src={freelan} alt=""/>
-                <h3>
-                    Code Expert
-                </h3>
-                <p>
-                We offer a expert support with one click away . Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs. We have variety of experts who can be your buddy to support your project completion with all necessary tools, expertise . Our free lancer module can be your virtual team to meet your deliverables. 
-                </p>
-            </div>
-
+            <div className="cards__container">
+                <div className="_card">
+                    <img src={elearn} alt=""/>
+                    <h3>
+                    E-Learning market place
+                    </h3>
+                    <p>
+                    Just a click-away to experience one-stop  solution for all your training ,learning and certification needs .  Our objective is to give best-in-class platform to access Industry's most prominent learning providers .  We offer solution for training needs of both Academic ,On-job experts  with seemless integration features .
+                    </p>
+                </div>
+                <div className="_card">
+                    <img src={freelan} alt=""/>
+                    <h3>
+                        Code Expert
+                    </h3>
+                    <p>
+                    We offer a expert support with one click away . Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs. We have variety of experts who can be your buddy to support your project completion with all necessary tools, expertise . Our free lancer module can be your virtual team to meet your deliverables. 
+                    </p>
+                </div>
+                <div className="_card">
+                    <img src={instruc} alt=""/>
+                    <h3>
+                    Instructor
+                    </h3>
+                    <p>
+                    Online tutoring platform with best experts are being onboarded to help your academic needs.  Our specialization includes Computer science, software Programming ,  Information technology with salient features of Video and Audio based interactive sessions.
+                    </p>
+                </div>
             </div>
 
             <div className="blog__container">
-            <div  style ={{display: 'inline'}}>
+                <div  style ={{display: 'inline'}}>
                     <div className= 'button__card__details'>
                         <h1>Blogs by Kodecrux</h1>
                         <p>Gig economy statistics show a free market system where organizations and independent workers engage in short-term work arrangements. BLS data suggest that in 2017 the US gig economy had 55 million participants. It's estimated that 36% of US workers take part in the gig economy and 33% of companies extensively use gig workers.
                         </p>
         
                     </div>
-            </div>
+                </div>
             </div>
 
             

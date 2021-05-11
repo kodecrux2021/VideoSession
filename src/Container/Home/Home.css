@@ -12,40 +12,66 @@ html {
     flex-direction: column;
 }
 
+/* Immortal mod */
+.home_container > div > ol {
+    bottom: -40px;
+}
+.home_container > div > ol > li {
+    border : 1px;
+    border-color: #3743B1 !important ;
+    border-style: solid;
+    width: 15px;
+    height: 8px;
+    border-radius: 10px;
+}
 
+.home_container > div > ol > li.active {
+    background-color: #3743B1;
+    width: 30px;
+}
+
+/* ------------ */
 
 
 .button__container{
 display: flex;
-justify-content: space-around;
-padding: 30px 60px ;
+justify-content: space-between;
+padding: 56px 40px 23px 40px;
+gap: 20px;
 }
 
 
-
+/* immortal ui mod */
 .button__card {
     display: flex;
     padding: 10px 20px;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 0 10px 0 rgba(55,67,177,0.7);
     transition: 0.3s;
-    border-radius: 6px;
-    flex: 0.45;
+    border-radius: 20px;
+    min-height: 244px;
+    justify-content: center;
+    align-items: center;
+    flex: 0.47;
 }
 .button__card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px 0 rgba(55,67,177,0.6);
   }
 
 .button__card__img{
     flex:0.3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px;
 }
 .button__card__img > img{
     /* width: 100%; */
-    width: 160px;
+    width: 115px;
 }
 .button__card__details{
     flex:0.7;
     display: flex;
+    height: 100%;
     flex-direction: column;
     padding: 20px 10px;
 }
@@ -57,41 +83,83 @@ padding: 30px 60px ;
     font-size: 22px;
     font-weight: 500;
    }
-.button__card__details> button {
-    width: 160px;
-    height: 36px;
+.button__card__details> div > button {
+    width: 200px;
+    height: 43px;
     padding: 5px;
     border-radius: 6px;
-    border: none;
-    color: whitesmoke;
+    background-color: white;
+    border: 1px solid #3743B1 !important;
+    color: #3743B1;
     font-weight: 500;
     font-size: 16px;
+    cursor: pointer !important;
+    pointer-events: auto;
 }
 
+.button__card__details> div > button:hover {
+    color: whitesmoke;
+    background-color: #3743B1;
+    
+}
 .cards__container {
      display: flex;
-     padding: 120px 10px 50px 10px;
-     background-color: #28328c;
-     justify-content: space-around;
+     gap: 20px;
+     padding: 50px 40px 50px 40px;
+     background-color: #3743B1;
+     justify-content: space-between;
 }
 ._card {
-    flex: 0.25;
-    padding: 10px;
+    flex: 0.3;
     color: rgb(223, 222, 222);
+    padding: 3px;
+    border-radius: 30px;
     font-size: 20px;
     line-height: 1.5em;
+    border: 1px;
+    border-color: white;
+    border-style: solid;
 }
 ._card > img {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
     /* width: 100%; */
-    width: 350px;
-    height: 250px;
+    border-radius: 35px !important;
+    /* height: 352px; */
+    
     border-radius: 10px;
 }
 ._card > h3{
-    padding: 8px 0;
-    font-size: 35px;
+    padding: 8px 10px;
+    font-size: 30px;
     color: whitesmoke;
 }
+
+._card > p{
+    color: whitesmoke;
+    font-size: 18;
+    padding: 0 10px;
+}
+
+.loginButton:hover {
+    background-color: #3743B1 !important;
+    color: white !important;
+}
+
+.signupButton:hover {
+    border-color: #3743B1 !important;
+    color:#3743B1 !important;
+    background-color: white !important;
+}
+
+.loginButton:active {
+    border-color: #3743B1 !important;
+}
+/* ----------------- */
+
 ._footer {
     display: flex;
     justify-content: space-around;
@@ -122,8 +190,7 @@ padding: 3px 0;
 color: rgb(237, 237, 237);
 }
 .blog__container{
-   width: 95%;
-   padding: 80px 60px 30px;
+   padding: 80px 40px 30px;
    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
 }
 
@@ -164,7 +231,7 @@ color: rgb(237, 237, 237);
     }
  
     ._card > img{
-        width: 330px
+        width: "100%"
     }
 
 }

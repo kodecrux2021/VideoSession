@@ -1,0 +1,41 @@
+{
+  "folders": [
+	{
+		"path": "..\\..\\..\\..\\..\\clgpracs"
+	},
+	{
+		"path": "..\\..\\..\\..\\..\\WPProject"
+	},
+	{
+		"path": "..\\..\\..\\..\\..\\CampProject"
+	},
+	{
+		"path": "..\\..\\..\\..\\..\\reactcart"
+	},
+	{
+		"path": "..\\..\\..\\..\\..\\nodeside"
+	},
+	{
+		"path": "..\\..\\..\\..\\..\\studentTutornodeside"
+	},
+	{
+		"path": "..\\..\\..\\..\\..\\PizzaOnlineDelivery"
+	},
+	{
+		"path": "..\\..\\..\\..\\..\\form_hospital"
+	},
+	{
+		"path": "..\\..\\..\\..\\..\\studenttutorreactside"
+	},
+	{
+		"path": "..\\..\\..\\..\\..\\CocktailReactProject"
+	},
+	{
+		"path": "..\\..\\..\\.."
+	}
+],
+  "settings": {
+    "git.ignoreLimitWarning": true,
+    "liveServer.settings.multiRootWorkspaceName": "clgpracs"
+  }
+}

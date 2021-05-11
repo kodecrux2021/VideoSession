@@ -4,6 +4,7 @@ import Notifications from './Notifications';
 import { url } from '../../Server/GlobalUrl';
 import { message } from 'antd';
 import { Redirect } from 'react-router-dom';
+import ReactPolling from 'react-polling'
 
 let user_id = ''
 
@@ -15,8 +16,11 @@ export default class NotificationsContainer extends Component {
         user: '',
         message:[],
         isModalVisible: false,
-        hire: []
+        hire: [],
+        
     }
+
+
 
     handleCancel = () =>{
         this.setState({isModalVisible: false})
@@ -51,6 +55,7 @@ export default class NotificationsContainer extends Component {
             .then((result) => {
                 //console.log('result', result);
                 this.setState({isModalVisible: false})
+                window.location.reload(true);
             })  .catch((e)=>console.log(e));  
     }
 
@@ -110,8 +115,10 @@ export default class NotificationsContainer extends Component {
             .then((result) => {
                // console.log('result', result);
                 this.setState({isModalVisible: true, hire: result})
+                
             }) .catch((e)=>console.log(e));   
     }
+
     
     getMessage = () =>{
         //console.log(user_id);
@@ -127,7 +134,7 @@ export default class NotificationsContainer extends Component {
         .then(
             (result) => {
                 //console.log(user_id);
-              //console.log('convo',result)
+              console.log('convo',result)
 
               
               this.setState({message: result})
@@ -188,7 +195,7 @@ export default class NotificationsContainer extends Component {
           }})  
         .then(
             (result) => {
-            //   console.log('notification result',result)
+              console.log('notification result',result)
                 this.setState({notifications: result})
             }
         ).catch((e)=>message.info("Something went wrong")) 
@@ -246,6 +253,8 @@ export default class NotificationsContainer extends Component {
                 }
             ).catch((e)=>console.log(e));
     }
+
+    
 
 
     componentDidMount(){
@@ -311,6 +320,8 @@ export default class NotificationsContainer extends Component {
                 if (response['status'] === 201 || response['status'] === 200) {
                     message.info('Request Accepted! Go to messages to chat')
                     this.getReqList()
+                    // this.getNotifications(response.user?.id);
+                    // this.getMessage()
                     return response.json()
                 } else if (response['status'] === 400) {
                     message.info('Something went wrong!')
@@ -354,28 +365,102 @@ export default class NotificationsContainer extends Component {
         this.props.history.push('/payment')
     }
 
+
+        //     let auth = localStorage.getItem("token")
+        // fetch(url + '/api/request-read/', {
+        //     method:'GET',
+        //     headers: {
+        //       'Accept': 'application/json',
+        //      'Content-Type': 'application/json',
+        //      'Authorization': 'Bearer ' + auth,
+        //    },
+        // })
+        // .then(response => { if (response["status"] === 201 || response["status"] === 200) {
+        //     return response.json();
+        //   } else if(response["status"] === 401){
+        //     message.info("Please login, auth token expired");
+        //     this.props.history.push('/login')
+        //   }})
+        // .then(
+        //     (result) => {
+        //     //   console.log('request result',result)
+        //       this.setState({requests: result})
+        //      // console.log(this.state.requests);
+
+        //     }
+        // )
+        // .catch((e)=>console.log(e));
+
+        // url + '/api/request-read/'
+
     render() {
         return (
-            <div>
-                <Navbar/>
-                <Notifications
-                selected = {this.state.selected}
-                selectHandler = {this.selectHandler}
-                requests = {this.state.requests}
-                acceptReq = {this.acceptReq}
-                notifications = {this.state.notifications}
-                rejectReq ={this.rejectReq}
-                chatHandler = {this.chatHandler}
-                message={this.state.message}
-                isModalVisible={this.state.isModalVisible}
-                show={this.show}
-                handleCancel = {this.handleCancel}
-                hire={this.state.hire}
-                acceptHire={this.acceptHire}
-                declineHire={this.declineHire}
-                pay={this.pay}
-                />
-            </div>
-        )
+          <div>
+            {/* <Navbar /> */}
+            <ReactPolling
+              url={`${url}/api/request-read`}
+              interval={3000} // in milliseconds(ms)
+              retryCount={10} // this is optional
+              onSuccess={(result) => {
+                  this.getMessage();
+                   this.setState({ requests: result });
+                  return true;
+              }}
+              onFailure={() => console.log("handle failure")} // this is optional
+              method={"GET"}
+              headers={{
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              }}
+              //   body={JSON.stringify(data)} // data to send in a post call. Should be stringified always
+              render={({ startPolling, stopPolling, isPolling }) => {
+                if (isPolling) {
+                   return (
+                     <div>
+                       <Navbar />
+                       <Notifications
+                         selected={this.state.selected}
+                         selectHandler={this.selectHandler}
+                         requests={this.state.requests}
+                         acceptReq={this.acceptReq}
+                         notifications={this.state.notifications}
+                         rejectReq={this.rejectReq}
+                         chatHandler={this.chatHandler}
+                         message={this.state.message}
+                         isModalVisible={this.state.isModalVisible}
+                         show={this.show}
+                         handleCancel={this.handleCancel}
+                         hire={this.state.hire}
+                         acceptHire={this.acceptHire}
+                         declineHire={this.declineHire}
+                         pay={this.pay}
+                       />
+                     </div>
+                   );
+                } else {
+                 return <div>Polling stopped</div>
+                }
+              }}
+            />
+            {/* <Notifications
+              selected={this.state.selected}
+              selectHandler={this.selectHandler}
+              requests={this.state.requests}
+              acceptReq={this.acceptReq}
+              notifications={this.state.notifications}
+              rejectReq={this.rejectReq}
+              chatHandler={this.chatHandler}
+              message={this.state.message}
+              isModalVisible={this.state.isModalVisible}
+              show={this.show}
+              handleCancel={this.handleCancel}
+              hire={this.state.hire}
+              acceptHire={this.acceptHire}
+              declineHire={this.declineHire}
+              pay={this.pay}
+            /> */}
+          </div>
+        );
     }
 }

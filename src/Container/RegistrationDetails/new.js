@@ -140,15 +140,26 @@ class New extends React.Component {
     }
   };
 
+  // (statename ? stateFormat.test(statename) : true) &&
+
   onSubmit = async (e) => {
     e.preventDefault();
-
+    let designationFormat = /^[A-Za-z ]{1,40}$/;
+    console.log("rexp", this.state.relevant_experience);
     if (
       this.state.pincode === null ||
       this.state.city === "" ||
       this.state.state === "" ||
-      this.state.date_of_birth === ""
+      this.state.date_of_birth === "" ||
+      this.state.resume === "" ||
+      (this.state.desig ? !designationFormat.test(this.state.desig) : false) ||
+      this.state.fileList.length === 0 ||
+      this.state.total_experience === null ||
+      this.state.relevant_experience === null
     ) {
+      {
+        console.log("hello");
+      }
       if (this.state.pincode === "") {
         message.info("Please Fill Pincode");
       } else if (this.state.city === "") {
@@ -157,6 +168,20 @@ class New extends React.Component {
         message.info("Please Fill State");
       } else if (this.state.date_of_birth === "") {
         message.info("Please Fill Date of birth");
+      } else if (this.state.resume === "") {
+        message.info("Please upload the resume");
+      } else if (
+        this.state.desig
+          ? designationFormat.test(this.state.desig) === false
+          : false
+      ) {
+        message.info("Designation cannot have numeric values");
+      } else if (this.state.fileList.length === 0) {
+        message.info("Please upload profile picture");
+      } else if (this.state.total_experience === null) {
+        message.info("Please Enter Total Experience");
+      } else if(this.state.relevant_experience === null){
+        message.info("Please Enter Relevant Experience");
       }
     } else {
       let tech = [];
@@ -182,7 +207,7 @@ class New extends React.Component {
       formData.append("rating", this.state.rating);
       this.state.fileList.length > 0 &&
         formData.append("profile_pic", this.state.fileList[0].originFileObj);
-        formData.append("resume", this.state.resume);
+      formData.append("resume", this.state.resume);
       // formData.append('profile_pic', this.state.file)
       let data = {
         pincode: this.state.pincode,
@@ -199,7 +224,7 @@ class New extends React.Component {
         profile_pic: this.state.file,
       };
 
-      // console.log("data_______________", formData);
+      console.log("data_______________", formData);
       // console.log(tech, sub_tech);
       // console.log(this.state.sub_technology?.id);
       let id = localStorage.getItem("educator_id");
@@ -276,9 +301,10 @@ class New extends React.Component {
         })
         .catch((e) => console.log(e));
 
-      //     this.props.history.push("/verification");
-    }
-  };
+          // this.props.history.push("/verification");
+      }
+    
+};
 
   handleCancel = () => this.setState({ previewVisible: false });
 
@@ -586,18 +612,38 @@ class New extends React.Component {
                   </div>
                 </div>
               </div>
+
+              <div class="form__group">
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <label style={{marginRight:'3vw'}}>Attach Resume</label>
+                  <input
+                    type="file"
+                    // className="form__control"
+                    onChange={(e) => this.handleResume(e)}
+                    accept="image/*, .pdf, .doc,.docx"
+                  />
+                </div>
+                {/* <input
+                  className="form__control"
+                  type="number"
+                  value={this.state.pincode}
+                  onChange={(e) => this.handelData("pincode", e.target.value)}
+                  type="text"
+                  placeholder="Enter Your Postal Code"
+                /> */}
+              </div>
             </Col>
-            <div>
+            {/* <div>
               <label>Attach Resume</label>{" "}
             </div>
             <div>
               <input
                 type="file"
-                // value={this.state.fees}
+                className="form__control"
                 onChange={(e) => this.handleResume(e)}
                 accept="image/*, .pdf, .doc,.docx"
               />
-            </div>
+            </div> */}
 
             <Col className="registration__details__footer">
               <button type="submit" onClick={this.onSubmit}>

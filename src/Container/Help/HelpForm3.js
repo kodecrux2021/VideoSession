@@ -70,6 +70,7 @@ export default class HelpForm3 extends Component {
 
     if (this.state.selected.length !== null && this.state.selected.length > 0) {
       message.info('Submitted Successfully!!!');
+      this.props.history.push("/trainers/message");
       // console.log('state', this.state);
 
 
@@ -89,28 +90,28 @@ export default class HelpForm3 extends Component {
       //console.log('data_______________', data);
       let auth = localStorage.getItem('token');
       let id = localStorage.getItem('user_id');
-      fetch(url + '/api/customuserthird/' + id + '/', {
-        method: 'PUT',
-        headers: {
-          'Accept': 'application/json, text/plain',
-          'Content-Type': 'application/json;charset=UTF-8',
-          'Authorization': 'Bearer ' + auth,
-        },
-        body: JSON.stringify(data)
-      })
-        .then((response) => {
-          //console.log("response", response)
-          if (response['status'] === 201 || response['status'] === 200) {
-            return response.json()
-          } else if (response['status'] === 400) {
-            message.info('Something went wrong!')
-            //console.log('Something is wrong')
-          }
-        })
-        .then((result) => {
-         // console.log('result', result);
-         this.props.history.push('/trainers/message');
-        })
+      // fetch(url + '/api/customuserthird/' + id + '/', {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Accept': 'application/json, text/plain',
+      //     'Content-Type': 'application/json;charset=UTF-8',
+      //     'Authorization': 'Bearer ' + auth,
+      //   },
+      //   body: JSON.stringify(data)
+      // })
+      //   .then((response) => {
+      //     //console.log("response", response)
+      //     if (response['status'] === 201 || response['status'] === 200) {
+      //       return response.json()
+      //     } else if (response['status'] === 400) {
+      //       message.info('Something went wrong!')
+      //       //console.log('Something is wrong')
+      //     }
+      //   })
+      //   .then((result) => {
+      //    // console.log('result', result);
+         
+      //   })
 
       
     }

@@ -237,7 +237,7 @@ export default function Notifications(props) {
                     <div className='friend__cards' >
                        {
                            props.request!==null && props.requests.map((request)=> 
-                            {
+                            { console.log(request)
 
                                 let data =  request.accepted ? 
                                 null :
@@ -308,44 +308,148 @@ export default function Notifications(props) {
                             props.notifications.map((notification)=> {
 
                                 return (
-                                    <div className='chat__card' key={notification.id}>
-                                    <Avatar src={ notification?.sent_by_profile_pic} className={classes.large}/>
-                                   {props.hire !== null ? (<Modal title="Hiring Application" visible={props.isModalVisible}  onCancel={props.handleCancel}
-                                    footer={[
-                                        <Button onClick={() =>props.acceptHire(props.hire.id)}>
-                                          Accept
-                                        </Button>,
-                                        <Button  type="primary" onClick = {() =>props.declineHire(props.hire.id)}>
-                                          Reject
-                                        </Button>,
-                                      ]}>
-                                         { props.hire !==null ?
+                                  <div
+                                    className="chat__card"
+                                    key={notification.id}
+                                  >
+                                    <Avatar
+                                      src={notification?.sent_by_profile_pic}
+                                      className={classes.large}
+                                    />
+                                    {props.hire !== null ? (
+                                      <Modal
+                                        title="Hiring Application"
+                                        visible={props.isModalVisible}
+                                        onCancel={props.handleCancel}
+                                        footer={[
+                                          <Button
+                                            onClick={() =>
+                                              props.acceptHire(props.hire.id)
+                                            }
+                                          >
+                                            Accept
+                                          </Button>,
+                                          <Button
+                                            type="primary"
+                                            onClick={() =>
+                                              props.declineHire(props.hire.id)
+                                            }
+                                          >
+                                            Reject
+                                          </Button>,
+                                        ]}
+                                      >
+                                        {props.hire !== null ? (
+                                          <div>
+                                            {" "}
+                                            <p>
+                                              <e>Project Title</e>:{" "}
+                                              {props.hire.project_title}
+                                            </p>
+                                            <p>
+                                              <e>Topic</e>: {props.hire.request}
+                                            </p>
+                                            <p>
+                                              <e>Budget</e>: $
+                                              {props.hire.budget}
+                                            </p>
+                                            <p>
+                                              <e>Deliverables</e>:{" "}
+                                              {props.hire.deliverables}
+                                            </p>
+                                            <p>
+                                              <e>Additional Information</e>:{" "}
+                                              {
+                                                props.hire
+                                                  .additional_information
+                                              }
+                                            </p>
+                                            <p>
+                                              <e>Deadline</e>:{" "}
+                                              {props.hire.deadlines}
+                                            </p>
+                                          </div>
+                                        ) : null}
+                                      </Modal>
+                                    ) : null}
+                                    {console.log(notification)}
+                                    <div className="troubleshoot__details">
+                                      {notification.type === "HIRE" ? (
+                                        notification.user ===
+                                        notification.recieved_by_first_name.concat(
+                                          " " +
+                                            notification.recieved_by_last_name
+                                        ) ? (
+                                          <span>
+                                            {notification.hiring_status ===
+                                              "INSTRUCTOR_ACCEPTED" && (
+                                              <p>
+                                                You accepted{" "}
+                                                {
+                                                  notification.sent_by_first_name
+                                                }{" "}
+                                                's request
+                                              </p>
+                                            )}
+                                            {notification.hiring_status !==
+                                              "INSTRUCTOR_ACCEPTED" && (
+                                              <p>
+                                                {
+                                                  notification.sent_by_first_name
+                                                }{" "}
+                                                {notification.sent_by_last_name}{" "}
+                                                wants to hire you
+                                              </p>
+                                            )}
 
-                                         (<div> <p><e>Project Title</e>: {props.hire.project_title}</p>
-                                          <p><e>Topic</e>: {props.hire.request}</p>
-                                          <p><e>Budget</e>: ${props.hire.budget}</p>
-                                          <p><e>Deliverables</e>: {props.hire.deliverables}</p>
-                                          <p><e>Additional Information</e>: {props.hire.additional_information}</p>
-                                          <p><e>Deadline</e>: {props.hire.deadlines}</p>
-                                          </div>) : null
-                                        }
-                                    </Modal>): null}
-                                        {console.log(notification)}
-                                            <div className='troubleshoot__details' >
-                                                {notification.type === 'HIRE' ?
-                                                notification.user===notification.recieved_by_first_name.concat(' '+notification.recieved_by_last_name)?
-                                                <span>{notification.sent_by_first_name} {notification.sent_by_last_name} wants to hire you<div className='friend__card__button' >
-                                                <button  style={{  backgroundColor:' #5964c9'}} onClick = {() =>props.show(notification.contract)}>Show</button>
-                                                </div></span>:
-                                                <span>{notification.sent_by_first_name} {notification.sent_by_last_name} has accepted your request to hire<div className='friend__card__button' >
-                                                <button  style={{  backgroundColor:' #5964c9'}} onClick = {() =>props.pay(notification.contract)}>Pay Now</button>
-                                               </div></span>
-                                                :
-                                                <span>{notification.sent_by_first_name} {notification.sent_by_last_name} has accepted your request</span>
+                                            <div className="friend__card__button">
+                                              {notification.hiring_status !==
+                                                "INSTRUCTOR_ACCEPTED" && (
+                                                <button
+                                                  style={{
+                                                    backgroundColor: " #5964c9",
+                                                  }}
+                                                  onClick={() =>
+                                                    props.show(
+                                                      notification.contract
+                                                    )
+                                                  }
+                                                >
+                                                  Show
+                                                </button>
+                                              )}
+                                            </div>
+                                          </span>
+                                        ) : (
+                                          <span>
+                                            {notification.sent_by_first_name}{" "}
+                                            {notification.sent_by_last_name} has
+                                            accepted your request to hire
+                                            <div className="friend__card__button">
+                                              <button
+                                                style={{
+                                                  backgroundColor: " #5964c9",
+                                                }}
+                                                onClick={() =>
+                                                  props.pay(
+                                                    notification.contract
+                                                  )
                                                 }
+                                              >
+                                                Pay Now
+                                              </button>
                                             </div>
-                                    
-                                            </div>
+                                          </span>
+                                        )
+                                      ) : (
+                                        <span>
+                                          {notification.sent_by_first_name}{" "}
+                                          {notification.sent_by_last_name} has
+                                          accepted your request
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
                                 );
                             })
                         }

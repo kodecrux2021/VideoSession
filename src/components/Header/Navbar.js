@@ -45,16 +45,30 @@ export default function Navbar(props) {
             <h5>E-LEARNING MARKETPLACE</h5>
           </p>
         </Link>
-        <Link to="/notifications/messages">
+        {localStorage.token && (
+          <Link to="/notifications/messages">
+            <p>
+              <h5>NOTIFICATIONS</h5>
+            </p>
+          </Link>
+        )}
+
+        {localStorage.token && (
+        <Link to="/Profile">
           <p>
-            <h5>NOTIFICATIONS</h5>
+            <h5>PROFILE</h5>
           </p>
         </Link>
+        )}
+
+        {localStorage.token && (
         <Link to="/refund">
           <p>
             <h5>WITHDRAW REFUND</h5>
           </p>
         </Link>
+
+        )}
         {localStorage.token ? (
           <Link>
             <p onClick={logout}>

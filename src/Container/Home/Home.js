@@ -12,9 +12,10 @@ import home4 from '../../assets/images/home4.jpg'
 import home5 from '../../assets/images/home5.jpg'
 import Navbar from '../../components/Header/Navbar';
 import {message, Modal} from 'antd';
-import ekodecrux from '../../assets/images/ekodecrux.jpeg';
+import ekodecrux from '../../assets/images/reg2.jpeg';
 import {AiFillMediumSquare,AiFillFacebook, AiFillInstagram, AiFillTwitterSquare, AiFillLinkedin} from 'react-icons/ai';
 import {FaQuora} from 'react-icons/fa'
+import { Redirect } from "react-router";
 
 
 
@@ -237,10 +238,12 @@ If as a user, you wish to refund the payment if they do not meet thier required 
 
       studyRoomClick = () =>{
         if(localStorage.getItem('token')){
-            this.props.history.push('/course-registration')
+            this.props.history.push("/courses");
         }  
         else{
             alert('Please login to go ahead!')
+            this.props.history.push("/login");
+            //  {<Redirect to="/login" />}
         }
        
       }

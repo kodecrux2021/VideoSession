@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import sanitizeHtml from "sanitize-html";
 import vpaRegex from "vpa-regex";
 import "./cardDetails.css";
-import { Button, Form, Col, Row, Container } from "react-bootstrap";
-import { url } from '../../'
+import { Button, Form, Col, Row, Container, Card } from "react-bootstrap";
+import { url } from "../../Server/GlobalUrl";
+import Navbar from "../../components/Header/Navbar";
+import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
 
-const CardDetails = () => {
+// import { url } from "../../Server/GlobalUrl";
+import { Upload, Modal, Image, Spin, Space } from "antd";
+import kodecrux from "../../assets/images/reg2.jpeg";
+
+const CardDetails = (props) => {
   const [username, setUsername] = useState("");
   const [isUsernameInvalid, setIsUsernameInvalid] = useState(false);
   const [usernameInvalidMessage, setUsernameInvalidMessage] = useState("");
@@ -61,12 +68,12 @@ const CardDetails = () => {
   // let user = localStorage.getItem("user");
   let beneid = localStorage.getItem("user_id");
   let usernam1 = localStorage.getItem("user_name");
-  let auth = localStorage.getItem("token")
-  console.log(beneid,auth)
+  let auth = localStorage.getItem("token");
+  console.log(beneid, auth);
 
   let apiCall = async (data) => {
     const response = await fetch(
-      "https://kodecrux-django.herokuapp.com/api/addToBeneficiary/",
+      url+"/api/addToBeneficiary/",
       {
         method: "POST",
         headers: {
@@ -94,6 +101,7 @@ const CardDetails = () => {
     const pincodeFormat = /^[0-9]{6}$/;
     const cardNumberFormat = /^[4,5][0-9]{15}$/;
     const addressFormat = /^[a-zA-Z0-9 ]+$/;
+    const phoneFormat = /^[0-9]{8,12}$/;
     if (
       username !== "" &&
       username.length > 0 &&
@@ -101,8 +109,7 @@ const CardDetails = () => {
       username.length < 100 &&
       usernameFormat.test(username) &&
       emailformat.test(email) === true &&
-      phone.length > 8 &&
-      phone.length < 12 &&
+      phoneFormat.test(phone) &&
       (bankAccount ? bankAccountFormat.test(bankAccount) : true) &&
       (ifsc ? ifscFormat.test(ifsc) : true) &&
       (pincode ? pincodeFormat.test(pincode) : true) &&
@@ -121,7 +128,7 @@ const CardDetails = () => {
           : true
         : true)
     ) {
-      alert("success");
+      alert("Account details have been submitted");
 
       const data = {
         user: beneid,
@@ -139,6 +146,7 @@ const CardDetails = () => {
         pincode: pincode ? pincode : "",
       };
       console.log(data);
+      props.history.push('/')
       apiCall(data);
     } else {
       if (username === "" || username.length < 0) {
@@ -165,12 +173,18 @@ const CardDetails = () => {
       if (phone === "" || phone.length < 0) {
         setIsPhoneInvalid(true);
         setPhoneInvalidMessage("Phone number cannot be empty");
+      }else if (phone && phoneFormat.test(phone) === false) {
+         setIsPhoneInvalid(true);
+         setPhoneInvalidMessage(
+            "Phone number cannot have anything excepts numeric values"
+         );
       } else if (phone.length < 8 || phone.length > 12) {
         setIsPhoneInvalid(true);
         setPhoneInvalidMessage(
           "Phone number cannot be lesser than 8 and greater than 12"
         );
-      }
+      } 
+
       if (bankAccount && bankAccountFormat.test(bankAccount) === false) {
         setIsBankAccountInvalid(true);
         setBankAccountInvalidMessage(
@@ -326,272 +340,318 @@ const CardDetails = () => {
 
   return (
     <div>
-      {console.log(auth)}
-      <h1 className="heading">Add card details</h1>
+      <Navbar />
+      <Link to="/">
+        <img className="Profile__logo" src={kodecrux} />
+      </Link>
 
-      <Container className="container">
-        <Form>
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label className="key">Name:</Form.Label>
-            <Col>
-              <Form.Control
-                name="Username"
-                value={username}
-                type="text"
-                required
-                placeholder="Enter Username"
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                  validateWhileFocus(e);
-                }}
-                isInvalid={isUsernameInvalid}
-              />
-              {isUsernameInvalid ? (
-                <label style={{ color: "red" }}>{usernameInvalidMessage}</label>
-              ) : null}
-            </Col>
-          </Form.Group>
+      {localStorage.getItem("user_id") ? (
+        <body>
+          <div>
+            <div>
+              <h2 className="heading">Add Bank Details</h2>
+              <Container className="container">
+                <Card
+                  style={{
+                    borderBotton: "1px solid black",
+                  }}
+                  body
+                >
+                  <Form>
+                    <Form.Group controlId="formHorizontalPassword">
+                      <Form.Label className="key">Name:</Form.Label>
+                      {/* <Col className="input"> */}
+                      <Form.Control
+                        style={{
+                          padding: "30px 0px 30px 0px ",
+                        }}
+                        name="Username"
+                        className="field"
+                        value={username}
+                        type="text"
+                        required
+                        placeholder="Enter Username"
+                        onChange={(e) => {
+                          setUsername(e.target.value);
+                          validateWhileFocus(e);
+                        }}
+                        isInvalid={isUsernameInvalid}
+                      />
+                      {isUsernameInvalid ? (
+                        <label style={{ color: "red" }}>
+                          {usernameInvalidMessage}
+                        </label>
+                      ) : null}
+                      {/* </Col> */}
+                    </Form.Group>
 
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label className="key">Email:</Form.Label>
-            <Col>
-              <Form.Control
-                name="Email"
-                value={email}
-                type="email"
-                required
-                placeholder="Enter Email"
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  validateWhileFocus(e);
-                }}
-                isInvalid={isEmailInvalid}
-              />
-              {isEmailInvalid ? (
-                <label style={{ color: "red" }}>{emailInvalidMessage}</label>
-              ) : null}
-            </Col>
-          </Form.Group>
+                    <Form.Group controlId="formHorizontalPassword">
+                      <Form.Label className="key">Email:</Form.Label>
 
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label className="key">Phone:</Form.Label>
-            <Col>
-              <Form.Control
-                name="Phone"
-                value={phone}
-                type="text"
-                required
-                placeholder="Enter Phone Number"
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                  validateWhileFocus(e);
-                }}
-                isInvalid={isPhoneInvalid}
-              />
-              {isPhoneInvalid ? (
-                <label style={{ color: "red" }}>{phoneInvalidMessage}</label>
-              ) : null}
-            </Col>
-          </Form.Group>
+                      <Form.Control
+                        style={{ padding: "30px 0px 30px 0px " }}
+                        name="Email"
+                        value={email}
+                        type="email"
+                        required
+                        placeholder="Enter Email"
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          validateWhileFocus(e);
+                        }}
+                        isInvalid={isEmailInvalid}
+                      />
+                      {isEmailInvalid ? (
+                        <label style={{ color: "red" }}>
+                          {emailInvalidMessage}
+                        </label>
+                      ) : null}
+                    </Form.Group>
 
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label className="key">Bank Account:</Form.Label>
-            <Col>
-              <Form.Control
-                name="BankAccount"
-                value={bankAccount}
-                type="text"
-                placeholder="Enter Bank Account"
-                onChange={(e) => {
-                  setBankAccount(e.target.value);
-                  validateWhileFocus(e);
-                }}
-                isInvalid={isBankAccountInvalid}
-              />
-              {isBankAccountInvalid ? (
-                <label style={{ color: "red" }}>
-                  {bankAccountInvalidMessage}
-                </label>
-              ) : null}
-            </Col>
-          </Form.Group>
+                    <Form.Group controlId="formHorizontalPassword">
+                      <Form.Label className="key">Phone:</Form.Label>
 
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label className="key">IFSC:</Form.Label>
-            <Col>
-              <Form.Control
-                name="Ifsc"
-                value={ifsc}
-                type="text"
-                placeholder="Enter IFSC (standard IFSC format)"
-                onChange={(e) => {
-                  setIfsc(e.target.value);
-                  validateWhileFocus(e);
-                }}
-                isInvalid={isIfscInvalid}
-              />
-              {isIfscInvalid ? (
-                <label style={{ color: "red" }}>{ifscInvalidMessage}</label>
-              ) : null}
-            </Col>
-          </Form.Group>
+                      <Form.Control
+                        style={{ padding: "30px 0px 30px 0px " }}
+                        name="Phone"
+                        value={phone}
+                        type="text"
+                        required
+                        placeholder="Enter Phone Number"
+                        onChange={(e) => {
+                          setPhone(e.target.value);
+                          validateWhileFocus(e);
+                        }}
+                        isInvalid={isPhoneInvalid}
+                      />
+                      {isPhoneInvalid ? (
+                        <label style={{ color: "red" }}>
+                          {phoneInvalidMessage}
+                        </label>
+                      ) : null}
+                    </Form.Group>
 
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label className="key">VPA:</Form.Label>
-            <Col>
-              <Form.Control
-                name="Vpa"
-                value={vpa}
-                type="text"
-                placeholder="Enter VPA"
-                onChange={(e) => {
-                  setVpa(e.target.value);
-                  validateWhileFocus(e);
-                }}
-                isInvalid={isVpaInvalid}
-              />
-              {isVpaInvalid ? (
-                <label style={{ color: "red" }}>{vpaInvalidMessage}</label>
-              ) : null}
-            </Col>
-          </Form.Group>
+                    <Form.Group controlId="formHorizontalPassword">
+                      <Form.Label className="key">Bank Account:</Form.Label>
 
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label className="key">Card Number:</Form.Label>
-            <Col>
-              <Form.Control
-                name="CardNumber"
-                value={cardNumber}
-                type="text"
-                placeholder="Enter Card Number"
-                onChange={(e) => {
-                  setCardNumber(e.target.value);
-                  validateWhileFocus(e);
-                }}
-                isInvalid={isCardNumberInvalid}
-              />
-              {isCardNumberInvalid ? (
-                <label style={{ color: "red" }}>
-                  {cardNumberInvalidMessage}
-                </label>
-              ) : null}
-            </Col>
-          </Form.Group>
+                      <Form.Control
+                        style={{ padding: "30px 0px 30px 0px " }}
+                        name="BankAccount"
+                        value={bankAccount}
+                        type="text"
+                        placeholder="Enter Bank Account"
+                        onChange={(e) => {
+                          setBankAccount(e.target.value);
+                          validateWhileFocus(e);
+                        }}
+                        isInvalid={isBankAccountInvalid}
+                      />
+                      {isBankAccountInvalid ? (
+                        <label style={{ color: "red" }}>
+                          {bankAccountInvalidMessage}
+                        </label>
+                      ) : null}
+                    </Form.Group>
 
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label className="key">Address 1:</Form.Label>
-            <Col>
-              <Form.Control
-                name="Address1"
-                value={address1}
-                type="text"
-                required
-                placeholder="Enter Address 1"
-                onChange={(e) => {
-                  setAddress1(e.target.value);
-                  validateWhileFocus(e);
-                }}
-                isInvalid={isAddress1Invalid}
-              />
-              {isAddress1Invalid ? (
-                <label style={{ color: "red" }}>{address1InvalidMessage}</label>
-              ) : null}
-            </Col>
-          </Form.Group>
+                    <Form.Group controlId="formHorizontalPassword">
+                      <Form.Label className="key">IFSC:</Form.Label>
 
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label className="key">Address 2:</Form.Label>
-            <Col>
-              <Form.Control
-                name="Address2"
-                value={address2}
-                type="text"
-                placeholder="Enter Address 2"
-                onChange={(e) => {
-                  setAddress2(e.target.value);
-                  validateWhileFocus(e);
-                }}
-                isInvalid={isAddress2Invalid}
-              />
-              {isAddress2Invalid ? (
-                <label style={{ color: "red" }}>{address2InvalidMessage}</label>
-              ) : null}
-            </Col>
-          </Form.Group>
+                      <Form.Control
+                        style={{ padding: "30px 0px 30px 0px " }}
+                        name="Ifsc"
+                        value={ifsc}
+                        type="text"
+                        placeholder="Enter IFSC (standard IFSC format)"
+                        onChange={(e) => {
+                          setIfsc(e.target.value);
+                          validateWhileFocus(e);
+                        }}
+                        isInvalid={isIfscInvalid}
+                      />
+                      {isIfscInvalid ? (
+                        <label style={{ color: "red" }}>
+                          {ifscInvalidMessage}
+                        </label>
+                      ) : null}
+                    </Form.Group>
 
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label className="key">City:</Form.Label>
-            <Col>
-              <Form.Control
-                name="City"
-                value={city}
-                type="text"
-                placeholder="Enter City"
-                onChange={(e) => {
-                  setCity(e.target.value);
-                  validateWhileFocus(e);
-                }}
-                isInvalid={isCityInvalid}
-              />
-              {isCityInvalid ? (
-                <label style={{ color: "red" }}>{cityInvalidMessage}</label>
-              ) : null}
-            </Col>
-          </Form.Group>
+                    <Form.Group controlId="formHorizontalPassword">
+                      <Form.Label className="key">VPA:</Form.Label>
 
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label className="key">State:</Form.Label>
-            <Col>
-              <Form.Control
-                name="State"
-                value={statename}
-                type="text"
-                placeholder="Enter State"
-                onChange={(e) => {
-                  setState(e.target.value);
-                  validateWhileFocus(e);
-                }}
-                isInvalid={isStateInvalid}
-              />
-              {isStateInvalid ? (
-                <label style={{ color: "red" }}>{stateInvalidMessage}</label>
-              ) : null}
-            </Col>
-          </Form.Group>
+                      <Form.Control
+                        style={{ padding: "30px 0px 30px 0px " }}
+                        name="Vpa"
+                        value={vpa}
+                        type="text"
+                        placeholder="Enter VPA"
+                        onChange={(e) => {
+                          setVpa(e.target.value);
+                          validateWhileFocus(e);
+                        }}
+                        isInvalid={isVpaInvalid}
+                      />
+                      {isVpaInvalid ? (
+                        <label style={{ color: "red" }}>
+                          {vpaInvalidMessage}
+                        </label>
+                      ) : null}
+                    </Form.Group>
 
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label className="key">Pincode:</Form.Label>
-            <Col>
-              <Form.Control
-                name="Pincode"
-                value={pincode}
-                type="Number"
-                placeholder="Enter Pincode"
-                onChange={(e) => {
-                  setPincode(e.target.value);
-                  validateWhileFocus(e);
-                }}
-                isInvalid={isPincodeInvalid}
-              />
-              {isPincodeInvalid ? (
-                <label style={{ color: "red" }}>{pincodeInvalidMessage}</label>
-              ) : null}
-            </Col>
-          </Form.Group>
+                    <Form.Group controlId="formHorizontalPassword">
+                      <Form.Label className="key">Card Number:</Form.Label>
 
-          <div className="Submitbtn">
-            <Button
-              size="lg"
-              variant="outline-info"
-              onClick={(e) => {
-                submitForm(e);
-              }}
-            >
-              Submit
-            </Button>{" "}
+                      <Form.Control
+                        style={{ padding: "30px 0px 30px 0px " }}
+                        name="CardNumber"
+                        value={cardNumber}
+                        type="text"
+                        placeholder="Enter Card Number"
+                        onChange={(e) => {
+                          setCardNumber(e.target.value);
+                          validateWhileFocus(e);
+                        }}
+                        isInvalid={isCardNumberInvalid}
+                      />
+                      {isCardNumberInvalid ? (
+                        <label style={{ color: "red" }}>
+                          {cardNumberInvalidMessage}
+                        </label>
+                      ) : null}
+                    </Form.Group>
+
+                    <Form.Group controlId="formHorizontalPassword">
+                      <Form.Label className="key">Address 1:</Form.Label>
+
+                      <Form.Control
+                        style={{ padding: "30px 0px 30px 0px " }}
+                        name="Address1"
+                        value={address1}
+                        type="text"
+                        required
+                        placeholder="Enter Address 1"
+                        onChange={(e) => {
+                          setAddress1(e.target.value);
+                          validateWhileFocus(e);
+                        }}
+                        isInvalid={isAddress1Invalid}
+                      />
+                      {isAddress1Invalid ? (
+                        <label style={{ color: "red" }}>
+                          {address1InvalidMessage}
+                        </label>
+                      ) : null}
+                    </Form.Group>
+
+                    <Form.Group controlId="formHorizontalPassword">
+                      <Form.Label className="key">Address 2:</Form.Label>
+
+                      <Form.Control
+                        style={{ padding: "30px 0px 30px 0px " }}
+                        name="Address2"
+                        value={address2}
+                        type="text"
+                        placeholder="Enter Address 2"
+                        onChange={(e) => {
+                          setAddress2(e.target.value);
+                          validateWhileFocus(e);
+                        }}
+                        isInvalid={isAddress2Invalid}
+                      />
+                      {isAddress2Invalid ? (
+                        <label style={{ color: "red" }}>
+                          {address2InvalidMessage}
+                        </label>
+                      ) : null}
+                    </Form.Group>
+
+                    <Form.Group controlId="formHorizontalPassword">
+                      <Form.Label className="key">City:</Form.Label>
+
+                      <Form.Control
+                        style={{ padding: "30px 0px 30px 0px " }}
+                        name="City"
+                        value={city}
+                        type="text"
+                        placeholder="Enter City"
+                        onChange={(e) => {
+                          setCity(e.target.value);
+                          validateWhileFocus(e);
+                        }}
+                        isInvalid={isCityInvalid}
+                      />
+                      {isCityInvalid ? (
+                        <label style={{ color: "red" }}>
+                          {cityInvalidMessage}
+                        </label>
+                      ) : null}
+                    </Form.Group>
+
+                    <Form.Group controlId="formHorizontalPassword">
+                      <Form.Label className="key">State:</Form.Label>
+
+                      <Form.Control
+                        style={{ padding: "30px 0px 30px 0px " }}
+                        name="State"
+                        value={statename}
+                        type="text"
+                        placeholder="Enter State"
+                        onChange={(e) => {
+                          setState(e.target.value);
+                          validateWhileFocus(e);
+                        }}
+                        isInvalid={isStateInvalid}
+                      />
+                      {isStateInvalid ? (
+                        <label style={{ color: "red" }}>
+                          {stateInvalidMessage}
+                        </label>
+                      ) : null}
+                    </Form.Group>
+
+                    <Form.Group controlId="formHorizontalPassword">
+                      <Form.Label className="key">Pincode:</Form.Label>
+
+                      <Form.Control
+                        style={{ padding: "30px 0px 30px 0px " }}
+                        name="Pincode"
+                        value={pincode}
+                        type="Number"
+                        placeholder="Enter Pincode"
+                        onChange={(e) => {
+                          setPincode(e.target.value);
+                          validateWhileFocus(e);
+                        }}
+                        isInvalid={isPincodeInvalid}
+                      />
+                      {isPincodeInvalid ? (
+                        <label style={{ color: "red" }}>
+                          {pincodeInvalidMessage}
+                        </label>
+                      ) : null}
+                    </Form.Group>
+
+                    <div className="Submitbtn">
+                      <Button
+                        size="lg"
+                        variant="outline-info"
+                        onClick={(e) => {
+                          submitForm(e);
+                        }}
+                      >
+                        Submit
+                      </Button>{" "}
+                    </div>
+                  </Form>
+                </Card>
+              </Container>
+            </div>
+           
           </div>
-        </Form>
-      </Container>
+        </body>
+      ) : (
+        <Redirect to="/login" />
+      )}
+      {/* <Bot/> */}
     </div>
   );
 };

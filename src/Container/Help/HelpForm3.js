@@ -47,27 +47,23 @@ export default class HelpForm3 extends Component {
   }
 
   handleRecommendedSelect(val) {
-    //console.log(val);
-    let selected = [...this.state.recommended_selected]
-   // console.log('selected', selected)
-    const index = selected.findIndex(
-      (Item) => Item === val
-    );
-    if (index >= 0) {
-      selected.splice(index, 1);
-    }
-    else {
-      selected.push(val)
-    }
+      let selected = [...this.state.recommended_selected]
+      const index = selected.findIndex(
+        (Item) => Item === val
+      );
+      if (index >= 0) {
+        selected.splice(index, 1);
+      }
+      else {
+        selected.push(val)
+      }
 
-    this.setState({ recommended_selected: selected });
+      this.setState({ recommended_selected: selected });
   }
 
 
   submitHandler = async (e) => {
-
     e.preventDefault();
-
     if (this.state.selected.length !== null && this.state.selected.length > 0) {
       message.info('Submitted Successfully!!!');
       this.props.history.push("/trainers/message");

@@ -6,12 +6,21 @@ import './Login.css'
 import { message } from 'antd';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import Navbar from '../../components/Header/Navbar';
+import CloseIcon from '@material-ui/icons/Close';
+import {ReactComponent as EkodeLogo} from '../../assets/eKodeLogo.svg';
+import { Button, ButtonBase, Card, Divider, TextField } from '@material-ui/core';
+import {ReactComponent as FacebookLogo} from '../../assets/facebook.svg';
+import {ReactComponent as GoogleLogo} from '../../assets/images/googleLogo.svg';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 function Login() {
     const history = useHistory();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false)
     const [emailValidate, setEmailValidate] = useState('');
 
 
@@ -72,8 +81,6 @@ function Login() {
                         }
 
                         let auth = localStorage.getItem('token')
-                        console.log(auth);
-                        
                         fetch(url + '/currentuser/', {
                             method: 'GET',
                             headers: {
@@ -85,23 +92,16 @@ function Login() {
                             .then(res => res.json())
                             .then(
                                 (result) => {
-                                    // console.log('result', result)
                                     if (result) {
                                         localStorage.setItem('user_id', result.user?.id);
                                         localStorage.setItem('user_name', result.user?.first_name);
-                                        console.log(
-                                          result.user?.id,
-                                          result.user?.first_name
-                                        );
+                                        localStorage.setItem('user_photo', result.user?.profile_pic);
                                         // console.log(localStorage.getItem('user_id'));
+                                        message.info('Logged In Succsessfully!!!');
+                                        history.push({pathname : '/'})
                                     }
                                 }
                             )
-
-
-
-                        message.info('Logged In Succsessfully!!!');
-                        history.push('/')
                     }
                 })
         }
@@ -251,71 +251,79 @@ let data = {"token": response.accessToken}
 
     return (
         <>
-            <Navbar />
+
             <div className='body__ctr'>
-                <div className="login">
-
-                    <div className='login__container'>
-
+                {/* Immortal ui mod */}
+                <div style={{position:'absolute', display:'flex', flex:1, width:'100%', alignItems:'flex-end',justifyContent:'flex-end', paddingRight:40}}>
+                    <Link to='/'> <CloseIcon style={{fontSize:30, color:'black'}} /> </Link>
+                </div>
+                {/* ------ */}
+                <div style={{marginTop:30, display:'flex', justifyContent:'center'}}>
+                    <Card elevation={2} style={{width:100, height:100, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
                         <Link to='/'>
-                            <img
-                                className="login__logo"
-                                src={kodecrux}
-                            />
+                            <EkodeLogo  />
                         </Link>
-                        <h1>Login</h1>
-                        <p>With</p>
+                    </Card>
+                </div>
+                <div className="login">
+                    <div className='login__container'>
+                        <div style={{display:'flex', flexDirection:'column'}}>
+                            <h1>Log In</h1>
+                            <p style={{fontSize:16}}>Log in to eKodecrux</p>
+                        </div>
                         <div className = "header__button">
-                      <GoogleLogin 
-                      className = 'google'
-                      clientId="515126473370-emg4305tflmvetsklioachjblbekk066.apps.googleusercontent.com" //CLIENTID NOT CREATED YET
-                      buttonText="Google"
-                      onSuccess={responseGoogle}
-                      onFailure={responseGoogle}
-                      icon= {false}
-                      // style={inStyle}    
-                        />
-                      <FacebookLogin
-                      cssClass = 'facebook'
-                      appId="375577453526335" //APP ID NOT CREATED YET
-                      textButton ="Facebook"
-                      fields="name,email,picture"
-                      callback={responseFacebook}
-                      />
-                      {/* <button style={{backgroundColor:'#DB4437'}}>GOOGLE</button>
-                      <button style={{backgroundColor: "#4267B2"}}>FACEBOOK</button> */}
-                 </div>
-                 <p>Or</p>
+                            <GoogleLogin 
+                                className = 'google'
+                                clientId="515126473370-emg4305tflmvetsklioachjblbekk066.apps.googleusercontent.com" //CLIENTID NOT CREATED YET
+                                buttonText="LOG IN WITH GOOGLE"
+                                onSuccess={responseGoogle}
+                                onFailure={responseGoogle}
+                                icon= {<GoogleLogo />}
+                            // style={inStyle}    
+                                />
+                            <FacebookLogin
+                                cssClass = 'facebook'
+                                appId="375577453526335" //APP ID NOT CREATED YET
+                                textButton ="LOG IN WITH FACEBOOK"
+                                fields="name,email,picture"
+                                callback={responseFacebook}
+                                icon= {<div><FacebookLogo /></div>}
+                            />
+                        </div>
+                        <div style={{display:'flex', flex:1, alignItems:'center'}}>
+                            <Divider style={{flex:1}} />
+                            <div style={{padding:10, color:'#3743B1'}}>OR</div>
+                            <Divider style={{flex:1}} />
+                        </div>
+                 
 
                         <form>
-                            <h4>Email</h4>
-                            <input type='email'
-                                className='form__control'
-                                placeholder='Enter Your Email Address'
-                                value={email}
-                                onChange={event => setEmail(event.target.value)}
+                            <TextField variant="outlined" className="form__control" type="email" label="EMAIL ADDRESS" value={email} onChange={e => setEmail(e.target.value)} />
+                            <TextField autoComplete={"current-password"} type={showPassword ? 'text' : 'password'} style={{marginTop:16, marginBottom:8}} variant='outlined' label='PASSWORD' onChange={e => setPassword(e.target.value)} 
+                                InputProps = {{endAdornment:
+                                    <InputAdornment variant='filled' position="end" style={{backgroundColor:'#3743B1'}}>
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            style={{outline:"none"}}
+                                            onClick={() => setShowPassword(!showPassword)}
+                                        >
+                                            {showPassword ? <Visibility style={{color:'white'}} /> : <VisibilityOff style={{color:'white'}} />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }}  
                             />
-
-                            <h4>Password</h4>
-                            <input type='password' placeholder='Enter Your Password'
-
-                                className='form__control'
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                            />
-
+                            <div style={{display:'flex', justifyContent:'flex-end', marginBottom:10}}>
+                                <ButtonBase variant="text" style={{ color: '#3743B1', textAlign:'right'}} onClick={() => history.push('forgot-password')} >Forgot Password ? </ButtonBase>
+                            </div>
+                            
                             <button
                                 type='submit'
                                 className='login__signInButton'
                                 onClick={signIn}
-                            >Login</button>
+                            >LOG IN</button>
                         </form>
-
-                        <button
-                            type='submit'
-                            onClick={register}
-                            className='login__registerButton'>Create New Account</button>
-                        <div style={{ color: 'grey', fontWeight: '500' }}  >Forgot Password ? <span style={{ color: '#17a2b8', cursor: 'pointer' }} onClick={() => history.push('forgot-password')} >Click Here</span> </div>
+                        <Divider />
+                        <div style={{ color: 'grey', }}  >Create New Account <span style={{ color: '#3743B1', cursor: 'pointer' }} onClick={register} >Register</span> </div>
                     </div>
 
                 </div>

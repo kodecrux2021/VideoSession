@@ -1,22 +1,9 @@
-<<<<<<< HEAD
-import React, { useState } from 'react'
-import { IconButton } from '@material-ui/core'
-=======
 import React, { useState, useEffect  } from 'react'
 import { Avatar, ButtonBase, IconButton, Menu, MenuItem } from '@material-ui/core'
->>>>>>> master
 import MenuIcon from '@material-ui/icons/Menu';
 import { Drawer } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import './Navbar.css'
-<<<<<<< HEAD
-
-
-export default function Navbar(props) {
-
-  const history = useHistory();
-  const [visible, setVisible] = useState(false);
-=======
 import { AppBar, Button, Hidden, Typography } from '@material-ui/core'
 import { ReactComponent as EcodeLogo } from '../../assets/eKodeLogo.svg'
 import kodecrux from '../../assets/images/reg2.jpeg';
@@ -32,7 +19,6 @@ export default function Navbar(props) {
     setUsername(localStorage.user_name)
   })
 
->>>>>>> master
   const showDrawer = () => {
     setVisible(true);
   };

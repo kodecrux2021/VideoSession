@@ -25,11 +25,13 @@
   z-index: 1;
 }
 
+
 .Profile__container {
-  width: 40rem;
+  width: 560px;
   margin-top: 5rem;
   background: white;
-  border: 1px solid #dedfe0;
+  box-shadow: 0 0 10px rgba(55,67,177,.45);
+  /* border: 1px solid #dedfe0; */
   padding: 20px;
   border-radius: 10px;
 }
@@ -54,13 +56,13 @@
 }
 
 .profile__image img {
-  width: 200px;
-  height: 200px;
+  width: 96px;
+  height: 98px;
   border-radius: 10px;
 }
 
 .profile__input_Fields {
-  border: 1px solid #dedfe0;
+  /* border: 1px solid #dedfe0; */
 }
 
 .alert {

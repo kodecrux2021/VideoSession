@@ -43,18 +43,25 @@ width: 70px;
 }
 
 .registration__details__footer > button {
-border-radius: 1px;
-font-size: 14px;
-font-weight: 700;
-color: #fff;
-text-transform: uppercase;
-border:none;
-background-color: #80ccff;
-width: 100px;
-height: 36px;
-outline: none;
-margin-bottom: 10px;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 14px;
+    color: #fff;
+    text-transform: uppercase;
+    border:none;
+    background-color: #3743B1;
+    height: 36px;
+    outline: none;
+    margin-bottom: 10px;
 }
+
+.registration__details__footer > button:hover {
+    color: #3743B1;
+    border: #3743B1 1px solid;
+    background-color: white;
+
+}
+
 
 .registration__details__footer > div {
 display: flex;

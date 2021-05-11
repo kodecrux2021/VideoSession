@@ -619,11 +619,11 @@ class New extends React.Component {
                 <Checkbox checked={this.state.checked} onChange={() => {this.setState({checked : !this.state.checked})}} />
                 <span>By register I agree To</span>
                 <span>
-                  <a style={{ color: "#30b3f0", cursor: "pointer" }}>
+                  <a style={{ color: "#3743B1", cursor: "pointer" }}>
                     Term & Condition
                   </a>{" "}
                   and{" "}
-                  <a style={{ color: "#30b3f0", cursor: "pointer" }}>
+                  <a style={{ color: "#3743B1", cursor: "pointer" }}>
                     Privacy policy
                   </a>
                 </span>

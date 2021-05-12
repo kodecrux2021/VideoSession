@@ -197,22 +197,23 @@ export default class HelpForm2 extends Component {
                                 zIndex:9, marginTop:-10, marginLeft:10,
                                  color:'#3743B1', paddingLeft:20, position:'absolute'}}><p style={{backgroundColor:'white'}}>TECHNOLOGIES YOU NEED HELP WITH</p></Typography>}
                         <Select
-                        id="tech-select"
-                        className="basic-multi-select"
-                        classNamePrefix="select"
-                        onChange={this.handleSelect}
-                        getOptionLabel={option =>
-                            `${option.name}`
-                        }
-                        menuPortalTarget={document.body} 
-                        getOptionValue={option => `${option.id}`}
-                        name="colors"
-                        options={this.state.technology_list}
-                        isSearchable={true}
-                        isMulti
-                        placeholder={'TECHNOLOGIES YOU NEED HELP WITH'}
-                        styles={customStyles}
-                        />
+                          id="tech-select"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          onChange={this.handleSelect}
+                          getOptionLabel={option =>
+                              `${option.name}`
+                          }
+                          menuPortalTarget={document.body} 
+                          getOptionValue={option => `${option.id}`}
+                          name="colors"
+                          options={this.state.technology_list}
+                          isSearchable={true}
+                          isMulti
+                          placeholder={'TECHNOLOGIES YOU NEED HELP WITH'}
+                          styles={customStyles}
+                          />
+                        {/* {console.log(this.state.selected)} */}
                         <div style={{padding:20}}>
                             {this.state.selected !== null || this.state.selected?.length > 0 ? <Typography style={{color:'#3743B1', fontSize:14}}>Recommended technologies</Typography> : null}
                             {this.state.selected !== null || this.state.selected?.length > 0 ? 

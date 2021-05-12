@@ -84,3 +84,28 @@ color: rgb(175, 175, 175);
     font-size: 12px;
     }
 }
+
+.name-select__multi-value__remove {
+    padding-right: 8px !important;
+    
+  }
+  
+.name-select__multi-value__remove >svg {
+    background-color: #3743B1 !important;
+    border-radius: 15px !important;
+    color: #fff !important;
+    }
+
+.name-select__multi-value__remove >svg:hover {
+    background-color: white !important;
+    border-radius: 15px !important;
+    color: #3743B1 !important;
+    border: 1px;
+    border-style: solid;
+    border-color: #3743B1;
+    }
+
+    .name-select__menu {
+        z-index: 500 !important;
+      }
+

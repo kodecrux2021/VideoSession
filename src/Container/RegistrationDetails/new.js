@@ -55,8 +55,8 @@ class New extends React.Component {
 
     tech_list: [],
     subtech_list: [],
-    technology: "",
-    sub_technology: "",
+    technology: [],
+    sub_technology: [],
 
     pincode: null,
     state: "",
@@ -129,7 +129,14 @@ class New extends React.Component {
     } else if (identity === "city") {
       this.setState({ city: data });
     } else if (identity === "technology") {
-      this.setState({ technology: data, subtech_list: data.sub_technology });
+      console.log(data)
+      this.setState({ technology: data});
+      let subTechList = []
+      for (let i = 0; i < data?.length; i++) {
+        subTechList = [...subTechList , ...data[i]["sub_technology"]]
+        
+      }
+      this.setState({subtech_list : subTechList})
     } else if (identity === "sub_technology") {
       this.setState({ sub_technology: data });
     } else if (identity === "total_experience") {
@@ -371,6 +378,17 @@ class New extends React.Component {
         <div style={{ marginTop: 8 }}>Upload</div>
       </div>
     );
+    const customStyles = {
+      control: (base, state) => ({
+        ...base,
+        padding: 5,
+        borderColor : '#3743B1',
+        boxShadow: "none",
+        color : '#3743B1',
+        // You can also use state.isFocused to conditionally style based on the focus state
+      }),
+      menuPortal: base => ({ ...base, zIndex: 9999 })
+    };
 
     const educator =
       !is_client === "true" ? (
@@ -482,25 +500,29 @@ class New extends React.Component {
               {is_client === "true" ? null : (
                 <div className="trainer__details__ctr">
                   <div class="form__group">
-                    <label>Technology</label>
+                    <label>TECHNOLOGY</label>
                     <Select
                       className="react-selectcomponent"
-                      classNamePrefix="name-select"
-                      onChange={(value) => this.handelData("technology", value)}
+                      classNamePrefix="select"
+                      onChange={(value) => {
+                          this.handelData("technology", value)
+                        }}
                       getOptionLabel={(option) => `${option.name}`}
-                      getOptionValue={(option) => `${option}`}
+                      getOptionValue={(option) => `${option.id}`}
                       isOptionSelected={(option) =>
                         this.state.technology === option.name ? true : false
                       }
+                      styles={customStyles}
                       options={this.state.tech_list}
                       isSearchable={true}
+                      isMulti
                       openMenuOnClick={true}
-                      placeholder={"Choose Technology"}
+                      placeholder={"CHOOSE TECHNOLOGY"}
                     />
                   </div>
 
                   <div class="form__group">
-                    <label> Sub Technology</label>
+                    <label>SUB TECHNOLOGY</label>
                     <Select
                       className="react-selectcomponent"
                       classNamePrefix="name-select"
@@ -508,19 +530,21 @@ class New extends React.Component {
                         this.handelData("sub_technology", value)
                       }
                       getOptionLabel={(option) => `${option.name}`}
-                      getOptionValue={(option) => `${option}`}
+                      getOptionValue={(option) => `${option.id}`}
                       isOptionSelected={(option) =>
                         this.state.sub_technology === option.name ? true : false
                       }
+                      isMulti
+                      styles={customStyles}
                       options={this.state.subtech_list}
                       isSearchable={true}
                       openMenuOnClick={true}
-                      placeholder={"Choose Sub Technology"}
+                      placeholder={"CHOOSE SUB TECHNOLOGY"}
                     />
                   </div>
 
                   <div class="form__group">
-                    <label>Total Experience</label>
+                    <label>TOTAL EXPERIENCE</label>
                     <Select
                       className="react-selectcomponent"
                       classNamePrefix="name-select"
@@ -532,15 +556,16 @@ class New extends React.Component {
                       isOptionSelected={(option) =>
                         this.state.sub_technology === option.name ? true : false
                       }
+                      styles={customStyles}
                       options={experienceData}
                       isSearchable={true}
                       openMenuOnClick={true}
-                      placeholder={"Years of Experince"}
+                      placeholder={"YEARS OF EXPERIENCE"}
                     />
                   </div>
 
                   <div class="form__group">
-                    <label>Relevant Experience</label>
+                    <label>RELEVANT EXPERIENCE</label>
                     <Select
                       className="react-selectcomponent"
                       classNamePrefix="name-select"
@@ -552,21 +577,23 @@ class New extends React.Component {
                       isOptionSelected={(option) =>
                         this.state.sub_technology === option.name ? true : false
                       }
+                      styles={customStyles}
                       options={experienceData}
                       isSearchable={true}
                       openMenuOnClick={true}
-                      placeholder={"Years of Experince"}
+                      placeholder={"YEARS OF RELEVANT EXPERIENCE"}
                     />
                   </div>
                   <div class="form__group">
-                    <label>Designation</label>
+                    {/* <label>Designation</label>
                     <input
                       type="text"
                       value={this.state.desig}
                       onChange={(e) => this.handelData("desig", e.target.value)}
                       className="form__control"
                       placeholder="Designation"
-                    />
+                    /> */}
+                    <TextField variant="outlined" className="form__control"  label="DESIGNATION" type="text" value={this.state.desig} onChange={(e) => this.handelData("desig", e.target.value)} />
                   </div>
                   {/* <div class="form__group">
                     <label>Fees</label>
@@ -615,8 +642,8 @@ class New extends React.Component {
             </div> */}
 
             <Col className="registration__details__footer">
-              <div>
-                <Checkbox checked={this.state.checked} onChange={() => {this.setState({checked : !this.state.checked})}} />
+              <div style={{display:'flex', flexDirection:'row', width:"100%", gap:5}}>
+                <Checkbox style={{color:"#3743B1"}} checked={this.state.checked} onChange={() => {this.setState({checked : !this.state.checked})}} />
                 <span>By register I agree To</span>
                 <span>
                   <a style={{ color: "#3743B1", cursor: "pointer" }}>

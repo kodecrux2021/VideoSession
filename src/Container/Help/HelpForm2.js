@@ -4,8 +4,8 @@ import React, { Component } from 'react'
 // import LibraryBooksOutlinedIcon from '@material-ui/icons/LibraryBooksOutlined';
 import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import Navbar from '../../components/Header/Navbar';
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
-import RemoveIcon from '@material-ui/icons/Remove';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
 import { message } from 'antd';
 import Select from 'react-select';
 
@@ -68,24 +68,24 @@ export default class HelpForm2 extends Component {
 
     submitHandler = async (e) => {
         e.preventDefault();
-        if (this.state.selected.length !== null && this.state.selected.length > 0) {
-          message.info('Submitted Successfully!!!');
-          this.props.history.push("/trainers/message");
+        if (this.state.selected?.length !== null && this.state.selected?.length > 0) {
+            message.info('Submitted Successfully!!!');
+            this.props.history.push("/trainers/message");
           // console.log('state', this.state);
     
     
-          let tech = []
-          let sub_tech = []
-          // console.log(this.state.recommended_selected);
-          this.state.selected.map((item) => (
-            tech.push(parseInt(item.id))
-          ))
+            let tech = []
+            let sub_tech = []
+            // console.log(this.state.recommended_selected);
+            this.state.selected.map((item) => (
+                tech.push(parseInt(item.id))
+            ))
     
-          sub_tech = [...this.state.recommended_selected]
-          let data = {
-            "technology": tech,
-            "sub_technology": sub_tech,
-          }
+            sub_tech = [...this.state.recommended_selected]
+            let data = {
+                "technology": tech,
+                "sub_technology": sub_tech,
+            }
     
           //console.log('data_______________', data);
           let auth = localStorage.getItem('token');
@@ -221,13 +221,16 @@ export default class HelpForm2 extends Component {
                                 t.sub_technology.map(s => (
                                     <button className={!this.state.recommended_selected.includes(s.id) ? 'button_unselect' : 'button__selected'} key={s.name} onClick={() => this.handleRecommendedSelect(s.id)}>
                                     {s.name}
-                                    {!this.state.recommended_selected.includes(s.id) ? <AddOutlinedIcon /> : <RemoveIcon className='remove_svg' />}</button>
+                                    {!this.state.recommended_selected.includes(s.id) ? <AddCircleIcon /> : <CancelIcon/>}</button>
 
                                 ))))}
                             </div> : null }
                         </div>
                         </div>
-                    <button className='help__next__btn' onClick={()=>this.props.history.push('/help/3')} > Next <NavigateNextOutlinedIcon /> </button>
+                    <div style={{display:'flex', flex:1, justifyContent :'flex-end', paddingRight:20, outline:'none'}}>
+                        <button className='help__next__btn' onClick={this.submitHandler} >SUBMIT</button>
+                    </div>
+                    
                 </div>              
             
             </Card>

@@ -614,6 +614,18 @@ class Profile extends Component {
     );
 
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
+    const customStyles = {
+      control: (base, state) => ({
+        ...base,
+        padding: 5,
+        borderColor : '#3743B1',
+        boxShadow: "none",
+        color : '#3743B1',
+        // You can also use state.isFocused to conditionally style based on the focus state
+      }),
+      menuPortal: base => ({ ...base, zIndex: 9999 })
+    };
     return (
       <div>
         <Navbar />
@@ -812,7 +824,7 @@ class Profile extends Component {
                       ) : (
                         <>
                           <div class="form__group">
-                            <label>Technology</label>
+                            <label style={{color:'#3743B1'}}>TECHNOLOGY</label>
 
                             <Select
                               className="react-selectcomponent"
@@ -828,15 +840,16 @@ class Profile extends Component {
                                   ? true
                                   : false
                               }
+                              styles={customStyles}
                               isSearchable={true}
                               openMenuOnClick={true}
-                              placeholder={"Choose Technology"}
+                              placeholder={"CHOOSE TECHNOLOGY"}
                               value={technology}
                             />
                           </div>
 
                           <div class="form__group">
-                            <label> Sub Technology</label>
+                            <label style={{color:'#3743B1'}}>SUB TECHNOLOGY</label>
 
                             <Select
                               className="react-selectcomponent"
@@ -852,15 +865,16 @@ class Profile extends Component {
                                   ? true
                                   : false
                               }
+                              styles={customStyles}
                               isSearchable={true}
                               openMenuOnClick={true}
-                              placeholder={"Choose Sub Technology"}
+                              placeholder={"CHOOSE SUB TECHNOLOGY"}
                               value={this.state.sub_technology}
                             />
                           </div>
 
                           <div class="form__group">
-                            <label>Total Experience</label>
+                            <label style={{color:'#3743B1'}}>TOTAL EXPERIENCE</label>
 
                             <Select
                               className="react-selectcomponent"
@@ -875,16 +889,17 @@ class Profile extends Component {
                                   ? true
                                   : false
                               }
+                              styles={customStyles}
                               options={experienceData}
                               isSearchable={true}
                               openMenuOnClick={true}
-                              placeholder={"Years of Experince"}
+                              placeholder={"YEARS OF EXPERIENCE"}
                               value={total_experience}
                             />
                           </div>
 
                           <div class="form__group">
-                            <label>Relevant Experience</label>
+                            <label style={{color:'#3743B1'}}>RELEVANT EXPERIENCE</label>
 
                             <Select
                               className="react-selectcomponent"
@@ -899,26 +914,36 @@ class Profile extends Component {
                                   ? true
                                   : false
                               }
+                              styles={customStyles}
                               options={experienceData}
                               isSearchable={true}
                               openMenuOnClick={true}
-                              placeholder={"Years of Experince"}
+                              placeholder={"RELEVANT YEARS OF EXPERIENCE"}
                               value={relevant_experience}
                             />
                           </div>
                           <div class="form__group">
                             <div
-                              style={{ display: "flex", alignItems: "center" }}
+                              style={{ display: "flex", flexDirection:'column' }}
                             >
-                              <label style={{ marginRight: "3vw" }}>
-                                Attach Resume
+                              <label style={{ marginRight: "3vw", color:'#3743B1' }}>
+                                ATTACH RESUME
                               </label>
-                              <input
-                                type="file"
-                                // className="form__control"
-                                onChange={(e) => this.handleResume(e)}
-                                accept="image/*, .pdf, .doc,.docx"
-                              />
+                              
+                                <input
+                                  type="file"
+                                  // className=""
+                                  // className="form__control"
+                                  onChange={(e) => this.handleResume(e)}
+                                  accept="image/*, .pdf, .doc,.docx"
+                                  id="raised-button-file"
+                                  hidden
+                                />
+                                <label htmlFor="raised-button-file">
+                                  <Button variant="outlined" className="upload-image" component="span">
+                                    SELECT FILE
+                                  </Button>
+                                </label> 
                             </div>
                           </div>
                         </>

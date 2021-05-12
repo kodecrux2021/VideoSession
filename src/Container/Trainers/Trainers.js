@@ -69,7 +69,7 @@ export default class Trainers extends Component {
             .then(
                 (result) => {
 
-                    // console.log('current user result', result.user)
+                    console.log('current user result', result.user)
                     this.setState({ user: result.user })
                     let param = ""
                     result.user.technology.map((tech) => (
@@ -83,6 +83,7 @@ export default class Trainers extends Component {
                     // console.log('param', new_param)
                     fetch(url + '/api/educator/?' + new_param, {
                         method: 'GET',
+                        mode: 'no-cors',
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json',
@@ -92,7 +93,7 @@ export default class Trainers extends Component {
                         .then(res => res.json())
                         .then(
                             (result) => {
-                                //  console.log('result', result)
+                                 console.log('result', result)
                                 this.setState({ trainers: result, loading: false })
                             }
                         ).catch(e=>console.log(e))

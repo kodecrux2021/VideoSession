@@ -209,20 +209,24 @@ padding:20px 0 40px 0;
   /* padding-right: 8px; */
   font-size: small;
   border-radius: 50px;
+  border: 1px !important;
   border-color: #3743B1 !important;
   background-color: #fff !important;
   color: #3743B1 !important;
   outline: none !important;
+  border-bottom-color: #3743B1 !important;
 }
 .button__selected {
   padding-left: 15px;
   /* padding-right: 8px; */
   font-size: small;
   border-radius: 50px;
+  border:1px !important;
   border-color: #3743B1 !important;
   background-color:#3743B1 !important;
   color: white !important;
   outline: none !important;
+  border-bottom-color: #3743B1 !important;
   /* border: 2px solid rgb(252, 164, 164) !important; */
 }
 

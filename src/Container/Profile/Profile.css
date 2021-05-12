@@ -107,3 +107,19 @@
     z-index: 1;
   }
 }
+
+
+.upload-image {
+  background-color: white !important;
+  border:1px !important;
+  border-color: #3743B1 !important;
+  border-style: solid !important;
+  color: #3743B1 !important;
+  font-size: small !important;
+
+}
+
+.upload-image:hover {
+  background-color: #3743B1 !important;
+  color: white !important
+}

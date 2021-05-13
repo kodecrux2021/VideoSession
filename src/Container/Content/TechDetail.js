@@ -6,6 +6,7 @@ import ReactStars from "react-rating-stars-component";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { Card } from '@material-ui/core';
 
 
 const responsive = {
@@ -33,12 +34,13 @@ const responsive = {
           style={{
             textAlign: "center",
             position: "absolute",
+            margin:10,
             left:'0',
-            top: '80px',
+            top: '120px',
             color:"blue",
             backgroundColor:'#fff',
-            width: '50px',
-            height: '50px',
+            width: '30px',
+            height: '30px',
             borderRadius: '100px',
             boxShadow:' 0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08)',
             display:'grid',
@@ -47,7 +49,7 @@ const responsive = {
           }}
           
         >
-            <ChevronLeftIcon className='chevron__arrow'/>
+            <ChevronLeftIcon style={{fontSize:15}} className='chevron__arrow'/>
         </div>
       )
 };
@@ -59,12 +61,13 @@ const responsive = {
         style={{
           textAlign: "center",
           position: "absolute",
+          margin:10,
           right:'0',
-          top: '80px',
+          top: '120px',
           color:"blue",
           backgroundColor:'#fff',
-          width: '50px',
-          height: '50px',
+          width: '30px',
+          height: '30px',
           borderRadius: '100px',
           boxShadow:' 0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08)',
           display:'grid',
@@ -73,7 +76,7 @@ const responsive = {
         }}
         
       >
-          <ChevronRightIcon className='chevron__arrow' />
+          <ChevronRightIcon style={{fontSize:15}} className='chevron__arrow' />
       </div>
     )
   };
@@ -88,24 +91,28 @@ export default function TechDetail(props) {
             </div>
             <div className='techdetail__description'>
                 <div className='techdetail__description__left'>
-                    <h3>Expand your carrer opprtunities with python</h3>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
-                    <span>Explore Python <ChevronRightIcon/></span>
+                    <h3 style={{color:'white', fontSize:28, fontWeight:'bold'}}>Expand your carrer opprtunities with python</h3>
+                    <p style={{fontSize:15, paddingLeft:55}}>Python is a truly wonderful language. When somebody comes up with a good idea it takes about 1 minute and five lines to
+                        program something that almost does what you want. Then it takes only an hour to extend the script to 300 lines, after which
+                        it still does almost what you want.</p>
+                    
                 </div>
                 <div className='techdetail__description__right'>
-                    <img src={avatar} alt="pythonimg" />
+                    <img style={{width:146, height:146}} src={avatar} alt="pythonimg" />
                 </div>
             </div>
+            <div style={{margin:10, marginTop:20}}>Explore Python <ChevronRightIcon/></div>
+
             <div className='techdetail__cards'>   
                 <Carousel
                 customRightArrow={<CustomRightArrow />}
                 customLeftArrow={<CustomLeftArrow />}
-                swipeable={false}
-                draggable={false}
+                swipeable={true}
+                draggable={true}
                 showDots={false}
                 responsive={responsive}
                 ssr={true} // means to render carousel on server-side.
-                infinite={true}
+                infinite={false}
                 autoPlay={false}
                 autoPlaySpeed={1000}
                 keyBoardControl={true}
@@ -118,173 +125,173 @@ export default function TechDetail(props) {
                 >
                 <div className='techdetail__card'>
                     <img src='https://img-a.udemycdn.com/course/240x135/567828_67d0.jpg?jPbjZH3aSsBauYmrGIMM8zjqiOgBGXcP-IYI8J7WplnWvbBgkynF8ul-TL72-eGftOtomEQuZP3AQxEo26UG2SwNat0BPsfmbat4kPzwOnX3Xozx2Jt5qBYiC2ud' alt='techdetailcard' />
-                    <h4>Python Bootcamp</h4>
-                    <span style={{fontSize:'18px',color:'gray'}}>jose Poetilla</span>
-                    <span className='techdetail__rating'>
-                        <span style={{fontSize:'20px', fontWeight:'bold', color:'#be5a0e', marginRight:'5px'}}>2.5</span>
-                    <ReactStars
-                    count={5}
-                    value={2.5}
-                    size={24}
-                    activeColor="#ffd700"
-                    isHalf={true}
-                    emptyIcon={<i className="far fa-star"></i>}
-                    halfIcon={<i className="fa fa-star-half-alt"></i>}
-                    fullIcon={<i className="fa fa-star"></i>}
-                    />
-                    <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} >(332,508)</span>
-                    </span>
-                    
-                    <span style={{fontSize:'22px', fontWeight:'bold'}} >$100</span>
-                    {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
-                    
+                    <h4 style={{textAlign:'left', width:"100%", fontSize:18, fontWeight:500 }}>Python Bootcamp</h4>
+                    <span style={{fontSize:14, fontWeight:'normal',color:'gray', width:'100%'}}>Jose Poetilla</span>
+                    <div className='techdetail__rating'>
+                        <ReactStars
+                            count={5}
+                            value={2.5}
+                            size={24}
+                            activeColor="#ffd700"
+                            isHalf={true}
+                            emptyIcon={<i className="far fa-star"></i>}
+                            halfIcon={<i className="fa fa-star-half-alt"></i>}
+                            fullIcon={<i className="fa fa-star"></i>}
+                        />
+                        <span style={{fontSize:12, fontWeight:'normal', color:'black',}}>2.5 (332,508 Reviews)</span>
+                        {/* <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} ></span> */}
+                    </div>
+                    <div style={{width:'100%', display:'flex', justifyContent:'space-between'}}>
+                        <span style={{fontSize:16, fontWeight:500, width:'100%'}} >$100</span>
+                        {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
+                    </div>
                 </div>
 
                 <div className='techdetail__card'>
                     <img src='https://img-a.udemycdn.com/course/240x135/567828_67d0.jpg?jPbjZH3aSsBauYmrGIMM8zjqiOgBGXcP-IYI8J7WplnWvbBgkynF8ul-TL72-eGftOtomEQuZP3AQxEo26UG2SwNat0BPsfmbat4kPzwOnX3Xozx2Jt5qBYiC2ud' alt='techdetailcard' />
-                    <h4>Python Bootcamp 2</h4>
-                    <span style={{fontSize:'18px',color:'gray'}}>jose Poetilla</span>
-                    <span className='techdetail__rating'>
-                        <span style={{fontSize:'20px', fontWeight:'bold', color:'#be5a0e', marginRight:'5px'}}>2.5</span>
-                    <ReactStars
-                    count={5}
-                    value={2.5}
-                    size={24}
-                    activeColor="#ffd700"
-                    isHalf={true}
-                    emptyIcon={<i className="far fa-star"></i>}
-                    halfIcon={<i className="fa fa-star-half-alt"></i>}
-                    fullIcon={<i className="fa fa-star"></i>}
-                    />
-                    <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} >(332,508)</span>
-                    </span>
-                    
-                    <span style={{fontSize:'22px', fontWeight:'bold'}} >$100</span>
-                    {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
-                    
+                    <h4 style={{textAlign:'left', width:"100%", fontSize:18, fontWeight:500 }}>Python Bootcamp</h4>
+                    <span style={{fontSize:14, fontWeight:'normal',color:'gray', width:'100%'}}>Jose Poetilla</span>
+                    <div className='techdetail__rating'>
+                        <ReactStars
+                            count={5}
+                            value={2.5}
+                            size={24}
+                            activeColor="#ffd700"
+                            isHalf={true}
+                            emptyIcon={<i className="far fa-star"></i>}
+                            halfIcon={<i className="fa fa-star-half-alt"></i>}
+                            fullIcon={<i className="fa fa-star"></i>}
+                        />
+                        <span style={{fontSize:12, fontWeight:'normal', color:'black',}}>2.5 (332,508 Reviews)</span>
+                        {/* <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} ></span> */}
+                    </div>
+                    <div style={{width:'100%', display:'flex', justifyContent:'space-between'}}>
+                        <span style={{fontSize:16, fontWeight:500, width:'100%'}} >$100</span>
+                        {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
+                    </div>
                 </div>
 
                 <div className='techdetail__card'>
                     <img src='https://img-a.udemycdn.com/course/240x135/567828_67d0.jpg?jPbjZH3aSsBauYmrGIMM8zjqiOgBGXcP-IYI8J7WplnWvbBgkynF8ul-TL72-eGftOtomEQuZP3AQxEo26UG2SwNat0BPsfmbat4kPzwOnX3Xozx2Jt5qBYiC2ud' alt='techdetailcard' />
-                    <h4>Python Bootcamp 3</h4>
-                    <span style={{fontSize:'18px',color:'gray'}}>jose Poetilla</span>
-                    <span className='techdetail__rating'>
-                        <span style={{fontSize:'20px', fontWeight:'bold', color:'#be5a0e', marginRight:'5px'}}>2.5</span>
-                    <ReactStars
-                    count={5}
-                    value={2.5}
-                    size={24}
-                    activeColor="#ffd700"
-                    isHalf={true}
-                    emptyIcon={<i className="far fa-star"></i>}
-                    halfIcon={<i className="fa fa-star-half-alt"></i>}
-                    fullIcon={<i className="fa fa-star"></i>}
-                    />
-                    <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} >(332,508)</span>
-                    </span>
-                    
-                    <span style={{fontSize:'22px', fontWeight:'bold'}} >$100</span>
-                    {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
-                    
+                    <h4 style={{textAlign:'left', width:"100%", fontSize:18, fontWeight:500 }}>Python Bootcamp</h4>
+                    <span style={{fontSize:14, fontWeight:'normal',color:'gray', width:'100%'}}>Jose Poetilla</span>
+                    <div className='techdetail__rating'>
+                        <ReactStars
+                            count={5}
+                            value={2.5}
+                            size={24}
+                            activeColor="#ffd700"
+                            isHalf={true}
+                            emptyIcon={<i className="far fa-star"></i>}
+                            halfIcon={<i className="fa fa-star-half-alt"></i>}
+                            fullIcon={<i className="fa fa-star"></i>}
+                        />
+                        <span style={{fontSize:12, fontWeight:'normal', color:'black',}}>2.5 (332,508 Reviews)</span>
+                        {/* <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} ></span> */}
+                    </div>
+                    <div style={{width:'100%', display:'flex', justifyContent:'space-between'}}>
+                        <span style={{fontSize:16, fontWeight:500, width:'100%'}} >$100</span>
+                        {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
+                    </div>
                 </div>
 
                 <div className='techdetail__card'>
                     <img src='https://img-a.udemycdn.com/course/240x135/567828_67d0.jpg?jPbjZH3aSsBauYmrGIMM8zjqiOgBGXcP-IYI8J7WplnWvbBgkynF8ul-TL72-eGftOtomEQuZP3AQxEo26UG2SwNat0BPsfmbat4kPzwOnX3Xozx2Jt5qBYiC2ud' alt='techdetailcard' />
-                    <h4>Python Bootcamp 4</h4>
-                    <span style={{fontSize:'18px',color:'gray'}}>jose Poetilla</span>
-                    <span className='techdetail__rating'>
-                        <span style={{fontSize:'20px', fontWeight:'bold', color:'#be5a0e', marginRight:'5px'}}>2.5</span>
-                    <ReactStars
-                    count={5}
-                    value={2.5}
-                    size={24}
-                    activeColor="#ffd700"
-                    isHalf={true}
-                    emptyIcon={<i className="far fa-star"></i>}
-                    halfIcon={<i className="fa fa-star-half-alt"></i>}
-                    fullIcon={<i className="fa fa-star"></i>}
-                    />
-                    <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} >(332,508)</span>
-                    </span>
-                    
-                    <span style={{fontSize:'22px', fontWeight:'bold'}} >$100</span>
-                    {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
-                    
+                    <h4 style={{textAlign:'left', width:"100%", fontSize:18, fontWeight:500 }}>Python Bootcamp</h4>
+                    <span style={{fontSize:14, fontWeight:'normal',color:'gray', width:'100%'}}>Jose Poetilla</span>
+                    <div className='techdetail__rating'>
+                        <ReactStars
+                            count={5}
+                            value={2.5}
+                            size={24}
+                            activeColor="#ffd700"
+                            isHalf={true}
+                            emptyIcon={<i className="far fa-star"></i>}
+                            halfIcon={<i className="fa fa-star-half-alt"></i>}
+                            fullIcon={<i className="fa fa-star"></i>}
+                        />
+                        <span style={{fontSize:12, fontWeight:'normal', color:'black',}}>2.5 (332,508 Reviews)</span>
+                        {/* <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} ></span> */}
+                    </div>
+                    <div style={{width:'100%', display:'flex', justifyContent:'space-between'}}>
+                        <span style={{fontSize:16, fontWeight:500, width:'100%'}} >$100</span>
+                        {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
+                    </div>
                 </div>
 
                 <div className='techdetail__card'>
                     <img src='https://img-a.udemycdn.com/course/240x135/567828_67d0.jpg?jPbjZH3aSsBauYmrGIMM8zjqiOgBGXcP-IYI8J7WplnWvbBgkynF8ul-TL72-eGftOtomEQuZP3AQxEo26UG2SwNat0BPsfmbat4kPzwOnX3Xozx2Jt5qBYiC2ud' alt='techdetailcard' />
-                    <h4>Python Bootcamp 5</h4>
-                    <span style={{fontSize:'18px',color:'gray'}}>jose Poetilla</span>
-                    <span className='techdetail__rating'>
-                        <span style={{fontSize:'20px', fontWeight:'bold', color:'#be5a0e', marginRight:'5px'}}>2.5</span>
-                    <ReactStars
-                    count={5}
-                    value={2.5}
-                    size={24}
-                    activeColor="#ffd700"
-                    isHalf={true}
-                    emptyIcon={<i className="far fa-star"></i>}
-                    halfIcon={<i className="fa fa-star-half-alt"></i>}
-                    fullIcon={<i className="fa fa-star"></i>}
-                    />
-                    <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} >(332,508)</span>
-                    </span>
-                    
-                    <span style={{fontSize:'22px', fontWeight:'bold'}} >$100</span>
-                    {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
-                    
+                    <h4 style={{textAlign:'left', width:"100%", fontSize:18, fontWeight:500 }}>Python Bootcamp</h4>
+                    <span style={{fontSize:14, fontWeight:'normal',color:'gray', width:'100%'}}>Jose Poetilla</span>
+                    <div className='techdetail__rating'>
+                        <ReactStars
+                            count={5}
+                            value={2.5}
+                            size={24}
+                            activeColor="#ffd700"
+                            isHalf={true}
+                            emptyIcon={<i className="far fa-star"></i>}
+                            halfIcon={<i className="fa fa-star-half-alt"></i>}
+                            fullIcon={<i className="fa fa-star"></i>}
+                        />
+                        <span style={{fontSize:12, fontWeight:'normal', color:'black',}}>2.5 (332,508 Reviews)</span>
+                        {/* <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} ></span> */}
+                    </div>
+                    <div style={{width:'100%', display:'flex', justifyContent:'space-between'}}>
+                        <span style={{fontSize:16, fontWeight:500, width:'100%'}} >$100</span>
+                        {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
+                    </div>
                 </div>
 
                 <div className='techdetail__card'>
                     <img src='https://img-a.udemycdn.com/course/240x135/567828_67d0.jpg?jPbjZH3aSsBauYmrGIMM8zjqiOgBGXcP-IYI8J7WplnWvbBgkynF8ul-TL72-eGftOtomEQuZP3AQxEo26UG2SwNat0BPsfmbat4kPzwOnX3Xozx2Jt5qBYiC2ud' alt='techdetailcard' />
-                    <h4>Python Bootcamp 6</h4>
-                    <span style={{fontSize:'18px',color:'gray'}}>jose Poetilla</span>
-                    <span className='techdetail__rating'>
-                        <span style={{fontSize:'20px', fontWeight:'bold', color:'#be5a0e', marginRight:'5px'}}>2.5</span>
-                    <ReactStars
-                    count={5}
-                    value={2.5}
-                    size={24}
-                    activeColor="#ffd700"
-                    isHalf={true}
-                    emptyIcon={<i className="far fa-star"></i>}
-                    halfIcon={<i className="fa fa-star-half-alt"></i>}
-                    fullIcon={<i className="fa fa-star"></i>}
-                    />
-                    <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} >(332,508)</span>
-                    </span>
-                    
-                    <span style={{fontSize:'22px', fontWeight:'bold'}} >$100</span>
-                    {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
-                    
+                    <h4 style={{textAlign:'left', width:"100%", fontSize:18, fontWeight:500 }}>Python Bootcamp</h4>
+                    <span style={{fontSize:14, fontWeight:'normal',color:'gray', width:'100%'}}>Jose Poetilla</span>
+                    <div className='techdetail__rating'>
+                        <ReactStars
+                            count={5}
+                            value={2.5}
+                            size={24}
+                            activeColor="#ffd700"
+                            isHalf={true}
+                            emptyIcon={<i className="far fa-star"></i>}
+                            halfIcon={<i className="fa fa-star-half-alt"></i>}
+                            fullIcon={<i className="fa fa-star"></i>}
+                        />
+                        <span style={{fontSize:12, fontWeight:'normal', color:'black',}}>2.5 (332,508 Reviews)</span>
+                        {/* <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} ></span> */}
+                    </div>
+                    <div style={{width:'100%', display:'flex', justifyContent:'space-between'}}>
+                        <span style={{fontSize:16, fontWeight:500, width:'100%'}} >$100</span>
+                        {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
+                    </div>
                 </div>
 
                 <div className='techdetail__card'>
                     <img src='https://img-a.udemycdn.com/course/240x135/567828_67d0.jpg?jPbjZH3aSsBauYmrGIMM8zjqiOgBGXcP-IYI8J7WplnWvbBgkynF8ul-TL72-eGftOtomEQuZP3AQxEo26UG2SwNat0BPsfmbat4kPzwOnX3Xozx2Jt5qBYiC2ud' alt='techdetailcard' />
-                    <h4>Python Bootcamp 7</h4>
-                    <span style={{fontSize:'18px',color:'gray'}}>jose Poetilla</span>
-                    <span className='techdetail__rating'>
-                        <span style={{fontSize:'20px', fontWeight:'bold', color:'#be5a0e', marginRight:'5px'}}>2.5</span>
-                    <ReactStars
-                    count={5}
-                    value={2.5}
-                    size={24}
-                    activeColor="#ffd700"
-                    isHalf={true}
-                    emptyIcon={<i className="far fa-star"></i>}
-                    halfIcon={<i className="fa fa-star-half-alt"></i>}
-                    fullIcon={<i className="fa fa-star"></i>}
-                    />
-                    <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} >(332,508)</span>
-                    </span>
-                    
-                    <span style={{fontSize:'22px', fontWeight:'bold'}} >$100</span>
-                    {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
-                    
+                    <h4 style={{textAlign:'left', width:"100%", fontSize:18, fontWeight:500 }}>Python Bootcamp</h4>
+                    <span style={{fontSize:14, fontWeight:'normal',color:'gray', width:'100%'}}>Jose Poetilla</span>
+                    <div className='techdetail__rating'>
+                        <ReactStars
+                            count={5}
+                            value={2.5}
+                            size={24}
+                            activeColor="#ffd700"
+                            isHalf={true}
+                            emptyIcon={<i className="far fa-star"></i>}
+                            halfIcon={<i className="fa fa-star-half-alt"></i>}
+                            fullIcon={<i className="fa fa-star"></i>}
+                        />
+                        <span style={{fontSize:12, fontWeight:'normal', color:'black',}}>2.5 (332,508 Reviews)</span>
+                        {/* <span style={{fontSize:'17px',color:'gray', marginLeft:'5px'}} ></span> */}
+                    </div>
+                    <div style={{width:'100%', display:'flex', justifyContent:'space-between'}}>
+                        <span style={{fontSize:16, fontWeight:500, width:'100%'}} >$100</span>
+                        {true? <span className='techdetail__bestseller'>Bestseller</span>:false}
+                    </div>
                 </div>
               
-                </Carousel>;
+                </Carousel>
                 
 
 

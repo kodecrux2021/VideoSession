@@ -4,7 +4,7 @@ import './Content.css'
 export default function TopCategories() {
     return (
         <div className='topcategories'>
-            <h2>Top categories</h2>
+            <h2 style={{fontSize:20, fontWeight:500}}>Top categories</h2>
             <Row>
                 <Col className='topcategories__card'>
                 <img alt="design"  src="https://s.udemycdn.com/home/top-categories/lohp-category-design.jpg" />

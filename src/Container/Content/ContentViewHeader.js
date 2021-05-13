@@ -43,7 +43,7 @@ export default function ContentViewHeader(props) {
     return (
         <div className='content'>
             <Hidden smDown>
-            <AppBar position="relative" style={{height:75,
+            <AppBar position="absolute" style={{height:75,
                     backgroundColor:'#FFFFFF',
                     padding:"0 40px 0 40px", 
                     alignItems:'center',

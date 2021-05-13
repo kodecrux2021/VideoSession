@@ -24,10 +24,11 @@ class Module extends React.Component {
   render() {
     const styles = {
       'backgroundColor': 'white',
-      'color':'black',
+      'color':'#3743B1',
+      'textDecoration' : "none"
     }
     if (this.state.isHovered) {
-      styles['color'] = 'rgb(2, 157, 199)';
+      styles['textDecoration'] = 'underline';
     }
 
     return (
@@ -65,10 +66,11 @@ class ModuleGroup2 extends React.Component {
 
     const bgStyle = {
       'backgroundColor': 'white',
-      'color':'black',
+      'color':'#3743B1',
+      "textDecoration" : 'none'
     }
     if (this.state.isVisible) {
-      bgStyle['color'] = 'rgb(2, 157, 199)';
+      bgStyle['textDecoration'] = 'underline';
     }
 
     return (
@@ -111,10 +113,13 @@ class ModuleGroup extends React.Component {
   render() {  
     // Only make bg color if on hover
     const bgStyle = {
+      'backgroundColor': 'white',
+      'color':'#3743B1',
+      "textDecoration" : 'none'
     }
     if (this.state.isVisible) {
-      bgStyle['backgroundColor'] = 'white';
-      bgStyle['color'] = 'rgb(2, 157, 199)';
+      // bgStyle['backgroundColor'] = 'white';
+      bgStyle['textDecoration'] = 'underline';
     }
 
     return (
@@ -154,7 +159,7 @@ class ModuleGroupSelector extends React.Component {
     return (
       <div className='analytics' onMouseEnter={this.toggleHidden} onMouseLeave={this.toggleHidden}>
 
-        <div className='topButton'>
+        <div className='topButton' style={{fontSize:14, fontWeight:'normal'}}>
           Categories
         </div>
         <div className={`analyticsDropDown ${this.state.isVisible ? 'visible': ''}`}>

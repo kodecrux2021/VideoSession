@@ -128,7 +128,7 @@ this.setState({input: e.target.value})
                 availableModules={this.state.categories}
                 />
                 <div className='body__container'>
-                <ContentBody />
+                  <ContentBody />
                 </div>
                 
             </div>

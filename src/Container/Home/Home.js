@@ -239,24 +239,27 @@ If as a user, you wish to refund the payment if they do not meet thier required 
        this.setState({visible: false})
       } 
 
-    studyRoomClick = () =>{
+      studyRoomClick = () =>{
         if(localStorage.getItem('token')){
-            this.props.history.push('/course-registration')
+            this.props.history.push("/courses");
         }  
         else{
             alert('Please login to go ahead!')
+            this.props.history.push("/login");
+            //  {<Redirect to="/login" />}
         }
-    
-    }
+       
+      }
 
-    solutionRoomClick = () =>{
+      solutionRoomClick = () =>{
         if(localStorage.getItem('token')){
-            this.props.history.push('/help/1')
+            this.props.history.push('/help/1');
         }  
         else{
-            alert('Please login to go ahead!')
+            alert('Please login to go ahead!');
+            this.props.history.push("/login");
         }
-    }
+      }
     render() {
         return (
         <>

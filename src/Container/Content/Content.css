@@ -52,20 +52,25 @@
 .search__icon {
     transform: scale(1.1);
     color: rgb(125, 123, 123);
-    position: relative;
+    width: 30px;
+    /* position: relative; */
     top:4px;
-    left: 10px;
+    padding-left: 10px;
 }
 
 .header__searchbar {
-    width: 100%;
+    
+    display: flex;
+    flex: 1;
 }
 
 .header__searchbar > input {
-    width: 100%;
+    /* width: 100%; */
+    flex: 1;
     height: 30px;
-    font-size: 20px;
-    background-color: rgb(244, 244, 244);
+    color: #3743B1;
+    font-size: 14px;
+    /* background-color: rgb(244, 244, 244); */
     padding-left: 20px;
 }
 
@@ -107,18 +112,21 @@
 
 
 .right__search__container {
+    margin-left: 10px;
     flex: 1;
-    padding: 10px 10px;
+    padding: 0px 10px;
     display: flex;
+    align-items: center;
+    height: 45px;
     border: 1px solid rgb(155, 155, 155);
-    border-radius: 50px;
-    background-color: rgb(244, 244, 244);
+    border-radius: 45px;
+    /* background-color: rgb(244, 244, 244); */
 }
 
 .right__search__container > div > div > input {
     border: none !important;
     box-shadow: none;
-    background-color: rgb(244, 244, 244);
+    /* background-color: rgb(244, 244, 244); */
 }
 
 .right__search__container > .select-search > .select-search__value::after {

@@ -268,6 +268,7 @@ class Pagetwo extends React.Component {
 
           <>
          <Navbar/>
+         <h1>hello</h1>
 
 <div className="registration__page__two">   
                 <form className="registration__details__container">

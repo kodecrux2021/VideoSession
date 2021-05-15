@@ -59,11 +59,16 @@ const styles = theme => ({
 
     const { classes } = props;
     const {id} = props;
+    let initial = new Date(props.last_seen);
+    let final = new Date()
+  
+    const i = initial.getTime();
+    const f = final.getTime();
+    const diff = f - i;
 
-    let initial = new Date(props.lastseen);
-    let final = new Date();
-    let seconds = (final.getTime()-initial.getTime())
-    // console.log('seconds diffrence',seconds)
+    const seconds = Math.floor((diff / 1000) );
+                
+
  
 
     const modal = (<Modal title="Select Option" footer={null} visible={props.isModalVisible}  onCancel={props.handleCancel}>
@@ -74,57 +79,81 @@ const styles = theme => ({
    </Modal>)
 
     return (
-       
-        <div className="card trainers__card" >
-            {modal}
-            <div className="trainers__card__left">
-                <img src={props.img?props.img:props.img2} alt="avatar" />
-                <div className="d-flex flex-column trainers__card__details "> 
-                    <div >
-                        <span style={{color: "#5bc0de", marginRight: "20px"}}><strong>{props.name}</strong></span> 
-                        {(seconds <= 60) ? <span style={{color:"rgb(85, 243, 124)"}}>
-                          <Badge  classes={{ badge: classes.customBadge }}
-                            overlap="circle"
-                            badgeContent=""
-                            variant="dot"
-                            ></Badge> <span>Online</span></span>
-                            :<span style={{color:"grey"}}>
-                                <Badge  classes={{ badge: classes.customBadge2 }}
-                            overlap="circle"
-                            badgeContent=""
-                            variant="dot"
-                            ></Badge> Offline</span>}
-                    </div>
-                    <div >
-                        <span style={{marginRight: "20px"}}><strong>US ${props.rate}</strong></span>
-                         {/* / {props.time} mins</span> */}
-                        <span style={{marginRight: "12px"}}> <Star style={{paddingBottom:"5px"}} /> <strong>{props.rating}</strong></span>
-                         {/* ({props.reviews} reviews) </span> */}
-                        {props.badge?<StarsIcon />:null}   
-                    </div>
-                    <span>{props.details}</span>
-                </div>
+      <div className="card trainers__card">
+        {modal}
+        <div className="trainers__card__left">
+          <img src={props.img ? props.img : props.img2} alt="avatar" />
+          <div className="d-flex flex-column trainers__card__details ">
+            <div>
+              <span style={{ color: "#5bc0de", marginRight: "20px" }}>
+                <strong>{props.name}</strong>
+              </span>
+              {props.isOnline ? (
+                <span style={{ color: "rgb(85, 243, 124)" }}>
+                  <Badge
+                    classes={{ badge: classes.customBadge }}
+                    overlap="circle"
+                    badgeContent=""
+                    variant="dot"
+                  ></Badge>{" "}
+                  <span>Online</span>
+                </span>
+              ) : (
+                <span style={{ color: "grey" }}>
+                  <Badge
+                    classes={{ badge: classes.customBadge2 }}
+                    overlap="circle"
+                    badgeContent=""
+                    variant="dot"
+                  ></Badge>{" "}
+                  Offline
+                </span>
+              )}
             </div>
-            {
-                props.message ? 
-<div className="trainers__card__right">
-
-            <button type="button" class="btn btn-outline-info" onClick={()=> props.showModal(props.reciever_id)} >MESSAGE</button>
-            <button class="btn btn-info" type="button" onClick={hireHandle} >HIRE</button>
-            
+            <div>
+              <span style={{ marginRight: "20px" }}>
+                <strong>US ${props.rate}</strong>
+              </span>
+              {/* / {props.time} mins</span> */}
+              <span style={{ marginRight: "12px" }}>
+                {" "}
+                <Star style={{ paddingBottom: "5px" }} />{" "}
+                <strong>{props.rating}</strong>
+              </span>
+              {/* ({props.reviews} reviews) </span> */}
+              {props.badge ? <StarsIcon /> : null}
             </div>
-            
-            :
-            props.video &&
-            <div className="trainers__card__right">
-            <button type="button" class="btn btn-info" onClick={ id => LiveHandle(props?.video) } >RECORDED SESSION</button>
-            </div>
-            }
-
-
-            
+            <span>{props.details}</span>
+          </div>
         </div>
-    )
+        {props.message ? (
+          <div className="trainers__card__right">
+            <button
+              type="button"
+              class="btn btn-outline-info"
+              onClick={() => props.showModal(props.reciever_id)}
+            >
+              MESSAGE
+            </button>
+            <button class="btn btn-info" type="button" onClick={hireHandle}>
+              HIRE
+            </button>
+          </div>
+        ) : (
+          props.video && (
+            <div className="trainers__card__right">
+              <button
+                type="button"
+                class="btn btn-info"
+                onClick={(id) => LiveHandle(props?.video)}
+              >
+                RECORDED SESSION
+              </button>
+            </div>
+          )
+        )}
+      </div>
+    );
 }
 
 export default withStyles(styles)(TrainersCard)

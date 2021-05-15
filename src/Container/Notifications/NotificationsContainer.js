@@ -403,6 +403,7 @@ export default class NotificationsContainer extends Component {
               retryCount={10} // this is optional
               onSuccess={(result) => {
                   this.getMessage();
+                  this.getUser();
                    this.setState({ requests: result });
                   return true;
               }}

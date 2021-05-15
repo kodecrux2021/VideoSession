@@ -7,6 +7,7 @@ import Navbar from "../../components/Header/Navbar";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import kodecrux from "../../assets/images/reg2.jpeg";
+import ReactPolling from "react-polling";
 
 let uri = "";
 export default class Trainers extends Component {
@@ -16,14 +17,21 @@ export default class Trainers extends Component {
     isModalVisible: false,
     loading: true,
     rec_id: null,
+    new_param: localStorage.getItem("parameter"),
+    // pollingurl: url+" /api/educator/" + localStorage.getItem("parameter"),
   };
 
   //     setLoading=()=> {
   // this.setState({loading: false})
   //     }
 
+  isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
+
   componentDidMount() {
     // console.log('previous token', localStorage.getItem("token"))
+
     if (localStorage.getItem("token")) {
       let data_refresh = { refresh: localStorage.getItem("refresh") };
 
@@ -64,21 +72,45 @@ export default class Trainers extends Component {
     })
       .then((res) => res.json())
       .then((result) => {
-        // console.log('current user result', result.user)
+        console.log("current user result", result.user);
         this.setState({ user: result.user });
-        let param = "";
-        // result.user.technology.map(
-        //   (tech) => (param += "&usertechnology=" + tech)
-        // );
-        param += "&usersub_technology=["
-        result.user.sub_technology.map(
-          (tech) => (param += tech+',')
-        );
+        // let param = "";
 
-        let new_param = param.substring(1,param.length-1);
-          new_param += ']'
-        console.log('param', new_param)
-        fetch(url + "/api/educator/?" + new_param, {
+        //       console.log("subTechs", localStorage.getItem("sub_techs"));
+        //       // for (let t of localStorage.getItem("sub_techs")) {
+        //       //   if (this.isNumeric(t)) {
+        //       //     console.log("n", t);
+        //       //   }
+        //       // }
+        // // result.user.technology.map(
+        // //   (tech) => (param += "&usertechnology=" + tech)
+        // // );
+        // param += "&usersub_technology=["
+        // result.user.sub_technology.map(
+        //   (tech) => (param += tech+',')
+        // );
+
+        // let new_param = param.substring(1,param.length-1);
+        //   new_param += ']'
+
+        // let param = "";
+
+        // param += "&usersub_technology=[";
+        // // result.user.sub_technology.map((tech) => (param += tech + ","));
+
+        // for (let t of localStorage.getItem("sub_techs")) {
+        //   if (this.isNumeric(t)) {
+        //     param += t + ",";
+        //   }
+        // }
+
+        // let new_param1 = param.substring(1, param.length - 1);
+        // new_param1 += "]";
+        // console.log(new_param1);
+        // this.setState({ new_param: new_param1 });
+        // this.setState({ pollingurl: `${url}/api/educator/${new_param1}` });
+        // console.log("url2", this.state.pollingurl);
+        fetch(url + "/api/educator/?" + this.state.new_param, {
           method: "GET",
           headers: {
             Accept: "application/json",
@@ -88,7 +120,7 @@ export default class Trainers extends Component {
         })
           .then((res) => res.json())
           .then((result) => {
-            //  console.log('result', result)
+            console.log("result1", result);
             this.setState({ trainers: result, loading: false });
           })
           .catch((e) => console.log(e));
@@ -207,16 +239,14 @@ export default class Trainers extends Component {
   };
 
   hireHandle = () => {
-
-//     let auth = localStorage.getItem("token");
-//     let user_id=localStorage.getItem("user_id");
-//     let hire_id=localStorage.getItem("hire_id");
-//   console.log(user_id,localStorage.getItem("id"))
+    //     let auth = localStorage.getItem("token");
+    //     let user_id=localStorage.getItem("user_id");
+    //     let hire_id=localStorage.getItem("hire_id");
+    //   console.log(user_id,localStorage.getItem("id"))
     // let data = {
     //   user_id: localStorage.getItem("user_id"),
     //   hire_id: localStorage.getItem("hire_id"),
     // };
-
 
     // fetch(`${url}/api/check_hire/${user_id}/${hire_id}`, {
     //   method: "GET",
@@ -238,74 +268,127 @@ export default class Trainers extends Component {
     //   })
     //   .catch((e) => console.log(e));
 
-    this.props.history.push('/investor')
+    this.props.history.push("/investor");
   };
+
+  //   console.log("param", new_param);
+  //   fetch(url + "/api/educator/?" + new_param, {
+  //     method: "GET",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //       Authorization: "Bearer " + auth,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((result) => {
+  //        console.log('result1', result)
+  //       this.setState({ trainers: result, loading: false });
+  //     })
+  //     .catch((e) => console.log(e));
+  // })
+  // .catch((e) => console.log(e));
 
   render() {
     return (
-      <>
-        <Navbar />
-        {this.state.loading ? (
-          <div
-            style={{
-              width: "100%",
-              height: "100vh",
-              display: "grid",
-              placeItems: "center",
-            }}
-          >
-            <Spin size="large" />
-          </div>
-        ) : (
-          <div className="body__ctr">
-            <img
-              src={kodecrux}
-              style={{
-                height: "70px",
-                position: "absolute",
-                left: "0",
-                top: "0",
-                zIndex: "2000",
-              }}
-              onClick={() => this.props.history.push("/")}
-            />
-            <div
-              className=" d-flex  p-3 flex-column"
-              style={{ alignItems: "center" }}
-            >
-              {this.state.trainers.map((trainer) => (
-                <TrainersCard
-                  key={trainer.id}
-                  name={`${trainer.user_first_name} ${trainer.user_last_name}`}
-                  img={
-                    trainer.profile_pic !== null ? `${trainer.profile_pic}` : ""
-                  }
-                  img2={avatar}
-                  online={false}
-                  rating={trainer.rating}
-                  details={trainer.designation}
-                  rate={trainer.fees}
-                  lastseen={trainer.last_seen}
-                  time="15"
-                  reviews="150"
-                  id={trainer.id}
-                  reciever_id={trainer.user_id}
-                  conversation_id={trainer.conversation}
-                  message={uri === "message"}
-                  messageHandle={this.messageHandle}
-                  showModal={this.showModal}
-                  handleCancel={this.handleCancel}
-                  isModalVisible={this.state.isModalVisible}
-                  hireHandle={this.hireHandle}
-                  rec_id={this.state.rec_id}
-                  video={trainer?.bill[0]?.video}
-                  // badge={false}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-      </>
+      <ReactPolling
+        url={url + "/api/educator/?" + this.state.new_param}
+        interval={3000} // in milliseconds(ms)
+        retryCount={30} // this is optional
+        onSuccess={(result) => {
+          console.log("result1", result);
+          this.setState({ trainers: result, loading: false });
+          return true;
+        }}
+        onFailure={() => {
+          console.log("pa", this.state.new_param);
+          console.log("url", url + "/api/educator/" + this.state.new_param);
+          console.log("handle failure");
+        }} // this is optional
+        method={"GET"}
+        headers={{
+          Accept: "application/json",
+          "Content-Type": "text/plain",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }}
+        //   body={JSON.stringify(data)} // data to send in a post call. Should be stringified always
+        render={({ startPolling, stopPolling, isPolling }) => {
+          if (isPolling) {
+            return (
+              <div>
+                <>
+                  <Navbar />
+                  {this.state.loading ? (
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100vh",
+                        display: "grid",
+                        placeItems: "center",
+                      }}
+                    >
+                      <Spin size="large" />
+                    </div>
+                  ) : (
+                    <div className="body__ctr">
+                      <img
+                        src={kodecrux}
+                        style={{
+                          height: "70px",
+                          position: "absolute",
+                          left: "0",
+                          top: "0",
+                          zIndex: "2000",
+                        }}
+                        onClick={() => this.props.history.push("/")}
+                      />
+                      <div
+                        className=" d-flex  p-3 flex-column"
+                        style={{ alignItems: "center" }}
+                      >
+                        {this.state.trainers.map((trainer) => (
+                          <TrainersCard
+                            key={trainer.id}
+                            name={`${trainer.user_first_name} ${trainer.user_last_name}`}
+                            img={
+                              trainer.profile_pic !== null
+                                ? `${trainer.profile_pic}`
+                                : ""
+                            }
+                            img2={avatar}
+                            online={false}
+                            isOnline={trainer.is_online}
+                            rating={trainer.rating}
+                            details={trainer.designation}
+                            rate={trainer.fees}
+                            lastseen={trainer.last_seen}
+                            time="15"
+                            reviews="150"
+                            id={trainer.id}
+                            reciever_id={trainer.user_id}
+                            conversation_id={trainer.conversation}
+                            message={uri === "message"}
+                            messageHandle={this.messageHandle}
+                            showModal={this.showModal}
+                            handleCancel={this.handleCancel}
+                            isModalVisible={this.state.isModalVisible}
+                            hireHandle={this.hireHandle}
+                            rec_id={this.state.rec_id}
+                            video={trainer?.bill[0]?.video}
+                            // badge={false}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              </div>
+            );
+          } else {
+            return <div>Polling stopped</div>;
+          }
+        }}
+      />
     );
   }
 }

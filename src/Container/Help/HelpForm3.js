@@ -42,12 +42,16 @@ export default class HelpForm3 extends Component {
 
   // set selected value
   handleSelect(val) {
-    console.log(val);
+    console.log('val',val);
     this.setState({ selected: val });
   }
 
+   isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
   handleRecommendedSelect(val) {
-    //console.log(val);
+    console.log('val2',val);
     let selected = [...this.state.recommended_selected]
    // console.log('selected', selected)
     const index = selected.findIndex(
@@ -61,6 +65,7 @@ export default class HelpForm3 extends Component {
     }
 
     this.setState({ recommended_selected: selected });
+    console.log(this.state.recommended_selected);
   }
 
 
@@ -69,14 +74,30 @@ export default class HelpForm3 extends Component {
     e.preventDefault();
 
     if (this.state.selected.length !== null && this.state.selected.length > 0) {
-      message.info('Submitted Successfully!!!');
+
+      localStorage.setItem("sub_techs", this.state.recommended_selected);
+      console.log('subTechs',localStorage.getItem('sub_techs'));
+      let param = "";
+
+      param += "&usersub_technology=[";
+      // for (let t of localStorage.getItem("sub_techs")) {
+      //           if (this.isNumeric(t)) {
+      //             param += t + ",";
+      //           }
+      // }
+      param += localStorage.getItem("sub_techs");
+      let new_param1 = param;
+      new_param1 += "]";
+      localStorage.setItem("parameter", new_param1);
+      console.log(localStorage.getItem("parameter"));
+        message.info("Submitted Successfully!!!");
       this.props.history.push("/trainers/message");
       // console.log('state', this.state);
 
 
       let tech = []
       let sub_tech = []
-      // console.log(this.state.recommended_selected);
+      console.log(this.state.recommended_selected);
       this.state.selected.map((item) => (
         tech.push(parseInt(item.id))
       ))

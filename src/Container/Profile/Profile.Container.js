@@ -89,7 +89,7 @@ class Profile extends Component {
         await fetch(url + "/api/customusersecond/" + id + "/")
           .then((response) => response.json())
           .then((data) => {
-            // console.log("date", data.date_of_birth);
+            console.log("date", data);
             this.setState({
               Date_Of_Birth: data.date_of_birth,
               profile_pic: data.profile_pic,
@@ -100,6 +100,7 @@ class Profile extends Component {
               relevant_experience: data.relevant_experience,
               technology: data.technology[0],
               sub_technology: data.sub_technology[0],
+              resume: data.resume,
             });
           })
           .then((data) =>
@@ -162,6 +163,15 @@ class Profile extends Component {
           if (result) {
             localStorage.setItem("token", result.access);
           }
+        }).then(()=>{
+          // fetch(url + "/update/lastseen/", {
+          //   method: "GET",
+          //   headers: {
+          //     Accept: "application/json",
+          //     "Content-Type": "application/json",
+          //     Authorization: "Bearer " + localStorage.getItem("token"),
+          //   }
+          // });
         });
     }
 
@@ -368,7 +378,7 @@ class Profile extends Component {
             body: formData2,
           })
         .then((response) => {
-          //console.log("response", response);
+          console.log("response", response);
           if (response["status"] === 201 || response["status"] === 200) {
             message.success("Saved");
             window.location.reload();
@@ -721,18 +731,17 @@ class Profile extends Component {
                       <div class="form__group">
                         <div style={{ display: "flex", alignItems: "center" }}>
                           <label>Date of Birth</label>
-                         
-                            <div style={{ margin: "0 60px" }}>
-                              <DatePicker
-                                onChange={this.onChange}
-                                size="large"
-                                format="YYYY-MM-DD"
-                                defaultValue={
-                                  Date_Of_Birth ? moment(Date_Of_Birth) : ""
-                                }
-                              />
-                            </div>
-                         
+
+                          <div style={{ margin: "0 60px" }}>
+                            <DatePicker
+                              onChange={this.onChange}
+                              size="large"
+                              format="YYYY-MM-DD"
+                              defaultValue={
+                                Date_Of_Birth ? moment(Date_Of_Birth) : ""
+                              }
+                            />
+                          </div>
                         </div>
                       </div>
                       <div className="form__group">
@@ -907,6 +916,7 @@ class Profile extends Component {
                               </label>
                               <input
                                 type="file"
+                                
                                 // className="form__control"
                                 onChange={(e) => this.handleResume(e)}
                                 accept="image/*, .pdf, .doc,.docx"

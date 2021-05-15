@@ -14,11 +14,11 @@
   position: fixed;
   top: 0;
   right: 0;
-  height:5vw;
+  height:4.4rem;
 }
 
 .notifications__header > span {
-  padding: 15px 35px;
+  padding: 23px 35px;
   cursor: pointer;
 }
 

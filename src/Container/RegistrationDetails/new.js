@@ -145,17 +145,24 @@ class New extends React.Component {
   onSubmit = async (e) => {
     e.preventDefault();
     let designationFormat = /^[A-Za-z ]{1,40}$/;
-    console.log("rexp", this.state.relevant_experience);
+    
+    
+    console.log("rexp", this.state.sub_technology === "");
     if (
       this.state.pincode === null ||
       this.state.city === "" ||
       this.state.state === "" ||
       this.state.date_of_birth === "" ||
       this.state.resume === "" ||
+      this.state.desig === "" ||
       (this.state.desig ? !designationFormat.test(this.state.desig) : false) ||
       this.state.fileList.length === 0 ||
       this.state.total_experience === null ||
-      this.state.relevant_experience === null
+      this.state.relevant_experience === null ||
+      this.state.rating === 0 ||
+      this.state.fees === 0 ||
+      this.state.technology === "" ||
+      this.state.sub_technology === ""
     ) {
       {
         console.log("hello");
@@ -170,6 +177,8 @@ class New extends React.Component {
         message.info("Please Fill Date of birth");
       } else if (this.state.resume === "") {
         message.info("Please upload the resume");
+      } else if (this.state.desig === "") {
+        message.info("Please fill designation");
       } else if (
         this.state.desig
           ? designationFormat.test(this.state.desig) === false
@@ -178,11 +187,19 @@ class New extends React.Component {
         message.info("Designation cannot have numeric values");
       } else if (this.state.fileList.length === 0) {
         message.info("Please upload profile picture");
+      }  else if (this.state.technology === "") {
+        message.info("Please Select Technology");
+      } else if (this.state.sub_technology === "") {
+        message.info("Please Select Sub Technology");
       } else if (this.state.total_experience === null) {
         message.info("Please Enter Total Experience");
-      } else if(this.state.relevant_experience === null){
+      } else if (this.state.relevant_experience === null) {
         message.info("Please Enter Relevant Experience");
-      }
+      } else if (this.state.fees === 0) {
+        message.info("Please Provide the fees");
+      } else if (this.state.rating === 0) {
+        message.info("Please Provide the rating");
+      } 
     } else {
       let tech = [];
       let sub_tech = [];
@@ -205,8 +222,8 @@ class New extends React.Component {
       formData.append("fees", this.state.fees);
       formData.append("designation", this.state.desig);
       formData.append("rating", this.state.rating);
-      this.state.fileList.length > 0 &&
-        formData.append("profile_pic", this.state.fileList[0].originFileObj);
+      // this.state.fileList.length > 0 &&
+      formData.append("profile_pic", this.state.fileList[0].originFileObj);
       formData.append("resume", this.state.resume);
       // formData.append('profile_pic', this.state.file)
       let data = {
@@ -301,8 +318,8 @@ class New extends React.Component {
         })
         .catch((e) => console.log(e));
 
-          // this.props.history.push("/verification");
-      }
+      // this.props.history.push("/verification");
+    }
     
 };
 

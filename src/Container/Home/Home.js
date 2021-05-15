@@ -241,7 +241,7 @@ If as a user, you wish to refund the payment if they do not meet thier required 
             this.props.history.push("/courses");
         }  
         else{
-            alert('Please login to go ahead!')
+            message.info('Please login to go ahead!')
             this.props.history.push("/login");
             //  {<Redirect to="/login" />}
         }
@@ -253,7 +253,8 @@ If as a user, you wish to refund the payment if they do not meet thier required 
             this.props.history.push('/help/1')
         }  
         else{
-            alert('Please login to go ahead!')
+                       message.info("Please login to go ahead!");
+                       this.props.history.push("/login");
         }
       }
       render() {

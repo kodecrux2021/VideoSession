@@ -3,7 +3,7 @@ import './Notifications.css'
 import ChatIcon from '@material-ui/icons/Chat';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import WarningIcon from '@material-ui/icons/Warning';
-import { Avatar, IconButton } from '@material-ui/core';
+import { Avatar, BottomNavigation, BottomNavigationAction, Drawer, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {Modal, Button, notification} from 'antd'
 import kodecrux from '../../assets/images/reg2.jpeg'
@@ -50,22 +50,13 @@ export default function Notifications(props) {
     },[])
     const history = useHistory();
     const classes = useStyles();
-    return (
-        <div className='notifications' >
-            <div className='notifications__header' >
-            <img src={kodecrux} style={{ height: '70px', position: 'absolute',left: '0', top: '0' }} onClick = {() =>history.push('/')}/>
+    const [value, setValue] = React.useState(0);
 
-                <span className={`${props.selected==='messages' && "span__active"}`} onClick={()=>props.selectHandler('messages')}  >
-                    <ChatIcon className={`Notifications__header__icon ${props.selected==='messages' && "icon__active" } `}/>
-                </span>
-                <span className={`${props.selected==='requests' && "span__active"}`} onClick={()=>props.selectHandler('requests')} >
-                    <PeopleAltIcon className={`Notifications__header__icon ${props.selected==='requests' && "icon__active" } `}/>   
-                </span>
-                <span className={`${props.selected==='troubleshoot' && "span__active"}`} onClick={()=>props.selectHandler('troubleshoot')} >
-                    <WarningIcon className={`Notifications__header__icon ${props.selected==='troubleshoot' && "icon__active" } `}/>
-                </span>      
-            </div>
-            <div className='notifications__body' >
+    return (
+        <div className='notifications' style={{display:'flex', flex:1, flexDirection:'column'}} >
+            
+            
+            <div className='notifications__body' style={{flex:1}} >
                 {
                     props.selected === 'messages' ?
 
@@ -225,6 +216,7 @@ export default function Notifications(props) {
                                 </div>
                         </div>       
                     </div>  */}
+                
                 </div>
                 :
                 null
@@ -464,6 +456,34 @@ export default function Notifications(props) {
            
 
             </div>
+            <BottomNavigation showLabels 
+            onChange={(event, newValue) => {
+              setValue(newValue);
+              if (newValue === 0) {
+                props.selectHandler('messages')
+              } else if (newValue === 1) {
+                props.selectHandler('requests')
+              } else {
+                props.selectHandler('troubleshoot')
+              }
+            }}
+            elevation={16}
+            style={{display:'flex', outline:'none'}} value={value}>
+                <BottomNavigationAction label="Message" icon={<ChatIcon />} />
+                <BottomNavigationAction label="Requests" icon={<PeopleAltIcon />} />
+                <BottomNavigationAction label="Notification" icon={<WarningIcon />} />
+            {/* <div className='notifications__header' >
+                <span className={`${props.selected==='messages' && "span__active"}`} onClick={()=>props.selectHandler('messages')}  >
+                    <ChatIcon className={`Notifications__header__icon ${props.selected==='messages' && "icon__active" } `}/>
+                </span>
+                <span className={`${props.selected==='requests' && "span__active"}`} onClick={()=>props.selectHandler('requests')} >
+                    <PeopleAltIcon className={`Notifications__header__icon ${props.selected==='requests' && "icon__active" } `}/>   
+                </span>
+                <span className={`${props.selected==='troubleshoot' && "span__active"}`} onClick={()=>props.selectHandler('troubleshoot')} >
+                    <WarningIcon className={`Notifications__header__icon ${props.selected==='troubleshoot' && "icon__active" } `}/>
+                </span>      
+            </div> */}
+            </BottomNavigation>
         </div>
     )
 }

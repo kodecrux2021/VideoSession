@@ -7,6 +7,7 @@ import StarsIcon from '@material-ui/icons/Stars';
 import { message, Modal  } from 'antd';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import {url} from '../../Server/GlobalUrl'
+import { Typography } from '@material-ui/core';
 
 const styles = theme => ({
     customBadge: {
@@ -79,16 +80,19 @@ const styles = theme => ({
    </Modal>)
 
     return (
+
       <div className="card trainers__card">
         {modal}
-        <div className="trainers__card__left">
-          <img src={props.img ? props.img : props.img2} alt="avatar" />
-          <div className="d-flex flex-column trainers__card__details ">
-            <div>
-              <span style={{ color: "#5bc0de", marginRight: "20px" }}>
-                <strong>{props.name}</strong>
-              </span>
-              {props.isOnline ? (
+        <div className="trainers__card__top">
+          <div style={{display:'flex', justifyContent:'space-between'}}>
+            <img className="profile_img" src={props.img ? props.img : props.img2} alt="avatar" />
+            <button
+                type="button"
+                class="btn btn-outline-info btn_Chat"
+                onClick={() => props.showModal(props.reciever_id)}
+              >
+                <Typography style={{fontSize:10, color:'inherit'}}>CHAT</Typography>
+                {props.isOnline ? (
                 <span style={{ color: "rgb(85, 243, 124)" }}>
                   <Badge
                     classes={{ badge: classes.customBadge }}
@@ -96,7 +100,7 @@ const styles = theme => ({
                     badgeContent=""
                     variant="dot"
                   ></Badge>{" "}
-                  <span>Online</span>
+                  {/* <span>Online</span> */}
                 </span>
               ) : (
                 <span style={{ color: "grey" }}>
@@ -106,14 +110,19 @@ const styles = theme => ({
                     badgeContent=""
                     variant="dot"
                   ></Badge>{" "}
-                  Offline
+                  {/* Offline */}
                 </span>
               )}
+            </button>
+          </div>
+          
+          <div className="d-flex flex-column trainers__card__details ">
+            <div className="d-flex flex-column"> 
+                <Typography style={{ color: "#424242", fontSize:16, fontWeight:500, marginTop:17 }}>{props.name}</Typography>
+                <Typography style={{ color: "#898989", fontSize:14, fontWeight:'normal', }}>{props.details}</Typography>      
             </div>
-            <div>
-              <span style={{ marginRight: "20px" }}>
-                <strong>US ${props.rate}</strong>
-              </span>
+            
+            <div style={{display:'flex', flexDirection:'column'}}>
               {/* / {props.time} mins</span> */}
               <span style={{ marginRight: "12px" }}>
                 {" "}
@@ -122,19 +131,19 @@ const styles = theme => ({
               </span>
               {/* ({props.reviews} reviews) </span> */}
               {props.badge ? <StarsIcon /> : null}
+              <Typography style={{fontSize:16, fontWeight:'bold' }}>
+                ₹{props.rate}
+              </Typography>
+              <Typography style={{fontSize:10}}>
+                INR/hour
+              </Typography>
             </div>
-            <span>{props.details}</span>
+            
           </div>
         </div>
         {props.message ? (
-          <div className="trainers__card__right">
-            <button
-              type="button"
-              class="btn btn-outline-info"
-              onClick={() => props.showModal(props.reciever_id)}
-            >
-              MESSAGE
-            </button>
+          <div className="trainers__card__bottom">
+            
             <button class="btn btn-info" type="button" onClick={hireHandle}>
               HIRE
             </button>

@@ -67,59 +67,76 @@ export default class HelpForm2 extends Component {
     }
 
     submitHandler = async (e) => {
-        e.preventDefault();
-        if (this.state.selected?.length !== null && this.state.selected?.length > 0) {
-            message.info('Submitted Successfully!!!');
-            this.props.history.push("/trainers/message");
-          // console.log('state', this.state);
-    
-    
-            let tech = []
-            let sub_tech = []
-            // console.log(this.state.recommended_selected);
-            this.state.selected.map((item) => (
-                tech.push(parseInt(item.id))
-            ))
-    
-            sub_tech = [...this.state.recommended_selected]
-            let data = {
-                "technology": tech,
-                "sub_technology": sub_tech,
-            }
-    
-          //console.log('data_______________', data);
-          let auth = localStorage.getItem('token');
-          let id = localStorage.getItem('user_id');
-          // fetch(url + '/api/customuserthird/' + id + '/', {
-          //   method: 'PUT',
-          //   headers: {
-          //     'Accept': 'application/json, text/plain',
-          //     'Content-Type': 'application/json;charset=UTF-8',
-          //     'Authorization': 'Bearer ' + auth,
-          //   },
-          //   body: JSON.stringify(data)
-          // })
-          //   .then((response) => {
-          //     //console.log("response", response)
-          //     if (response['status'] === 201 || response['status'] === 200) {
-          //       return response.json()
-          //     } else if (response['status'] === 400) {
-          //       message.info('Something went wrong!')
-          //       //console.log('Something is wrong')
-          //     }
-          //   })
-          //   .then((result) => {
-          //    // console.log('result', result);
-             
-          //   })
-    
-          
+      e.preventDefault();
+      if (this.state.selected.length !== null && this.state.selected.length > 0) {
+  
+        localStorage.setItem("sub_techs", this.state.recommended_selected);
+        console.log('subTechs',localStorage.getItem('sub_techs'));
+        let param = "";
+  
+        param += "&usersub_technology=[";
+        // for (let t of localStorage.getItem("sub_techs")) {
+        //           if (this.isNumeric(t)) {
+        //             param += t + ",";
+        //           }
+        // }
+        param += localStorage.getItem("sub_techs");
+        let new_param1 = param;
+        new_param1 += "]";
+        localStorage.setItem("parameter", new_param1);
+        console.log(localStorage.getItem("parameter"));
+          message.info("Submitted Successfully!!!");
+        this.props.history.push("/trainers/message");
+        // console.log('state', this.state);
+  
+  
+        let tech = []
+        let sub_tech = []
+        console.log(this.state.recommended_selected);
+        this.state.selected.map((item) => (
+          tech.push(parseInt(item.id))
+        ))
+  
+        sub_tech = [...this.state.recommended_selected]
+        let data = {
+          "technology": tech,
+          "sub_technology": sub_tech,
         }
-        else {
-          message.info('Please select a technology')
-        }
+        localStorage.setItem('searchData', JSON.stringify(data))
+        //console.log('data_______________', data);
+        let auth = localStorage.getItem('token');
+        let id = localStorage.getItem('user_id');
+        // fetch(url + '/api/customuserthird/' + id + '/', {
+        //   method: 'PUT',
+        //   headers: {
+        //     'Accept': 'application/json, text/plain',
+        //     'Content-Type': 'application/json;charset=UTF-8',
+        //     'Authorization': 'Bearer ' + auth,
+        //   },
+        //   body: JSON.stringify(data)
+        // })
+        //   .then((response) => {
+        //     //console.log("response", response)
+        //     if (response['status'] === 201 || response['status'] === 200) {
+        //       return response.json()
+        //     } else if (response['status'] === 400) {
+        //       message.info('Something went wrong!')
+        //       //console.log('Something is wrong')
+        //     }
+        //   })
+        //   .then((result) => {
+        //    // console.log('result', result);
+           
+        //   })
+  
+        
       }
-
+  
+  
+      else {
+        message.info('Please select a technology')
+      }
+    }
     clickedHandler = () => {
         this.setState({clicked: !this.state.clicked})
     }

@@ -7,19 +7,35 @@ import Navbar from "../../components/Header/Navbar";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import kodecrux from "../../assets/images/reg2.jpeg";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
+import Select from 'react-select';
 import ReactPolling from "react-polling";
+import { Typography } from "@material-ui/core";
 
 let uri = "";
 export default class Trainers extends Component {
-  state = {
-    trainers: [],
-    user: [],
-    isModalVisible: false,
-    loading: true,
-    rec_id: null,
-    new_param: localStorage.getItem("parameter"),
-    // pollingurl: url+" /api/educator/" + localStorage.getItem("parameter"),
-  };
+    constructor(props) {
+        super(props)
+        this.state = {
+            trainers: [],
+            user: [],
+            isModalVisible: false,
+            loading: true,
+            rec_id: null,
+            new_param: localStorage.getItem("parameter"),
+            selected: [],
+            recommended_selected: [],
+            defaultTech : [],
+            technology_list: [],
+            subtech_list: [],
+        }
+        this.handleSelect = this.handleSelect.bind(this)
+    }
+//   state = {
+    
+//     // pollingurl: url+" /api/educator/" + localStorage.getItem("parameter"),
+//   };
 
   //     setLoading=()=> {
   // this.setState({loading: false})
@@ -29,9 +45,61 @@ export default class Trainers extends Component {
     return !isNaN(parseFloat(n)) && isFinite(n);
   }
 
-  componentDidMount() {
-    // console.log('previous token', localStorage.getItem("token"))
+handleSelect(val) {
+    console.log(val);
+    this.setState({selected: val})
+    // this.setState({ selected: val });
+}
 
+handleSubmit = () => {
+    console.log(this.state)
+}
+
+handleRecommendedSelect(val) {
+    let selected = [...this.state.recommended_selected]
+    const index = selected.findIndex(
+        (Item) => Item === val
+    );
+    if (index >= 0) {
+        selected.splice(index, 1);
+    }
+    else {
+        selected.push(val)
+    }
+
+    this.setState({ recommended_selected: selected });
+}
+
+componentDidMount() {
+    // console.log('previous token', localStorage.getItem("token"))
+    let searchData = JSON.parse(localStorage.getItem('searchData'))
+    console.log(typeof(searchData.technology))
+    this.setState({selected : searchData.technology, recommended_selected : searchData.sub_technology})
+    console.log(searchData)
+    fetch(`${url}/api/technology/`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(res => res.json())
+        .then(
+          (result) => {
+           console.log('result', result)
+            this.setState({ technology_list: result })
+            let selected_Techs = []
+            result.forEach((k,i) => {
+                searchData.technology.forEach((v,i_n) => {
+                    if (k.id === v) {
+                        selected_Techs.push(k)
+                    }
+                })
+            })
+            this.setState({defaultTech : selected_Techs, selected : selected_Techs})
+
+          }
+        )
     if (localStorage.getItem("token")) {
       let data_refresh = { refresh: localStorage.getItem("refresh") };
 
@@ -238,6 +306,9 @@ export default class Trainers extends Component {
     this.setState({ isModalVisible: false });
   };
 
+  handleReset = () => {
+      this.setState({selected : [], recommended_selected: [], defaultTech : []})
+  }
   hireHandle = () => {
     //     let auth = localStorage.getItem("token");
     //     let user_id=localStorage.getItem("user_id");
@@ -271,25 +342,57 @@ export default class Trainers extends Component {
     this.props.history.push("/investor");
   };
 
-  //   console.log("param", new_param);
-  //   fetch(url + "/api/educator/?" + new_param, {
-  //     method: "GET",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //       Authorization: "Bearer " + auth,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((result) => {
-  //        console.log('result1', result)
-  //       this.setState({ trainers: result, loading: false });
-  //     })
-  //     .catch((e) => console.log(e));
-  // })
-  // .catch((e) => console.log(e));
+  submitHandler = async (e) => {
+    e.preventDefault();
+    if (this.state.selected.length !== null && this.state.selected.length > 0) {
+
+      localStorage.setItem("sub_techs", this.state.recommended_selected);
+      let param = "";
+
+      param += "&usersub_technology=[";
+      param += localStorage.getItem("sub_techs");
+      let new_param1 = param;
+      new_param1 += "]";
+      localStorage.setItem("parameter", new_param1);
+    //   console.log(localStorage.getItem("parameter"));
+        // message.info("Submitted Successfully!!!");
+    //   this.props.history.push("/trainers/message");
+      // console.log('state', this.state);
+      let tech = []
+      let sub_tech = []
+      console.log(this.state.recommended_selected);
+      this.state.selected.map((item) => (
+        tech.push(parseInt(item.id))
+      ))
+
+      sub_tech = [...this.state.recommended_selected]
+      let data = {
+        "technology": tech,
+        "sub_technology": sub_tech,
+      }
+      localStorage.setItem('searchData', JSON.stringify(data))
+      window.location.reload()
+      
+    }
+
+
+    else {
+      message.info('Please select a technology')
+    }
+  }
 
   render() {
+    const customStyles = {
+        control: (base, state) => ({
+          ...base,
+          padding: 5,
+          borderColor : '#3743B1',
+          boxShadow: "none",
+          color : '#3743B1',
+          // You can also use state.isFocused to conditionally style based on the focus state
+        }),
+        menuPortal: base => ({ ...base, zIndex: 9999 })
+      };
     return (
       <ReactPolling
         url={url + "/api/educator/?" + this.state.new_param}
@@ -316,7 +419,6 @@ export default class Trainers extends Component {
           if (isPolling) {
             return (
               <div>
-                <>
                   <Navbar />
                   {this.state.loading ? (
                     <div
@@ -330,23 +432,59 @@ export default class Trainers extends Component {
                       <Spin size="large" />
                     </div>
                   ) : (
-                    <div className="body__ctr">
-                      <img
-                        src={kodecrux}
-                        style={{
-                          height: "70px",
-                          position: "absolute",
-                          left: "0",
-                          top: "0",
-                          zIndex: "2000",
-                        }}
-                        onClick={() => this.props.history.push("/")}
-                      />
+                    <div className="body__ctr1">
+                        <div className="advance_Card">
+                        <div className="advance_search_card">
+                            <Typography style={{fontSize:22, fontWeight:400}}>Advance Search</Typography>
+                            <div style={{marginTop:20}}>
+                                {this.state.selected?.length === 0 || this.state.selected === null ? null : <Typography style={{fontSize:12,
+                                        zIndex:9, marginTop:-10, marginLeft:10,
+                                        color:'#3743B1', position:'absolute'}}><p style={{backgroundColor:'white'}}>TECHNOLOGIES</p></Typography>}
+                                <Select
+                                    id="tech-select"
+                                    // className="basic-multi-select"
+                                    classNamePrefix="select"
+                                    onChange={this.handleSelect}
+                                    getOptionLabel={option =>
+                                        `${option.name}`
+                                    }
+                                    defaultValue={this.state.defaultTech}
+                                    menuPortalTarget={document.body} 
+                                    getOptionValue={option => `${option.id}`}
+                                    name="colors"
+                                    options={this.state.technology_list}
+                                    isSearchable={true}
+                                    isMulti
+                                    placeholder={'TECHNOLOGIES'}
+                                    styles={customStyles}
+                                    />
+                                <div style={{marginTop:10}}>
+                                    {this.state.selected !== null || this.state.selected?.length > 0 ? <Typography style={{color:'#3743B1', fontSize:14}}>Recommended technologies</Typography> : null}
+                                    
+                                    <div style={{border:1, borderStyle:'solid', borderColor:'#3743B1', padding:20, borderRadius:10, display:'flex', flexWrap:'wrap', gap:10}}>
+                                    {this.state.selected !== null && this.state.selected.map(t => (
+                                        t.sub_technology.map(s => (
+                                            <button className={!this.state.recommended_selected.includes(s.id) ? 'button_unselect' : 'button__selected'} key={s.name} onClick={() => this.handleRecommendedSelect(s.id)}>
+                                            {s.name}
+                                            {!this.state.recommended_selected.includes(s.id) ? <AddCircleIcon /> : <CancelIcon/>}</button>
+
+                                        ))))}
+                                    </div>
+                                </div>
+                                <div style={{display:'flex', flex:1, justifyContent :'flex-end', outline:'none'}}>
+                                    <button className='help__next__btn' style={{maxWidth:'100%'}} onClick={this.submitHandler} >SUBMIT</button>
+                                </div>
+                                <div style={{display:'flex', flex:1, justifyContent :'flex-end', outline:'none'}}>
+                                    <button className='help_reset_btn' style={{maxWidth:'100%'}} onClick={this.handleReset} >RESET</button>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
                       <div
-                        className=" d-flex  p-3 flex-column"
-                        style={{ alignItems: "center" }}
+                        className=" d-flex  p-3"
+                        style={{ alignItems: "center", flexWrap:'wrap', gap:30, flex:1, justifyContent:'center' }}
                       >
-                        {this.state.trainers.map((trainer) => (
+                        {Array.isArray(this.state.trainers) && this.state.trainers.map((trainer) => (
                           <TrainersCard
                             key={trainer.id}
                             name={`${trainer.user_first_name} ${trainer.user_last_name}`}
@@ -380,8 +518,8 @@ export default class Trainers extends Component {
                         ))}
                       </div>
                     </div>
+                    
                   )}
-                </>
               </div>
             );
           } else {

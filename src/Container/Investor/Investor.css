@@ -1,9 +1,15 @@
 .investor{
-    background-color: whitesmoke;
+    background-color: white;
     padding: 45px;
     display: grid;
     place-items: center;
     
+}
+
+.investor_Card {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    padding: 40px 65px;
+    border-radius: 10px;
 }
 
 .investor__head__title {
@@ -12,16 +18,63 @@
 
 }
 
+.hire_btn {
+    width: 350px !important;
+    height: 50px !important;
+    border-radius: 10px !important;
+    background-color: #3743B1 !important;
+    outline: none !important;
+}
+
+.hire_btn:hover {
+    border: 1px solid #3743B1 !important;
+    background-color: white !important;
+    color: #3743B1;
+}
+
+.send_req {
+    /* width: 350px !important; */
+    height: 50px !important;
+    border-radius: 10px !important;
+    background-color: #3743B1 !important;
+    outline: none !important;
+}
+
+.send_req:hover {
+    border: 1px solid #3743B1 !important;
+    background-color: white !important;
+    color: #3743B1;
+}
+
+.cancel_btn {
+    border: 1px solid #3743B1 !important;
+    background-color: white !important;
+    color: #3743B1 !important;
+}
+
+.cancel_btn:hover {
+    border-radius: 10px !important;
+    background-color: #3743B1 !important;
+    outline: none !important;
+}
+
+.ant-picker-input > input {
+    color: #3743B1;
+}
+
+.ant-picker-suffix {
+    color: #3743B1;
+}
 .investor__head__detail {
     padding: 10px 0;
-    color: gray;
-    font-size: 18px;
+    color: #707070;
+    font-size: 14px;
 }
 
 .invester__heading  {
-    color:rgb(15, 15, 151);
+    color: #3743B1;
     font-weight: 700;
-    font-size: 22px;
+    font-size: 20px;
     padding: 0 15px;
 }
 
@@ -40,7 +93,7 @@
     color: #fff;
     font-weight: 600;
     border-radius: 100%;
-    background-color: rgb(15, 15, 151);
+    background-color: #3743B1;
     font-size: 16px;
     margin-top: 5px;
 }

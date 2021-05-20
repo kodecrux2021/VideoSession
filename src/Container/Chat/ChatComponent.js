@@ -89,6 +89,7 @@ export default class ChatComponent extends Component {
 
 
 componentDidMount() {
+    console.log(this.props)
     if (localStorage.getItem("token")){
     let data_refresh = {'refresh': localStorage.getItem('refresh')}
   fetch(url + '/api/token/refresh/', {
@@ -274,8 +275,8 @@ handleCancel = () => {
         return (
             <>
         
-            <div style={{backgroundColor: '#ededed', height: '100vh'}} className="wrapper">
-                <Navbar/>
+            <div style={{flex:1}} className="wrapper">
+                {/* <Navbar/> */}
                 <Chat
                 loading={this.state.loading}
                 clicked={this.state.clicked}

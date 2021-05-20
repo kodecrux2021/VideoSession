@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import './Chat.css'
-import { Avatar, CircularProgress, IconButton } from '@material-ui/core';
+import { Avatar, Button, CircularProgress, IconButton, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 // import AttachFileIcon from '@material-ui/icons/AttachFile';
@@ -72,14 +72,14 @@ export default function Chat(props) {
 
     return (
         <div className='chat'>
-            <div className='chat__header'>
-                <Avatar src={props?.reciever_img} className={classes.large}/>
+            <div style={{display:'flex', justifyContent:'flex-end', marginTop:10, background:'none'}}>
+                {/* <Avatar src={props?.reciever_img} className={classes.large}/>
                 <div className='chat__header__info'>
                     <h4>{props?.name}</h4>
                     <span>{dateFormat(props.lastseen, "mmmm dS, h:MM TT")} </span>
-                </div>
-                <div className='chat__header__right'>
-                    <IconButton className={classes.icon} onClick={props.dropHandle}>
+                </div> */}
+                <div className='chat__header__right' >
+                    <IconButton style={{outline:'none'}} className={classes.icon} onClick={props.dropHandle}>
                         <ExpandLessIcon />
                     </IconButton>
 
@@ -166,10 +166,10 @@ export default function Chat(props) {
                     props.messages.length > 0 && props.messages.map((message)=>(
                       
                         <div className={`message__container ${(props.reciever_id!==message.user_id) && "reciever__container"}`}>
-                        <span><Avatar src={props.reciever_id!==message.user_id ? props.user_img : props.reciever_img} className={classes.msgicon}/></span>
-                        <p className={`chat__message tri-right ${(props.reciever_id!==message.user_id) ? "chat__reciever  right-top" :"left-top"}`}>
-                  
-                            {message.message}</p>
+                          <span><Avatar src={props.reciever_id!==message.user_id ? props.user_img : props.reciever_img} className={classes.msgicon}/></span>
+                          <p className={`chat__message tri-right ${(props.reciever_id!==message.user_id) ? "chat__reciever  right-top" :"left-top"}`}>
+                    
+                              {message.message}</p>
                         </div> 
                      ))
                  }
@@ -177,12 +177,14 @@ export default function Chat(props) {
 </div>
                
             </div>
-            <div className='chat__footer'>
+            <div className='chat__footer' style={{}}>
                 <form>
+                    {/* <TextField /> */}
                     <input placeholder='Type a message' value={props.message} onChange={(e)=>props.handleData('message', e.target.value)} type="text" />
-                    <button type='submit' onClick={(e)=>props.sendMessage(e)}>Send a message</button>
+                    <Button type='submit' onClick={(e)=>props.sendMessage(e)}>Send a message</Button>
                 </form>
-                <IconButton  onClick={(e)=>props.sendMessage(e)}><SendIcon className="svg_icons"/></IconButton>
+                {/* <Button variant='outlined'>Send</Button> */}
+                <IconButton style={{outline:'none'}} onClick={(e)=>props.sendMessage(e)}><SendIcon style={{color:'#3743B1', outline:'none'}} className="svg_icons"/></IconButton>
                 {/* <IconButton><PictureAsPdfIcon className="svg_icons"/></IconButton>                           */}
             </div>
 

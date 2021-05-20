@@ -176,14 +176,14 @@ class New extends React.Component {
       this.state.fileList.length === 0 ||
       this.state.total_experience === null ||
       this.state.relevant_experience === null ||
-      this.state.rating === 0 ||
+      // this.state.rating === 0 ||
       this.state.fees === 0 ||
       this.state.technology === "" ||
       this.state.sub_technology === ""
     ) {
-      {
-        console.log("hello");
-      }
+        {
+          console.log("hello");
+        }
       if (this.state.pincode === "") {
         message.info("Please Fill Pincode");
       } else if (this.state.city === "") {
@@ -213,31 +213,33 @@ class New extends React.Component {
       } else if (this.state.relevant_experience === null) {
         message.info("Please Enter Relevant Experience");
       }
-      // else if(this.state.date_of_birth === ""){
-      //   message.info("Please Fill Date of birth");
+      else if(this.state.fees === ""){
+        message.info("Please Fill fee");
 
-      // }
+      }
     } else {
       let tech = [];
       let sub_tech = [];
 
-      tech.push(parseInt(this.state.technology?.id));
-      sub_tech.push(parseInt(this.state.sub_technology?.id));
+      // tech.push(parseInt(this.state.technology?.id));
+      this.state.technology.forEach((k,i) => tech.push(k.id))
+      this.state.sub_technology.forEach((k, i) => sub_tech.push(k.id))
+      // sub_tech.push(parseInt(this.state.sub_technology?.id));
       
-      let formData = new FormData();
+      let formData = new FormData()
 
       formData.append('pincode', this.state.pincode);
       formData.append('city', this.state.city);
       formData.append('state', this.state.state);
-      formData.append('technology', [this.state.technology?.id]);
-      formData.append('sub_technology',[this.state.sub_technology?.id] );
-      formData.append('total_experience', this.state.total_experience?.value);
-      formData.append('relevant_experience', this.state.relevant_experience?.value);
+      formData.append('technology', tech);
+      formData.append('sub_technology',sub_tech );
+      formData.append('total_experience', tech);
+      formData.append('relevant_experience', sub_tech);
       this.state.fileList.length > 0 && formData.append('profile_pic', this.state.fileList[0].originFileObj);
       formData.append('designation', this.state.desig);
 
       // formData.append('date_of_birth',  this.state.date_of_birth);
-      // formData.append('fees', this.state.fees);
+      formData.append('fees', this.state.fees);
       // formData.append('rating', this.state.rating);
       // formData.append('profile_pic', this.state.file)
 
@@ -305,7 +307,7 @@ class New extends React.Component {
               })
               .then((result) => {
                 //console.log(result);
-                this.props.history.push("/verification");
+                this.props.history.push("/verification"); //         <=================================Change here
                 // fetch( url + '/api/educator/' , {
                 //     method: 'POST',
                 //     headers: {
@@ -353,6 +355,14 @@ class New extends React.Component {
       previewVisible: true,
       previewTitle:
         file.name || file.url.substring(file.url.lastIndexOf("/") + 1),
+    });
+  };
+
+  handleResume = (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    this.setState({
+      resume: file,
     });
   };
 
@@ -613,16 +623,17 @@ class New extends React.Component {
                     /> */}
                     <TextField variant="outlined" className="form__control"  label="DESIGNATION" type="text" value={this.state.desig} onChange={(e) => this.handelData("desig", e.target.value)} />
                   </div>
-                  {/* <div class="form__group">
-                    <label>Fees</label>
+                  <div class="form__group">
+                    {/* <label>Fees</label>
                     <input
                       type="number"
                       value={this.state.fees}
                       onChange={(e) => this.handelData("fees", e.target.value)}
                       className="form__control"
                       placeholder="Fees"
-                    />
-                  </div> */}
+                    /> */}
+                    <TextField variant="outlined" className="form__control"  label="FEE" type="text" value={this.state.fees} onChange={(e) => this.handelData("fees", e.target.value)} />
+                  </div>
                   {/* <div class="form__group">
                     <label>Rating</label>
                     <input
@@ -649,8 +660,8 @@ class New extends React.Component {
             </Col>
             {/* <div>
               <label>Attach Resume</label>{" "}
-            </div>
-            <div>
+            </div> */}
+            {/* <div>
               <input
                 type="file"
                 className="form__control"
@@ -658,6 +669,32 @@ class New extends React.Component {
                 accept="image/*, .pdf, .doc,.docx"
               />
             </div> */}
+            
+            <div class="form__group" style={{padding:10}}>
+              <div
+                style={{ display: "flex", flexDirection:'column' }}
+              >
+                <label style={{ marginRight: "3vw", color:'#3743B1' }}>
+                  ATTACH RESUME
+                </label>
+                
+                  <input
+                    type="file"
+                    // className=""
+                    // className="form__control"
+                    onChange={(e) => this.handleResume(e)}
+                    accept="image/*, .pdf, .doc,.docx"
+                    id="raised-button-file-1"
+                    hidden
+                  />
+                  <label htmlFor="raised-button-file-1">
+                    <div style={{maxWidth:100, padding:5, textAlign:'center', borderRadius:10}} className="upload-image" component="span">
+                      SELECT FILE
+                    </div>
+                  </label> 
+                  <div>{this.state.resume?.name}</div>
+              </div>
+            </div>
 
             <Col className="registration__details__footer">
               <div style={{display:'flex', flexDirection:'row', width:"100%", gap:5}}>

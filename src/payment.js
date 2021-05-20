@@ -154,12 +154,12 @@ function Payment() {
   }
 
   return (
-    localStorage.getItem('pay_id')!==null && <div className="container" style={{ marginTop: "10vh" }}>
+    // localStorage.getItem('pay_id')!==null && <div className="container" style={{ marginTop: "10vh" }}>
+    <div className="container" style={{ marginTop: "10vh" }}>
       <form style={{ marginBottom: "10vh" }}>
         <div style={{textAlign: 'center'}}>
         <h1>Payment Dashboard</h1>
         </div>
-
       </form>
       
       <Checkbox onChange={onChange}>Reccuring payments for default payment methods</Checkbox>

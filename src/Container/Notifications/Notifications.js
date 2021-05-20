@@ -3,12 +3,13 @@ import './Notifications.css'
 import ChatIcon from '@material-ui/icons/Chat';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import WarningIcon from '@material-ui/icons/Warning';
-import { Avatar, BottomNavigation, BottomNavigationAction, Drawer, IconButton } from '@material-ui/core';
+import { Avatar, BottomNavigation, BottomNavigationAction,Typography, Drawer, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {Modal, Button, notification} from 'antd'
 import kodecrux from '../../assets/images/reg2.jpeg'
 import { useHistory } from 'react-router-dom';
 import { url } from '../../Server/GlobalUrl';
+import Chat from '../Chat/ChatComponent'
 
 let user_id = ''
 let rec = '';
@@ -51,17 +52,18 @@ export default function Notifications(props) {
     const history = useHistory();
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const [convoID, setConvoID] = React.useState(null)
 
     return (
         <div className='notifications' style={{display:'flex', flex:1, flexDirection:'column'}} >
             
-            
-            <div className='notifications__body' style={{flex:1}} >
+            <div style={{flex:1, display:'flex',}}>
+            <div className='notifications__body' style={props.selected === "troubleshoot" ? {maxWidth:'none', flex:1, height:'100%'} : {flex:1, height:'100%'}} >
                 {
                     props.selected === 'messages' ?
 
                     <div className='notifications__body__chat' >
-                        <h2>Messages</h2>
+                        {/* <h2>Messages</h2> */}
                         <div className='chat__cards' >
                         {
                             
@@ -80,20 +82,24 @@ export default function Notifications(props) {
                                 return(
                                    
                                 <div key = {user.id}className='chat__card' onClick = {()=>{
-
-                                    localStorage.setItem('conversation_id', user.id);
-                                    props.chatHandler()
-                                }}>
-                            <div className='chat__card__left' >
-                            <Avatar src={rec.profile_pic!== null ? rec.profile_pic : props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>{rec.first_name} {rec.last_name}</span>
-                                </div>
-                            </div>
-                        </div>)
+                                      setConvoID(user.id)
+                                      localStorage.setItem('conversation_id', user.id);
+                                      // props.chatHandler()
+                                  }}>
+                                    <div className='chat__card__left' >
+                                    <Avatar style={{borderColor:'#3743B1', border:2, borderStyle:'solid', borderRadius : 50}} src={rec.profile_pic!== null ? rec.profile_pic : props.img} className={classes.large}/>
+                                        <div className='chat__card__details' >
+                                            <Typography style={{fontSize:14}}>{rec.first_name} {rec.last_name}</Typography>
+                                            <Typography style={{fontSize:12}}>Last msg</Typography>
+                                            {/* {console.log(rec)} */}
+                                        </div>
+                                    </div>
+                                    
+                                </div>)
                             })
                         }
                         </div>
+                        
                     {/* <div className='chat__cards' >
                         <div className='chat__card' >
                             <div className='chat__card__left' >
@@ -294,7 +300,7 @@ export default function Notifications(props) {
 {
                     props.selected === 'troubleshoot' ?
                     <div className='notifications__body__chat' >
-                    <h2>Notifications</h2>
+                    {/* <h2>Notifications</h2> */}
                     <div className='chat__cards' >
                         {
                             props.notifications.map((notification)=> {
@@ -456,6 +462,10 @@ export default function Notifications(props) {
            
 
             </div>
+            {props.selected === "messages" ? <div style={{display:'flex', flex:1, maxHeight:'80vh'}}>
+                {localStorage.getItem('conversation_id') !== 'null' ? <Chat /> : null}
+            </div> : null}
+            </div>
             <BottomNavigation showLabels 
             onChange={(event, newValue) => {
               setValue(newValue);
@@ -467,8 +477,7 @@ export default function Notifications(props) {
                 props.selectHandler('troubleshoot')
               }
             }}
-            elevation={16}
-            style={{display:'flex', outline:'none'}} value={value}>
+            style={{display:'flex', outline:'none', zIndex:200}} value={value}>
                 <BottomNavigationAction label="Message" icon={<ChatIcon />} />
                 <BottomNavigationAction label="Requests" icon={<PeopleAltIcon />} />
                 <BottomNavigationAction label="Notification" icon={<WarningIcon />} />

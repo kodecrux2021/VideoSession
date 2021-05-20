@@ -1,5 +1,5 @@
 .notifications {
-  background-color: rgb(223, 242, 255);
+  /* background-color: rgb(223, 242, 255); */
   height: 88vh;
   /* overflow: scroll; */
 }
@@ -35,16 +35,21 @@
 }
 
 .notifications__body {
-  margin: 90px auto 20px;
-  background-color: #fff;
+  /* margin: 90px auto 20px; */
+  background-color: #FAFAFA;
   padding: 20px;
-  max-width: 630px;
+  max-width: 282px;
   display: flex;
   flex-direction: column;
   height: max-content;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.15);
+
+  overflow-y: scroll;
 }
+
+/* .notifications__body__chat {} */
+
 .notifications__body__chat > h2 {
   text-align: center;
 }
@@ -58,11 +63,11 @@
 
 .chat__card__left {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .chat__card__details {
-  padding: 0 30px;
+  padding: 0 15px;
   color: grey;
   font-size: 15px;
   font-weight: 500;

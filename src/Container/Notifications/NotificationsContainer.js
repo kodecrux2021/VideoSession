@@ -119,6 +119,34 @@ export default class NotificationsContainer extends Component {
             }) .catch((e)=>console.log(e));   
     }
 
+    showContract = (id) => {
+        let auth = localStorage.getItem('token')
+        fetch(url + '/api/hire/'+id, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Authorization': 'Bearer ' + auth,
+            }
+        })
+            .then((response) => {
+                //console.log("response", response)
+                if (response['status'] === 201 || response['status'] === 200) {
+                    return response.json()
+                } else if (response['status'] === 400) {
+                    message.info('Something went wrong!');
+                    //console.log('Something is wrong')
+                }else if(response["status"]===401){
+                    message.info('auth token expired');
+                    this.props.history.push('/login')
+                }
+            })
+            .then((result) => {
+               // console.log('result', result);
+                this.setState({hire: result})
+                
+            }) .catch((e)=>console.log(e));
+    }
     
     getMessage = () =>{
         //console.log(user_id);
@@ -168,7 +196,7 @@ export default class NotificationsContainer extends Component {
           }})
         .then(
             (result) => {
-            //   console.log('request result',result)
+              console.log('request result',result)
               this.setState({requests: result})
              // console.log(this.state.requests);
 
@@ -431,6 +459,7 @@ export default class NotificationsContainer extends Component {
                          message={this.state.message}
                          isModalVisible={this.state.isModalVisible}
                          show={this.show}
+                         showContract={this.showContract}
                          handleCancel={this.handleCancel}
                          hire={this.state.hire}
                          acceptHire={this.acceptHire}

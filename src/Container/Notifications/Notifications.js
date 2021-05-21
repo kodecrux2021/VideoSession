@@ -231,11 +231,10 @@ export default function Notifications(props) {
 {
                     props.selected === 'requests' ?
                     <div className='notifications__body__chat' >
-                    <h2>Requests</h2>
                     <div className='friend__cards' >
                        {
-                           props.request!==null && props.requests.map((request)=> 
-                            { console.log(request)
+                           props.requests.map((request)=> 
+                            { console.log("requests", props)
 
                                 let data =  request.accepted ? 
                                 null :
@@ -243,17 +242,17 @@ export default function Notifications(props) {
                                 <div className='chat__card__left' >
                                 <Avatar src={request.user?.profile_pic!== null ?`${url}${request.user_profile_pic}`: props.img} className={classes.large}/>
                                             <div className='chat__card__details' >
-                                                <span>{request.user_first_name} {request.user_last_name} sent you a request.</span>
+                                                <span>{request.user_first_name} {request.user_last_name}</span>
                                             </div>
                                 </div>
             
-                                            <div className='chat__card__time' >
+                                            {/* <div className='chat__card__time' >
                                                 <div className='friend__card__button' >
                                                     <button  style={{  backgroundColor:' #5964c9'}} onClick={()=> props.acceptReq(request.id)}  >Accept</button>
                                                     <button  style={{  backgroundColor:' #76d2fd'}} onClick={()=> props.rejectReq(request.id)} >Reject</button>
                                                 </div>
             
-                                            </div>
+                                            </div> */}
                                 </div>
 
 
@@ -463,7 +462,7 @@ export default function Notifications(props) {
 
             </div>
             {props.selected === "messages" ? <div style={{display:'flex', flex:1, maxHeight:'80vh'}}>
-                {localStorage.getItem('conversation_id') !== 'null' ? <Chat /> : null}
+                {localStorage.getItem('conversation_id') !== 'null' && localStorage.getItem('conversation_id') ? <Chat /> : null}
             </div> : null}
             </div>
             <BottomNavigation showLabels 

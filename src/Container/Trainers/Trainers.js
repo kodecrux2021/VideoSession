@@ -23,7 +23,7 @@ export default class Trainers extends Component {
             isModalVisible: false,
             loading: true,
             rec_id: null,
-            new_param: localStorage.getItem("parameter"),
+            new_param: localStorage.getItem("parameter").substring(1),
             selected: [],
             recommended_selected: [],
             defaultTech : [],
@@ -393,7 +393,9 @@ componentDidMount() {
         }),
         menuPortal: base => ({ ...base, zIndex: 9999 })
       };
+      console.log("url is", this.state.new_param)
     return (
+      // {}
       <ReactPolling
         url={url + "/api/educator/?" + this.state.new_param}
         interval={3000} // in milliseconds(ms)
@@ -480,11 +482,13 @@ componentDidMount() {
                             </div>
                         </div>
                       </div>
+
                       <div
                         className=" d-flex  p-3"
                         style={{ alignItems: "center", flexWrap:'wrap', gap:30, flex:1, justifyContent:'center' }}
                       >
                         {Array.isArray(this.state.trainers) && this.state.trainers.map((trainer) => (
+                          
                           <TrainersCard
                             key={trainer.id}
                             name={`${trainer.user_first_name} ${trainer.user_last_name}`}
@@ -496,10 +500,12 @@ componentDidMount() {
                             img2={avatar}
                             online={false}
                             isOnline={trainer.is_online}
-                            rating={trainer.rating}
+                            ratingNumber = {trainer.no_of_ratings}
+                            rating={trainer.rating.stars__avg}                      //<=========================== Changed Here
                             details={trainer.designation}
                             rate={trainer.fees}
                             lastseen={trainer.last_seen}
+                            technology={trainer.user_technology}
                             time="15"
                             reviews="150"
                             id={trainer.id}

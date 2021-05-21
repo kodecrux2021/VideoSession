@@ -8,6 +8,8 @@ import { message, Modal  } from 'antd';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import {url} from '../../Server/GlobalUrl'
 import { Typography } from '@material-ui/core';
+import Rating from '@material-ui/lab/Rating';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 
 const styles = theme => ({
     customBadge: {
@@ -119,17 +121,28 @@ const styles = theme => ({
           <div className="d-flex flex-column trainers__card__details ">
             <div className="d-flex flex-column"> 
                 <Typography style={{ color: "#424242", fontSize:16, fontWeight:500, marginTop:17 }}>{props.name}</Typography>
-                <Typography style={{ color: "#898989", fontSize:14, fontWeight:'normal', }}>{props.details}</Typography>      
+                <Typography style={{ color: "#898989", fontSize:12, fontWeight:'normal', }}>{props.details}</Typography>      
             </div>
             
-            <div style={{display:'flex', flexDirection:'column'}}>
+            <div style={{display:'flex', flex:1, flexDirection:'column'}}>
               {/* / {props.time} mins</span> */}
-              <span style={{ marginRight: "12px" }}>
-                {" "}
-                <Star style={{ paddingBottom: "5px" }} />{" "}
-                <strong>{props.rating}</strong>
-              </span>
-              {/* ({props.reviews} reviews) </span> */}
+              <div style={{display:'flex', marginTop:5, alignItems:'center'}}>
+                {/* {" "}
+
+                <Star style={{ paddingBottom: "5px" }} />{" "} */}
+                <Rating name="read-only" precision={0.5} emptyIcon={<StarBorderIcon fontSize="inherit" />} value={props.rating} readOnly />
+                {/* {console.log(props)} */}
+                {/* <strong></strong> */}
+                <Typography style={{fontSize:12}}>{props.rating ? parseFloat(props.rating).toFixed(1) : 0} ({props.ratingNumber} Reviews)</Typography>                                          
+                                                                                    {/* <===================== Changed here rating*/}
+                
+              </div>
+              <div style={{display:'flex', flexWrap:'wrap'}}>
+              {props.technology.map((k, i) => 
+                <div style={{ margin:5}}>
+                <Typography style={{fontSize:14, padding:5, border:1, borderStyle:'solid', borderColor:'#3743B1', borderRadius:20}} key={k.name} >{k.name}</Typography></div>
+              )}
+              </div>
               {props.badge ? <StarsIcon /> : null}
               <Typography style={{fontSize:16, fontWeight:'bold' }}>
                 ₹{props.rate}

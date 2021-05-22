@@ -99,6 +99,39 @@
   color: grey;
 }
 
+
+.request_accept {
+  background-color: #3743B1 !important;
+  color: white !important;
+}
+
+.request_accept:hover {
+  background-color: white !important;
+  /* border-color: #3743B1 !important; */
+  color: #3743B1 !important;
+  border: 1px solid #3743B1 !important
+}
+
+.request_accept:hover > span >span {
+  color: #1BA20C !important;
+}
+.request_decline {
+  background-color: #3743B1 !important;
+  color: white !important;
+}
+
+
+.request_decline:hover {
+  background-color: white !important;
+  /* border-color: #3743B1 !important; */
+  color: #3743B1 !important;
+  border: 1px solid #3743B1 !important
+}
+
+.request_decline:hover >span >span {
+  color: #BB0000 !important;
+}
+
 @media (max-width: 500px) {
   
   .friend__card__button {

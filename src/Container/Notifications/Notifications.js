@@ -3,13 +3,15 @@ import './Notifications.css'
 import ChatIcon from '@material-ui/icons/Chat';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import WarningIcon from '@material-ui/icons/Warning';
-import { Avatar, BottomNavigation, BottomNavigationAction,Typography, Drawer, IconButton } from '@material-ui/core';
+import { Avatar, BottomNavigation, BottomNavigationAction,Typography, Drawer, IconButton,Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import {Modal, Button, notification} from 'antd'
+import {Modal, notification} from 'antd'
 import kodecrux from '../../assets/images/reg2.jpeg'
 import { useHistory } from 'react-router-dom';
 import { url } from '../../Server/GlobalUrl';
-import Chat from '../Chat/ChatComponent'
+import Chat from '../Chat/ChatComponent';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 let user_id = ''
 let rec = '';
@@ -53,7 +55,51 @@ export default function Notifications(props) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const [convoID, setConvoID] = React.useState(null)
+    const [request, setRequest] = React.useState(null)
+    const [contract, setContract] = React.useState(null)
 
+    const handleSetRequest = (req, req_id, type) => {
+      if (type === "HIRE") {
+        props.notifications.map((k, i) => {
+          if (k.request === req_id) {
+            setRequest(k)
+
+            let id = k.contract
+            let auth = localStorage.getItem('token')
+            fetch(url + '/api/hire/'+id, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json, text/plain',
+                    'Content-Type': 'application/json;charset=UTF-8',
+                    'Authorization': 'Bearer ' + auth,
+                }
+            })
+                .then((response) => {
+                    //console.log("response", response)
+                    if (response['status'] === 201 || response['status'] === 200) {
+                        return response.json()
+                    } else if (response['status'] === 400) {
+                        // message.info('Something went wrong!');
+                        //console.log('Something is wrong')
+                    }else if(response["status"]===401){
+                        // message.info('auth token expired');
+                        props.history.push('/login')
+                    }
+                })
+                .then((result) => {
+                  // console.log('result', result);
+                  setContract(result)
+                  console.log("contract is", result)
+                    this.setState({hire: result})
+                    
+                }) .catch((e)=>console.log(e));
+          }
+        })
+      }else {
+        setRequest(req)
+      }
+    }
+    console.log(props)
     return (
         <div className='notifications' style={{display:'flex', flex:1, flexDirection:'column'}} >
             
@@ -234,17 +280,16 @@ export default function Notifications(props) {
                     <div className='friend__cards' >
                        {
                            props.requests.map((request)=> 
-                            { console.log("requests", props)
-
+                            { 
                                 let data =  request.accepted ? 
                                 null :
-                                <div className='chat__card' key={request.id}>
-                                <div className='chat__card__left' >
-                                <Avatar src={request.user?.profile_pic!== null ?`${url}${request.user_profile_pic}`: props.img} className={classes.large}/>
-                                            <div className='chat__card__details' >
-                                                <span>{request.user_first_name} {request.user_last_name}</span>
-                                            </div>
-                                </div>
+                                <div className='chat__card' key={request.id} onClick={() => handleSetRequest(request, request.id, request.type)}>
+                                  <div className='chat__card__left' >
+                                    <Avatar src={request.user?.profile_pic!== null ?`${url}${request.user_profile_pic}`: props.img} className={classes.large}/>
+                                      <div className='chat__card__details' >
+                                          <span>{request.user_first_name} {request.user_last_name}</span>
+                                      </div>
+                                  </div>
             
                                             {/* <div className='chat__card__time' >
                                                 <div className='friend__card__button' >
@@ -464,6 +509,57 @@ export default function Notifications(props) {
             {props.selected === "messages" ? <div style={{display:'flex', flex:1, maxHeight:'80vh'}}>
                 {localStorage.getItem('conversation_id') !== 'null' && localStorage.getItem('conversation_id') ? <Chat /> : null}
             </div> : null}
+            {props.selected === "requests" ? 
+            <div style={{display:'flex', flex:1, padding:20}}>
+                {request && request?.type === "HIRE" ? <div style={{display:'flex', flex:1}}>
+              {request ? <Avatar
+                src={request?.sent_by_profile_pic}
+                className={classes.medium}
+              /> : null }
+              {request ? <div style={{flex:1, backgroundColor:'#EEEFFF', height:'fit-content', margin:10, padding:20, borderRadius:20}}>
+                <Typography variant="h5">{contract?.project_title}</Typography>
+                <Typography variant="subtitle1">{contract?.deliverables}</Typography>
+                <div style={{flex:1, display:'flex', flexDirection:'row'}}>
+                  <div style={{flex:1, display:'flex', columnGap:20, alignItems:'center'}}>
+                    <Typography variant="body2">Technology:</Typography>
+                    <Typography style={{border:1, borderStyle:'solid', borderColor:'#707070', padding:"5px 20px", borderRadius:50}}>{contract?.request}</Typography>
+                  </div>
+                  <div style={{flex:1, display:'flex', columnGap:20, justifyContent:'center', alignItems:'center'}}>
+                    <Typography variant="body2">Budget(INR):</Typography>
+                    <Typography variant="h6">{contract?.budget} /-</Typography>
+                  </div>
+                </div>
+                <div style={{flex:1, display:'flex', columnGap:30, paddingTop:5}}>
+                  <Typography variant="body2">Deadline:</Typography>
+                  <Typography variant="caption">{contract?.deadlines ? (new Date(contract?.deadlines)).toISOString().split('T')[0] : null}</Typography>
+                </div>
+                
+                <Typography variant="body2" style={{marginTop:20}}>Additional Information:</Typography>
+                <div style={{padding:20, backgroundColor:'#E5E6FA', borderRadius:20, marginTop:5}}>
+                  <Typography>{contract?.additional_information}</Typography>
+                </div>
+              </div> : null}
+              {request ? <div style={{flex:0.5, display:'flex', flexDirection:'column', gap:20, marginTop:20, alignItems:'center' }}>
+                <Button  variant='text' className="request_accept" onClick={()=> {props.acceptReq(request.request); setRequest(null) }} endIcon={<CheckCircleIcon />}> Accept </Button>
+                <Button  variant='text' className="request_decline" onClick={()=> {props.rejectReq(request.request); setRequest(null)}} endIcon={<CancelIcon />}> Decline </Button>
+              </div> : null}
+            </div> : 
+            <div style={{display:'flex', flex:1}}>
+              {request ? <Avatar
+                  src={request?.sent_by_profile_pic}
+                  className={classes.medium}
+                /> : null }
+              {request ? <div style={{flex:1, backgroundColor:'#EEEFFF', height:'fit-content', margin:10, padding:20, borderRadius:20}}>
+                <Typography variant="caption">{request.user_first_name} {request.user_last_name} would like to message you.</Typography>
+                </div> : null }
+                {request ? <div style={{flex:0.5, display:'flex', flexDirection:'column', gap:20, marginTop:20, alignItems:'center' }}>
+                <Button  variant='text' className="request_accept" onClick={()=> {props.acceptReq(request.id); setRequest(null) }} endIcon={<CheckCircleIcon />}> Accept </Button>
+                <Button  variant='text' className="request_decline" onClick={()=> {props.rejectReq(request.id); setRequest(null)}} endIcon={<CancelIcon />}> Decline </Button>
+              </div> : null}
+            </div>
+            
+            }
+            </div> : null }
             </div>
             <BottomNavigation showLabels 
             onChange={(event, newValue) => {

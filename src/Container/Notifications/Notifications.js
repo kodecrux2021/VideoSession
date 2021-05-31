@@ -510,21 +510,22 @@ export default function Notifications(props) {
                 {localStorage.getItem('conversation_id') !== 'null' && localStorage.getItem('conversation_id') ? <Chat /> : null}
             </div> : null}
             {props.selected === "requests" ? 
-            <div style={{display:'flex', flex:1, padding:20}}>
-                {request && request?.type === "HIRE" ? <div style={{display:'flex', flex:1}}>
+            <div style={{display:'flex', flex:1, padding:20}} >
+                {request && request?.type === "HIRE" ? <div style={{display:'flex', flex:1}} className="request_mobile_card">
               {request ? <Avatar
                 src={request?.sent_by_profile_pic}
                 className={classes.medium}
               /> : null }
-              {request ? <div style={{flex:1, backgroundColor:'#EEEFFF', height:'fit-content', margin:10, padding:20, borderRadius:20}}>
+              {/* Request cards here */}
+              {request ? <div  style={{flex:1, backgroundColor:'#EEEFFF', height:'fit-content', margin:10, padding:20, borderRadius:20}}>
                 <Typography variant="h5">{contract?.project_title}</Typography>
                 <Typography variant="subtitle1">{contract?.deliverables}</Typography>
-                <div style={{flex:1, display:'flex', flexDirection:'row'}}>
+                <div style={{flex:1, display:'flex', flexDirection:'row'}} className="request_mobile_tech_fix">
                   <div style={{flex:1, display:'flex', columnGap:20, alignItems:'center'}}>
                     <Typography variant="body2">Technology:</Typography>
-                    <Typography style={{border:1, borderStyle:'solid', borderColor:'#707070', padding:"5px 20px", borderRadius:50}}>{contract?.request}</Typography>
+                    <Typography  style={{border:1, borderStyle:'solid', borderColor:'#707070', padding:"5px 20px", borderRadius:50}}>{contract?.request}</Typography>
                   </div>
-                  <div style={{flex:1, display:'flex', columnGap:20, justifyContent:'center', alignItems:'center'}}>
+                  <div className="request_mobile_budget_fix" style={{flex:1, display:'flex', columnGap:20, justifyContent:'center', alignItems:'center'}}>
                     <Typography variant="body2">Budget(INR):</Typography>
                     <Typography variant="h6">{contract?.budget} /-</Typography>
                   </div>
@@ -539,7 +540,7 @@ export default function Notifications(props) {
                   <Typography>{contract?.additional_information}</Typography>
                 </div>
               </div> : null}
-              {request ? <div style={{flex:0.5, display:'flex', flexDirection:'column', gap:20, marginTop:20, alignItems:'center' }}>
+              {request ? <div className="request_mobile_button_fix" style={{flex:0.5, display:'flex', flexDirection:'column', gap:20, marginTop:20, alignItems:'center' }}>
                 <Button  variant='text' className="request_accept" onClick={()=> {props.acceptReq(request.request); setRequest(null) }} endIcon={<CheckCircleIcon />}> Accept </Button>
                 <Button  variant='text' className="request_decline" onClick={()=> {props.rejectReq(request.request); setRequest(null)}} endIcon={<CancelIcon />}> Decline </Button>
               </div> : null}

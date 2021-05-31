@@ -108,3 +108,13 @@
         display: inline;
     }
 }
+
+@media (max-width: 425px ) {
+    .investor {
+        padding: 0 !important;
+        display: unset !important;
+    }
+    .invester__heading {
+        font-size: small !important;
+    }
+}

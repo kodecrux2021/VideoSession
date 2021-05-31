@@ -373,32 +373,34 @@ If as a user, you wish to refund the payment if they do not meet thier required 
                         <Typography variant="h2" style={{fontSize:35}}>Blogs by Ekodecrux</Typography>
                         <Carousel controls={false} interval={10000} indicators={true} pause={false} fade={true} style={{marginTop:20}} >
                             <Carousel.Item >
-                                <div style={{display:'flex'}}>
+                                <div style={{display:'flex'}} className="blog_mobile_prev">
                                     {/* <img style={{position:'absolute', left:-200, zIndex:100}} src={Blog1overlay} alt="overlay" /> */}
                                     <img
-                                    // className="d-block w-100"
-                                    style={{width:"30%"}}
-                                    src={Blog1}
-                                    alt="First slide"
+                                        // className="d-block w-100"
+                                        className="blog_mobile_prev_img"
+                                        style={{width:"30%"}}
+                                        src={Blog1}
+                                        alt="First slide"
                                     />
-                                    <div style={{display:'flex', flex:1, justifyContent:'center', alignItems:'center',
+                                    <div className="blog_mobile_prev_blog" style={{display:'flex', flex:1, justifyContent:'center', alignItems:'center',
                                     padding:40, margin:20, border:2, borderStyle:'solid', borderColor:'#3743B1', borderRadius:20}}>
-                                    <Typography style={{fontSize:15, fontWeight:"normal"}}>Gig economy statistics show a free market system where organizations and independent workers engage in short-term work arrangements. BLS data suggest that in 2017 the US gig economy had 55 million participants. It's estimated that 36% of US workers take part in the gig economy and 33% of companies extensively use gig workers.
-                                    <a style={{color:'#3743B1'}}> Read more</a>
-                                    </Typography>
+                                        <Typography style={{fontSize:15, fontWeight:"normal"}}>Gig economy statistics show a free market system where organizations and independent workers engage in short-term work arrangements. BLS data suggest that in 2017 the US gig economy had 55 million participants. It's estimated that 36% of US workers take part in the gig economy and 33% of companies extensively use gig workers.
+                                        <a style={{color:'#3743B1'}}> Read more</a>
+                                        </Typography>
                                     </div>
                                 </div>
                             </Carousel.Item>
                             <Carousel.Item >
-                                <div style={{display:'flex'}}>
+                                <div style={{display:'flex'}} className="blog_mobile_prev">
                                     {/* <img style={{position:'absolute', left:-200, zIndex:100}} src={Blog1overlay} alt="overlay" /> */}
                                     <img
-                                    // className="d-block w-100"
-                                    style={{width:"30%"}}
-                                    src={Blog1}
-                                    alt="First slide"
+                                        // className="d-block w-100"
+                                        className="blog_mobile_prev_img"
+                                        style={{width:"30%"}}
+                                        src={Blog1}
+                                        alt="First slide"
                                     />
-                                    <div style={{display:'flex', flex:1, justifyContent:'center', alignItems:'center',
+                                    <div className="blog_mobile_prev_blog" style={{display:'flex', flex:1, justifyContent:'center', alignItems:'center',
                                     padding:40, margin:20, border:2, borderStyle:'solid', borderColor:'#3743B1', borderRadius:20}}>
                                     <Typography>Gig economy statistics show a free market system where organizations and independent workers engage in short-term work arrangements. BLS data suggest that in 2017 the US gig economy had 55 million participants. It's estimated that 36% of US workers take part in the gig economy and 33% of companies extensively use gig workers.
                                     </Typography>

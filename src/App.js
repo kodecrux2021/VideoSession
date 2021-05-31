@@ -22,6 +22,7 @@ import New from './Container/RegistrationDetails/new';
 import Payment from './payment'
 import cardDetails from './Container/cardDetails/cardDetails';
 import Profile from "./Container/Profile/Profile.Container";
+import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 
 
 
@@ -69,6 +70,7 @@ function App() {
           <Route path="/notifications" component={NotificationsContainer} />
           <Route path="/Profile" exact component={Profile} />
           <Route path="/payment" exact component={Payment} />
+          <Route exact path="/linkedin" component={LinkedInPopUp} />
           <Route render={() => <Redirect to="/" />} />
         </Switch>
       </Router>

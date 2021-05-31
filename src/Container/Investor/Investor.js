@@ -67,8 +67,10 @@ export default function Investor(props) {
                 <div className='investor__body'>
                 <div className='investor__card'>
                     <div style={{display: 'flex'}} >
-                    <div className='round__icon' >
-                        1
+                    <div>
+                        <div className='round__icon' >
+                            1
+                        </div>
                     </div>
                 <p className='invester__heading' >Which request is the mentor helping you with ?</p>
                     </div>
@@ -95,11 +97,13 @@ export default function Investor(props) {
                 </div>
 
                 <div className='investor__card'>
-                    <div style={{display: 'flex'}} >
-                    <div className='round__icon' >
-                        2
-                    </div>
-                <p className='invester__heading' >Project details</p>
+                    <div style={{display: 'flex', alignItems:'baseline'}} >
+                        <div>
+                            <div className='round__icon' >
+                                2
+                            </div>
+                        </div>
+                        <p className='invester__heading' >Project details</p>
                     </div>
                     {/* <span className='investor__head__detail' ></span> */}
                     
@@ -111,9 +115,11 @@ export default function Investor(props) {
                 </div>
 
                 <div className='investor__card'>
-                    <div style={{display: 'flex'}} >
-                    <div className='round__icon' >
-                        3
+                    <div style={{display: 'flex', alignItems:'baseline'}} >
+                    <div>
+                        <div className='round__icon' >
+                            3
+                        </div>
                     </div>
                 <p className='invester__heading' >Budget and deadline</p>
                     </div>
@@ -146,9 +152,11 @@ export default function Investor(props) {
                 </div>
 
                 <div className='investor__card'>
-                    <div style={{display: 'flex'}} >
-                    <div className='round__icon' >
-                        4
+                    <div style={{display: 'flex', alignItems:'baseline'}} >
+                    <div>
+                        <div className='round__icon' >
+                            4
+                        </div>
                     </div>
                 <p className='invester__heading' >Additional information</p>
                     </div>

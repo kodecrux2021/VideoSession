@@ -190,8 +190,8 @@ export default class InvestorContainer extends Component {
     render() {
         return (
             <div>
-              <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '20px', top: '0' }} onClick = {() =>this.props.history.push('/')}/>
-              <Navbar/>
+              <img src={kodecrux} style={{ height: '70px',marginLeft: '20px', top: '0' }} onClick = {() =>this.props.history.push('/')}/>
+              {/* <Navbar/> */}
                 <Investor
                 investor__name={this.state.investor__name}
                 selected={this.state.selected}

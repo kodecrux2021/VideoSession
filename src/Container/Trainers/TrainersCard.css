@@ -89,6 +89,7 @@
 
   .advance_Card {
     flex: 0.4;
+    margin-top: 0;
   } 
   .advance_search_card {
     box-shadow: 0 3px 6px rgba(55, 67, 117, 0.36);
@@ -119,6 +120,12 @@
     color: white;
   }
 
+
+  @media (max-width:425px) {
+    .advance_Card {
+      margin-top: 60px !important;
+    }
+  }
 
   @media(max-width:900px) {
     .body__ctr1 {
@@ -158,7 +165,7 @@
           } */
           .trainers__card__details {
             padding: 0px;
-            text-align: center;
+            /* text-align: center; */
         }
   }
 

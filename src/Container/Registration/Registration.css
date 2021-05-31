@@ -84,6 +84,7 @@ padding : 8px 0;
 
 .header__button{
     display: flex;
+    flex: 1;
 }
 
 
@@ -105,7 +106,7 @@ padding : 8px 0;
 }
 .google {
     margin: 5px 10px 5px 0px !important;
-    width: 230px !important;
+    /* width: 230px !important; */
     height: 40px !important;
     padding: 0 !important;
     /* padding: 6px !important; */
@@ -134,7 +135,7 @@ padding : 8px 0;
 
 .facebook {
     margin: 5px 0px 5px 10px;
-    width: 230px;
+    /* width: 230px; */
     height: 40px;
     padding: 6px;
     font-size: 14px;
@@ -174,7 +175,7 @@ padding : 8px 0;
 .form__control{
     display: flex !important;
     width: 100%;
-    height: calc(1.7em + .65rem+1px);
+    /* height: calc(1.7em + .65rem+1px); */
     /* padding: .375rem .75rem; */
     font-size: 1rem;
     font-weight: 400;
@@ -280,28 +281,45 @@ height: auto;
         font-size: 10px;
     } */
 
-    .google {
-        margin: 5px 10px !important;
-        width: 150px !important;
-        height: 35px !important;
+    /* .google {
+        font-weight: 600;
+        font-size: 14px !important;
+        background: #3743B1;
+        color: whitesmoke;
+        border-radius: 5px;
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+        border: none;
+        outline: none;
+
+    } */
+    .google > span {
         font-size: 10px !important;
-        font-weight: bold !important;
-        border: none!important;
-        color: white !important;
-        background-color:#DB4437 !important;
-        text-align: center !important;
+        /* width: 100px !important; */
     }
     .facebook {
-        margin: 5px 10px;
-        width: 150px;
-        height: 35px;
-        padding: 6px;
-        font-size: 12px;
-        font-weight: bold;
-        border: none;
-        color: white;
-        background-color:#4c69ba
+        font-size: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        /* width: 100px !important; */
     }
+    /* .facebook {
+        margin: 5px 0px 5px 10px;
+        width: 230px;
+        height: 40px;
+        padding: 6px;
+        font-size: 14px;
+        display: flex;
+
+        color:#3743B1;
+        background-color: white;
+        box-shadow: none!important;
+        border: 1px !important;
+        border-color:rgba(55, 67, 177, 0.36) !important;
+        border-style: solid !important;
+        border-radius: 5px !important;
+    } */
 
 
  

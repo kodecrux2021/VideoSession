@@ -297,3 +297,20 @@ padding:20px 0 40px 0;
   background-color: white !important;
   border-radius: 15px !important;
 }
+
+
+@media (max-width:425px) {
+  .HelpForm1__header {
+    margin-top: 80px;
+    font-size: 24px;
+  }
+
+  .HelpForm1__body {
+    flex-wrap: nowrap !important;
+    flex-direction: column;
+  }
+
+  .HelpForm2 {
+    margin-top: 100px !important;
+  }
+}

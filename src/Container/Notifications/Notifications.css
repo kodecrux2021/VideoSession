@@ -138,3 +138,19 @@
     padding-top: 2rem;
   }
 }
+
+@media (max-width: 425px) {
+  .request_mobile_card {
+    flex-direction: column !important;
+    margin-top: 70px;
+  }
+  .request_mobile_tech_fix {
+    flex-direction: column !important;
+  }
+  .request_mobile_budget_fix {
+    justify-content: unset !important;
+  }
+  .request_mobile_button_fix {
+    flex-direction: unset !important;
+  }
+}

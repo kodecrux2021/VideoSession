@@ -854,6 +854,7 @@ class Profile extends Component {
                               openMenuOnClick={true}
                               placeholder={"CHOOSE TECHNOLOGY"}
                               value={technology}
+                              isMulti
                             />
                           </div>
 

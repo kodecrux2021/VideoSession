@@ -548,6 +548,7 @@ class New extends React.Component {
                       placeholder={"CHOOSE TECHNOLOGY"}
                     />
                   </div>
+                  
 
                   <div class="form__group">
                     <label>SUB TECHNOLOGY</label>

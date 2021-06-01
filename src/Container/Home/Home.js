@@ -396,17 +396,17 @@ If as a user, you wish to refund the payment if they do not meet thier required 
                                 </div>
                             </Carousel.Item>
                             <Carousel.Item >
-                                <div style={{display:'flex'}} className="blog_mobile_prev">
+                                <div style={isMobile ? {display:'flex', flexDirection:'column'} : {display:'flex'}} className="blog_mobile_prev">
                                     {/* <img style={{position:'absolute', left:-200, zIndex:100}} src={Blog1overlay} alt="overlay" /> */}
                                     <img
                                         // className="d-block w-100"
                                         className="blog_mobile_prev_img"
-                                        style={{width:"30%"}}
+                                        style={isMobile ? {width:"100%"} : {width:"30%"}}
                                         src={Blog1}
                                         alt="First slide"
                                     />
                                     <div className="blog_mobile_prev_blog" style={{display:'flex', flex:1, justifyContent:'center', alignItems:'center',
-                                    padding:40, margin:20, border:2, borderStyle:'solid', borderColor:'#3743B1', borderRadius:20}}>
+                                    padding:isMobile ? 20 : 40, margin: isMobile ? "20px 0" : 20, border:2, borderStyle:'solid', borderColor:'#3743B1', borderRadius:20}}>
                                     <Typography>Gig economy statistics show a free market system where organizations and independent workers engage in short-term work arrangements. BLS data suggest that in 2017 the US gig economy had 55 million participants. It's estimated that 36% of US workers take part in the gig economy and 33% of companies extensively use gig workers.
                                     </Typography>
                                     </div>

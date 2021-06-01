@@ -219,7 +219,7 @@ color: rgb(237, 237, 237);
 
 @media (max-width: 480px) {
     .blog_mobile_prev {
-        flex-direction: column;
+        flex-direction: column !important;
     }
     .blog_mobile_prev_img {
         width: 100% !important;

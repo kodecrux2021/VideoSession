@@ -299,7 +299,7 @@ padding:20px 0 40px 0;
 }
 
 
-@media (max-width:425px) {
+@media (max-width:450px) {
   .HelpForm1__header {
     margin-top: 80px;
     font-size: 24px;

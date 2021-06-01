@@ -109,7 +109,7 @@
     }
 }
 
-@media (max-width: 425px ) {
+@media (max-width: 480px ) {
     .investor {
         padding: 0 !important;
         display: unset !important;

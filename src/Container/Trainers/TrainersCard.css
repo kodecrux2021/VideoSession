@@ -121,7 +121,7 @@
   }
 
 
-  @media (max-width:425px) {
+  @media (max-width:480px) {
     .advance_Card {
       margin-top: 60px !important;
     }

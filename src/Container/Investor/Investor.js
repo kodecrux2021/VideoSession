@@ -7,6 +7,7 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { DatePicker } from 'antd';
 import 'antd/dist/antd.css';
 import {Modal } from 'antd';
+import { isMobile } from 'react-device-detect';
 
 const useStyles = makeStyles((theme) => ({
     large: {
@@ -51,7 +52,7 @@ export default function Investor(props) {
       };
 
     return (
-        <div className='investor' > 
+        <div className='investor' style={isMobile ? {padding:0} : {}}> 
             <div style={{maxWidth: '1000px', marginTop: '30px'}} className="investor_Card" >
             <div className='investor__head'>
                     <div className='investor__head__title'>

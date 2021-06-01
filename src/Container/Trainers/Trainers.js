@@ -12,6 +12,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import Select from 'react-select';
 import ReactPolling from "react-polling";
 import { Typography } from "@material-ui/core";
+import { isMobile } from "react-device-detect";
 
 let uri = "";
 export default class Trainers extends Component {
@@ -435,7 +436,7 @@ componentDidMount() {
                     </div>
                   ) : (
                     <div className="body__ctr1">
-                        <div className="advance_Card">
+                        <div className="advance_Card" style={isMobile ? {marginTop:80, display:'flex', justifyContent:'center'} : {}}>
                         <div className="advance_search_card">
                             <Typography style={{fontSize:22, fontWeight:400}}>Advance Search</Typography>
                             <div style={{marginTop:20}}>

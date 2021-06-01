@@ -6,6 +6,12 @@ import kodecrux from '../../assets/images/reg2.jpeg';
 import {ReactComponent as InstantSvg} from '../../assets/instant.svg'
 import {ReactComponent as ConsultSvg} from '../../assets/consulting.svg'
 import {ReactComponent as GigSvg} from '../../assets/gig-worker.svg'
+import {
+    BrowserView,
+    MobileView,
+    isBrowser,
+    isMobile
+  } from "react-device-detect";
 
 export default class HelpForm1 extends Component {
 
@@ -34,10 +40,11 @@ export default class HelpForm1 extends Component {
             <div className='body__ctr'>
             <div className='help__form__container'>
              <div className='HelpForm1'>
-                <div className='HelpForm1__header'>
+                <div className='HelpForm1__header' style={isMobile ? {marginTop:80, fontSize:24} : {}}>
                     <p>Please choose appropriate service from below . Our esteemed code experts will be available at your service.</p>
                 </div>
-                <div className='HelpForm1__body'>
+                <div className='HelpForm1__body' style={isMobile ? {flexWrap: "nowrap !important",
+                    flexDirection: "column"} : {}}>
                     <div className='HelpForm1__card' onClick={() => this.handelData('livehelp')} >
                         <InstantSvg />
                         <p>Instant class room</p>

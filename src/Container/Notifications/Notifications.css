@@ -139,7 +139,7 @@
   }
 }
 
-@media (max-width: 425px) {
+@media (max-width: 480px) {
   .request_mobile_card {
     flex-direction: column !important;
     margin-top: 70px;

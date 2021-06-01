@@ -217,7 +217,7 @@ color: rgb(237, 237, 237);
     color: #3743B1 !important;
 }
 
-@media (max-width: 48px) {
+@media (max-width: 480px) {
     .blog_mobile_prev {
         flex-direction: column;
     }

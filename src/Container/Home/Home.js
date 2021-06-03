@@ -113,6 +113,10 @@ Cost of the services will be charged in currency INR. Study room and solution ro
 <li>As of now, all payments will be in the default currency of Indian Rupees only. eKodecrux Website/App will not facilitate transactions using any other form of currency other than Indian Rupee.</li><br/>
 
 <li>The price of products shown includes all applicable statutory taxes. We ensure that we take all necessary measures for the pricing and availability of Products to reflect the latest information on eKodecrux website / APP. But, in certain cases there might be some errors due to price changes or product availability. In such cases we are not responsible for those errors and we reserve the right to cancel the sale and refund the amount to you. We also reserve the right to correct any errors due to data typography, inaccuracies, omissions and can change or update any information of the product at any time without any prior notice.</li><br/>
+
+<li>All prices and payments are in INR.</li><br />
+
+<li>Chekout functionality is enabled through PAYNOW module in application.</li> <br />
 </ul></p>})
     }
 

@@ -97,7 +97,7 @@ class New extends React.Component {
         })
         .then((result) => {
           if (result) {
-            //console.log("result.access", result.access);
+            // console.log("result.access", result.access);
             localStorage.setItem("token", result.access);
           }
         });
@@ -528,7 +528,7 @@ class New extends React.Component {
               {is_client === "true" ? null : (
                 <div className="trainer__details__ctr">
                   <div class="form__group">
-                    <label>TECHNOLOGY</label>
+                    <label style={{color:'#3743B1'}}>TECHNOLOGY</label>
                     <Select
                       className="react-selectcomponent"
                       classNamePrefix="select"
@@ -551,7 +551,7 @@ class New extends React.Component {
                   
 
                   <div class="form__group">
-                    <label>SUB TECHNOLOGY</label>
+                    <label style={{color:'#3743B1'}}>SUB TECHNOLOGY</label>
                     <Select
                       className="react-selectcomponent"
                       classNamePrefix="name-select"
@@ -573,7 +573,7 @@ class New extends React.Component {
                   </div>
 
                   <div class="form__group">
-                    <label>TOTAL EXPERIENCE</label>
+                    <label style={{color:'#3743B1'}}>TOTAL EXPERIENCE</label>
                     <Select
                       className="react-selectcomponent"
                       classNamePrefix="name-select"
@@ -594,7 +594,7 @@ class New extends React.Component {
                   </div>
 
                   <div class="form__group">
-                    <label>RELEVANT EXPERIENCE</label>
+                    <label style={{color:'#3743B1'}}>RELEVANT EXPERIENCE</label>
                     <Select
                       className="react-selectcomponent"
                       classNamePrefix="name-select"
@@ -647,6 +647,33 @@ class New extends React.Component {
                       placeholder="Rating"
                     />
                   </div> */}
+                  <div class="form__group" style={{padding:10}}>
+                    <div
+                      style={{ display: "flex", flexDirection:'column' }}
+                    >
+                      <label style={{ marginRight: "3vw", color:'#3743B1' }}>
+                        ATTACH RESUME
+                      </label>
+                      
+                        <input
+                          type="file"
+                          // className=""
+                          // className="form__control"
+                          onChange={(e) => this.handleResume(e)}
+                          accept="image/*, .pdf, .doc,.docx"
+                          id="raised-button-file-1"
+                          hidden
+                        />
+                        <label htmlFor="raised-button-file-1">
+                          <div style={{maxWidth:100, padding:5, textAlign:'center', borderRadius:10}} className="upload-image" component="span">
+                            SELECT FILE
+                          </div>
+                        </label> 
+                  
+                  
+                        <div>{this.state.resume?.name}</div>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -671,31 +698,7 @@ class New extends React.Component {
               />
             </div> */}
             
-            <div class="form__group" style={{padding:10}}>
-              <div
-                style={{ display: "flex", flexDirection:'column' }}
-              >
-                <label style={{ marginRight: "3vw", color:'#3743B1' }}>
-                  ATTACH RESUME
-                </label>
-                
-                  <input
-                    type="file"
-                    // className=""
-                    // className="form__control"
-                    onChange={(e) => this.handleResume(e)}
-                    accept="image/*, .pdf, .doc,.docx"
-                    id="raised-button-file-1"
-                    hidden
-                  />
-                  <label htmlFor="raised-button-file-1">
-                    <div style={{maxWidth:100, padding:5, textAlign:'center', borderRadius:10}} className="upload-image" component="span">
-                      SELECT FILE
-                    </div>
-                  </label> 
-                  <div>{this.state.resume?.name}</div>
-              </div>
-            </div>
+            
 
             <Col className="registration__details__footer">
               <div style={{display:'flex', flexDirection:'row', width:"100%", gap:5}}>

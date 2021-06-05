@@ -29,8 +29,6 @@ class RegistrationContainer extends Component {
 
 
     handelData  = (identity,data) =>{
-        console.log('identity',identity)
-        console.log('data',data)
         if (identity === 'first_name'){
             this.setState({'first_name' : data})
         }
@@ -154,7 +152,7 @@ class RegistrationContainer extends Component {
                         message.info('A user with that email already exists!!!');
                 }
             })
-            .then((result) => {
+            .then(async (result) => {
                 console.log('result', result);
                 localStorage.setItem('email', this.state.email)
                  data2 = {
@@ -171,6 +169,63 @@ class RegistrationContainer extends Component {
                     "profile_pic": null,
                     "user_email": this.state.email              
                 }
+                const u_data = { 'username': this.state.email, 'password': this.state.password }
+                await fetch(`${url}/api/token/`, {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json, text/plain',
+                        'Content-Type': 'application/json;charset=UTF-8',
+                    },
+                    body:  JSON.stringify(u_data)
+                }).then((response) => {
+                    console.log("response", response)
+                    if (response['status'] === 201 || response['status'] === 200) {
+                        return response.json()
+                    } else if (response['status'] === 401) {
+                        if (response['statusText'] === 'Unauthorized') {
+                            // console.log('username or password you have provided is Incorrect')
+                            message.info('Username or password you have provided is incorrect!!!');
+                        }
+                        else {
+                            // console.log('No active account found with the given credentials')
+                            message.info('No active account found with the given credentials!!!');
+
+                        }
+                    }
+                }).then((u_result) => {
+                    // console.log('access', result)
+                    if (u_result) {
+
+                        if (u_result.access) {
+                            localStorage.setItem('token', u_result.access)
+                            // console.log('result.access', result.access)
+                        }
+                        if (u_result.refresh) {
+                            localStorage.setItem('refresh', u_result.refresh)
+                            // console.log('result.refresh', result.refresh)
+                        }
+
+                        let auth = u_result.access
+                        fetch(url + '/currentuser/', {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + auth,
+                            },
+                        })
+                            .then(res => res.json())
+                            .then(
+                                (result) => {
+                                    if (result) {
+                                        localStorage.setItem('user_id', result.user?.id);
+                                        localStorage.setItem('user_name', result.user?.first_name);
+                                        localStorage.setItem('user_photo', result.user?.profile_pic);
+                                    }
+                                }
+                            )
+                    }
+                })
                  if(result){
                     if(this.state.position!=='customer'){
                         fetch( url + '/api/educatorcreate/' , {
@@ -178,7 +233,7 @@ class RegistrationContainer extends Component {
                             headers: {
                                 'Accept': 'application/json, text/plain',
                                 'Content-Type': 'application/json;charset=UTF-8',
-                                'Authorization': 'Bearer' + auth
+                                'Authorization': 'Bearer ' + auth
                             },
                             body: JSON.stringify(data2)
                         })
@@ -187,7 +242,7 @@ class RegistrationContainer extends Component {
                             if (response['status'] === 201 || response['status'] === 200) {
                                 return response.json()
                             } else if (response['status'] === 400) {
-                                    console.log('A user with that email already exists.')
+                                    // console.log('A user with that email already exists.')
                                     message.info('A user with that email already exists!!!');
                             }
                         })
@@ -202,16 +257,8 @@ class RegistrationContainer extends Component {
                     this.props.history.push("/details");
                 }
                 
-            })
-
-
-            
-            
+            })   
         }
-
-        
-
-    
     }
     onChangeValue = (event) => {
         event.preventDefault();

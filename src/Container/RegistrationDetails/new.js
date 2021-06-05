@@ -97,12 +97,10 @@ class New extends React.Component {
         })
         .then((result) => {
           if (result) {
-            // console.log("result.access", result.access);
             localStorage.setItem("token", result.access);
           }
-        });
+        })
     }
-
     //let auth = localStorage.getItem("token");
 
     fetch(url + "/api/technology/", {
@@ -129,7 +127,6 @@ class New extends React.Component {
     } else if (identity === "city") {
       this.setState({ city: data });
     } else if (identity === "technology") {
-      console.log(data)
       this.setState({ technology: data});
       let subTechList = []
       for (let i = 0; i < data?.length; i++) {
@@ -170,16 +167,16 @@ class New extends React.Component {
       this.state.city === "" ||
       this.state.state === "" ||
       // this.state.date_of_birth === "" ||
-      this.state.resume === "" ||
-      this.state.desig === "" ||
-      (this.state.desig ? !designationFormat.test(this.state.desig) : false) ||
-      this.state.fileList.length === 0 ||
-      this.state.total_experience === null ||
-      this.state.relevant_experience === null ||
+      localStorage.getItem('is_client') ? false : this.state.resume === "" ||
+      localStorage.getItem('is_client') ? false : this.state.desig === "" ||
+      localStorage.getItem('is_client') ? false : (this.state.desig ? !designationFormat.test(this.state.desig) : false) ||
+      localStorage.getItem('is_client') ? false : this.state.fileList.length === 0 ||
+      localStorage.getItem('is_client') ? false : this.state.total_experience === null ||
+      localStorage.getItem('is_client') ? false : this.state.relevant_experience === null ||
       // this.state.rating === 0 ||
-      this.state.fees === 0 ||
-      this.state.technology === "" ||
-      this.state.sub_technology === ""
+      localStorage.getItem('is_client') ? false : this.state.fees === 0 ||
+      localStorage.getItem('is_client') ? false : this.state.technology === "" ||
+      localStorage.getItem('is_client') ? false : this.state.sub_technology === ""
     ) {
         {
           console.log("hello");
@@ -226,20 +223,21 @@ class New extends React.Component {
       this.state.sub_technology.forEach((k, i) => sub_tech.push(k.id))
       // sub_tech.push(parseInt(this.state.sub_technology?.id));
       
-      let formData = new FormData()
+      let formData = {}
 
-      formData.append('pincode', this.state.pincode);
-      formData.append('city', this.state.city);
-      formData.append('state', this.state.state);
-      formData.append('technology', tech);
-      formData.append('sub_technology',sub_tech );
-      formData.append('total_experience', tech);
-      formData.append('relevant_experience', sub_tech);
-      this.state.fileList.length > 0 && formData.append('profile_pic', this.state.fileList[0].originFileObj);
-      formData.append('designation', this.state.desig);
+      formData['pincode'] = this.state.pincode;
+      formData['city'] = this.state.city;
+      formData['state'] = this.state.state;
+
+      if (localStorage.getItem('is_client')) formData['technology'] = tech;
+      if (localStorage.getItem('is_client')) formData['sub_technology'] = sub_tech;
+      if (localStorage.getItem('is_client')) formData['total_experience'] = this.state.total_experience.value;
+      if (localStorage.getItem('is_client')) formData['relevant_experience'] = this.state.relevant_experience.value;
+      if (this.state.fileList.length > 0) formData['profile_pic'] = this.state.fileList[0].originFileObj;
+      if (localStorage.getItem('is_client')) formData['designation'] = this.state.desig;
 
       // formData.append('date_of_birth',  this.state.date_of_birth);
-      formData.append('fees', this.state.fees);
+      if (localStorage.getItem('is_client')) formData['fees'] = this.state.fees;
       // formData.append('rating', this.state.rating);
       // formData.append('profile_pic', this.state.file)
 
@@ -263,15 +261,16 @@ class New extends React.Component {
       // console.log(this.state.sub_technology?.id);
       let id = localStorage.getItem("educator_id");
       let user_id = localStorage.getItem("user_id");
-
+      let auth = localStorage.getItem("token")
       
-      fetch(`${url}/api/customusersecond/${user_id}/`, {
+      await fetch(`${url}/api/customuser/${user_id}/`, {
         method: "PUT",
         headers: {
-          Accept: "application/json, text/plain",
-          // "Content-Type": `multipart/form-data`,
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization" : "Bearer " + auth
         },
-        body: formData,
+        body: JSON.stringify(formData),
       })
         .then((response) => {
           console.log("response", response);
@@ -286,6 +285,8 @@ class New extends React.Component {
           console.log(result);
 
           let auth = localStorage.getItem("token");
+          let id = localStorage.getItem("educator_id");
+          console.log(id)
           if (localStorage.getItem("is_client")) {
            await fetch(`${url}/api/educatorcreate/${id}/`, {
               method: "PUT",
@@ -294,7 +295,7 @@ class New extends React.Component {
                 //"Content-Type": "application/json;charset=UTF-8",
                 Authorization: "Bearer" + auth,
               },
-              body: formData,
+              body: JSON.stringify(formData),
             })
               .then((response) => {
                 console.log("response2", response);

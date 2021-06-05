@@ -43,42 +43,46 @@ const experienceData = [
 ];
 
 class Profile extends Component {
-  state = {
-    previewVisible: false,
-    previewImage: "",
-    previewTitle: "",
-    fileList: [],
-
-    profile_pic: "",
-
-    tech_list: [],
-    subtech_list: [],
-    subtech_list1: [],
-    technology: "",
-    sub_technology: "",
-
-    First_Name: "",
-    Last_Name: "",
-    Date_Of_Birth: "",
-    Email: "",
-    Phone: "",
-    pincode: "",
-    state: "",
-    city: "",
-    total_experience: null,
-    relevant_experience: null,
-    resume:"",
-
-    client: false,
-
-    setemail_validate: "",
-    mobile: "",
-    setmobile_validate: "",
-
-    loading: false,
-    PageLoading: false,
-    Uploading: false,
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      previewVisible: false,
+      previewImage: "",
+      previewTitle: "",
+      fileList: [],
+  
+      profile_pic: "",
+  
+      tech_list: [],
+      subtech_list: [],
+      subtech_list1: [],
+      technology: "",
+      sub_technology: "",
+  
+      First_Name: "",
+      Last_Name: "",
+      Date_Of_Birth: "",
+      Email: "",
+      Phone: "",
+      pincode: "",
+      state: "",
+      city: "",
+      total_experience: null,
+      relevant_experience: null,
+      resume:"",
+  
+      client: localStorage.getItem("is_client"),
+  
+      setemail_validate: "",
+      mobile: "",
+      setmobile_validate: "",
+  
+      loading: false,
+      PageLoading: false,
+      Uploading: false,
+    };
+  }
+  
 
   UserData = async () => {
     let id = localStorage.getItem("user_id");
@@ -86,47 +90,35 @@ class Profile extends Component {
 
     try {
       if (id) {
-        await fetch(url + "/api/customusersecond/" + id + "/")
+        await fetch(url + "/api/customuser/" + id + "/", {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + auth,
+          },
+        })
           .then((response) => response.json())
           .then((data) => {
             console.log("date", data);
             this.setState({
-              Date_Of_Birth: data.date_of_birth,
-              profile_pic: data.profile_pic,
-              pincode: data.pincode,
-              state: data.state,
-              city: data.city,
-              total_experience: data.total_experience,
-              relevant_experience: data.relevant_experience,
-              technology: data.technology[0],
-              sub_technology: data.sub_technology[0],
-              resume: data.resume,
+              Date_Of_Birth: data?.date_of_birth,
+              profile_pic: data?.profile_pic,
+              pincode: data?.pincode,
+              state: data?.state,
+              city: data?.city,
+              total_experience: data?.total_experience,
+              relevant_experience: data?.relevant_experience,
+              technology: data?.technology,
+              sub_technology: data?.sub_technology,
+              resume: data?.resume,
+              client: data?.is_client,
+              First_Name: data?.first_name,
+              Last_Name: data?.last_name,
+              Email: data?.email,
+              Phone: data?.phone,
             });
           })
-          .then((data) =>
-            fetch(url + "/currentuser/", {
-              method: "GET",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + auth,
-              },
-            })
-              .then((res) => res.json())
-              .then((data) => {
-                if (data) {
-                  console.log(data);
-                  this.setState({
-                    First_Name: data.user.first_name,
-                    Last_Name: data.user.last_name,
-                    Email: data.user.email,
-                    Phone: data.user.phone,
-                    relevant_experience: data.user.relevant_experience,
-                    client: data.user.is_client,
-                  });
-                }
-              })
-          );
       } else {
         return;
       }
@@ -135,14 +127,14 @@ class Profile extends Component {
     }
   };
 
-  componentDidMount() {
-    this.UserData();
+  componentDidMount = async () => {
+    
     this.setState({ PageLoading: true });
     
     if (localStorage.getItem("token")) {
       let data_refresh = { refresh: localStorage.getItem("refresh") };
 
-      fetch(url + "/api/token/refresh/", {
+      await fetch(url + "/api/token/refresh/", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -164,6 +156,7 @@ class Profile extends Component {
             localStorage.setItem("token", result.access);
           }
         }).then(()=>{
+          this.UserData();
           // fetch(url + "/update/lastseen/", {
           //   method: "GET",
           //   headers: {
@@ -189,42 +182,60 @@ class Profile extends Component {
       .then((data) => this.SetSubTech())
       .then((res) => this.UpdateTech())
       .then((res) => this.updateSubtech())
+      
       .then((res) => this.UpdateTotalExp())
       .then((res) => this.UpdateRelevantExp())
       .then((res) => this.setState({ PageLoading: false }));
   }
 
-  SetSubTech = () =>
+  SetSubTech = () => {
+    let sub_tech = []
     this.state.tech_list.map((value) => {
-      if (this.state.technology === value.id) {
-        this.setState({
-          subtech_list: value.sub_technology,
-        });
-      }
+      sub_tech = [...sub_tech, ...value.sub_technology]
     });
+    this.setState({
+          subtech_list: sub_tech
+        });
+  }
 
   updateSubtech = async () => {
-    const dataa = await this.state.subtech_list.filter((value) => {
-      return this.state.sub_technology === value.id;
-    });
+    let sub_tech = []
+    this.state.sub_technology.forEach((k,i) =>
+      this.state.subtech_list.forEach((t_k, i_d) => {
+        if (k === t_k.id) sub_tech.push(t_k)
+      })
+    )
+    // const dataa = await this.state.subtech_list.filter((value) => {
+    //   return this.state.sub_technology === value.id;
+    // });
 
-    this.setState({ sub_technology: dataa[0] });
+    this.setState({ sub_technology: sub_tech });
   };
 
   UpdateTech = async () => {
-    const dataa = await this.state.tech_list.filter((value) => {
-      return this.state.technology === value.id;
-    });
+    
+    let tech = []
+    this.state.technology.forEach((k, i) =>
+      this.state.tech_list.forEach((t_k, i_d) => {
+        if (k === t_k.id)
+        tech.push(t_k)
+      })
+    )
+      // const dataa = this.state.tech_list.filter((value) => {
+      //   return this.state.technology === value.id;
+      // });
 
-    this.setState({ technology: dataa[0] });
+      this.setState({ technology: tech });
   };
 
   UpdateTotalExp = async () => {
-    const dataa = await experienceData.filter((value) => {
-      return this.state.total_experience === value.value;
-    });
-
-    this.setState({ total_experience: dataa[0] });
+    setTimeout(() => {
+      const dataa = experienceData.filter((value) => {
+        return this.state.total_experience === value.value;
+      });
+      console.log("total experience", dataa)
+      this.setState({ total_experience: dataa[0] });
+    }, 1000);
   };
 
   UpdateRelevantExp = async () => {
@@ -239,7 +250,7 @@ class Profile extends Component {
 
   onSubmit = async (e) => {
     e.preventDefault();   
-    console.log(this.state.sub_technology);
+    // console.log(this.state.sub_technology);
     if (
       this.state.Email === "" ||
       this.state.position === "" ||
@@ -247,7 +258,7 @@ class Profile extends Component {
       this.state.setmobile_validate !== "" ||
       this.state.First_Name === "" ||
       this.state.Last_Name === "" ||
-      this.state.Date_Of_Birth === null ||
+      // this.state.Date_Of_Birth === null ||
       this.state.pincode === null ||
       this.state.state === null ||
       this.state.city === null
@@ -272,10 +283,10 @@ class Profile extends Component {
         message.warning("Please Fill Last Name");
       }
     } else if (
-      this.state.technology === undefined ||
-      this.state.total_experience === undefined ||
-      this.state.sub_technology === undefined ||
-      this.state.relevant_experience === undefined
+      localStorage.getItem('is_client') ? false : this.state.technology === undefined ||
+      localStorage.getItem('is_client') ? false : this.state.total_experience === undefined ||
+      localStorage.getItem('is_client') ? false : this.state.sub_technology === undefined ||
+      localStorage.getItem('is_client') ? false : this.state.relevant_experience === undefined
     ) {
       if (this.state.technology === undefined) {
         message.warning("Please Fill technology");
@@ -293,36 +304,36 @@ class Profile extends Component {
       let tech = [];
       let sub_tech = [];
 
-      if (!this.state.client) {
-        tech.push(parseInt(this.state.technology.id));
-        sub_tech.push(parseInt(this.state.sub_technology.id));
-      }
+      this.state.technology.forEach((k,i) => tech.push(k.id))
+      this.state.sub_technology.forEach((k, i) => sub_tech.push(k.id))
 
-      let formData = new FormData();
-      let formData2 = new FormData();
+      let formData = {}
+      // let formData2 = new FormData();
 
       if (!this.state.client) {
-        formData.append("technology", [tech]);
-        formData.append("sub_technology", [sub_tech]);
-        formData.append("total_experience", this.state.total_experience.value);
-        formData2.append(
-          "relevant_experience",
-          this.state.relevant_experience.value
-        );
+        console.log("Condition true")
+        formData["technology"] = tech;
+        formData["sub_technology"] = sub_tech;
+        formData["total_experience"] = this.state.total_experience?.value;
+        formData["relevant_experience"] = this.state.relevant_experience?.value
+        formData["resume"] = this.state.resume;
       }
 
-      formData.append("pincode", this.state.pincode);
-      formData.append("city", this.state.city);
-      formData.append("state", this.state.state);
-      formData.append("Email", this.state.Email);
-      formData.append("resume", this.state.resume);
-      formData.append("date_of_birth", this.state.Date_Of_Birth);
+      formData["pincode"] = this.state.pincode;
+      formData["city"] = this.state.city;
+      formData["state"] = this.state.state;
+      formData["email"] = this.state.Email;
+      formData['first_name'] = this.state.First_Name
+      formData["last_name"] = this.state.Last_Name
+      formData["email"] = this.state.Email
+      formData["phone"] = this.state.Phone
+      // formData.append("date_of_birth", this.state.Date_Of_Birth);
 
-      formData2.append("user.is_client",this.state.client)
-      formData2.append("First_Name", this.state.First_Name);
-      formData2.append("Last_Name", this.state.Last_Name);
-      formData2.append("Email", this.state.Email);
-      formData2.append("Phone", this.state.Phone);
+      // formData2.append("user.is_client",this.state.client)
+      // formData2.append("First_Name", this.state.First_Name);
+      // formData2.append("Last_Name", this.state.Last_Name);
+      // formData2.append("Email", this.state.Email);
+      // formData2.append("Phone", this.state.Phone);
 
       // this.state.fileList.length > 0 &&
       //   formData.append("profile_pic", this.state.fileList[0].originFileObj);
@@ -346,39 +357,18 @@ class Profile extends Component {
       let id = localStorage.getItem("educator_id");
       let user_id = localStorage.getItem("user_id");
       let auth = localStorage.getItem("token");
-
-      fetch(url + "/api/customusersecond/" + user_id + "/", {
+      console.log(formData)
+      fetch(url + "/api/customuser/" + user_id + "/", {
         method: "PUT",
         headers: {
-          Accept: "application/json, text/plain",
-          // "Content-Type": `multipart/form-data`,
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization" : "Bearer " + auth
         },
-        body: formData,
+        body: JSON.stringify(formData),
       })
         .then((response) => {
           //console.log("response", response);
-          if (response["status"] === 201 || response["status"] === 200) {
-            // message.success("Saved");
-            // window.location.reload();
-            return response.json();
-          } else if (response["status"] === 400 || response["status"] === 500) {
-            message.error("Something went wrong");
-            //console.log("Something is wrong");
-          }
-        })
-        .then((data) =>
-        
-          fetch(url + "/currentuser/", {
-            method: "PUT",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + auth,
-            },
-            body: formData2,
-          })
-        .then((response) => {
-          console.log("response", response);
           if (response["status"] === 201 || response["status"] === 200) {
             message.success("Saved");
             window.location.reload();
@@ -388,8 +378,6 @@ class Profile extends Component {
             //console.log("Something is wrong");
           }
         })
-        
-        )
         .then(async (result) => {
           //console.log(result);
 
@@ -400,7 +388,7 @@ class Profile extends Component {
               headers: {
                 Accept: "application/json, text/plain",
                 //"Content-Type": "application/json;charset=UTF-8",
-                Authorization: "Bearer" + auth,
+                Authorization: "Bearer " + auth,
               },
               body: formData,
             }).then((response) => {
@@ -439,7 +427,7 @@ class Profile extends Component {
 
   handleResume = (e) => {
     const file = e.target.files[0];
-    console.log(file);
+    // console.log(file);
     this.setState({
       resume: file,
     });
@@ -468,7 +456,7 @@ class Profile extends Component {
         //console.log("response", response);
         if (response["status"] === 201 || response["status"] === 200) {
           message.success("Saved");
-          window.location.reload();
+          // window.location.reload();
           return response.json();
         } else if (response["status"] === 400 || response["status"] === 500) {
           message.error("Something went wrong");
@@ -476,7 +464,7 @@ class Profile extends Component {
         }
       })
       .then(async (result) => {
-        //console.log(result);
+        console.log(result);
 
         let auth = localStorage.getItem("token");
         if (localStorage.getItem("is_client")) {
@@ -508,9 +496,14 @@ class Profile extends Component {
     if (identity === "technology") {
       this.setState({
         technology: data,
-        subtech_list: data.sub_technology,
         sub_technology: "",
       });
+      let subTechList = []
+      for (let i = 0; i < data?.length; i++) {
+        subTechList = [...subTechList , ...data[i]["sub_technology"]]
+        
+      }
+      this.setState({subtech_list : subTechList})
     } else if (identity === "sub_technology") {
       this.setState({ sub_technology: data });
     } else if (identity === "total_experience") {
@@ -571,7 +564,7 @@ class Profile extends Component {
   };
 
   componentDidUpdate() {
-    console.log(this.state);
+    // console.log(this.state);
   }
 
   render() {
@@ -598,7 +591,7 @@ class Profile extends Component {
       loading,
       client,
     } = this.state;
-
+    // console.log("states are", this.state)
     const props = {
       action: "//jsonplaceholder.typicode.com/posts/",
       listType: "picture",
@@ -799,7 +792,7 @@ class Profile extends Component {
                         /> */}
                         <TextField variant="outlined" name="pincode" className="form__control" label="PIN CODE" type="text" value={pincode} onChange={this.handleChange}
                            />
-                        <TextField variant="outlined" name="city" className="form__control" label="CITY" type="text" value={state} onChange={this.handleChange}
+                        <TextField variant="outlined" name="city" className="form__control" label="CITY" type="text" value={city} onChange={this.handleChange}
                            />
                       </div>
                       <div class="form__group">
@@ -843,7 +836,7 @@ class Profile extends Component {
                               }
                               options={tech_list}
                               getOptionLabel={(option) => `${option.name}`}
-                              getOptionValue={(option) => `${option}`}
+                              getOptionValue={(option) => `${option.id}`}
                               isOptionSelected={(option) =>
                                 this.state.technology === option.name
                                   ? true
@@ -869,14 +862,16 @@ class Profile extends Component {
                               }
                               options={subtech_list}
                               getOptionLabel={(option) => `${option.name}`}
-                              getOptionValue={(option) => `${option}`}
+                              getOptionValue={(option) => `${option.id}`}
                               isOptionSelected={(option) =>
                                 this.state.sub_technology === option.name
                                   ? true
                                   : false
                               }
+                              isMulti
                               styles={customStyles}
                               isSearchable={true}
+                              // options={this.state.subtech_list}
                               openMenuOnClick={true}
                               placeholder={"CHOOSE SUB TECHNOLOGY"}
                               value={this.state.sub_technology}
@@ -904,7 +899,7 @@ class Profile extends Component {
                               isSearchable={true}
                               openMenuOnClick={true}
                               placeholder={"YEARS OF EXPERIENCE"}
-                              value={total_experience}
+                              value={this.state.total_experience}
                             />
                           </div>
 
@@ -954,6 +949,7 @@ class Profile extends Component {
                                     SELECT FILE
                                   </Button>
                                 </label> 
+                                <div>{this.state.resume?.name}</div>
                             </div>
                           </div>
                         </>

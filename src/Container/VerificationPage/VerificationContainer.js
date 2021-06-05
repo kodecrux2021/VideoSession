@@ -20,8 +20,8 @@ class VerificationContainer extends Component {
         e.preventDefault();
     
         // console.log('the otp ----------------', this.state.otp)
-        message.info('Registered successfull! Please login.'); 
-        this.props.history.push('/login');
+        // message.info('Registered successfull!'); 
+        this.props.history.push('/');
 
 
     //     fetch(("http://7e4a4d386d0f.ngrok.io/api/user/"),

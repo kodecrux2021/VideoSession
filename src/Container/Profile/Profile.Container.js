@@ -191,7 +191,7 @@ class Profile extends Component {
 
   SetSubTech = () => {
     let sub_tech = []
-    if (!localStorage.getItem('is_client')) {
+    if (localStorage.getItem('is_client') === "false") {
       this.state.tech_list.map((value) => {
         sub_tech = [...sub_tech, ...value.sub_technology]
       });
@@ -203,7 +203,7 @@ class Profile extends Component {
 
   updateSubtech = async () => {
     let sub_tech = []
-    if (!localStorage.getItem('is_client')) {
+    if (localStorage.getItem('is_client') === "false") {
       this.state.sub_technology.forEach((k,i) =>
         this.state.subtech_list.forEach((t_k, i_d) => {
           if (k === t_k.id) sub_tech.push(t_k)
@@ -216,7 +216,7 @@ class Profile extends Component {
   UpdateTech = async () => {
     
     let tech = []
-    if (!localStorage.getItem('is_client')) {
+    if (localStorage.getItem('is_client') === "false") {
       this.state.technology.forEach((k, i) =>
         this.state.tech_list.forEach((t_k, i_d) => {
           if (k === t_k.id)
@@ -238,7 +238,7 @@ class Profile extends Component {
   };
 
   UpdateRelevantExp = async () => {
-    if (!localStorage.getItem('is_client')) {
+    if (localStorage.getItem('is_client') === "false") {
       setTimeout(() => {
         const dataa = experienceData.filter((value) => {
           return this.state.relevant_experience === value.value;

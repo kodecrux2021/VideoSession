@@ -243,8 +243,11 @@ class New extends React.Component {
       }
       profileFormData.append('profile_pic', this.state.fileList[0].originFileObj)
       // if (localStorage.getItem('is_client')) formData2.append('is_client', localStorage.getItem('is_client'))
-
-      if (!localStorage.getItem('is_client')) { formData['technology'] = tech;
+      let user_is_client = localStorage.getItem('is_client')
+      console.log("client is", typeof(user_is_client))
+      if (user_is_client === "false") { 
+        console.log("Bla bla bla")
+        formData['technology'] = tech;
         formData['sub_technology'] = sub_tech;
         formData['total_experience'] = this.state.total_experience.value;
         formData['relevant_experience'] = this.state.relevant_experience.value;
@@ -296,7 +299,17 @@ class New extends React.Component {
           message.info("Something went wrong");
           //console.log("Something is wrong");
         }
-      }).then(async () =>
+      }).then((result) => {
+        if (result?.profile_pic) {
+          localStorage.setItem("user_photo", result.profile_pic)
+        }
+      }
+      
+      )
+      
+      
+      
+      .then(async () =>
         await fetch(`${url}/api/customuser/${user_id}/`, {
           method: "PUT",
           headers: {
@@ -342,7 +355,7 @@ class New extends React.Component {
               })
               .then((result) => {
                 //console.log(result);
-                // this.props.history.push("/verification"); //         <=================================Change here
+                this.props.history.push("/verification"); //         <=================================Change here
                 // fetch( url + '/api/educator/' , {
                 //     method: 'POST',
                 //     headers: {

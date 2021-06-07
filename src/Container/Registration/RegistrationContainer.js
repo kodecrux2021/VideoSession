@@ -8,6 +8,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { Link } from 'react-router-dom';
 import { Card } from '@material-ui/core';
 import {ReactComponent as EkodeLogo} from '../../assets/eKodeLogo.svg';
+import axios from 'axios';
 
 
 class RegistrationContainer extends Component {
@@ -128,12 +129,34 @@ class RegistrationContainer extends Component {
                 "email": this.state.email
             }
 
+            let formData = new FormData()
+            formData.append('username', this.state.email)
+            formData.append('paasword', this.state.password)
+            formData.append('phone', this.state.mobile)
+            formData.append('is_instructor', this.state.position==='codeexpert')
+            formData.append("is_freelancer", this.state.position==='instructor')
+            formData.append("is_codeexpert", this.state.position==='freelancer')
+            formData.append("is_client", this.state.position==='customer')
+            formData.append("first_name", this.state.first_name)
+            formData.append("last_name", this.state.last_name)
+            formData.append("email", this.state.email)
+
+
             let data2 = null;
            
             console.log('data', data, data2)
 
             let auth = localStorage.getItem('token');
             console.log(auth)
+            
+            // axios.post(`${url}/api/customuser/`, formData, {
+            //     headers: {
+            //       "Accept": "application/json",
+            //       'Content-type': "multipart/form-data",
+            //       'Authorization': 'Bearer ' + localStorage.getItem('token')
+            //     }
+            // })
+
             await fetch( url + '/api/customuser/' , {
                 method: 'POST',
                 headers: {
@@ -231,9 +254,9 @@ class RegistrationContainer extends Component {
                         fetch( url + '/api/educatorcreate/' , {
                             method: 'POST',
                             headers: {
-                                'Accept': 'application/json, text/plain',
-                                'Content-Type': 'application/json;charset=UTF-8',
-                                'Authorization': 'Bearer ' + auth
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')
                             },
                             body: JSON.stringify(data2)
                         })

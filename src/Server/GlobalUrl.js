@@ -1,5 +1,5 @@
 // const url = "http://13.229.251.62:8000"
-const url = "https://kodecrux-django.herokuapp.com";
-// const url = "http://cd62378f500c.ngrok.io"
+// const url = "https://kodecrux-django.herokuapp.com";
+const url = "https://9c9beaa74046.ngrok.io"
 
 export { url };

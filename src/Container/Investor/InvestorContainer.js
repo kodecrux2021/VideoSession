@@ -76,7 +76,7 @@ export default class InvestorContainer extends Component {
           headers: {
               'Accept': 'application/json, text/plain',
               'Content-Type': 'application/json;charset=UTF-8',
-              'Authorization': 'Bearer ' + auth,
+              'Authorization': 'Bearer ' + localStorage.getItem('token'),
           },
           body: JSON.stringify(data)
       })
@@ -123,19 +123,19 @@ export default class InvestorContainer extends Component {
       
     }
 
-    componentDidMount(){
+    componentDidMount = async() => {
       if (localStorage.getItem("hire_id")){
        
-       console.log(auth);
-       auth = localStorage.getItem('token')
+       let auth = localStorage.getItem('token')
        let hire_id = localStorage.getItem('hire_id')
 
-       fetch(url+ '/api/customuser/'+hire_id,{
+       await fetch(url+ '/api/customuser/'+hire_id,{
          method: 'GET',
          
           headers: {
                    'Accept': 'application/json',
                   'Content-Type': 'application/json',
+                   'Authorization' : 'Bearer ' + auth
                 },
         
        })
@@ -144,16 +144,16 @@ export default class InvestorContainer extends Component {
                   return response.json()
               } else if (response['status'] === 401) {
                   message.info('Something went wrong');  
-                  localStorage.removeItem('refresh')
-                  localStorage.removeItem('access')
+                  // localStorage.removeItem('refresh')
+                  // localStorage.removeItem('access')
               }
        })
        .then((result) =>{
-         this.setState({investor__name: result.first_name, pic: result.profile_pic})
+         this.setState({investor__name: result?.first_name, pic: result?.profile_pic})
          console.log(result);
        })
         let data_refresh = {'refresh': localStorage.getItem('refresh')}
-
+        console.log(data_refresh)
         fetch(url + '/api/token/refresh/', {
             method: 'POST',
             headers: {

@@ -17,6 +17,7 @@ import { url } from "../../Server/GlobalUrl";
 import Navbar from "../../components/Header/Navbar";
 import "./Profile.css";
 import { TextField, Button } from "@material-ui/core";
+import axios from "axios";
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -190,42 +191,40 @@ class Profile extends Component {
 
   SetSubTech = () => {
     let sub_tech = []
-    this.state.tech_list.map((value) => {
-      sub_tech = [...sub_tech, ...value.sub_technology]
-    });
-    this.setState({
-          subtech_list: sub_tech
-        });
+    if (!localStorage.getItem('is_client')) {
+      this.state.tech_list.map((value) => {
+        sub_tech = [...sub_tech, ...value.sub_technology]
+      });
+      this.setState({
+            subtech_list: sub_tech
+          });
+    }
   }
 
   updateSubtech = async () => {
     let sub_tech = []
-    this.state.sub_technology.forEach((k,i) =>
-      this.state.subtech_list.forEach((t_k, i_d) => {
-        if (k === t_k.id) sub_tech.push(t_k)
-      })
-    )
-    // const dataa = await this.state.subtech_list.filter((value) => {
-    //   return this.state.sub_technology === value.id;
-    // });
-
-    this.setState({ sub_technology: sub_tech });
+    if (!localStorage.getItem('is_client')) {
+      this.state.sub_technology.forEach((k,i) =>
+        this.state.subtech_list.forEach((t_k, i_d) => {
+          if (k === t_k.id) sub_tech.push(t_k)
+        })
+      )
+      this.setState({ sub_technology: sub_tech });
+    }
   };
 
   UpdateTech = async () => {
     
     let tech = []
-    this.state.technology.forEach((k, i) =>
-      this.state.tech_list.forEach((t_k, i_d) => {
-        if (k === t_k.id)
-        tech.push(t_k)
-      })
-    )
-      // const dataa = this.state.tech_list.filter((value) => {
-      //   return this.state.technology === value.id;
-      // });
-
-      this.setState({ technology: tech });
+    if (!localStorage.getItem('is_client')) {
+      this.state.technology.forEach((k, i) =>
+        this.state.tech_list.forEach((t_k, i_d) => {
+          if (k === t_k.id)
+          tech.push(t_k)
+        })
+      )
+        this.setState({ technology: tech });
+      }
   };
 
   UpdateTotalExp = async () => {
@@ -239,13 +238,15 @@ class Profile extends Component {
   };
 
   UpdateRelevantExp = async () => {
-    setTimeout(() => {
-      const dataa = experienceData.filter((value) => {
-        return this.state.relevant_experience === value.value;
-      });
+    if (!localStorage.getItem('is_client')) {
+      setTimeout(() => {
+        const dataa = experienceData.filter((value) => {
+          return this.state.relevant_experience === value.value;
+        });
 
-      this.setState({ relevant_experience: dataa[0] });
-    }, 1000);
+        this.setState({ relevant_experience: dataa[0] });
+      }, 1000);
+    }
   };
 
   onSubmit = async (e) => {
@@ -444,20 +445,27 @@ class Profile extends Component {
     this.state.fileList.length > 0 &&
       formData.append("profile_pic", this.state.fileList[0].originFileObj);
 
-    fetch(url + "/api/customusersecond/" + user_id + "/", {
-      method: "PUT",
+    axios.put(`${url}/api/customusersecond/${user_id}/`, formData, {
       headers: {
-        Accept: "application/json, text/plain",
-        // "Content-Type": `multipart/form-data`,
-      },
-      body: formData,
+        // "Accept": "application/json",
+        'Content-type': "multipart/form-data",
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
     })
+    // fetch(url + "/api/customusersecond/" + user_id + "/", {
+    //   method: "PUT",
+    //   headers: {
+    //     Accept: "application/json, text/plain",
+    //     // "Content-Type": `multipart/form-data`,
+    //   },
+    //   body: formData,
+    // })
       .then((response) => {
-        //console.log("response", response);
+        console.log("response", response);
         if (response["status"] === 201 || response["status"] === 200) {
           message.success("Saved");
           // window.location.reload();
-          return response.json();
+          return response.data;
         } else if (response["status"] === 400 || response["status"] === 500) {
           message.error("Something went wrong");
           //console.log("Something is wrong");

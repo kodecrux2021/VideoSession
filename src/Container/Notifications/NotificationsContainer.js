@@ -427,7 +427,7 @@ export default class NotificationsContainer extends Component {
             {/* <Navbar /> */}
             <ReactPolling
               url={`${url}/api/request-read`}
-              interval={3000} // in milliseconds(ms)
+              interval={3000000} // in milliseconds(ms)
               retryCount={10} // this is optional
               onSuccess={(result) => {
                   this.getMessage();

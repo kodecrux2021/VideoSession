@@ -413,9 +413,9 @@ componentDidMount() {
         }} // this is optional
         method={"GET"}
         headers={{
-          Accept: "application/json",
+          "Accept": "application/json",
           "Content-Type": "text/plain",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
         }}
         //   body={JSON.stringify(data)} // data to send in a post call. Should be stringified always
         render={({ startPolling, stopPolling, isPolling }) => {
@@ -465,7 +465,7 @@ componentDidMount() {
                                     {this.state.selected !== null || this.state.selected?.length > 0 ? <Typography style={{color:'#3743B1', fontSize:14}}>Recommended technologies</Typography> : null}
                                     
                                     <div style={{border:1, borderStyle:'solid', borderColor:'#3743B1', padding:20, borderRadius:10, display:'flex', flexWrap:'wrap', gap:10}}>
-                                    {this.state.selected !== null && this.state.selected.map(t => (
+                                    {this.state.selected !== null && this.state?.selected.map(t => (
                                         t.sub_technology.map(s => (
                                             <button className={!this.state.recommended_selected.includes(s.id) ? 'button_unselect' : 'button__selected'} key={s.name} onClick={() => this.handleRecommendedSelect(s.id)}>
                                             {s.name}

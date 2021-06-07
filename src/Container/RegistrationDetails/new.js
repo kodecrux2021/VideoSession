@@ -14,7 +14,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { Link } from 'react-router-dom';
 import { Card, Checkbox, TextField } from '@material-ui/core';
 import {ReactComponent as EkodeLogo} from '../../assets/eKodeLogo.svg';
-
+import axios from 'axios'
 
 
 function getBase64(file) {
@@ -228,16 +228,35 @@ class New extends React.Component {
       formData['pincode'] = this.state.pincode;
       formData['city'] = this.state.city;
       formData['state'] = this.state.state;
+      // formData['profile_pic'] = this.state.
+      
+      let formData2 = new FormData()
+      let profileFormData = new FormData()
+      if (!localStorage.getItem('is_client')) {
+        formData2.append('technology', tech)
+        formData2.append('sub_technology', sub_tech)
+        formData2.append('total_experience', this.state.total_experience.value);
+        formData2.append('relevant_experience', this.state.relevant_experience.value);
+        
+        formData2.append('designation', this.state.design)
+        formData2.append('fees', this.state.fees)
+      }
+      profileFormData.append('profile_pic', this.state.fileList[0].originFileObj)
+      // if (localStorage.getItem('is_client')) formData2.append('is_client', localStorage.getItem('is_client'))
 
-      if (localStorage.getItem('is_client')) formData['technology'] = tech;
-      if (localStorage.getItem('is_client')) formData['sub_technology'] = sub_tech;
-      if (localStorage.getItem('is_client')) formData['total_experience'] = this.state.total_experience.value;
-      if (localStorage.getItem('is_client')) formData['relevant_experience'] = this.state.relevant_experience.value;
-      if (this.state.fileList.length > 0) formData['profile_pic'] = this.state.fileList[0].originFileObj;
-      if (localStorage.getItem('is_client')) formData['designation'] = this.state.desig;
+      if (!localStorage.getItem('is_client')) { formData['technology'] = tech;
+        formData['sub_technology'] = sub_tech;
+        formData['total_experience'] = this.state.total_experience.value;
+        formData['relevant_experience'] = this.state.relevant_experience.value;
+        
+        formData['designation'] = this.state.desig;
 
-      // formData.append('date_of_birth',  this.state.date_of_birth);
-      if (localStorage.getItem('is_client')) formData['fees'] = this.state.fees;
+        // formData.append('date_of_birth',  this.state.date_of_birth);
+        formData['fees'] = this.state.fees;
+    }
+
+      console.log(this.state)
+      // if (this.state.fileList.length > 0) formData['profile_pic'] = this.state.fileList[0].originFileObj;
       // formData.append('rating', this.state.rating);
       // formData.append('profile_pic', this.state.file)
 
@@ -262,20 +281,35 @@ class New extends React.Component {
       let id = localStorage.getItem("educator_id");
       let user_id = localStorage.getItem("user_id");
       let auth = localStorage.getItem("token")
-      
-      await fetch(`${url}/api/customuser/${user_id}/`, {
-        method: "PUT",
+
+      axios.put(`${url}/api/customusersecond/${user_id}/`, profileFormData, {
         headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-          "Authorization" : "Bearer " + auth
-        },
-        body: JSON.stringify(formData),
-      })
+          // "Accept": "application/json",
+          'Content-type': "multipart/form-data",
+          'Authorization': 'Bearer ' + auth
+        }
+      }).then((response) => {
+        console.log("response", response);
+        if (response["status"] === 201 || response["status"] === 200) {
+          return response.data;
+        } else if (response["status"] === 400 || response["status"] === 500) {
+          message.info("Something went wrong");
+          //console.log("Something is wrong");
+        }
+      }).then(async () =>
+        await fetch(`${url}/api/customuser/${user_id}/`, {
+          method: "PUT",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization" : "Bearer " + auth
+          },
+          body: JSON.stringify(formData),
+        })
         .then((response) => {
           console.log("response", response);
           if (response["status"] === 201 || response["status"] === 200) {
-            return response.json();
+            return response.data;
           } else if (response["status"] === 400 || response["status"] === 500) {
             message.info("Something went wrong");
             //console.log("Something is wrong");
@@ -291,8 +325,8 @@ class New extends React.Component {
            await fetch(`${url}/api/educatorcreate/${id}/`, {
               method: "PUT",
               headers: {
-                Accept: "application/json, text/plain",
-                //"Content-Type": "application/json;charset=UTF-8",
+                Accept: "application/json",
+                "Content-Type": "application/json",
                 Authorization: "Bearer" + auth,
               },
               body: JSON.stringify(formData),
@@ -308,7 +342,7 @@ class New extends React.Component {
               })
               .then((result) => {
                 //console.log(result);
-                this.props.history.push("/verification"); //         <=================================Change here
+                // this.props.history.push("/verification"); //         <=================================Change here
                 // fetch( url + '/api/educator/' , {
                 //     method: 'POST',
                 //     headers: {
@@ -335,6 +369,7 @@ class New extends React.Component {
             // this.props.history.push("/verification");
           }
         })
+      )
         .catch((e) => console.log(e));
 
       // this.props.history.push("/verification");
@@ -368,11 +403,11 @@ class New extends React.Component {
   };
 
   handleChange = async({ fileList }) => {
-      //fileList[0].originFileObj.url = URL.createObjectURL(fileList[0].originFileObj);
-      //fileList[0].originFileObj.preview = await getBase64(fileList[0].originFileObj)
-      this.setState({ fileList });
-      // console.log(this.state.fileList) 
-      };
+    //fileList[0].originFileObj.url = URL.createObjectURL(fileList[0].originFileObj);
+    //fileList[0].originFileObj.preview = await getBase64(fileList[0].originFileObj)
+    this.setState({ fileList });
+    // console.log(this.state.fileList) 
+  };
 
       change = async(e)=>{
         e.persist();

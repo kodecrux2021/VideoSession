@@ -1,0 +1,14 @@
+.submit_btn {
+    width: 350px !important;
+    height: 50px !important;
+    border-radius: 10px !important;
+    background-color: #3743B1 !important;
+    outline: none !important;
+    color: white !important;
+}
+
+.submit_btn:hover {
+    border: 1px solid #3743B1 !important;
+    background-color: white !important;
+    color: #3743B1 !important;
+}

@@ -4,6 +4,7 @@ import {url} from './Server/GlobalUrl'
 import { Table, message } from 'antd';
 import { Checkbox } from 'antd';
 import { Link,Redirect, useHistory } from "react-router-dom";
+import Navbar from './components/Header/Navbar'
 
 function onChange(e) {
   console.log(`checked = ${e.target.checked}`);
@@ -155,7 +156,10 @@ function Payment() {
 
   return (
     // localStorage.getItem('pay_id')!==null && <div className="container" style={{ marginTop: "10vh" }}>
+    <>
+    <Navbar />
     <div className="container" style={{ marginTop: "10vh" }}>
+      
       <form style={{ marginBottom: "10vh" }}>
         <div style={{textAlign: 'center'}}>
         <h1>Payment Dashboard</h1>
@@ -171,6 +175,7 @@ function Payment() {
        Pay Now
       </button>
     </div>
+    </>
     )
 }
 

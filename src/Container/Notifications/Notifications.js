@@ -127,14 +127,16 @@ export default function Notifications(props) {
 
                                 return(
                                    
-                                <div key = {user.id}className='chat__card' onClick = {()=>{
+                                <div key = {user.id} className='chat__card' onClick = {()=>{
                                       setConvoID(user.id)
+                                      localStorage.setItem('educator_id', rec.id)
                                       localStorage.setItem('conversation_id', user.id);
                                       // props.chatHandler()
                                   }}>
                                     <div className='chat__card__left' >
                                     <Avatar style={{borderColor:'#3743B1', border:2, borderStyle:'solid', borderRadius : 50}} src={rec.profile_pic!== null ? rec.profile_pic : props.img} className={classes.large}/>
                                         <div className='chat__card__details' >
+                                            {console.log("test",rec)}
                                             <Typography style={{fontSize:14}}>{rec.first_name} {rec.last_name}</Typography>
                                             <Typography style={{fontSize:12}}>Last msg</Typography>
                                             {/* {console.log(rec)} */}

@@ -1,12 +1,21 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { url } from '../../Server/GlobalUrl';
-import './Timer.css'
+import './Timer.css';
+import Dialog from '@material-ui/core/Dialog';
+import Slide from '@material-ui/core/Slide';
+import Review from '../Review/review'
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 
 const Timer = () => {
     let [currentSec, setCurrentSec] = useState(0);
     let [currentMin, setCurrentMin] = useState(0);
     let [currentHr, setCurrentHr] = useState(0);
     let [playing, setPlaying] = useState(false)
+    let [open, setOpen] = useState(false)
     // console.log('sdfgh', !playing.toString());
     let watch = useRef(null);
 
@@ -52,6 +61,7 @@ const Timer = () => {
     }
 
     const end = () =>{
+        setOpen(true)
         setCurrentHr(0)
         setCurrentMin(0)
         setCurrentSec(0)
@@ -60,11 +70,11 @@ const Timer = () => {
         let auth = localStorage.getItem('token')
         fetch(url+'/api/educatorcreate',{
             method: 'GET',
-        headers: {
-           'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer' + auth,
-        }
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer' + auth,
+            }
         }).then((response)=> {return response.json()})
         .then((res)=> console.log(res))
     }
@@ -75,6 +85,11 @@ const Timer = () => {
         }
         return val
     }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+    
     return(
         <div className="timeWrapper">
             <h1>Session Timer</h1>
@@ -87,6 +102,9 @@ const Timer = () => {
                     <button onClick = {end}>END</button>
                 </div>
             </div>
+            <Dialog fullScreen fullWidth open={open} TransitionComponent={Transition}>
+                <Review close={handleClose}/>
+            </Dialog>
         </div>
     )
 }

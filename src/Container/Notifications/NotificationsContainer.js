@@ -424,10 +424,10 @@ export default class NotificationsContainer extends Component {
     render() {
         return (
           <div>
-            {/* <Navbar /> */}
+            <Navbar />
             <ReactPolling
               url={`${url}/api/request-read`}
-              interval={3000000} // in milliseconds(ms)
+              interval={50000} // in milliseconds(ms)
               retryCount={10} // this is optional
               onSuccess={(result) => {
                   this.getMessage();
@@ -447,7 +447,7 @@ export default class NotificationsContainer extends Component {
                 if (isPolling) {
                    return (
                      <div>
-                       <Navbar />
+                       
                        <Notifications
                          selected={this.state.selected}
                          selectHandler={this.selectHandler}
@@ -469,7 +469,9 @@ export default class NotificationsContainer extends Component {
                      </div>
                    );
                 } else {
-                 return <div>Polling stopped</div>
+                 return <div>
+                     {/* <Redirect to="/" /> */}
+                 </div>
                 }
               }}
             />

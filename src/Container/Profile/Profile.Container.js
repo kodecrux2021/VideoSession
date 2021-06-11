@@ -166,27 +166,28 @@ class Profile extends Component {
           //     Authorization: "Bearer " + localStorage.getItem("token"),
           //   }
           // });
+          fetch(url + "/api/technology/", {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          })
+            .then((res) => res.json())
+            .then((result) => {
+              this.setState({ tech_list: result });
+            })
+            .then((data) => this.SetSubTech())
+            .then((res) => this.UpdateTech())
+            .then((res) => this.updateSubtech())
+            
+            .then((res) => this.UpdateTotalExp())
+            .then((res) => this.UpdateRelevantExp())
+            .then((res) => this.setState({ PageLoading: false }));
         });
     }
 
-    fetch(url + "/api/technology/", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        this.setState({ tech_list: result });
-      })
-      .then((data) => this.SetSubTech())
-      .then((res) => this.UpdateTech())
-      .then((res) => this.updateSubtech())
-      
-      .then((res) => this.UpdateTotalExp())
-      .then((res) => this.UpdateRelevantExp())
-      .then((res) => this.setState({ PageLoading: false }));
+    
   }
 
   SetSubTech = () => {
@@ -204,7 +205,7 @@ class Profile extends Component {
   updateSubtech = async () => {
     let sub_tech = []
     if (localStorage.getItem('is_client') === "false" || localStorage.getItem('is_client') === null) {
-      this.state.sub_technology.forEach((k,i) =>
+      this.state.sub_technology?.forEach((k,i) =>
         this.state.subtech_list.forEach((t_k, i_d) => {
           if (k === t_k.id) sub_tech.push(t_k)
         })
@@ -218,7 +219,7 @@ class Profile extends Component {
     let tech = []
     
     if (localStorage.getItem('is_client') === "false" || localStorage.getItem('is_client') === null) {
-      this.state.technology.forEach((k, i) =>
+      this.state.technology?.forEach((k, i) =>
         this.state.tech_list.forEach((t_k, i_d) => {
           if (k === t_k.id)
           tech.push(t_k)

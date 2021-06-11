@@ -143,42 +143,6 @@ componentDidMount() {
       .then((result) => {
         console.log("current user result", result.user);
         this.setState({ user: result.user });
-        // let param = "";
-
-        //       console.log("subTechs", localStorage.getItem("sub_techs"));
-        //       // for (let t of localStorage.getItem("sub_techs")) {
-        //       //   if (this.isNumeric(t)) {
-        //       //     console.log("n", t);
-        //       //   }
-        //       // }
-        // // result.user.technology.map(
-        // //   (tech) => (param += "&usertechnology=" + tech)
-        // // );
-        // param += "&usersub_technology=["
-        // result.user.sub_technology.map(
-        //   (tech) => (param += tech+',')
-        // );
-
-        // let new_param = param.substring(1,param.length-1);
-        //   new_param += ']'
-
-        // let param = "";
-
-        // param += "&usersub_technology=[";
-        // // result.user.sub_technology.map((tech) => (param += tech + ","));
-
-        // for (let t of localStorage.getItem("sub_techs")) {
-        //   if (this.isNumeric(t)) {
-        //     param += t + ",";
-        //   }
-        // }
-
-        // let new_param1 = param.substring(1, param.length - 1);
-        // new_param1 += "]";
-        // console.log(new_param1);
-        // this.setState({ new_param: new_param1 });
-        // this.setState({ pollingurl: `${url}/api/educator/${new_param1}` });
-        // console.log("url2", this.state.pollingurl);
         fetch(url + "/api/educator/?" + this.state.new_param, {
           method: "GET",
           headers: {

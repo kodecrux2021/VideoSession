@@ -114,36 +114,36 @@ export default function Notifications(props) {
                         {
                             
                            props.message.length > 0 && props.message.map((user) =>{
-
-                                if(user.includes[0].id == user_id && user.includes.length > 1){
-                                    
-                                        rec = user.includes[1]
-                                        // console.log(rec);
-                                    
-                                   
+                                console.log("props message data", props.message)
+                                if(user.includes[0].id == localStorage.getItem('user_id') && user.includes.length > 1){
+                                  rec = user.includes[1]                                                                    
                                 }else{
-                                    rec = user.includes[0]
+                                  rec = user.includes[0]
                                 }
 
                                 return(
-                                   
-                                <div key = {user.id} className='chat__card' onClick = {()=>{
-                                      setConvoID(user.id)
-                                      localStorage.setItem('educator_id', rec.id)
-                                      localStorage.setItem('conversation_id', user.id);
-                                      // props.chatHandler()
-                                  }}>
-                                    <div className='chat__card__left' >
-                                    <Avatar style={{borderColor:'#3743B1', border:2, borderStyle:'solid', borderRadius : 50}} src={rec.profile_pic!== null ? rec.profile_pic : props.img} className={classes.large}/>
-                                        <div className='chat__card__details' >
-                                            {console.log("test",rec)}
-                                            <Typography style={{fontSize:14}}>{rec.first_name} {rec.last_name}</Typography>
-                                            <Typography style={{fontSize:12}}>Last msg</Typography>
-                                            {/* {console.log(rec)} */}
-                                        </div>
-                                    </div>
-                                    
-                                </div>)
+                                  <div key = {user.id} className='chat__card' onClick = {()=>{
+                                        setConvoID(user.id)
+                                        let ed_rec;
+                                        if(user.includes[0].id == localStorage.getItem('user_id') && user.includes.length > 1){
+                                          ed_rec = user.includes[1]                                                                    
+                                        }else{
+                                          ed_rec = user.includes[0]
+                                        }
+                                        localStorage.setItem('educator_uid', ed_rec.id)
+                                        localStorage.setItem('conversation_id', user.id);
+                                        // props.chatHandler()
+                                    }}>
+                                      <div className='chat__card__left' >
+                                      <Avatar style={{borderColor:'#3743B1', border:2, borderStyle:'solid', borderRadius : 50}} src={rec.profile_pic!== null ? rec.profile_pic : props.img} className={classes.large}/>
+                                          <div className='chat__card__details' >
+                                              <Typography style={{fontSize:14}}>{rec.first_name} {rec.last_name}</Typography>
+                                              <Typography style={{fontSize:12}}>Last msg</Typography>
+                                          </div>
+                                      </div>
+                                      
+                                  </div>
+                                )
                             })
                         }
                         </div>

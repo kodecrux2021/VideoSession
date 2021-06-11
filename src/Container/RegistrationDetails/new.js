@@ -160,62 +160,89 @@ class New extends React.Component {
     e.preventDefault();
     let designationFormat = /^[A-Za-z ]{1,40}$/;
     
-    
-    console.log("rexp", this.state.sub_technology === "");
-    if (
+    let client = localStorage.getItem('is_client')
+    console.log(typeof(client))
+
+    if (client === 'true') {
+      if (
+        this.state.pincode === null ||
+        this.state.city === "" ||
+        this.state.state === "" ||
+        this.state.fileList.length === 0
+        ) {
+          if (this.state.fileList.length === 0) {
+            message.info("Please upload profile picture");
+          }
+          else if (this.state.pincode === "" || this.state.pincode === null) {
+            message.info("Please Fill Pincode");
+          } else if (this.state.city === "") {
+            message.info("Please Fill City");
+          } else if (this.state.state === "") {
+            message.info("Please Fill State");
+          }
+        } else {
+          this.handleProfileData()
+        }
+    } else if (
       this.state.pincode === null ||
       this.state.city === "" ||
       this.state.state === "" ||
+      // this.state.fileList === 0 ||
       // this.state.date_of_birth === "" ||
-      localStorage.getItem('is_client') ? false : this.state.resume === "" ||
-      localStorage.getItem('is_client') ? false : this.state.desig === "" ||
-      localStorage.getItem('is_client') ? false : (this.state.desig ? !designationFormat.test(this.state.desig) : false) ||
-      localStorage.getItem('is_client') ? false : this.state.fileList.length === 0 ||
-      localStorage.getItem('is_client') ? false : this.state.total_experience === null ||
-      localStorage.getItem('is_client') ? false : this.state.relevant_experience === null ||
+      this.state.resume === "" ||
+      this.state.desig === "" ||
+      this.state.desig ? !designationFormat.test(this.state.desig) : false ||
+      this.state.fileList.length === 0 ||
+      this.state.total_experience === null ||
+      this.state.relevant_experience === null ||
       // this.state.rating === 0 ||
-      localStorage.getItem('is_client') ? false : this.state.fees === 0 ||
-      localStorage.getItem('is_client') ? false : this.state.technology === "" ||
-      localStorage.getItem('is_client') ? false : this.state.sub_technology === ""
+      this.state.fees === 0 ||
+      this.state.technology === "" ||
+      this.state.sub_technology === ""
     ) {
         {
           console.log("hello");
         }
-      if (this.state.pincode === "") {
+      
+      if (this.state.fileList.length === 0) {
+        message.info("Please upload profile picture");
+      }
+      else if (this.state.pincode === "" || this.state.pincode === null) {
         message.info("Please Fill Pincode");
       } else if (this.state.city === "") {
         message.info("Please Fill City");
       } else if (this.state.state === "") {
         message.info("Please Fill State");
-      // } else if (this.state.date_of_birth === "") {
-      //   message.info("Please Fill Date of birth");
-      } else if (this.state.resume === "") {
-        message.info("Please upload the resume");
-      } else if (this.state.desig === "") {
-        message.info("Please fill designation");
-      } else if (
-        this.state.desig
-          ? designationFormat.test(this.state.desig) === false
-          : false
-      ) {
-        message.info("Designation cannot have numeric values");
-      } else if (this.state.fileList.length === 0) {
-        message.info("Please upload profile picture");
-      }  else if (this.state.technology === "") {
+      } else if (this.state.technology === "" || this.state.technology === [] || this.state.technology === null) {
         message.info("Please Select Technology");
-      } else if (this.state.sub_technology === "") {
+      } else if (this.state.sub_technology === ""  || this.state.sub_technology === [] || this.state.sub_technology === null) {
         message.info("Please Select Sub Technology");
       } else if (this.state.total_experience === null) {
         message.info("Please Enter Total Experience");
       } else if (this.state.relevant_experience === null) {
         message.info("Please Enter Relevant Experience");
+      } else if (this.state.resume === "") {
+        message.info("Please upload the resume");
+      } else if (this.state.desig === "") {
+        message.info("Please fill designation");
+      } else if (
+        this.state.desig && !client
+          ? designationFormat.test(this.state.desig) === false
+          : false
+      ) {
+        message.info("Designation cannot have numeric values");
       }
       else if(this.state.fees === ""){
         message.info("Please Fill fee");
-
       }
     } else {
-      let tech = [];
+      this.handleProfileData()
+    }
+    
+};
+
+  handleProfileData = () => {
+    let tech = [];
       let sub_tech = [];
 
       // tech.push(parseInt(this.state.technology?.id));
@@ -305,11 +332,7 @@ class New extends React.Component {
         }
       }
       
-      )
-      
-      
-      
-      .then(async () =>
+      ).then(async () =>
         await fetch(`${url}/api/customuser/${user_id}/`, {
           method: "PUT",
           headers: {
@@ -356,39 +379,12 @@ class New extends React.Component {
               .then((result) => {
                 //console.log(result);
                 this.props.history.push("/verification"); //         <=================================Change here
-                // fetch( url + '/api/educator/' , {
-                //     method: 'POST',
-                //     headers: {
-                //         'Accept': 'application/json, text/plain',
-                //         'Content-Type': 'application/json;charset=UTF-8',
-
-                //     },
-                //     body: JSON.stringify(data)
-                // })
-                // .then((response) => {
-                //     console.log("response", response)
-                //     if (response['status'] === 201 || response['status'] === 200) {
-                //         return response.json()
-                //     } else if (response['status'] === 400) {
-                //             console.log('Something is wrong')
-                //     }
-                // })
-                // .then((result) => {
-                //     console.log('result', result);
-                // })
-                //console.log("result", result);
               });
-          } else {
-            // this.props.history.push("/verification");
-          }
+          } 
         })
       )
-        .catch((e) => console.log(e));
-
-      // this.props.history.push("/verification");
-    }
-    
-};
+        .catch((e) => console.log(e));    
+  }
 
   handleCancel = () => this.setState({ previewVisible: false });
 

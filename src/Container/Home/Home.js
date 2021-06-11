@@ -326,7 +326,7 @@ If as a user, you wish to refund the payment if they do not meet thier required 
                     </div>
                     <div className= 'button__card__details' style ={{bottom: '0'}}>
                         <h2 style={{flex:0.2}}>Study Room</h2>
-                        <Typography style={{flex:0.6, fontSize:15, lineHeight:1.5, fontFamily:'Segoe UI'}}>Online tutoring platform with best experts are being onboarded to help your academic needs.</Typography>
+                        <Typography style={{flex:0.6, fontSize:15, lineHeight:1.5, fontFamily:'Segoe UI'}}>Study room is One stop training marketing place partnered with world class Elearning vendors to fulfill your academic, reskilling goals.</Typography>
                         <div style={{flex:.2, display:'flex', alignItems:'center', paddingTop:10}}>
                             <button onClick={this.studyRoomClick} >Study Room</button>
                         </div>
@@ -339,7 +339,7 @@ If as a user, you wish to refund the payment if they do not meet thier required 
                     </div>
                     <div className= 'button__card__details'>
                         <h2 style={{flex:0.2}}>Solution Room</h2>
-                        <Typography style={{flex:0.6, fontSize:15, lineHeight:1.5, fontFamily:'Segoe UI'}}>Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs.</Typography>
+                        <Typography style={{flex:0.6, fontSize:15, lineHeight:1.5, fontFamily:'Segoe UI'}}>Our solution room address your IT academic needs and on-the job IT challenges through experienced Tutors and Industry Code experts. We offer both Instant , interactive and Freelancer support through video and remote sessions.</Typography>
                         <div style={{flex:0.2, display:'flex', alignItems:'center', paddingTop:10}}>
                             <button onClick={this.solutionRoomClick} >Solution Room</button>
                         </div>

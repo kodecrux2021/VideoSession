@@ -23,6 +23,8 @@ import Payment from './payment'
 import cardDetails from './Container/cardDetails/cardDetails';
 import Profile from "./Container/Profile/Profile.Container";
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
+import Favorite from './Container/Favorite/Favorite';
+import PayDash from './Container/PayDash/Dashboard';
 
 
 
@@ -70,7 +72,9 @@ function App() {
           <Route path="/notifications" component={NotificationsContainer} />
           <Route path="/Profile" exact component={Profile} />
           <Route path="/payment" exact component={Payment} />
+          <Route exact path='/favorite' component={Favorite} />
           <Route exact path="/linkedin" component={LinkedInPopUp} />
+          <Route exact path="/payment/dashboard" component={PayDash} />
           <Route render={() => <Redirect to="/" />} />
         </Switch>
       </Router>

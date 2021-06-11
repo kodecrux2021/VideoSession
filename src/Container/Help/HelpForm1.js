@@ -6,6 +6,8 @@ import kodecrux from '../../assets/images/reg2.jpeg';
 import {ReactComponent as InstantSvg} from '../../assets/instant.svg'
 import {ReactComponent as ConsultSvg} from '../../assets/consulting.svg'
 import {ReactComponent as GigSvg} from '../../assets/gig-worker.svg'
+import {ReactComponent as FavoriteSvg} from '../../assets/Favorite.svg'
+
 import {
     BrowserView,
     MobileView,
@@ -43,8 +45,8 @@ export default class HelpForm1 extends Component {
                 <div className='HelpForm1__header' style={isMobile ? {marginTop:80, fontSize:24} : {}}>
                     <p>Please choose appropriate service from below . Our esteemed code experts will be available at your service.</p>
                 </div>
-                <div className='HelpForm1__body' style={isMobile ? {flexWrap: "nowrap !important",
-                    flexDirection: "column"} : {}}>
+                <div style={isMobile ? {display:'flex', flex:1, flexWrap: "nowrap !important",
+                    flexDirection: "column"} : {display:'grid', gridTemplateColumns:'389px 389px 389px', marginBottom:100}}>
                     <div className='HelpForm1__card' onClick={() => this.handelData('livehelp')} >
                         <InstantSvg />
                         <p>Instant class room</p>
@@ -60,6 +62,12 @@ export default class HelpForm1 extends Component {
                         <p>Gig workers / Freelancers</p>
                         <span>We are here to serve your short term project needs</span>
                     </div>
+                    <div className='HelpForm1__card' onClick={() => this.props.history.push('/favorite')} >
+                        <FavoriteSvg />
+                        <p>Favorite</p>
+                        <span>Meet your favorite expert ,Tutor directly</span>
+                    </div>
+
                 </div>
             </div>
             </div>

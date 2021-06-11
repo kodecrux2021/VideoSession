@@ -32,9 +32,9 @@ class Review extends React.Component {
     }
 
     componentDidMount = () => {
-        let educator_id = localStorage.getItem('educator_id');
+        let educator_uid = localStorage.getItem('educator_uid');
         let auth = localStorage.getItem('token')
-        axios.get(`${url}/api/customuser/${educator_id}`, {
+        axios.get(`${url}/api/customuser/${educator_uid}`, {
             headers : {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -52,32 +52,49 @@ class Review extends React.Component {
         })
     }
 
+    handleTest = () => {
+        console.log("test")
+    }
     handleSubmit = () => {
-        let educator_id = localStorage.getItem('educator_id');
+        let educator_uid = localStorage.getItem('educator_uid');
         let auth = localStorage.getItem('token')
-        let formData = {};
-        formData['educator_id'] = educator_id;
-        formData['stars'] = this.state.rating;
-        formData['comment'] = this.state.review;
-        // axios.post(`${url}/educator/rate/`, formData, {
-        //     headers : {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json',
-        //         'Authorization' : 'Bearer ' + auth
-        //     }
-        // }).then((response) => {
-        //     if (response['status'] === 201 || response['status'] === 200) {
-        //         console.log(response)
-        //     } else if (response['status'] === 401) {
-        //         message.info('Something went wrong');  
-        //     }
-        // }).then(() => {
-        //     if (this.state.favorite) {
-        //         // axios.
-        //     }
-            
-        // })
-        this.props.close()
+        let formData = new FormData
+        formData.append('user_id', educator_uid);
+        formData.append('stars', this.state.rating);
+        formData.append('review', this.state.review);
+        
+        axios.post(`${url}/educator/rate/`, formData, {
+            headers : {
+                'Content-Type': 'multipart/form-data',
+                'Authorization' : 'Bearer ' + auth
+            }
+        }).then((response) => {
+            if (response['status'] === 201 || response['status'] === 200) {
+                return response.data.data
+            } else if (response['status'] === 401) {
+                message.info('Something went wrong');  
+            }
+        }).then((result) => {
+            let edu_id = result.educator
+            let formData = new FormData;
+            formData.append('educator_id', edu_id)
+            if (this.state.favorite) {
+                axios.post(`${url}/educator/favourite/`, formData, {
+                    headers : {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization' : 'Bearer ' + auth
+                    }
+                }).then((response) => {
+                    if (response['status'] === 201 || response['status'] === 200) {
+                        alert(JSON.stringify(response.data))
+                        return response.data
+                    } else if (response['status'] === 401) {
+                        message.info('Something went wrong');  
+                    }
+                })
+            }
+            this.props.close()
+        })
     }
 
     render() {
@@ -104,6 +121,7 @@ class Review extends React.Component {
                         style={{maxWidth:400, marginTop:15}}
                         multiline
                         rows={3}
+                        onChange={(e) => this.setState({review : e.target.value})}
                         variant="outlined"
                     />
                     <div style={{display:'flex'}}>
@@ -119,7 +137,7 @@ class Review extends React.Component {
                             label="Add to Favorite"
                         />
                     </div>
-                    <Button onClick={this.handleSubmit} className='submit_btn'>SUBMIT</Button>
+                    <button onClick={this.handleSubmit} className='submit_btn'>SUBMIT</button>
                 </Card>
             </div>
         )

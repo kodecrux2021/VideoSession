@@ -85,6 +85,7 @@ export default function Navbar(props) {
                         >
                           <MenuItem> <Link className="_nav_link" to='/Profile' >Profile</Link> </MenuItem>
                           <MenuItem> <Link className="_nav_link" to='/refund' >Withdraw Refunds</Link> </MenuItem>
+                          <MenuItem><Link className="_nav_link" to='/payment/dashboard'>Payment Dashboard</Link></MenuItem>
                           <MenuItem> <Link className="_nav_link" onClick={logout} >Logout</Link> </MenuItem>
                         </Menu>
                       </div>
@@ -132,7 +133,13 @@ export default function Navbar(props) {
               </p>
             </Link>
             )}
-
+            {localStorage.token && (
+              <Link to='/payment/dashboard'>
+                <p>
+                  <h5>PAYMENT DASHBOARD </h5>
+                </p>
+              </Link>
+            )}
             {localStorage.token && (
             <Link to="/refund">
               <p>

@@ -73,34 +73,6 @@ handleRecommendedSelect(val) {
 
 componentDidMount() {
     // console.log('previous token', localStorage.getItem("token"))
-    let searchData = JSON.parse(localStorage.getItem('searchData'))
-    console.log(typeof(searchData.technology))
-    this.setState({selected : searchData.technology, recommended_selected : searchData.sub_technology})
-    console.log(searchData)
-    fetch(`${url}/api/technology/`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(res => res.json())
-        .then(
-          (result) => {
-           console.log('result', result)
-            this.setState({ technology_list: result })
-            let selected_Techs = []
-            result.forEach((k,i) => {
-                searchData.technology.forEach((v,i_n) => {
-                    if (k.id === v) {
-                        selected_Techs.push(k)
-                    }
-                })
-            })
-            this.setState({defaultTech : selected_Techs, selected : selected_Techs})
-
-          }
-        )
     if (localStorage.getItem("token")) {
       let data_refresh = { refresh: localStorage.getItem("refresh") };
 
@@ -129,6 +101,35 @@ componentDidMount() {
         })
         .catch((e) => console.log(e));
     }
+    let searchData = JSON.parse(localStorage.getItem('searchData'))
+    console.log(typeof(searchData.technology))
+    this.setState({selected : searchData.technology, recommended_selected : searchData.sub_technology})
+    console.log(searchData)
+    fetch(`${url}/api/technology/`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(res => res.json())
+        .then(
+          (result) => {
+           console.log('result', result)
+            this.setState({ technology_list: result })
+            let selected_Techs = []
+            result.forEach((k,i) => {
+                searchData.technology.forEach((v,i_n) => {
+                    if (k.id === v) {
+                        selected_Techs.push(k)
+                    }
+                })
+            })
+            this.setState({defaultTech : selected_Techs, selected : selected_Techs})
+
+          }
+        )
+    
     let auth = localStorage.getItem("token");
 
     fetch(url + "/currentuser/", {

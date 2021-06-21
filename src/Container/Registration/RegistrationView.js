@@ -135,7 +135,7 @@ let data = {"token": response.accessToken}
             localStorage.setItem('user_id', result.user?.id);
             localStorage.setItem('user_name', result.user?.first_name);
             message.info('Logged In Succsessfully!!!');
-            history.replace('/')  
+            history.push('/selector')  
         }
         }
     )

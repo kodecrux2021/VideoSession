@@ -25,6 +25,7 @@ import Profile from "./Container/Profile/Profile.Container";
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import Favorite from './Container/Favorite/Favorite';
 import PayDash from './Container/PayDash/Dashboard';
+import Selector from './Container/RegistrationDetails/selector'
 
 
 
@@ -52,6 +53,7 @@ function App() {
           <Route path="/reset" exact component={Reset} />
           <Route path="/login" exact component={Login} />
           <Route path="/details" exact component={New} />
+          <Route path="/selector" exact component={Selector} />
           <Route path="/refund" exact component={cardDetails} />
           <Route path="/verification" exact component={VerificationContainer} />
           {/* <Route path="/details" exact component={RegistrationDetailsContainer} /> */}

@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
+import {ReactComponent as linkdinSvg } from '../../assets/linkedin.svg'
 
 function Login() {
     const history = useHistory();
@@ -288,23 +289,28 @@ let data = {"token": response.accessToken}
                                 icon= {<GoogleLogo />}
                             // style={inStyle}    
                                 />
-                            <FacebookLogin
+                            {/* <FacebookLogin
                                 cssClass = 'facebook'
                                 appId="375577453526335" //APP ID NOT CREATED YET
                                 textButton ="LOG IN WITH FACEBOOK"
                                 fields="name,email,picture"
                                 callback={responseFacebook}
                                 icon= {<div><FacebookLogo /></div>}
-                            />
-                            {/* <LinkedIn
+                            /> */}
+                            <LinkedIn
+                                
                                 clientId="78hfx4m366u3t2"
                                 onFailure={responseLinkdin}
                                 onSuccess={responseLinkdin}
                                 scope="r_emailaddress r_liteprofile"
                                 redirectUri="https://localhost:3000/linkedin"
                             >
+                                <div>
+                                    <linkdinSvg />
+                                </div>
+                                
                                 <div>LOG IN WITH LINKEDIN</div>
-                            </LinkedIn> */}
+                            </LinkedIn>
 
                         </div>
                         <div style={{display:'flex', flex:1, alignItems:'center'}}>

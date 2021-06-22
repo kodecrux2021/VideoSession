@@ -104,6 +104,11 @@ padding : 8px 0;
 
     
 }
+
+.flex1 {
+    flex: 1;
+}
+
 .google {
     margin: 5px 10px 5px 0px !important;
     /* width: 230px !important; */
@@ -117,6 +122,7 @@ padding : 8px 0;
     border-style: solid !important;
     border-radius: 5px !important;
     color: #3743B1 !important;
+    align-items: center;
     /* background-color:#DB4437 !important; */
     /* padding-left: 100px !important; */
     display: flex !important;

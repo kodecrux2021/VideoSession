@@ -16,7 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
-import {ReactComponent as linkdinSvg } from '../../assets/linkedin.svg'
+import {ReactComponent as LinkdinSvg } from '../../assets/linkedin.svg'
 
 function Login() {
     const history = useHistory();
@@ -279,7 +279,7 @@ let data = {"token": response.accessToken}
                             <h1>Log In</h1>
                             <p style={{fontSize:16}}>Log in to eKodecrux</p>
                         </div>
-                        <div className = "header__button">
+                        <div className = "header__button" style={{gap:20}}>
                             <GoogleLogin 
                                 className = 'google'
                                 clientId="515126473370-emg4305tflmvetsklioachjblbekk066.apps.googleusercontent.com" //CLIENTID NOT CREATED YET
@@ -297,19 +297,19 @@ let data = {"token": response.accessToken}
                                 callback={responseFacebook}
                                 icon= {<div><FacebookLogo /></div>}
                             /> */}
+                            
                             <LinkedIn
-                                
+                                className = 'google'
                                 clientId="78hfx4m366u3t2"
                                 onFailure={responseLinkdin}
                                 onSuccess={responseLinkdin}
                                 scope="r_emailaddress r_liteprofile"
                                 redirectUri="https://localhost:3000/linkedin"
                             >
-                                <div>
-                                    <linkdinSvg />
+                                <div style={{display:'flex', gap:20, padding:10}}>
+                                    <LinkdinSvg />
+                                    <div>LOG IN WITH LINKEDIN</div>
                                 </div>
-                                
-                                <div>LOG IN WITH LINKEDIN</div>
                             </LinkedIn>
 
                         </div>

@@ -13,6 +13,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { LinkedIn } from 'react-linkedin-login-oauth2';
+import {ReactComponent as LinkdinSvg } from '../../assets/linkedin.svg'
 
 export default function Registration(props) {
   const history = useHistory();
@@ -149,9 +151,11 @@ let data = {"token": response.accessToken}
         message.info('No user Found!!!');
       }
     }
-    // if (localStorage.getItem('token') == null  ){
-    //    inStyle = { background: "black"};
-    // }
+    
+    const responseLinkdin =() => {
+
+    }
+
     return (
        
             <div className="__container">
@@ -162,8 +166,9 @@ let data = {"token": response.accessToken}
                         <p style={{fontSize:16}}>Sign Up to eKodecrux</p>
                     </div>
                     <div className = "header__button">
+                        
                         <GoogleLogin 
-                          className = 'google'
+                          className = 'google flex1'
                           clientId="515126473370-emg4305tflmvetsklioachjblbekk066.apps.googleusercontent.com" //CLIENTID NOT CREATED YET
                           buttonText="SIGN UP WITH GOOGLE"
                           onSuccess={responseGoogle}
@@ -171,14 +176,28 @@ let data = {"token": response.accessToken}
                           icon= {<GoogleLogo />}
                           // style={inStyle}    
                           />
-                        <FacebookLogin
+                        {/* <FacebookLogin
                           cssClass = 'facebook'
                           appId="375577453526335" //APP ID NOT CREATED YET
                           textButton ="SIGN UP WITH FACEBOOK"
                           fields="name,email,picture"
                           callback={responseFacebook}
                           icon= {<div><FacebookLogo /></div>}
-                          />
+                          /> */}
+                        <LinkedIn
+                            className = 'google flex1'
+                            clientId="78hfx4m366u3t2"
+                            onFailure={responseLinkdin}
+                            onSuccess={responseLinkdin}
+                            scope="r_emailaddress r_liteprofile"
+                            redirectUri="https://localhost:3000/linkedin"
+                        >
+                            <div style={{display:'flex', gap:20, padding:10}}>
+                                <LinkdinSvg />
+                                <div>SIGN UP WITH LINKEDIN</div>
+                            </div>
+                        </LinkedIn>
+
                   </div>
                   <div style={{display:'flex', flex:1, alignItems:'center'}}>
                       <Divider style={{flex:1}} />

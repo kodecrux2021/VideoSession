@@ -46,7 +46,7 @@ export default class HelpForm1 extends Component {
                     <p>Please choose appropriate service from below . Our esteemed code experts will be available at your service.</p>
                 </div>
                 <div style={isMobile ? {display:'flex', flex:1, flexWrap: "nowrap !important",
-                    flexDirection: "column"} : {display:'grid', gridTemplateColumns:'389px 389px 389px', marginBottom:100}}>
+                    flexDirection: "column"} : {display:'grid', gridTemplateColumns:'389px 389px 389px'}}>
                     <div className='HelpForm1__card' onClick={() => this.handelData('livehelp')} >
                         <InstantSvg />
                         <p>Instant class room</p>
@@ -62,12 +62,16 @@ export default class HelpForm1 extends Component {
                         <p>Gig workers / Freelancers</p>
                         <span>We are here to serve your short term project needs</span>
                     </div>
+                </div>
+                <div style={isMobile ? {display:'flex', flex:1, flexWrap: "nowrap !important",
+                    flexDirection: "column", width:"95%"} : {display:'grid', gridTemplateColumns:'389px 389px 389px', marginBottom:40}}>
+                    <div></div>
                     <div className='HelpForm1__card' onClick={() => this.props.history.push('/favorite')} >
                         <FavoriteSvg />
                         <p>Favorite</p>
                         <span>Meet your favorite expert ,Tutor directly</span>
                     </div>
-
+                    <div></div>
                 </div>
             </div>
             </div>

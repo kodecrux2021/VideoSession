@@ -1,6 +1,19 @@
 import React, { Component } from 'react'
-import Carousel from 'react-bootstrap/Carousel'  
-import './Home.css'
+import {Carousel, Row} from 'react-bootstrap'  
+import SolutionRoom from "../../assets/img/icon-2.png"
+import signup from   "../../assets/img/icon-1.png"
+import studyroom from  "../../assets/img/icon-3.png"
+import dm from "../../assets/img/path-img1.jpg"
+import ui from "../../assets/img/path-img2.jpg"
+import it from "../../assets/img/path-img3.jpg"
+import fd from "../../assets/img/path-img4.jpg"
+
+import wd  from "../../assets/img/path-img5.jpg"
+import ad  from "../../assets/img/path-img6.jpg"
+import pm  from "../../assets/img/path-img7.jpg"
+import pd  from "../../assets/img/path-img8.jpg"
+import LOGO from "../../assets/img/logo.png"
+
 import elearn from '../../assets/images/elearn.jpg'
 import instruc from '../../assets/images/instructor.jpg'
 import freelan from '../../assets/images/codeexpert.jpg';
@@ -18,8 +31,8 @@ import home5 from '../../assets/images/home5.jpg'
 import Navbar from '../../components/Header/Navbar';
 import {message, Modal} from 'antd';
 import kodecrux from '../../assets/images/reg2.jpeg';
-import {AiFillMediumSquare,AiFillFacebook, AiFillInstagram, AiFillTwitterSquare, AiFillLinkedin} from 'react-icons/ai';
-import {FaQuora} from 'react-icons/fa'
+import {AiFillMediumSquare,AiFillFacebook, AiFillInstagram, AiFillTwitterSquare, AiFillLinkedin, AiOutlineTwitter} from 'react-icons/ai';
+import {FaQuora, FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaMediumM} from 'react-icons/fa'
 import { Typography } from '@material-ui/core'
 import {
     BrowserView,
@@ -27,6 +40,7 @@ import {
     isBrowser,
     isMobile
   } from "react-device-detect";
+  import './Home.css'
 
 
 export default class Home extends Component {
@@ -269,190 +283,735 @@ If as a user, you wish to refund the payment if they do not meet thier required 
             this.props.history.push("/login");
         }
       }
+
+    handleSignup = () => {
+        this.props.history.push('/registration')
+      }
     render() {
         return (
         <>
         <Navbar />
-        <div className='body__ctr'>
-            <div className="home_container">
-                <Carousel controls={false} interval={10000} indicators={true} pause={false} fade={true} style={{marginTop: -20}} >
-                    <Carousel.Item >
-                        <img
-                        className="d-block w-100"
-                        src={home1}
-                        alt="First slide"
-                        />
-                    </Carousel.Item>
-                    <Carousel.Item >
-                        <img
-                        className="d-block w-100"
-                        src={home2}
-                        alt="Second slide"
-                        />
+        {/* Home Banner */}
+			<section class="section section-search">
+				<div class="container" style={{width:"100%"}}>
+					<div class="banner-wrapper m-auto text-center">
+						<div class="banner-header">
+							
+							<h1>Find a developer for <span>live mentorship</span> & get access to superior <span>learning platforms</span></h1>
+							<p>eKodeCrux for Teams brings expert programming help right to your screen.</p>
+						</div>
+                         
+						<div class="view-all text-center"><a style={{color:"white"}} class="btn btn-primary">Get Access Now !!!</a></div>
+					
+						
+					</div>
+				</div>
+			</section>
+            
+			{/* Home Banner END */}
+
+
+            <section class="section how-it-works">
+				<div class="container" style={{width:"100%"}}>
+					<div class="section-header text-center">
+						<span>eKodeCrux Flow</span>
+						<h2>How does it works ?</h2>
+						<p class="sub-title">Are you looking to get online Codeing Help? Now it's very simple, Sign up with eKodeCrux</p>
+					</div>
                     
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100"
-                        src={home3}
-                        alt="Third slide"
-                        />
-
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100"
-                        src={home4}
-                        alt="Third slide"
-                        />
-
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100"
-                        src={home5}
-                        alt="Third slide"
-                        />
-
-                    </Carousel.Item>
-                </Carousel>
-            {/* immortal ui mod */}
-            <div className="button__container">
-                <div className="button__card">
-                    <div className="button__card__img">
-                        <img src={studyImg} alt="" />
-                    </div>
-                    <div className= 'button__card__details' style ={{bottom: '0'}}>
-                        <h2 style={{flex:0.2}}>Study Room</h2>
-                        <Typography style={{flex:0.6, fontSize:15, lineHeight:1.5, fontFamily:'Segoe UI'}}>Study room is One stop training marketing place partnered with world class Elearning vendors to fulfill your academic, reskilling goals.</Typography>
-                        <div style={{flex:.2, display:'flex', alignItems:'center', paddingTop:10}}>
-                            <button onClick={this.studyRoomClick} >Study Room</button>
+                    <Row>
+                   
+						<div class="col-12 col-md-6 col-lg-4">
+							<div class="feature-box text-center" style={{backgroundColor:'aquamarine'}}>					
+								<div class="feature-header">
+									<div class="feature-icon">
+										<span class="circle"></span>
+										<i><img src={signup} alt="" /></i>
+									</div>		
+									<div class="feature-cont">	
+										<div class="feature-text">Sign up</div>
+									</div>
+								</div>
+								<p class="mb-0">Are you looking to join eKodeCrux? Now it's very simple to connect with a mentor who can help you on your regular work environment.</p>
+								<br></br>
+								<div class="view-all text-center"><a style={{color:"white"}} onClick={this.handleSignup} class="btn btn-primary" >Sign Up</a></div>
+							</div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+							<div class="feature-box text-center">					
+								<div class="feature-header">
+									<div class="feature-icon">
+										<span class="circle"></span>
+										<i><img src={SolutionRoom} /></i>
+									</div>	
+									<div class="feature-cont">
+										<div class="feature-text">Solution Room</div>
+									</div>
+								</div>
+								<p class="mb-0">Our solution room address your IT academic needs and on-the job IT challenges through experienced Tutors and Industry Code experts.</p>
+								<br></br>
+								<div class="view-all text-center"><a style={{color:"white"}} onClick={this.solutionRoomClick} class="btn btn-primary">Get Online Solution Now</a></div>
+							</div>
+						</div>
+						<div class="col-12 col-md-6 col-lg-4">
+							<div class="feature-box text-center">					
+								<div class="feature-header">
+									<div class="feature-icon">
+										<span class="circle"></span>
+										<i><img src={studyroom} alt="" /></i>
+									</div>	
+									<div class="feature-cont">
+										<div class="feature-text">Study Room</div>
+									</div>
+								</div>
+								<p class="mb-0">Study room is One stop training marketing place partnered with world class Elearning vendors to fulfill your academic, reskilling goals.</p>
+								<br></br>
+								<div class="view-all text-center"><a style={{color:"white"}} onClick={this.studyRoomClick} class="btn btn-primary">Get access to studyroom</a></div>
+							</div>
+						</div>
+							
+						
+                     </Row>
+                </div>
+             </section>
+             <section class="section popular-courses">
+				<div class="container" style={{width:"100%"}}>
+					<div class="section-header text-center">
+						<span>eKodeCrux Goals</span>
+						<h2>Popular Mentors</h2>
+						<p class="sub-title">Do you want to move on next step? Choose your most popular leaning mentors, it will help you to achieve your professional goals.</p>
+					</div>
+                </div>
+                {/* <div class="owl-carousel owl-theme">
+				
+                <div class="course-box">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="profile.html">
+                                <img class="img-fluid" alt="" src="assets/img/user/user1.jpg" width="600" height="300" />
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="profile.html">Sudheer Vamaraju</a></h3>
+                            <div class="author-info">
+                                <div class="author-name">
+                                    Digital Marketer
+                                </div>
+                            </div>
+                            <div class="rating">							
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">4.4</span>
+                            </div>
+                            <div class="author-country">
+                                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Hyderabad, India.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div className="button__card">
-                    <div className="button__card__img">
-                        <img src={solutionImg} alt="" />
-                    </div>
-                    <div className= 'button__card__details'>
-                        <h2 style={{flex:0.2}}>Solution Room</h2>
-                        <Typography style={{flex:0.6, fontSize:15, lineHeight:1.5, fontFamily:'Segoe UI'}}>Our solution room address your IT academic needs and on-the job IT challenges through experienced Tutors and Industry Code experts. We offer both Instant , interactive and Freelancer support through video and remote sessions.</Typography>
-                        <div style={{flex:0.2, display:'flex', alignItems:'center', paddingTop:10}}>
-                            <button onClick={this.solutionRoomClick} >Solution Room</button>
+                
+                <div class="course-box">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="profile.html">
+                                <img class="img-fluid" alt="" src="assets/img/user/user2.jpg" width="600" height="300" />
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="profile.html">Rahul Joshi</a></h3>
+                            <div class="author-info">
+                                <div class="author-name">
+                                    Business Development Expert
+                                </div>
+                            </div>
+                            <div class="rating">						
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">4.4</span>
+                            </div>
+                            <div class="author-country">
+                                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Mumbai, India.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="cards__container">
-                <div className="_card">
-                    <img src={elearn} alt=""/>
-                    <h3>
-                    E-Learning market place
-                    </h3>
-                    <p>
-                    Just a click-away to experience one-stop  solution for all your training ,learning and certification needs .  Our objective is to give best-in-class platform to access Industry's most prominent learning providers .  We offer solution for training needs of both Academic ,On-job experts  with seemless integration features .
-                    </p>
+                
+                <div class="course-box">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="profile.html">
+                                <img class="img-fluid" alt="" src="assets/img/user/user3.jpg" width="600" height="300" />
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title">Krishna Teja</h3>
+                            <div class="author-info">
+                                <div class="author-name">
+                                    ASP.NET,Computer Gaming
+                                </div>
+                            </div>
+                            <div class="rating">						
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">4.4</span>
+                            </div>
+                            <div class="author-country">
+                                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Bangalore, India.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="_card">
-                    <img src={freelan} alt=""/>
-                    <h3>
-                        Code Expert
-                    </h3>
-                    <p>
-                    We offer a expert support with one click away . Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs. We have variety of experts who can be your buddy to support your project completion with all necessary tools, expertise . Our free lancer module can be your virtual team to meet your deliverables. 
-                    </p>
+                
+                <div class="course-box">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="profile.html">
+                                <img class="img-fluid" alt="" src="assets/img/user/user4.jpg" width="600" height="300" />
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="profile.html">Hemanth kumar</a></h3>
+                            <div class="author-info">
+                                <div class="author-name">
+                                    Computer Programming
+                                </div>
+                            </div>
+                            <div class="rating">						
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">4.4</span>
+                            </div>
+                            <div class="author-country">
+                                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Pune, India.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="_card">
-                    <img src={instruc} alt=""/>
-                    <h3>
-                    Instructor
-                    </h3>
-                    <p>
-                    Online tutoring platform with best experts are being onboarded to help your academic needs.  Our specialization includes Computer science, software Programming ,  Information technology with salient features of Video and Audio based interactive sessions.
-                    </p>
+                
+                <div class="course-box">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="profile.html">
+                                <img class="img-fluid" alt="" src="assets/img/user/user.jpg" width="600" height="300" />
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="profile.html">Kiran Kumar</a></h3>
+                            <div class="author-info">
+                                <div class="author-name">
+                                    Digital Marketer
+                                </div>
+                            </div>
+                            <div class="rating">							
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star "></i>
+                                <span class="d-inline-block average-rating">4.4</span>
+                            </div>
+                            <div class="author-country">
+                                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Mangalore, India.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                
+                <div class="course-box">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="profile.html">
+                                <img class="img-fluid" alt="" src="assets/img/user/user6.jpg" width="600" height="300" />
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="profile.html">Aditya Nukala</a></h3>
+                            <div class="author-info">
+                                <div class="author-name">
+                                    UNIX,Calculus,Trigonometry
+                                </div>
+                            </div>
+                            <div class="rating">						
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">4.4</span>
+                            </div>
+                            <div class="author-country">
+                                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Chennai, India.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-box">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="profile.html">
+                                <img class="img-fluid" alt="" src="assets/img/user/user7.jpg" width="600" height="300" />
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="profile.html">Mohan Brahmi</a></h3>
+                            <div class="author-info">
+                                <div class="author-name">
+                                    ASP.NET,Computer Gaming
+                                </div>
+                            </div>
+                            <div class="rating">						
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">4.4</span>
+                            </div>
+                            <div class="author-country">
+                                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Kochi, Hyderabad.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-box">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="profile.html">
+                                <img class="img-fluid" alt="" src="assets/img/user/user15.jpg" width="600" height="300" />
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="profile.html">Misty Lundy</a></h3>
+                            <div class="author-info">
+                                <div class="author-name">
+                                    Computer Programming
+                                </div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">4.4</span>
+                            </div>
+                            <div class="author-country">
+                                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-box">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="profile.html">
+                                <img class="img-fluid" alt="" src="assets/img/user/user9.jpg" width="600" height="300" />
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="profile.html">Vern Campbell</a></h3>
+                            <div class="author-info">
+                                <div class="author-name">
+                                    Digital Marketer
+                                </div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">4.4</span>
+                            </div>
+                            <div class="author-country">
+                                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-box">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="profile.html">
+                                <img class="img-fluid" alt="" src="assets/img/user/user13.jpg" width="600" height="300" />
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="profile.html">Jessica Fogarty</a></h3>
+                            <div class="author-info">
+                                <div class="author-name">
+                                    UNIX,Calculus,Trigonometry
+                                </div>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="d-inline-block average-rating">4.4</span>
+                            </div>
+                            <div class="author-country">
+                                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-box">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="profile.html">
+                                <img class="img-fluid" alt="" src="assets/img/user/user11.jpg" width="600" height="300"/>
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="profile.html">Evelyn Stafford</a></h3>
+                            <div class="author-info">
+                                <div class="author-name">
+                                    ASP.NET,Computer Gaming
+                                </div>
+                            </div>
+                            <div class="rating">
+                                <i class="fa fa-star filled"></i>
+                                <i class="fa fa-star filled"></i>
+                                <i class="fa fa-star filled"></i>
+                                <i class="fa fa-star filled"></i>
+                                <i class="fa fa-star "></i>
+                                <span class="d-inline-block average-rating">4.4</span>
+                            </div>
+                            <div class="author-country">
+                                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="course-box">
+                    <div class="product">
+                        <div class="product-img">
+                            <a href="profile.html">
+                                <img class="img-fluid" alt="" src="assets/img/user/user12.jpg" width="600" height="300"/>
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="profile.html">Christopher Carroll</a></h3>
+                            <div class="author-info">
+                                <div class="author-name">
+                                    Computer Programming
+                                </div>
+                            </div>
+                            <div class="rating">
+                                <i class="fa fa-star filled"></i>
+                                <i class="fa fa-star filled"></i>
+                                <i class="fa fa-star filled"></i>
+                                <i class="fa fa-star filled"></i>
+                                <i class="fa fa-star"></i>
+                                <span class="d-inline-block average-rating">4.4</span>
+                            </div>
+                            <div class="author-country">
+                                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+                            </div>
+                        </div>
+                    </div>
+                </div> */}
+            {/* </div> */}
+            </section>
 
-            <div className="blog__container">
-                <div  style ={{display: 'inline'}}>
-                    <div className= 'button__card__details' style={{minHeight:250}}>
-                        <Typography variant="h2" style={{fontSize:35}}>Blogs by Ekodecrux</Typography>
-                        <Carousel controls={false} interval={10000} indicators={true} pause={false} fade={true} style={{marginTop:20}} >
-                            <Carousel.Item >
-                                <div style={isMobile ? {display:'flex', flexDirection:'column'} : {display:'flex'}} className="blog_mobile_prev">
-                                    {/* <img style={{position:'absolute', left:-200, zIndex:100}} src={Blog1overlay} alt="overlay" /> */}
-                                    <img
-                                        // className="d-block w-100"
-                                        className="blog_mobile_prev_img"
-                                        style={isMobile ? {width:"100%"} : {width:"30%"}}
-                                        src={Blog1}
-                                        alt="First slide"
-                                    />
-                                    <div className="blog_mobile_prev_blog" style={{display:'flex', flex:1, justifyContent:'center', alignItems:'center',
-                                    padding:isMobile ? 20 : 40, margin: isMobile ? "20px 0" : 20, border:2, borderStyle:'solid', borderColor:'#3743B1', borderRadius:20}}>
-                                        <Typography style={{fontSize:15, fontWeight:"normal"}}>Gig economy statistics show a free market system where organizations and independent workers engage in short-term work arrangements. BLS data suggest that in 2017 the US gig economy had 55 million participants. It's estimated that 36% of US workers take part in the gig economy and 33% of companies extensively use gig workers.
-                                        <a style={{color:'#3743B1'}}> Read more</a>
-                                        </Typography>
-                                    </div>
-                                </div>
-                            </Carousel.Item>
-                            <Carousel.Item >
-                                <div style={isMobile ? {display:'flex', flexDirection:'column'} : {display:'flex'}} className="blog_mobile_prev">
-                                    {/* <img style={{position:'absolute', left:-200, zIndex:100}} src={Blog1overlay} alt="overlay" /> */}
-                                    <img
-                                        // className="d-block w-100"
-                                        className="blog_mobile_prev_img"
-                                        style={isMobile ? {width:"100%"} : {width:"30%"}}
-                                        src={Blog1}
-                                        alt="First slide"
-                                    />
-                                    <div className="blog_mobile_prev_blog" style={{display:'flex', flex:1, justifyContent:'center', alignItems:'center',
-                                    padding:isMobile ? 20 : 40, margin: isMobile ? "20px 0" : 20, border:2, borderStyle:'solid', borderColor:'#3743B1', borderRadius:20}}>
-                                    <Typography>Gig economy statistics show a free market system where organizations and independent workers engage in short-term work arrangements. BLS data suggest that in 2017 the US gig economy had 55 million participants. It's estimated that 36% of US workers take part in the gig economy and 33% of companies extensively use gig workers.
-                                    </Typography>
-                                    </div>
-                                </div>
-                            </Carousel.Item>
-                        </Carousel>
+             {/* Path section start  */}
+			<section class="section path-section">
+				<div class="section-header text-center">
+					<div class="container" style={{width:'100%'}}>
+						<span>Choose the</span>
+						<h2>Different All Learning Paths</h2>
+						<p class="sub-title">Contact professionals to sort out your realtime coding issues.</p>
+					</div>
+				</div>
+                <div class="learning-path-col">
+					<div class="container"  style={{width:'100%'}}>
+                        <Row>
+                        <div class="col-12 col-md-4 col-lg-3">
+								<div class="large-col">
+									<a href="search.html" class="large-col-image">
+										<div class="image-col-merge">
+											<img src={dm} alt="" />
+											<div class="text-col">
+												<h5>Digital Marketer</h5>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div class="col-12 col-md-4 col-lg-3">
+								<div class="large-col">
+									<a href="search.html" class="large-col-image">
+										<div class="image-col-merge">
+											<img src={ui} alt="" />
+											<div class="text-col">
+												<h5>Ui designer</h5>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div class="col-12 col-md-4 col-lg-3">
+								<div class="large-col">
+									<a href="search.html" class="large-col-image">
+										<div class="image-col-merge">
+											<img src={it} alt="" />
+											<div class="text-col">
+												<h5>IT Security</h5>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div class="col-12 col-md-4 col-lg-3">
+								<div class="large-col">
+									<a href="search.html" class="large-col-image">
+										<div class="image-col-merge">
+											<img src={fd} alt="" />
+											<div class="text-col">
+												<h5>Front-End Developer</h5>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div class="col-12 col-md-4 col-lg-3">
+								<div class="large-col">
+									<a href="search.html" class="large-col-image">
+										<div class="image-col-merge">
+											<img src={wd} alt="" />
+											<div class="text-col">
+												<h5>Web Developer</h5>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div class="col-12 col-md-4 col-lg-3">
+								<div class="large-col">
+									<a href="search.html" class="large-col-image">
+										<div class="image-col-merge">
+											<img src={ad} alt=""/>
+											<div class="text-col">
+												<h5>Administrator</h5>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div class="col-12 col-md-4 col-lg-3">
+								<div class="large-col">
+									<a href="search.html" class="large-col-image">
+										<div class="image-col-merge">
+											<img src={pm} alt=""/>
+											<div class="text-col">
+												<h5>Project Manager</h5>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div class="col-12 col-md-4 col-lg-3">
+								<div class="large-col">
+									<a href="search.html" class="large-col-image">
+										<div class="image-col-merge">
+											<img src={pd} alt="" />
+											<div class="text-col">
+												<h5>PHP Developer</h5>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+                            <div class="view-all text-center" style={{margin:"auto"}}><a style={{color:"white"}} onClick={this.handleSignup} class="btn btn-primary">Register Now!!!</a></div>	
                         
-        
+						
+                        </Row>
+
                     </div>
                 </div>
-            </div>
+            </section>
 
-            
-            
-        
-        <div className="_footer">
-            <div className="footer__cards">
-                <h3>ABOUT</h3>
-                <span onClick = {this.about}><a>About Us</a></span>
-                <span onClick = {this.contact}><a>Contact Us</a></span>
-                <span onClick = {this.service}><a>Product and Services</a></span>
-            </div>
-            <div className="footer__cards">
-                <h3 >POLICY</h3>
-                <span onClick = {this.refund}><a>Refund and return</a></span>
-                {/* <span onClick = {this.shipping}><a>Shipping and Delivery Policy</a></span> */}
-                <span onClick = {this.price}><a>Price and Payment</a></span>
-                <span className = "socials"> <a href = 'https://www.facebook.com/ekode.crux/'><AiFillFacebook/></a>
+           {/* Statistics Section  */}
+			<section class="section statistics-section">
+				<div class="container" style={{width:"100%"}}>
+					<Row>
+						<div class="col-12 col-md-4">
+							<div class="statistics-list text-center">
+								<span>500+</span>
+								<h3>Happy Clients</h3>
+							</div>
+						</div>
+						<div class="col-12 col-md-4">
+							<div class="statistics-list text-center">
+								<span>120+</span>
+								<h3>Online Appointments</h3>
+							</div>
+						</div>
+						<div class="col-12 col-md-4">
+							<div class="statistics-list text-center">
+								<span>100%</span>
+								<h3>Job Satisfaction</h3>
+							</div>
+						</div>
+                    </Row>
+				</div>
+			</section>
+			{/* <!-- /Statistics Section -->		 */}
+
+            <footer class="footer">
+				
+				{/* <!-- Footer Top --> */}
+				<div class="footer-top">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-lg-3 col-md-6">
+							
+								{/* <!-- Footer Widget --> */}
+								<div class="footer-widget footer-about">
+									<div class="footer-logo">
+										<img src={LOGO} alt="logo" />
+									</div>
+									<div class="footer-about-content">
+										<p>Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs. </p>
+										<div class="social-icon">
+											<ul>
+                                           
+                                            {/* <span className = "socials"> <a href = 'https://www.facebook.com/ekode.crux/'><AiFillFacebook/></a>
                 <a href = 'https://www.instagram.com/ekodecrux/'><AiFillInstagram/> </a>
                 <a href = 'https://twitter.com/ekodecrux/'><AiFillTwitterSquare/></a> 
                 <a href = 'https://www.linkedin.com/in/ekode-crux-a59694208/'><AiFillLinkedin/></a> 
                 <a href = 'https://www.quora.com/profile/Ekode-Crux'><FaQuora/></a> 
-                <a href = 'https://medium.com/@ekodecrux'><AiFillMediumSquare/></a></span>
-            </div>
-            <div className="footer__cards">
-                <h3>HELP</h3>
-                <span onClick = {this.policy}><a>Privacy Policy</a></span>
-                <span onClick = {this.terms}><a>Terms and Services</a></span>
-                <span onClick = {this.registration}><a>Registration name of Business</a></span>
-                
-            </div>
-        </div>
-    </div>
-        </div>
+                <a href = 'https://medium.com/@ekodecrux'><AiFillMediumSquare/></a></span> */}
+												<li>
+                                                <a href = 'https://www.facebook.com/ekode.crux/'><FaFacebookF/></a>
+												</li>
+												<li>
+                                                <a href = 'https://twitter.com/ekodecrux/'><FaTwitter/></a>
+												</li>
+												<li>
+                                                <a href = 'https://www.linkedin.com/in/ekode-crux-a59694208/'><FaLinkedinIn/></a> 
+												</li>
+												<li>
+                                                <a href = 'https://www.instagram.com/ekodecrux/'><FaInstagram/> </a>
+												</li>
+                                                <li>
+                                                <a href = 'https://www.quora.com/profile/Ekode-Crux'><FaQuora/></a> 
+                                                </li>
+                                                <li>
+                                                <a href = 'https://medium.com/@ekodecrux'><FaMediumM/></a>
+                                                </li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								{/* <!-- /Footer Widget --> */}
+								
+							</div>
+							
+							<div class="col-lg-3 col-md-6">
+							
+								{/* <!-- Footer Widget --> */}
+								<div class="footer-widget footer-menu">
+									<h2 class="footer-title">For Mentee</h2>
+									<ul>
+										<li><a href="#">Search Mentors</a></li>
+										<li><a href="#">Login</a></li>
+										<li><a href="#">Register</a></li>
+										<li><a href="#">Booking</a></li>
+										<li><a href="#">Mentee Dashboard</a></li>
+									</ul>
+								</div>
+								{/* <!-- /Footer Widget --> */}
+								
+							</div>
+							
+							<div class="col-lg-3 col-md-6">
+							
+								{/* <!-- Footer Widget --> */}
+								<div class="footer-widget footer-menu">
+									<h2 class="footer-title">For Mentors</h2>
+									<ul>
+										<li><a href="#">Appointments</a></li>
+										<li><a href="#">Chat</a></li>
+										<li><a href="#">Login</a></li>
+										<li><a href="#">Register</a></li>
+										<li><a href="#">Mentor Dashboard</a></li>
+									</ul>
+								</div>
+								{/* <!-- /Footer Widget --> */}
+								
+							</div>
+							
+							<div class="col-lg-3 col-md-6">
+							
+								{/* <!-- Footer Widget --> */}
+								<div class="footer-widget footer-contact">
+									<h2 class="footer-title">Contact Us</h2>
+									<div class="footer-contact-info">
+										<div class="footer-address">
+											<span><i class="fas fa-map-marker-alt"></i></span>
+											<p> Expert aid technologies private limited Plot-44, Beeramguda, Hyderabad -502032 </p>
+										</div>
+										<p>
+											<i class="fas fa-phone-alt"></i>
+											+1 95730 17223
+										</p>
+										<p class="mb-0">
+											<i class="fas fa-envelope"></i>
+											support@ekodecrux.com
+										</p>
+									</div>
+								</div>
+								{/* <!-- /Footer Widget --> */}
+								
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				{/* <!-- /Footer Top --> */}
+				
+				{/* <!-- Footer Bottom --> */}
+                <div class="footer-bottom">
+					<div class="container-fluid">
+					
+						{/* <!-- Copyright --> */}
+						<div class="copyright">
+							<div class="row">
+								<div class="col-12 text-center">
+									<div class="copyright-text">
+										<p class="mb-0">&copy; 2021 eKodeCrux. All rights reserved.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						{/* <!-- /Copyright --> */}
+						
+					</div>
+				</div>
+				{/* <!-- /Footer Bottom --> */}
+				
+			</footer>
         <Modal
           visible={this.state.visible}
           title={this.state.title}

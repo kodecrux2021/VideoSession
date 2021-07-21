@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import './Navbar.css'
 import { AppBar, Button, Hidden, Typography } from '@material-ui/core'
 import { ReactComponent as EcodeLogo } from '../../assets/eKodeLogo.svg'
-import kodecrux from '../../assets/images/reg2.jpeg';
+import kodecrux from '../../assets/img/logo.png';
 
 
 export default function Navbar(props) {

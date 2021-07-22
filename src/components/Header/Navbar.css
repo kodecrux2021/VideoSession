@@ -15,7 +15,7 @@
 }
 
 ._nav_link {
-    color: #3743B1 !important;
+    color: #26292C !important;
 }
 
 ._nav_link:hover {
@@ -46,4 +46,7 @@
 .ant-drawer-body > a > p :hover {
     background-color: rgb(235, 235, 250);
     border-right: 3px solid  rgb(55, 55, 241);
+}
+.main-logo img{
+    width: 30%;
 }

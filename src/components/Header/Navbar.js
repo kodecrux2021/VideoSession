@@ -7,6 +7,7 @@ import './Navbar.css'
 import { AppBar, Button, Hidden, Typography } from '@material-ui/core'
 import { ReactComponent as EcodeLogo } from '../../assets/eKodeLogo.svg'
 import kodecrux from '../../assets/img/logo.png';
+import LOGO from "../../assets/img/logo.png"
 
 
 export default function Navbar(props) {
@@ -51,23 +52,29 @@ export default function Navbar(props) {
   return (
     <>
       <Hidden smDown>
-            <AppBar position="relative" style={{height:75,
+            <AppBar position="fixed" style={{height:75,
                     backgroundColor:'#FFFFFF',
-                    padding:"0 40px 0 40px", 
+                    padding:"0 40px 0 15px", 
+                    marginBottom:"100px",
                     alignItems:'center',
                     display:'flex',
-                    flexDirection:'row'}}>
+                    flexDirection:'row',
+                    boxShadow:"none",
+                    borderBottom:"1px solid #e3e8eb"}}
+                    >
                 <Link to='/'>
-                    <EcodeLogo />
+                <div class="main-logo">
+										<img src={LOGO} alt="logo" />
+									</div>
                 </Link>
                 {(localStorage.token) ?
                       <div style={{flex:1, display:'flex', justifyContent:'flex-end', gap:40, alignItems:'center'}}>
                         <div style={{display:'flex', alignItems:'center', gap:40}}>
-                          <Link className="_nav_link" to='/courses' >E-Learning Marketplace</Link>
-                          <Link className="_nav_link"  to='/notifications/messages' >Notification</Link>
+                          <Link className="_nav_link" to='/courses' style={{color:'#26292C'}} >E-Learning Marketplace</Link>
+                          <Link className="_nav_link"  to='/notifications/messages' style={{color:'#26292C'}} >Notification</Link>
                         </div>
                         <ButtonBase onClick={handleClick} style={{display:'flex', alignItems:'center', gap:10, outline:'none'}}>
-                          <Typography variant='caption' style={{color:'#3743b1',fontSize:14, fontFamily:'sans-serif'}}>{userName}</Typography>
+                          <Typography variant='caption' style={{color:'#26292C',fontSize:14, fontFamily:'sans-serif'}}>{userName}</Typography>
                           <Avatar alt={userName} src={localStorage.user_photo} style={{backgroundColor:'#3743b1'}} />
                         </ButtonBase>
                         
@@ -91,8 +98,8 @@ export default function Navbar(props) {
                       </div>
                        :
                       <div style={{flex:1, display:'flex', justifyContent:'flex-end', gap:10}}>
-                          <Button className="loginButton" variant="outlined" onClick={handleLogin} style={{width:98, height:36, borderColor:'#3743b1', color:'#3743b1', outline:"none"}}>Log In</Button>
-                          <Button className="signupButton" variant="outlined" onClick={handleSignup} style={{width:98, height:36, backgroundColor:'#3743b1', color:'white', outline:"none"}}>Sign Up</Button>
+                          <Button className="loginButton" variant="outlined" onClick={handleLogin} style={{width:98, height:36, borderColor:'#3743b1', color:'#26292C', outline:"none",border:"none", outline:"none"}}>Log In</Button>
+                          <Button className="signupButton" variant="outlined" onClick={handleSignup} style={{width:98, height:36, backgroundColor:'rgba(30, 136, 229, 0.2)', color:'#1e88e5',border:"none", outline:"none"}}>Register</Button>
                       </div>}
             </AppBar>
         </Hidden>

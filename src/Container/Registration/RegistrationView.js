@@ -19,12 +19,14 @@ import OtpInput from 'react-otp-input';
 import firebase from "firebase/app";
 import "firebase/auth";
 const firebaseConfig = {
-  apiKey: "AIzaSyD1vU2876bay1wRVBIk3Fk7XJ5zr8BwBdI",
-  authDomain: "shraddha-47d7d.firebaseapp.com",
-  projectId: "shraddha-47d7d",
-  storageBucket: "shraddha-47d7d.appspot.com",
-  messagingSenderId: "762511912466",
-  appId: "1:762511912466:web:36253f29c6484583b4b2cb"
+  apiKey: "AIzaSyAHyxuI54fDHzWFKEun3xodgKGA3Xwmd4g",
+  authDomain: "ekodecrux-website.firebaseapp.com",
+
+  projectId: "ekodecrux-website",
+  storageBucket: "ekodecrux-website.appspot.com",
+  messagingSenderId: "794675123294",
+  appId: "1:794675123294:web:4d9427e9f64605db92d0cf",
+  measurementId: "G-NY9DDEJM24"
 }
 
 firebase.initializeApp(firebaseConfig);

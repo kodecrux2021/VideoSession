@@ -85,8 +85,7 @@ class RegistrationContainer extends Component {
         console.log('auth resposne', this.state.authResponse)
     }
 
-    onSubmit=async(e)=> {
-        e.preventDefault();
+    onSubmit=async(setOtpSent)=> {
        
         if (this.state.email === '' || this.state.password === '' || this.state.mobile === '' || this.state.position === '' || this.state.setemail_validate !== '' || this.state.setmobile_validate !== '' || this.state.setpassword_validate !== '' ){
             if (this.state.first_name === ''){
@@ -113,7 +112,7 @@ class RegistrationContainer extends Component {
             else if(this.state.setpassword_validate !== ''){
                 message.info(this.state.setpassword_validate);
             }
-            
+            setOtpSent(false)
         }
         else {
             let data = {
@@ -171,8 +170,16 @@ class RegistrationContainer extends Component {
                 if (response['status'] === 201 || response['status'] === 200) {
                     return response.json()
                 } else if (response['status'] === 400) {
-                        console.log('A user with that username already exists.')
-                        message.info('A user with that email already exists!!!');
+                        let data = response.json()
+                        console.log(data)
+                        if(data.phone){
+                            message.info(data.phone[0]);
+                        }else{
+                            console.log('A user with that username already exists.')
+                            message.info('A user with that email already exists!!!');
+                        }
+                        setOtpSent(false)
+                        
                 }
             })
             .then(async (result) => {

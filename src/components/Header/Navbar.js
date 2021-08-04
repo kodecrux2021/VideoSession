@@ -58,7 +58,7 @@ export default function Navbar(props) {
                     display:'flex',
                     flexDirection:'row'}}>
                 <Link to='/'>
-                    <EcodeLogo />
+                  <img src={kodecrux} style={{ height: '30px',marginLeft: '15px', zIndex: 1000}} />
                 </Link>
                 {(localStorage.token) ?
                       <div style={{flex:1, display:'flex', justifyContent:'flex-end', gap:40, alignItems:'center'}}>

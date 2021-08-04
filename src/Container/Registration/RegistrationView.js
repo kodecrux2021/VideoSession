@@ -15,11 +15,79 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
 import {ReactComponent as LinkdinSvg } from '../../assets/linkedin.svg'
+import OtpInput from 'react-otp-input';
+import firebase from "firebase/app";
+import "firebase/auth";
+const firebaseConfig = {
+  apiKey: "AIzaSyAHyxuI54fDHzWFKEun3xodgKGA3Xwmd4g",
+  authDomain: "ekodecrux-website.firebaseapp.com",
+
+  projectId: "ekodecrux-website",
+  storageBucket: "ekodecrux-website.appspot.com",
+  messagingSenderId: "794675123294",
+  appId: "1:794675123294:web:4d9427e9f64605db92d0cf",
+  measurementId: "G-NY9DDEJM24"
+}
+
+firebase.initializeApp(firebaseConfig);
+
+let recaptchaVerifier = null;
 
 export default function Registration(props) {
   const history = useHistory();
+  
   const [showPassword, setShowPassword] = useState(false)
+  const [otpSent, setOtpSent] = useState(false)
+  const [otp, setOtp] = useState(null)
+  const [otpSending, setOtpSending] = useState(false)
+  const [isVerifying, setIsVerifying] = useState(false)
+  const [confirmObj, setConfirmObj] = useState(null)
+    useEffect(()=>{
+      firebase.auth().languageCode = 'en';
+      recaptchaVerifier = new firebase.auth.RecaptchaVerifier("captcha_cont", {
+        'size': 'invisible',
+        'callback': (response) => {
+          // reCAPTCHA solved, allow signInWithPhoneNumber.
+          
+        }
+      });
+      
+    },[])
 
+    const onSubmit = ()=>{
+      setOtpSending(true);
+      firebase.auth().signInWithPhoneNumber(props.mobile, recaptchaVerifier)
+          .then((confirmationResult) => {
+            // SMS sent. Prompt user to type the code from the message, then sign the
+            // user in with confirmationResult.confirm(code).\
+            setConfirmObj(confirmationResult)
+            setOtpSent(true)
+            setOtpSending(false);
+            // ...
+          }).catch((error) => {
+            // Error; SMS not sent
+            // ...
+            setOtpSent(false)
+            setOtpSending(false);
+            message.info('Invalid Phone Number (Please use country code e.g +91xxxxxxxx)');
+          });
+    }
+    console.log("otpSent: ", otpSent)
+    const verifyOTP = ()=>{
+      setIsVerifying(true);
+      confirmObj.confirm(otp).then((result) => {
+        // User signed in successfully.
+        const user = result.user;
+        
+        props.onSubmit(setOtpSent)
+        // ...
+      }).catch((error) => {
+        // User couldn't sign in (bad verification code?)
+        // ...
+      }).finally(e=>{
+        setIsVerifying(false)
+      });
+    }
     const responseFacebook = async (response) => {
         console.log('respose',response)
          if (response.accessToken) {
@@ -165,7 +233,7 @@ let data = {"token": response.accessToken}
                         <h1>Register</h1>
                         <p style={{fontSize:16}}>Sign Up to eKodecrux</p>
                     </div>
-                    <div className = "header__button">
+                    {(!otpSent)?<><div className = "header__button">
                         
                         <GoogleLogin 
                           className = 'google flex1'
@@ -203,15 +271,15 @@ let data = {"token": response.accessToken}
                       <Divider style={{flex:1}} />
                       <div style={{padding:10, color:'#3743B1'}}>OR</div>
                       <Divider style={{flex:1}} />
-                  </div>
+                  </div></>:null}
                 </div>
               <div className="form__container">
-                  <form >
+                  {(!otpSent)?<form>
                       <div style={{display:'flex', gap:12}}>
                         <TextField variant="outlined" className="form__control" label="FIRST NAME" value={props.first_name} onChange={(e) => props.handelData('first_name', e.target.value)} />
                         <TextField variant="outlined" className="form__control" label="LAST NAME" value={props.last_name} onChange={(e) => props.handelData('last_name', e.target.value)} />
                       </div>
-                      <TextField style={{marginTop:16}} variant="outlined" className="form__control" label="MOBILE NUMBER" value={props.mobile} onChange={(e) => props.handelData('mobile', e.target.value)} />
+                      <TextField id="mobile_reg" style={{marginTop:16}} variant="outlined" className="form__control" label="MOBILE NUMBER" value={props.mobile} onChange={(e) => props.handelData('mobile', e.target.value)} />
                       <TextField style={{marginTop:16}} variant="outlined" className="form__control" label="EMAIL ADDRESS" value={props.email} onChange={(e) => props.handelData('email', e.target.value)} />
                       <TextField autoComplete={"current-password"} type={showPassword ? 'text' : 'password'} style={{marginTop:16, marginBottom:8}} variant='outlined' label='PASSWORD' value={props.password} onChange={(e) => props.handelData('password', e.target.value)} 
                                 InputProps = {{endAdornment:
@@ -233,13 +301,36 @@ let data = {"token": response.accessToken}
                         <button className={props.position==="customer"?'select__button__active':'select__button'} value="customer" onClick={props.onChangeValue} >CUSTOMER/STUDENT</button>
                       </div>
                       <button
-                          type='submit'
+                         id="submit_reg"
+                          type='button'
                           style={{outline:"none"}}
                           className='login__signInButton'
-                          onClick={props.onSubmit}
-                      >NEXT</button>
-                  </form>
+                          onClick={()=>{
+
+                            onSubmit()
+                          }}
+                      >{(!otpSending)?"NEXT":"Processing..."}</button>
+                      
+                  </form>:
+                  <div className="verification__body">
+                      <p>Please type the verification code sent to your phone</p>
+                      <div>
+                            <OtpInput
+                              value={otp}
+                              onChange={(e)=>{setOtp(e)}}
+                              numInputs={6}
+                              separator={<span>-</span>}
+                              containerStyle=""
+                              inputStyle="otp__box"
+                            />
+                      </div>
+                      <h5>Didn't Recieve OTP? <span style={{fontWeight:"bold",color:" #30b3f0", cursor: "pointer"}} onClick={onSubmit}>Resend Code</span></h5>
+                    <button onClick={verifyOTP}>{(!isVerifying)?"NEXT":"Registering..."}</button>
+                </div>
+                }
+                  <div id="captcha_cont"></div>
               </div>
+
               <Divider />
               <div className="registration__view__footer">
                   Already have an account? &nbsp; <a onClick={()=> history.replace('/login')} style={{color:"#3743B1", outline:"none"}} > Login</a>

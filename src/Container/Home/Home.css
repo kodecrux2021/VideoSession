@@ -216,6 +216,12 @@ color: rgb(237, 237, 237);
 .css-1wa3eu0-placeholder {
     color: #3743B1 !important;
 }
+.rating i.filled {
+	font-size: 17px !important;
+}
+.product .rating i {
+	font-size: 17px !important;
+}
 
 @media (max-width: 480px) {
     .blog_mobile_prev {

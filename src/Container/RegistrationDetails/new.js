@@ -167,13 +167,10 @@ class New extends React.Component {
       if (
         this.state.pincode === null ||
         this.state.city === "" ||
-        this.state.state === "" ||
-        this.state.fileList.length === 0
+        this.state.state === "" 
+        
         ) {
-          if (this.state.fileList.length === 0) {
-            message.info("Please upload profile picture");
-          }
-          else if (this.state.pincode === "" || this.state.pincode === null) {
+          if (this.state.pincode === "" || this.state.pincode === null) {
             message.info("Please Fill Pincode");
           } else if (this.state.city === "") {
             message.info("Please Fill City");
@@ -268,10 +265,13 @@ class New extends React.Component {
         formData2.append('designation', this.state.design)
         formData2.append('fees', this.state.fees)
       }
-      profileFormData.append('profile_pic', this.state.fileList[0].originFileObj)
-      // if (localStorage.getItem('is_client')) formData2.append('is_client', localStorage.getItem('is_client'))
+      if (this.state.fileList.length !== 0) {
+        profileFormData.append('profile_pic', this.state.fileList[0].originFileObj)
+      } 
+      
+      
       let user_is_client = localStorage.getItem('is_client')
-      console.log("client is", typeof(user_is_client))
+      // console.log("client is", typeof(user_is_client))
       if (user_is_client === "false") { 
         console.log("Bla bla bla")
         formData['technology'] = tech;
@@ -285,7 +285,7 @@ class New extends React.Component {
         formData['fees'] = this.state.fees;
     }
 
-      console.log(this.state)
+      // console.log(this.state)
       // if (this.state.fileList.length > 0) formData['profile_pic'] = this.state.fileList[0].originFileObj;
       // formData.append('rating', this.state.rating);
       // formData.append('profile_pic', this.state.file)

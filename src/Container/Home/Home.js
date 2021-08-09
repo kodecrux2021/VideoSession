@@ -314,7 +314,7 @@ If as a user, you wish to refund the payment if they do not meet thier required 
         <>
         <Navbar />
         {/* Home Banner */}
-			<section style={{marginTop:"95px"}} class="section section-search">
+			<section style={{marginTop:"70px"}} class="section section-search">
 				<div class="container" style={{width:"100%"}}>
 					<div class="banner-wrapper m-auto text-center">
 						<div class="banner-header">
@@ -341,7 +341,7 @@ If as a user, you wish to refund the payment if they do not meet thier required 
 						<p class="sub-title">Are you looking to get online Codeing Help? Now it's very simple, Sign up with eKodeCrux</p>
 					</div>
                     
-                    <Row>
+                    <Row style={{justifyContent:'center'}}>
                    
 						<div class="col-12 col-md-6 col-lg-4">
 							<div class="feature-box text-center" style={{backgroundColor:'aquamarine'}}>					
@@ -358,8 +358,8 @@ If as a user, you wish to refund the payment if they do not meet thier required 
 								<br></br>
 								<div class="view-all text-center"><a style={{color:"white"}} onClick={this.handleSignup} class="btn btn-primary" >Sign Up</a></div>
 							</div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-4">
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
 							<div class="feature-box text-center">					
 								<div class="feature-header">
 									<div class="feature-icon">
@@ -375,7 +375,7 @@ If as a user, you wish to refund the payment if they do not meet thier required 
 								<div class="view-all text-center"><a style={{color:"white"}} onClick={this.solutionRoomClick} class="btn btn-primary">Get Online Solution Now</a></div>
 							</div>
 						</div>
-						<div class="col-12 col-md-6 col-lg-4">
+						<div class="col-12 col-md-6 col-lg-4" style={{display:'none'}}>
 							<div class="feature-box text-center">					
 								<div class="feature-header">
 									<div class="feature-icon">

@@ -68,7 +68,7 @@ export default function Navbar(props) {
                 {(localStorage.token) ?
                       <div style={{flex:1, display:'flex', justifyContent:'flex-end', gap:40, alignItems:'center'}}>
                         <div style={{display:'flex', alignItems:'center', gap:40}}>
-                          <Link className="_nav_link" to='/courses' style={{color:'#26292C'}} >E-Learning Marketplace</Link>
+                          {/* <Link className="_nav_link" to='/courses' style={{color:'#26292C'}} >E-Learning Marketplace</Link> */}
                           <Link className="_nav_link"  to='/notifications/messages' style={{color:'#26292C'}} >Notification</Link>
                         </div>
                         <ButtonBase onClick={handleClick} style={{display:'flex', alignItems:'center', gap:10, outline:'none'}}>

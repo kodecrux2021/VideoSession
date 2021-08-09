@@ -7,6 +7,7 @@ import { message } from 'antd';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import CloseIcon from '@material-ui/icons/Close';
+import Logo from '../../assets/img/logo.png'
 import {ReactComponent as EkodeLogo} from '../../assets/eKodeLogo.svg';
 import { Button, ButtonBase, Card, Divider, TextField } from '@material-ui/core';
 import {ReactComponent as FacebookLogo} from '../../assets/facebook.svg';
@@ -189,7 +190,7 @@ function Login() {
     const responseGoogle = async(response) => {
       console.log('google',response);
       if (response.accessToken) {
-let data = {"token": response.accessToken}
+        let data = {"token": response.accessToken}
         await fetch(url + '/google/', {
           method: 'POST',
           headers: {
@@ -229,7 +230,7 @@ let data = {"token": response.accessToken}
     .then(res => res.json())
     .then(
         (result) => {
-          //console.log('result',result)
+          console.log('result',result)
           if(result){
             localStorage.setItem('user_id', result.user?.id);
             localStorage.setItem('user_name', result.user?.first_name);
@@ -267,9 +268,9 @@ let data = {"token": response.accessToken}
                 </div>
                 {/* ------ */}
                 <div style={{marginTop:30, display:'flex', justifyContent:'center'}}>
-                    <Card elevation={2} style={{width:100, height:100, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
+                    <Card elevation={1} style={{width:100, height:100, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
                         <Link to='/'>
-                            <EkodeLogo  />
+                            <img src={Logo} style={{ height: '15px', zIndex: 1000}} />
                         </Link>
                     </Card>
                 </div>

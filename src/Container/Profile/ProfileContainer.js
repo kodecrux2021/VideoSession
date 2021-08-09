@@ -119,6 +119,8 @@ class Profile extends Component {
               Email: data?.email,
               Phone: data?.phone,
             });
+            this.UpdateTech(data?.technology)
+            this.updateSubtech(data?.sub_technology)
           })
       } else {
         return;
@@ -175,12 +177,9 @@ class Profile extends Component {
           })
             .then((res) => res.json())
             .then((result) => {
-              this.setState({ tech_list: result });
-            })
-            .then((data) => this.SetSubTech())
-            .then((res) => this.UpdateTech())
-            .then((res) => this.updateSubtech())
-            
+              this.setState({ tech_list: result.results });
+              this.SetSubTech(result)
+            })                        
             .then((res) => this.UpdateTotalExp())
             .then((res) => this.UpdateRelevantExp())
             .then((res) => this.setState({ PageLoading: false }));
@@ -190,10 +189,10 @@ class Profile extends Component {
     
   }
 
-  SetSubTech = () => {
+  SetSubTech = (data) => {
     let sub_tech = []
     if (localStorage.getItem('is_client') === "false" || localStorage.getItem('is_client') === null) {
-      this.state.tech_list.map((value) => {
+      data.results.map((value) => {
         sub_tech = [...sub_tech, ...value.sub_technology]
       });
       this.setState({
@@ -202,10 +201,10 @@ class Profile extends Component {
     }
   }
 
-  updateSubtech = async () => {
+  updateSubtech = async (data) => {
     let sub_tech = []
     if (localStorage.getItem('is_client') === "false" || localStorage.getItem('is_client') === null) {
-      this.state.sub_technology?.forEach((k,i) =>
+      data.forEach((k,i) =>
         this.state.subtech_list.forEach((t_k, i_d) => {
           if (k === t_k.id) sub_tech.push(t_k)
         })
@@ -214,19 +213,23 @@ class Profile extends Component {
     }
   };
 
-  UpdateTech = async () => {
-    
+  UpdateTech = async (data) => {
+    // console.log(data)
     let tech = []
     
-    if (localStorage.getItem('is_client') === "false" || localStorage.getItem('is_client') === null) {
-      this.state.technology?.forEach((k, i) =>
+    if (localStorage.getItem('is_client') === "false" || localStorage.getItem('is_client') === null ) {
+      if (data.length !== 0) {
+        data.forEach((k, i) =>
         this.state.tech_list.forEach((t_k, i_d) => {
           if (k === t_k.id)
           tech.push(t_k)
         })
       )
-        this.setState({ technology: tech });
+        
       }
+      this.setState({ technology: tech });
+      }
+     
   };
 
   UpdateTotalExp = async () => {

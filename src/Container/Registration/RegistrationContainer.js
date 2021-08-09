@@ -7,7 +7,7 @@ import { url } from '../../Server/GlobalUrl';
 import CloseIcon from '@material-ui/icons/Close';
 import { Link } from 'react-router-dom';
 import { Card } from '@material-ui/core';
-import {ReactComponent as EkodeLogo} from '../../assets/eKodeLogo.svg';
+import Logo from '../../assets/img/logo.png'
 import axios from 'axios';
 
 
@@ -304,9 +304,9 @@ class RegistrationContainer extends Component {
                         <Link to='/'> <CloseIcon style={{fontSize:30, color:'black'}} /> </Link>
                     </div>
                     <div style={{marginTop:30, display:'flex', justifyContent:'center'}}>
-                        <Card elevation={2} style={{width:100, height:100, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
+                        <Card elevation={1} style={{width:100, height:100, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
                             <Link to='/'>
-                                <EkodeLogo  />
+                                <img src={Logo} style={{ height: '15px', zIndex: 1000}} />
                             </Link>
                         </Card>
                     </div>

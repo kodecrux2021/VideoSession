@@ -37,7 +37,7 @@ textarea:focus {
 }
 
 .registration__details__container {
-    box-shadow: 0 0 10px rgba(55,67,177,.45);
+    box-shadow: 0 0 6px rgba(55,67,177,.15);
     max-width: 560px;
     /* min-width: 400px; */
     height: fit-content;

@@ -21,7 +21,7 @@ import Pagetwo from './Container/RegistrationDetails';
 import New from './Container/RegistrationDetails/new';
 import Payment from './payment'
 import cardDetails from './Container/cardDetails/cardDetails';
-import Profile from "./Container/Profile/Profile.Container";
+import Profile from "./Container/Profile/ProfileContainer";
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import Favorite from './Container/Favorite/Favorite';
 import PayDash from './Container/PayDash/Dashboard';

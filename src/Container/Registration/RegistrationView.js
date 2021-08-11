@@ -16,20 +16,9 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
 import {ReactComponent as LinkdinSvg } from '../../assets/linkedin.svg'
 import OtpInput from 'react-otp-input';
-import firebase from "firebase/app";
-import "firebase/auth";
-const firebaseConfig = {
-  apiKey: "AIzaSyAHyxuI54fDHzWFKEun3xodgKGA3Xwmd4g",
-  authDomain: "ekodecrux-website.firebaseapp.com",
 
-  projectId: "ekodecrux-website",
-  storageBucket: "ekodecrux-website.appspot.com",
-  messagingSenderId: "794675123294",
-  appId: "1:794675123294:web:4d9427e9f64605db92d0cf",
-  measurementId: "G-NY9DDEJM24"
-}
 
-firebase.initializeApp(firebaseConfig);
+import app from '../firebase/firebaseApp'
 
 let recaptchaVerifier = null;
 
@@ -43,8 +32,8 @@ export default function Registration(props) {
   const [isVerifying, setIsVerifying] = useState(false)
   const [confirmObj, setConfirmObj] = useState(null)
     useEffect(()=>{
-      firebase.auth().languageCode = 'en';
-      recaptchaVerifier = new firebase.auth.RecaptchaVerifier("captcha_cont", {
+      app.auth().languageCode = 'en';
+      recaptchaVerifier = new app.auth.RecaptchaVerifier("captcha_cont", {
         'size': 'invisible',
         'callback': (response) => {
           // reCAPTCHA solved, allow signInWithPhoneNumber.
@@ -56,7 +45,7 @@ export default function Registration(props) {
 
     const onSubmit = ()=>{
       setOtpSending(true);
-      firebase.auth().signInWithPhoneNumber(props.mobile, recaptchaVerifier)
+      app.auth().signInWithPhoneNumber(props.mobile, recaptchaVerifier)
           .then((confirmationResult) => {
             // SMS sent. Prompt user to type the code from the message, then sign the
             // user in with confirmationResult.confirm(code).\

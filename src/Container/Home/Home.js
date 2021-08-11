@@ -13,72 +13,55 @@ import ad  from "../../assets/img/path-img6.jpg"
 import pm  from "../../assets/img/path-img7.jpg"
 import pd  from "../../assets/img/path-img8.jpg"
 import LOGO from "../../assets/img/logo.png"
-import u0 from "../../assets/img/user/user.jpg"
-import u1 from "../../assets/img/user/user1.jpg"
-import u2 from "../../assets/img/user/user2.jpg"
-import u3 from "../../assets/img/user/user3.jpg"
-import u4 from "../../assets/img/user/user4.jpg"
-// import u5 from "../../assets/img/user/user5.jpg"
-import u6 from "../../assets/img/user/user6.jpg"
-import u7 from "../../assets/img/user/user7.jpg"
-import u8 from "../../assets/img/user/user8.jpg"
-import u9 from "../../assets/img/user/user9.jpg"
-import u10 from "../../assets/img/user/user10.jpg"
-import u11 from "../../assets/img/user/user11.jpg"
-import u12 from "../../assets/img/user/user12.jpg"
-import u13 from "../../assets/img/user/user13.jpg"
-import u14 from "../../assets/img/user/user14.jpg"
-import u15 from "../../assets/img/user/user15.jpg"
 
 
-import elearn from '../../assets/images/elearn.jpg'
-import instruc from '../../assets/images/instructor.jpg'
-import freelan from '../../assets/images/codeexpert.jpg';
-import Blog1 from '../../assets/blogs/Image 5.jpg';
-import Blog1overlay from '../../assets/blogs/Group 493.jpg'
+import * as emailjs from 'emailjs-com'
 
-import studyImg from '../../assets/studyRoom.png';
-import solutionImg from '../../assets/solutionRoom.png';
 
-import home1 from '../../assets/images/home1.jpg'
-import home2 from '../../assets/images/home2.jpg'
-import home3 from '../../assets/images/home3.jpg'
-import home4 from '../../assets/images/home4.jpg'
-import home5 from '../../assets/images/home5.jpg'
+
 import Navbar from '../../components/Header/Navbar';
 import {message, Modal} from 'antd';
-import kodecrux from '../../assets/images/reg2.jpeg';
-import {AiFillMediumSquare,AiFillFacebook, AiFillInstagram, AiFillTwitterSquare, AiFillLinkedin, AiOutlineTwitter, AiFillStar,AiOutlineStar} from 'react-icons/ai';
-import {FaQuora, FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaMediumM, FaMapMarkerAlt} from 'react-icons/fa'
-import { Typography } from '@material-ui/core'
+
+import {FaQuora, FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaMediumM, FaMapMarkerAlt, FaPinterest} from 'react-icons/fa'
+
 import {
-    BrowserView,
-    MobileView,
-    isBrowser,
     isMobile
   } from "react-device-detect";
-  import './Home.css'
+import './Home.css'
 import OwlCarousel from 'react-owl-carousel';  
 import 'owl.carousel/dist/assets/owl.carousel.css';  
 import 'owl.carousel/dist/assets/owl.theme.default.css';  
- 
+
+import app from '../firebase/firebaseApp'
+import { Button, TextField, Typography } from '@material-ui/core'
 
 
 
 export default class Home extends Component {
-    state = {
-        visible: false,
-        title: '',
-        content: null,
-
+    constructor(props) {
+        super(props)
+        this.state = {
+            visible: false,
+            title: '',
+            content: null,
+            blogs : [],
+            name : "",
+            email : "",
+            pNo : "",
+            enText :""
+        }
     }
 
-    // componentDidMount(){
-    //     if(!localStorage.getItem('token')){
-    //         message.info('Please login')
-    //         this.props.history.push('/login')
-    //     }
-    // }
+
+    componentDidMount(){
+        console.log("hello")
+        app.database().ref('blogs').on('value', (snapShot) => {
+            if (snapShot.exists()) {
+                this.setState({blogs : snapShot.val()})
+            }
+        })    
+    }
+
     links = () =>{
         this.setState({
             visible: true,
@@ -306,9 +289,99 @@ If as a user, you wish to refund the payment if they do not meet thier required 
         }
       }
 
+    handleAccess = () => {
+        if(localStorage.getItem('token')){
+            this.props.history.push('/help/1');
+        }  
+        else{
+            this.props.history.push("/login");
+        }
+    }
+
     handleSignup = () => {
         this.props.history.push('/registration')
       }
+
+
+    handleBlog = () => {
+        let data = this.state.blogs
+        return (
+            <div  style ={{display: 'inline'}}>
+                <div className= 'button__card__details' style={{minHeight:250}}>
+                    <Typography variant="h2" style={{fontSize:35}}>Blogs by Ekodecrux</Typography>
+                    <Carousel controls={false} interval={10000} indicators={true} pause={false} fade={true} style={{marginTop:20}} >
+                        {data.map((k,i) => 
+                            <Carousel.Item >
+                                <div style={isMobile ? {display:'flex', flexDirection:'column'} : {display:'flex'}} className="blog_mobile_prev">
+                                    {/* <img style={{position:'absolute', left:-200, zIndex:100}} src={Blog1overlay} alt="overlay" /> */}
+                                    <img
+                                        // className="d-block w-100"
+                                        className="blog_mobile_prev_img"
+                                        style={isMobile ? {width:"100%"} : {width:"30%"}}
+                                        src={k.image}
+                                        alt="First slide"
+                                    />
+                                    <div className="blog_mobile_prev_blog" style={{display:'flex', flex:1, justifyContent:'center', alignItems:'center',
+                                    padding:isMobile ? 20 : 40, margin: isMobile ? "20px 0" : 20, border:2, borderStyle:'solid', borderColor:'#3743B1', borderRadius:20}}>
+                                        <Typography style={{fontSize:15, fontWeight:"normal"}}>{k.disc}
+                                            <a href={k.url} style={{color:'#3743B1'}}> Read more</a>
+                                        </Typography>
+                                    </div>
+                                </div>
+                            </Carousel.Item>
+                        )}
+                    </Carousel>
+                </div>
+            </div>
+        )
+    }
+
+    handleSendMail = () => {
+        const { name, email, pNo, enText } = this.state
+        let message = `Enquiry Email from Mr/Mrs ${name},
+            contact Number ${pNo} 
+            enquiry Text : ${enText}`
+        let templateParams = {
+            to_name : "eKodeCrux",
+            from_name: email,
+            to_name: 'abhishek@immortalt.dev',
+            subject: "Enquiry",
+            message: enText,
+        }
+        this.resetForm()
+        emailjs.send(
+            'service_pxubill',
+            'template_n61fzdo',
+            templateParams,
+            'user_zJ8h6RWGdD9kWyu89C8dG'
+        )
+        
+    }
+    resetForm() {
+        this.setState({
+        name: '',
+        email: '',
+        pNo: '',
+        enText: '',
+        })
+    }
+
+    FAQ = () => {
+        let form = 
+                <div style={{display:'flex', gap:20, flexDirection:'column'}}>
+                   
+                    <TextField placeholder={this.state.name} onChange={(e) => {this.setState({name : e.target.value})}} variant="outlined" label="Name"></TextField>
+                    <TextField onChange={(e) => this.setState({pNo : e.target.value})} variant="outlined" label="Phone Number"></TextField>
+                    <TextField onChange={(e) => this.setState({email : e.target.value})} variant="outlined" label="Email"></TextField>
+                    <TextField onChange={(e) => this.setState({enText : e.target.value})} multiline rows={4} variant="outlined" label="Enquiry Text"></TextField>
+                    <Button variant="outlined" className="login__signInButton" onClick={this.handleSendMail}>Submit</Button>
+                    
+                </div>
+        this.setState({visible: true,
+            title: 'FAQ',
+            content: form})
+    }
+
     render() {
         return (
         <>
@@ -323,7 +396,7 @@ If as a user, you wish to refund the payment if they do not meet thier required 
 							<p>eKodeCrux for Teams brings expert programming help right to your screen.</p>
 						</div>
                          
-						<div class="view-all text-center"><a style={{color:"white"}} class="btn btn-primary">Get Access Now !!!</a></div>
+						<div class="view-all text-center"> <a onClick={this.handleAccess} style={{color:"white"}} class="btn btn-primary">Get Access Now !!!</a></div>
 					
 						
 					</div>
@@ -405,363 +478,366 @@ If as a user, you wish to refund the payment if they do not meet thier required 
 					</div>
                 </div>
                
-       <div class='container' style={{width:"100%"}} >            
-        <OwlCarousel items={4}  
-          className="owl-theme"  
-          loop  
-          nav 
-          margin={8} >  
-
-				
-                <div class="course-box">
-                    <div class="product">
-                        <div class="product-img">
-                            <a href="profile.html">
-                                <img class="img-fluid" alt="" src={u1} width="600" height="300" />
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="title"><a href="profile.html">Sudheer Vamaraju</a></h3>
-                            <div class="author-info">
-                                <div class="author-name">
-                                    Digital Marketer
-                                </div>
-                            </div>
-                            <div class="rating" >
-                               
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star"><AiOutlineStar /></i>
-                                <span class="d-inline-block average-rating">4.4</span>
-                            </div>
-                            <div class="author-country">
-                                <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Hyderabad, India.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-box">
-                    <div class="product">
-                        <div class="product-img">
-                            <a href="profile.html">
-                                <img class="img-fluid" alt="" src={u2} width="600" height="300" />
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="title"><a href="profile.html">Rahul Joshi</a></h3>
-                            <div class="author-info">
-                                <div class="author-name">
-                                    Business Development Expert
-                                </div>
-                            </div>
-                            <div class="rating">						
-                            <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star"><AiOutlineStar /></i>
-                                <span class="d-inline-block average-rating">4.4</span>
-                            </div>
-                            <div class="author-country">
-                                <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Mumbai, India.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-box">
-                    <div class="product">
-                        <div class="product-img">
-                            <a href="profile.html">
-                                <img class="img-fluid" alt="" src={u3} width="600" height="300" />
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="title">Krishna Teja</h3>
-                            <div class="author-info">
-                                <div class="author-name">
-                                    ASP.NET,Computer Gaming
-                                </div>
-                            </div>
-                            <div class="rating">						
-                            <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star"><AiOutlineStar /></i>
-                                <span class="d-inline-block average-rating">4.4</span>
-                            </div>
-                            <div class="author-country">
-                                <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Bangalore, India.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-box">
-                    <div class="product">
-                        <div class="product-img">
-                            <a href="profile.html">
-                                <img class="img-fluid" alt="" src={u4} width="600" height="300" />
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="title"><a href="profile.html">Hemanth kumar</a></h3>
-                            <div class="author-info">
-                                <div class="author-name">
-                                    Computer Programming
-                                </div>
-                            </div>
-                            <div class="rating">						
-                            <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star"><AiOutlineStar /></i>
-                                <span class="d-inline-block average-rating">4.4</span>
-                            </div>
-                            <div class="author-country">
-                                <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Pune, India.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-box">
-                    <div class="product">
-                        <div class="product-img">
-                            <a href="profile.html">
-                                <img class="img-fluid" alt="" src={u0} width="600" height="300" />
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="title"><a href="profile.html">Kiran Kumar</a></h3>
-                            <div class="author-info">
-                                <div class="author-name">
-                                    Digital Marketer
-                                </div>
-                            </div>
-                            <div class="rating">							
-                            <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star"><AiOutlineStar /></i>
-                                <span class="d-inline-block average-rating">4.4</span>
-                            </div>
-                            <div class="author-country">
-                                <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Mangalore, India.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-box">
-                    <div class="product">
-                        <div class="product-img">
-                            <a href="profile.html">
-                                <img class="img-fluid" alt="" src={u6} width="600" height="300" />
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="title"><a href="profile.html">Aditya Nukala</a></h3>
-                            <div class="author-info">
-                                <div class="author-name">
-                                    UNIX,Calculus,Trigonometry
-                                </div>
-                            </div>
-                            <div class="rating">						
-                            <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star"><AiOutlineStar /></i>
-                                <span class="d-inline-block average-rating">4.4</span>
-                            </div>
-                            <div class="author-country">
-                                <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Chennai, India.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-box">
-                    <div class="product">
-                        <div class="product-img">
-                            <a href="profile.html">
-                                <img class="img-fluid" alt="" src={u7} width="600" height="300" />
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="title"><a href="profile.html">Mohan Brahmi</a></h3>
-                            <div class="author-info">
-                                <div class="author-name">
-                                    ASP.NET,Computer Gaming
-                                </div>
-                            </div>
-                            <div class="rating">						
-                            <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star"><AiOutlineStar /></i>
-                                <span class="d-inline-block average-rating">4.4</span>
-                            </div>
-                            <div class="author-country">
-                                <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Kochi, Hyderabad.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-box">
-                    <div class="product">
-                        <div class="product-img">
-                            <a href="profile.html">
-                                <img class="img-fluid" alt="" src={u15} width="600" height="300" />
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="title"><a href="profile.html">Misty Lundy</a></h3>
-                            <div class="author-info">
-                                <div class="author-name">
-                                    Computer Programming
-                                </div>
-                            </div>
-                            <div class="rating">
-                            <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star"><AiOutlineStar /></i>
-                                <span class="d-inline-block average-rating">4.4</span>
-                            </div>
-                            <div class="author-country">
-                                <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Paris, France</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-box">
-                    <div class="product">
-                        <div class="product-img">
-                            <a href="profile.html">
-                                <img class="img-fluid" alt="" src={u9} width="600" height="300" />
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="title"><a href="profile.html">Vern Campbell</a></h3>
-                            <div class="author-info">
-                                <div class="author-name">
-                                    Digital Marketer
-                                </div>
-                            </div>
-                            <div class="rating">
-                            <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star"><AiOutlineStar /></i>
-                                <span class="d-inline-block average-rating">4.4</span>
-                            </div>
-                            <div class="author-country">
-                                <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Paris, France</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-box">
-                    <div class="product">
-                        <div class="product-img">
-                            <a href="profile.html">
-                                <img class="img-fluid" alt="" src={u13} width="600" height="300" />
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="title"><a href="profile.html">Jessica Fogarty</a></h3>
-                            <div class="author-info">
-                                <div class="author-name">
-                                    UNIX,Calculus,Trigonometry
-                                </div>
-                            </div>
-                            <div class="rating">
-                            <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star"><AiOutlineStar /></i>
-                                <span class="d-inline-block average-rating">4.4</span>
-                            </div>
-                            <div class="author-country">
-                                <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Paris, France</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="course-box">
-                    <div class="product">
-                        <div class="product-img">
-                            <a href="profile.html">
-                                <img class="img-fluid" alt="" src={u11} width="600" height="300"/>
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="title"><a href="profile.html">Evelyn Stafford</a></h3>
-                            <div class="author-info">
-                                <div class="author-name">
-                                    ASP.NET,Computer Gaming
-                                </div>
-                            </div>
-                            <div class="rating">
-                            <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star"><AiOutlineStar /></i>
-                                <span class="d-inline-block average-rating">4.4</span>
-                            </div>
-                            <div class="author-country">
-                                <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Paris, France</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+       <div class='container' style={{width:"100%"}} >    
+            {this.handleBlog()}
             
-                <div class="course-box">
-                    <div class="product">
-                        <div class="product-img">
-                            <a href="profile.html">
-                                <img class="img-fluid" alt="" src={u12} width="600" height="300"/>
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <h3 class="title"><a href="profile.html">Christopher Carroll</a></h3>
-                            <div class="author-info">
-                                <div class="author-name">
-                                    Computer Programming
+
+            {/* <OwlCarousel items={4}  
+            className="owl-theme"  
+            loop  
+            nav 
+            margin={8} >  
+
+                    
+                    <div class="course-box">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="profile.html">
+                                    <img class="img-fluid" alt="" src={u1} width="600" height="300" />
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="profile.html">Sudheer Vamaraju</a></h3>
+                                <div class="author-info">
+                                    <div class="author-name">
+                                        Digital Marketer
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="rating">
-                            <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star filled"><AiFillStar/></i>
-                                <i class="fas fa-star"><AiOutlineStar /></i>
-                                <span class="d-inline-block average-rating">4.4</span>
-                            </div>
-                            <div class="author-country">
-                                <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Paris, France</p>
+                                <div class="rating" >
+                                
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star"><AiOutlineStar /></i>
+                                    <span class="d-inline-block average-rating">4.4</span>
+                                </div>
+                                <div class="author-country">
+                                    <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Hyderabad, India.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div> 
-                </OwlCarousel>
+                    
+                    <div class="course-box">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="profile.html">
+                                    <img class="img-fluid" alt="" src={u2} width="600" height="300" />
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="profile.html">Rahul Joshi</a></h3>
+                                <div class="author-info">
+                                    <div class="author-name">
+                                        Business Development Expert
+                                    </div>
+                                </div>
+                                <div class="rating">						
+                                <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star"><AiOutlineStar /></i>
+                                    <span class="d-inline-block average-rating">4.4</span>
+                                </div>
+                                <div class="author-country">
+                                    <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Mumbai, India.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-box">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="profile.html">
+                                    <img class="img-fluid" alt="" src={u3} width="600" height="300" />
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title">Krishna Teja</h3>
+                                <div class="author-info">
+                                    <div class="author-name">
+                                        ASP.NET,Computer Gaming
+                                    </div>
+                                </div>
+                                <div class="rating">						
+                                <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star"><AiOutlineStar /></i>
+                                    <span class="d-inline-block average-rating">4.4</span>
+                                </div>
+                                <div class="author-country">
+                                    <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Bangalore, India.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-box">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="profile.html">
+                                    <img class="img-fluid" alt="" src={u4} width="600" height="300" />
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="profile.html">Hemanth kumar</a></h3>
+                                <div class="author-info">
+                                    <div class="author-name">
+                                        Computer Programming
+                                    </div>
+                                </div>
+                                <div class="rating">						
+                                <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star"><AiOutlineStar /></i>
+                                    <span class="d-inline-block average-rating">4.4</span>
+                                </div>
+                                <div class="author-country">
+                                    <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Pune, India.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-box">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="profile.html">
+                                    <img class="img-fluid" alt="" src={u0} width="600" height="300" />
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="profile.html">Kiran Kumar</a></h3>
+                                <div class="author-info">
+                                    <div class="author-name">
+                                        Digital Marketer
+                                    </div>
+                                </div>
+                                <div class="rating">							
+                                <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star"><AiOutlineStar /></i>
+                                    <span class="d-inline-block average-rating">4.4</span>
+                                </div>
+                                <div class="author-country">
+                                    <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Mangalore, India.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-box">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="profile.html">
+                                    <img class="img-fluid" alt="" src={u6} width="600" height="300" />
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="profile.html">Aditya Nukala</a></h3>
+                                <div class="author-info">
+                                    <div class="author-name">
+                                        UNIX,Calculus,Trigonometry
+                                    </div>
+                                </div>
+                                <div class="rating">						
+                                <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star"><AiOutlineStar /></i>
+                                    <span class="d-inline-block average-rating">4.4</span>
+                                </div>
+                                <div class="author-country">
+                                    <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Chennai, India.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-box">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="profile.html">
+                                    <img class="img-fluid" alt="" src={u7} width="600" height="300" />
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="profile.html">Mohan Brahmi</a></h3>
+                                <div class="author-info">
+                                    <div class="author-name">
+                                        ASP.NET,Computer Gaming
+                                    </div>
+                                </div>
+                                <div class="rating">						
+                                <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star"><AiOutlineStar /></i>
+                                    <span class="d-inline-block average-rating">4.4</span>
+                                </div>
+                                <div class="author-country">
+                                    <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Kochi, Hyderabad.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-box">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="profile.html">
+                                    <img class="img-fluid" alt="" src={u15} width="600" height="300" />
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="profile.html">Misty Lundy</a></h3>
+                                <div class="author-info">
+                                    <div class="author-name">
+                                        Computer Programming
+                                    </div>
+                                </div>
+                                <div class="rating">
+                                <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star"><AiOutlineStar /></i>
+                                    <span class="d-inline-block average-rating">4.4</span>
+                                </div>
+                                <div class="author-country">
+                                    <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Paris, France</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-box">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="profile.html">
+                                    <img class="img-fluid" alt="" src={u9} width="600" height="300" />
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="profile.html">Vern Campbell</a></h3>
+                                <div class="author-info">
+                                    <div class="author-name">
+                                        Digital Marketer
+                                    </div>
+                                </div>
+                                <div class="rating">
+                                <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star"><AiOutlineStar /></i>
+                                    <span class="d-inline-block average-rating">4.4</span>
+                                </div>
+                                <div class="author-country">
+                                    <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Paris, France</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-box">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="profile.html">
+                                    <img class="img-fluid" alt="" src={u13} width="600" height="300" />
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="profile.html">Jessica Fogarty</a></h3>
+                                <div class="author-info">
+                                    <div class="author-name">
+                                        UNIX,Calculus,Trigonometry
+                                    </div>
+                                </div>
+                                <div class="rating">
+                                <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star"><AiOutlineStar /></i>
+                                    <span class="d-inline-block average-rating">4.4</span>
+                                </div>
+                                <div class="author-country">
+                                    <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Paris, France</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-box">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="profile.html">
+                                    <img class="img-fluid" alt="" src={u11} width="600" height="300"/>
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="profile.html">Evelyn Stafford</a></h3>
+                                <div class="author-info">
+                                    <div class="author-name">
+                                        ASP.NET,Computer Gaming
+                                    </div>
+                                </div>
+                                <div class="rating">
+                                <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star"><AiOutlineStar /></i>
+                                    <span class="d-inline-block average-rating">4.4</span>
+                                </div>
+                                <div class="author-country">
+                                    <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Paris, France</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="course-box">
+                        <div class="product">
+                            <div class="product-img">
+                                <a href="profile.html">
+                                    <img class="img-fluid" alt="" src={u12} width="600" height="300"/>
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="profile.html">Christopher Carroll</a></h3>
+                                <div class="author-info">
+                                    <div class="author-name">
+                                        Computer Programming
+                                    </div>
+                                </div>
+                                <div class="rating">
+                                <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star filled"><AiFillStar/></i>
+                                    <i class="fas fa-star"><AiOutlineStar /></i>
+                                    <span class="d-inline-block average-rating">4.4</span>
+                                </div>
+                                <div class="author-country">
+                                    <p class="mb-0"><i class="fas fa-map-marker-alt"><FaMapMarkerAlt/></i> Paris, France</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    </OwlCarousel> */}
                 </div>
           
             </section>
@@ -927,31 +1003,28 @@ If as a user, you wish to refund the payment if they do not meet thier required 
 										<p>Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs. </p>
 										<div class="social-icon">
 											<ul>
-                                           
-                                            {/* <span className = "socials"> <a href = 'https://www.facebook.com/ekode.crux/'><AiFillFacebook/></a>
-                <a href = 'https://www.instagram.com/ekodecrux/'><AiFillInstagram/> </a>
-                <a href = 'https://twitter.com/ekodecrux/'><AiFillTwitterSquare/></a> 
-                <a href = 'https://www.linkedin.com/in/ekode-crux-a59694208/'><AiFillLinkedin/></a> 
-                <a href = 'https://www.quora.com/profile/Ekode-Crux'><FaQuora/></a> 
-                <a href = 'https://medium.com/@ekodecrux'><AiFillMediumSquare/></a></span> */}
 												<li>
-                                                <a href = 'https://www.facebook.com/ekode.crux/'><FaFacebookF/></a>
+                                                <a href = 'https://www.facebook.com/Ekodecruxtraining/'><FaFacebookF/></a>
 												</li>
 												<li>
-                                                <a href = 'https://twitter.com/ekodecrux/'><FaTwitter/></a>
+                                                <a href = 'https://twitter.com/ekodecrux?lang=en'><FaTwitter/></a>
 												</li>
 												<li>
-                                                <a href = 'https://www.linkedin.com/in/ekode-crux-a59694208/'><FaLinkedinIn/></a> 
+                                                <a href = 'https://in.linkedin.com/company/ekodecrux'><FaLinkedinIn/></a> 
 												</li>
 												<li>
-                                                <a href = 'https://www.instagram.com/ekodecrux/'><FaInstagram/> </a>
+                                                <a href = 'https://www.instagram.com/ekodecrux/?hl=en'><FaInstagram/> </a>
 												</li>
                                                 <li>
                                                 <a href = 'https://www.quora.com/profile/Ekode-Crux'><FaQuora/></a> 
                                                 </li>
                                                 <li>
-                                                <a href = 'https://medium.com/@ekodecrux'><FaMediumM/></a>
+                                                <a href = 'https://ekodecrux.medium.com/'><FaMediumM/></a>
                                                 </li>
+                                                <li>
+                                                    <a href="https://in.pinterest.com/pin/1131107262631880807/"><FaPinterest /></a>
+                                                </li>
+
 											</ul>
 										</div>
 									</div>
@@ -960,34 +1033,44 @@ If as a user, you wish to refund the payment if they do not meet thier required 
 								
 							</div>
 							
-							<div class="col-lg-3 col-md-6">
+							<div class="col-lg-2 col-md-6">
 							
 								{/* <!-- Footer Widget --> */}
 								<div class="footer-widget footer-menu">
-									<h2 class="footer-title">For Mentee</h2>
+									<h2 class="footer-title">About</h2>
 									<ul>
-										<li><a href="#">Search Mentors</a></li>
-										<li><a href="#">Login</a></li>
-										<li><a onClick={this.handleSignup} href="#">Register</a></li>
-										<li><a href="#">Booking</a></li>
-										<li><a href="#">Mentee Dashboard</a></li>
+										<li><span onClick={this.about}><a>About Us</a></span></li>
+										<li><span onClick={this.service}><a>Product and Services</a></span></li>
 									</ul>
 								</div>
 								{/* <!-- /Footer Widget --> */}
 								
 							</div>
 							
-							<div class="col-lg-3 col-md-6">
+							<div class="col-lg-2 col-md-6">
 							
 								{/* <!-- Footer Widget --> */}
 								<div class="footer-widget footer-menu">
-									<h2 class="footer-title">For Mentors</h2>
+									<h2 class="footer-title">Policy</h2>
 									<ul>
-										<li><a href="#">Appointments</a></li>
-										<li><a href="#">Chat</a></li>
-										<li><a href="#">Login</a></li>
-										<li><a href="#">Register</a></li>
-										<li><a href="#">Mentor Dashboard</a></li>
+										<li><span onClick={this.refund}> <a>Refund and Return</a></span></li>
+										<li><span onClick={this.price}> <a>Price and Payment</a></span></li>
+									</ul>
+								</div>
+								{/* <!-- /Footer Widget --> */}
+								
+							</div>
+
+                            <div class="col-lg-2 col-md-6">
+							
+								{/* <!-- Footer Widget --> */}
+								<div class="footer-widget footer-menu">
+									<h2 class="footer-title">Help</h2>
+									<ul>
+										<li><span onClick={this.policy}> <a>Privacy Policies</a> </span></li>
+										<li><span onClick={this.terms}><a>Terms and Services</a></span></li>
+										<li><span onClick={this.registration}><a>Registration name of Business</a></span></li>
+                                        <li><span onClick={this.FAQ}><a>FAQ</a></span></li>
 									</ul>
 								</div>
 								{/* <!-- /Footer Widget --> */}
@@ -1006,7 +1089,7 @@ If as a user, you wish to refund the payment if they do not meet thier required 
 										</div>
 										<p>
 											<i class="fas fa-phone-alt"></i>
-											+1 95730 17223
+											+91-91216 64855
 										</p>
 										<p class="mb-0">
 											<i class="fas fa-envelope"></i>

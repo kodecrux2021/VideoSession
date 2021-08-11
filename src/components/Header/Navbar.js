@@ -9,6 +9,14 @@ import { ReactComponent as EcodeLogo } from '../../assets/eKodeLogo.svg'
 import kodecrux from '../../assets/img/logo.png';
 import LOGO from "../../assets/img/logo.png"
 
+// Detect device 
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile
+} from "react-device-detect";
+
 
 export default function Navbar(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -63,7 +71,7 @@ export default function Navbar(props) {
                     borderBottom:"1px solid #e3e8eb"}}
                     >
                 <Link to='/'>
-                  <img src={kodecrux} style={{ height: '30px',marginLeft: '15px', zIndex: 1000}} />
+                  <img src={kodecrux} style={{ height: isMobile ? 15 : 30, marginLeft: '15px', zIndex: 1000}} />
                 </Link>
                 {(localStorage.token) ?
                       <div style={{flex:1, display:'flex', justifyContent:'flex-end', gap:40, alignItems:'center'}}>
@@ -175,7 +183,7 @@ export default function Navbar(props) {
             )}
           </Drawer>
         </div>
-            <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px', zIndex: 1000}} onClick = {() => history.push('/')}/>
+            <img src={kodecrux} style={{ height: '30px', position: 'absolute',marginLeft: '15px', marginTop: -50, zIndex: 1000}} onClick = {() => history.push('/')}/>
         </Hidden>
       
     </>

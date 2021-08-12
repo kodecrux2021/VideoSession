@@ -16,9 +16,10 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
 import {ReactComponent as LinkdinSvg } from '../../assets/linkedin.svg'
 import OtpInput from 'react-otp-input';
-
-
+import firebase from "firebase/app";
+import "firebase/auth";
 import app from '../firebase/firebaseApp'
+
 
 let recaptchaVerifier = null;
 
@@ -32,8 +33,8 @@ export default function Registration(props) {
   const [isVerifying, setIsVerifying] = useState(false)
   const [confirmObj, setConfirmObj] = useState(null)
     useEffect(()=>{
-      app.auth().languageCode = 'en';
-      recaptchaVerifier = new app.auth.RecaptchaVerifier("captcha_cont", {
+      firebase.auth().languageCode = 'en';
+      recaptchaVerifier = new firebase.auth.RecaptchaVerifier("captcha_cont", {
         'size': 'invisible',
         'callback': (response) => {
           // reCAPTCHA solved, allow signInWithPhoneNumber.

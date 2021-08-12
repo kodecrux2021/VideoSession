@@ -304,9 +304,9 @@ class RegistrationContainer extends Component {
                         <Link to='/'> <CloseIcon style={{fontSize:30, color:'black'}} /> </Link>
                     </div>
                     <div style={{marginTop:30, display:'flex', justifyContent:'center'}}>
-                        <Card elevation={1} style={{width:100, height:100, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
+                        <Card elevation={1} style={{width:180, height:50, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
                             <Link to='/'>
-                                <img src={Logo} style={{ height: '15px', zIndex: 1000}} />
+                                <img src={Logo} style={{ height: '30px', zIndex: 1000}} />
                             </Link>
                         </Card>
                     </div>

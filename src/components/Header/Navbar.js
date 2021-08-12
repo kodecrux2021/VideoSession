@@ -126,11 +126,11 @@ export default function Navbar(props) {
                 <h5>HOME</h5>
               </p>
             </Link>
-            <Link to="/courses">
+            {/* <Link to="/courses">
               <p>
                 <h5>E-LEARNING MARKETPLACE</h5>
               </p>
-            </Link>
+            </Link> */}
             {localStorage.token && (
               <Link to="/notifications/messages">
                 <p>

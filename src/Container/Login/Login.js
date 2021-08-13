@@ -189,6 +189,7 @@ function Login() {
 
     const responseGoogle = async(response) => {
       console.log('google',response);
+      let status = false
       if (response.accessToken) {
         let data = {"token": response.accessToken}
         await fetch(url + '/google/', {
@@ -201,7 +202,7 @@ function Login() {
           body: JSON.stringify(data)
       })
       .then((response) => {
-          console.log("response", response)
+          console.log("google response is", response)
           if (response['status'] === 201 || response['status'] === 200) {
               return response.json()
           } else if (response['status'] === 400) {
@@ -209,7 +210,10 @@ function Login() {
           }
       })
       .then((result) => {
-          //console.log('result', result);
+          console.log('result', result);
+          if (result.status === "FIRST") {
+              status = true
+          }
           if(result){
             localStorage.setItem('token',result.access_token)
             localStorage.setItem('refresh',result.refresh_token)
@@ -230,12 +234,17 @@ function Login() {
     .then(res => res.json())
     .then(
         (result) => {
-          console.log('result',result)
+          console.log('result on login',result)
           if(result){
             localStorage.setItem('user_id', result.user?.id);
             localStorage.setItem('user_name', result.user?.first_name);
             message.info('Logged In Succsessfully!!!');
-            history.replace('/')  
+            if (status) {
+                history.push('/selector')
+            }else {
+                history.replace('/') 
+            }
+             
         }
         }
     )

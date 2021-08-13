@@ -411,7 +411,7 @@ If as a user, you wish to refund the payment if they do not meet thier required 
 					<div class="section-header text-center">
 						<span>eKodeCrux Flow</span>
 						<h2>How does it works ?</h2>
-						<p class="sub-title">Are you looking to get online Codeing Help? Now it's very simple, Sign up with eKodeCrux</p>
+						<p class="sub-title">Are you looking to get online Coding Help? Now it's very simple, Sign up with eKodeCrux</p>
 					</div>
                     
                     <Row style={{justifyContent:'center'}}>

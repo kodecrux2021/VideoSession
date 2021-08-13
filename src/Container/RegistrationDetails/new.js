@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 import { Card, Checkbox, TextField } from '@material-ui/core';
 import {ReactComponent as EkodeLogo} from '../../assets/eKodeLogo.svg';
 import axios from 'axios'
+import Logo from '../../assets/img/logo.png'
 
 
 function getBase64(file) {
@@ -113,7 +114,8 @@ class New extends React.Component {
       .then((res) => res.json())
       .then((result) => {
         //console.log("result", result);
-        this.setState({ tech_list: result });
+        this.setState({ tech_list: result.results });
+        console.log("techList", result)
       });
   }
 
@@ -378,7 +380,7 @@ class New extends React.Component {
               })
               .then((result) => {
                 //console.log(result);
-                this.props.history.push("/verification"); //         <=================================Change here
+                this.props.history.push("/"); //         <=================================Change here
               });
           } 
         })
@@ -504,11 +506,11 @@ class New extends React.Component {
             <Link to='/'> <CloseIcon style={{fontSize:30, color:'black'}} /> </Link>
         </div>
         <div style={{marginTop:30, display:'flex', justifyContent:'center', marginBottom:10}}>
-            <Card elevation={2} style={{width:100, height:100, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
-                <Link to='/'>
-                    <EkodeLogo  />
-                </Link>
-            </Card>
+          <Card elevation={1} style={{width:180, height:50, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
+            <Link to='/'>
+                <img src={Logo} style={{ height: '30px', zIndex: 1000}} />
+            </Link>
+          </Card>
         </div>
 
         <div className="registration__page__two">

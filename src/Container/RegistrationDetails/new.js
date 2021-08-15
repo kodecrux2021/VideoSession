@@ -1,21 +1,19 @@
 import React from "react";
 import { Col } from "react-bootstrap";
 import "./style.css";
-import { Upload, Modal, Button } from "antd";
+import { Upload, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Select from "react-select";
-// import icon from "../../assets/images/reg2.jpeg";
 import { message } from "antd";
-import Navbar from "../../components/Header/Navbar";
 import { url } from "../../Server/GlobalUrl";
-import { DatePicker} from "antd";
-import { UploadOutlined } from '@ant-design/icons';
 import CloseIcon from '@material-ui/icons/Close';
 import { Link } from 'react-router-dom';
 import { Card, Checkbox, TextField } from '@material-ui/core';
-import {ReactComponent as EkodeLogo} from '../../assets/eKodeLogo.svg';
+
 import axios from 'axios'
 import Logo from '../../assets/img/logo.png'
+
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 function getBase64(file) {
@@ -66,7 +64,8 @@ class New extends React.Component {
     relevant_experience: null,
     date_of_birth: "",
 
-    checked: false
+    checked: false,
+    Loader : false
   };
 
   onChange = (date, dateString) => {
@@ -160,6 +159,7 @@ class New extends React.Component {
 
   onSubmit = async (e) => {
     e.preventDefault();
+    this.setState({Loader : true})
     let designationFormat = /^[A-Za-z ]{1,40}$/;
     
     let client = localStorage.getItem('is_client')
@@ -172,6 +172,7 @@ class New extends React.Component {
         this.state.state === "" 
         
         ) {
+          this.setState({Loader : false})
           if (this.state.pincode === "" || this.state.pincode === null) {
             message.info("Please Fill Pincode");
           } else if (this.state.city === "") {
@@ -202,7 +203,7 @@ class New extends React.Component {
         {
           console.log("hello");
         }
-      
+        this.setState({Loader : false})
       if (this.state.fileList.length === 0) {
         message.info("Please upload profile picture");
       }
@@ -323,8 +324,10 @@ class New extends React.Component {
       }).then((response) => {
         console.log("response", response);
         if (response["status"] === 201 || response["status"] === 200) {
+
           return response.data;
         } else if (response["status"] === 400 || response["status"] === 500) {
+          this.setState({Loader : false})
           message.info("Something went wrong");
           //console.log("Something is wrong");
         }
@@ -349,16 +352,14 @@ class New extends React.Component {
           if (response["status"] === 201 || response["status"] === 200) {
             return response.data;
           } else if (response["status"] === 400 || response["status"] === 500) {
+            this.setState({Loader : false})
             message.info("Something went wrong");
             //console.log("Something is wrong");
           }
         })
         .then(async (result) => {
-          console.log(result);
-
           let auth = localStorage.getItem("token");
           let id = localStorage.getItem("educator_id");
-          console.log(id)
           if (localStorage.getItem("is_client")) {
            await fetch(`${url}/api/educatorcreate/${id}/`, {
               method: "PUT",
@@ -374,12 +375,14 @@ class New extends React.Component {
                 if (response["status"] === 201 || response["status"] === 200) {
                   return response.json();
                 } else if (response["status"] === 400) {
+                  this.setState({Loader : false})
                   message.info("Something went wrong!");
                   // console.log("Something is wrong");
                 }
               })
               .then((result) => {
                 //console.log(result);
+                this.setState({Loader : false})
                 this.props.history.push("/"); //         <=================================Change here
               });
           } 
@@ -500,275 +503,284 @@ class New extends React.Component {
           </div>
         </div>
       ) : null;
-    return (
-      <>
-        <div style={{position:'absolute', display:'flex', flex:1, width:'100%', alignItems:'flex-end',justifyContent:'flex-end', paddingRight:40}}>
-            <Link to='/'> <CloseIcon style={{fontSize:30, color:'black'}} /> </Link>
-        </div>
-        <div style={{marginTop:30, display:'flex', justifyContent:'center', marginBottom:10}}>
-          <Card elevation={1} style={{width:180, height:50, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
-            <Link to='/'>
-                <img src={Logo} style={{ height: '30px', zIndex: 1000}} />
-            </Link>
-          </Card>
-        </div>
 
-        <div className="registration__page__two">
-          <form className="registration__details__container">
-            <div className="registration__details__img">
-              {/* <img src={icon} alt="KodeCrux"></img> */}
-              <>
-              
-              {/* <input type= 'file' onChange = {(e)=>this.change(e)} /> */}
-                <Upload
-                beforeUpload = {(file) => {
-                  const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
-                      if (!isJPG) {
-                          message.error('You can only upload JPG or PNG file!');
-                          return false;
-                      } else {
-                          return true;
-                      }
-                  }}
-                  customRequest={dummyRequest}
-                  //  action="https://next.json-generator.com/api/json/get/4ytyBoLK8"
-                  listType="picture-card"
-                  fileList={fileList}
-                  onPreview={this.handlePreview}
-                  onChange={(e) => this.handleChange(e)}
-                >
-                  {fileList.length >= 1 ? null : uploadButton}
-                </Upload>
-                {/* <Upload {...props}>
-                  <Button icon={<UploadOutlined />}>Upload</Button>
-                </Upload> */}
-                <Modal
-                  visible={previewVisible}
-                  title={previewTitle}
-                  footer={null}
-                  onCancel={this.handleCancel}
-                >
-                  <img
-                    alt="example"
-                    style={{ width: "100%" }}
-                    src={previewImage}
-                  />
-                </Modal>
-                <span style={{ color: "#3743B1", fontSize:12}}>
-                  Profile Picture
-                </span>
-              </>
+      if (this.state.Loader) {
+        return (
+            <div style={{display:'flex', flex:1, justifyContent:'center', alignItems:'center', height:'100%'}}>
+                <CircularProgress />
             </div>
+        )
+    } else {
+      return (
+        <>
+          <div style={{position:'absolute', display:'flex', flex:1, width:'100%', alignItems:'flex-end',justifyContent:'flex-end', paddingRight:40}}>
+              <Link to='/'> <CloseIcon style={{fontSize:30, color:'black'}} /> </Link>
+          </div>
+          <div style={{marginTop:30, display:'flex', justifyContent:'center', marginBottom:10}}>
+            <Card elevation={1} style={{width:180, height:50, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
+              <Link to='/'>
+                  <img src={Logo} style={{ height: '30px', zIndex: 1000}} />
+              </Link>
+            </Card>
+          </div>
 
-            <Col style={{ marginTop: "10px" }}>
-              <div class="form__group" style={{display:'flex', gap:20}}>
-                <TextField variant="outlined" className="form__control" label="PIN CODE" type="number" value={this.state.pincode} onChange={(e) => this.handelData("pincode", e.target.value)} />
-                <TextField variant="outlined" className="form__control" label="CITY" type="text" value={this.state.city} onChange={(e) => this.handelData("city", e.target.value)} />
+          <div className="registration__page__two">
+            <form className="registration__details__container">
+              <div className="registration__details__img">
+                {/* <img src={icon} alt="KodeCrux"></img> */}
+                <>
+                
+                {/* <input type= 'file' onChange = {(e)=>this.change(e)} /> */}
+                  <Upload
+                  beforeUpload = {(file) => {
+                    const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+                        if (!isJPG) {
+                            message.error('You can only upload JPG or PNG file!');
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }}
+                    customRequest={dummyRequest}
+                    //  action="https://next.json-generator.com/api/json/get/4ytyBoLK8"
+                    listType="picture-card"
+                    fileList={fileList}
+                    onPreview={this.handlePreview}
+                    onChange={(e) => this.handleChange(e)}
+                  >
+                    {fileList.length >= 1 ? null : uploadButton}
+                  </Upload>
+                  {/* <Upload {...props}>
+                    <Button icon={<UploadOutlined />}>Upload</Button>
+                  </Upload> */}
+                  <Modal
+                    visible={previewVisible}
+                    title={previewTitle}
+                    footer={null}
+                    onCancel={this.handleCancel}
+                  >
+                    <img
+                      alt="example"
+                      style={{ width: "100%" }}
+                      src={previewImage}
+                    />
+                  </Modal>
+                  <span style={{ color: "#3743B1", fontSize:12}}>
+                    Profile Picture
+                  </span>
+                </>
               </div>
 
-              <div class="form__group">
-                <TextField variant="outlined" className="form__control" label="STATE" type="text" value={this.state.state} onChange={(e) => this.handelData("state", e.target.value)} />
-              </div>
-              
-              {educator}
+              <Col style={{ marginTop: "10px" }}>
+                <div class="form__group" style={{display:'flex', gap:20}}>
+                  <TextField variant="outlined" className="form__control" label="PIN CODE" type="number" value={this.state.pincode} onChange={(e) => this.handelData("pincode", e.target.value)} />
+                  <TextField variant="outlined" className="form__control" label="CITY" type="text" value={this.state.city} onChange={(e) => this.handelData("city", e.target.value)} />
+                </div>
 
-              {is_client === "true" ? null : (
-                <div className="trainer__details__ctr">
-                  <div class="form__group">
-                    <label style={{color:'#3743B1'}}>TECHNOLOGY</label>
-                    <Select
-                      className="react-selectcomponent"
-                      classNamePrefix="select"
-                      onChange={(value) => {
-                          this.handelData("technology", value)
-                        }}
-                      getOptionLabel={(option) => `${option.name}`}
-                      getOptionValue={(option) => `${option.id}`}
-                      isOptionSelected={(option) =>
-                        this.state.technology === option.name ? true : false
-                      }
-                      styles={customStyles}
-                      options={this.state.tech_list}
-                      isSearchable={true}
-                      isMulti
-                      openMenuOnClick={true}
-                      placeholder={"CHOOSE TECHNOLOGY"}
-                    />
-                  </div>
-                  
+                <div class="form__group">
+                  <TextField variant="outlined" className="form__control" label="STATE" type="text" value={this.state.state} onChange={(e) => this.handelData("state", e.target.value)} />
+                </div>
+                
+                {educator}
 
-                  <div class="form__group">
-                    <label style={{color:'#3743B1'}}>SUB TECHNOLOGY</label>
-                    <Select
-                      className="react-selectcomponent"
-                      classNamePrefix="name-select"
-                      onChange={(value) =>
-                        this.handelData("sub_technology", value)
-                      }
-                      getOptionLabel={(option) => `${option.name}`}
-                      getOptionValue={(option) => `${option.id}`}
-                      isOptionSelected={(option) =>
-                        this.state.sub_technology === option.name ? true : false
-                      }
-                      isMulti
-                      styles={customStyles}
-                      options={this.state.subtech_list}
-                      isSearchable={true}
-                      openMenuOnClick={true}
-                      placeholder={"CHOOSE SUB TECHNOLOGY"}
-                    />
-                  </div>
+                {is_client === "true" ? null : (
+                  <div className="trainer__details__ctr">
+                    <div class="form__group" style={{display:'flex', flexDirection:'column', alignItems:'flex-start'}}>
+                      <label style={{color:'#3743B1'}}>TECHNOLOGY</label>
+                      <Select
+                        className="react-selectcomponent"
+                        classNamePrefix="select"
+                        onChange={(value) => {
+                            this.handelData("technology", value)
+                          }}
+                        getOptionLabel={(option) => `${option.name}`}
+                        getOptionValue={(option) => `${option.id}`}
+                        isOptionSelected={(option) =>
+                          this.state.technology === option.name ? true : false
+                        }
+                        styles={customStyles}
+                        options={this.state.tech_list}
+                        isSearchable={true}
+                        isMulti
+                        openMenuOnClick={true}
+                        placeholder={"CHOOSE TECHNOLOGY"}
+                      />
+                    </div>
+                    
 
-                  <div class="form__group">
-                    <label style={{color:'#3743B1'}}>TOTAL EXPERIENCE</label>
-                    <Select
-                      className="react-selectcomponent"
-                      classNamePrefix="name-select"
-                      onChange={(value) =>
-                        this.handelData("total_experience", value)
-                      }
-                      getOptionLabel={(option) => `${option.name}`}
-                      getOptionValue={(option) => `${option}`}
-                      isOptionSelected={(option) =>
-                        this.state.sub_technology === option.name ? true : false
-                      }
-                      styles={customStyles}
-                      options={experienceData}
-                      isSearchable={true}
-                      openMenuOnClick={true}
-                      placeholder={"YEARS OF EXPERIENCE"}
-                    />
-                  </div>
+                    <div class="form__group" style={{display:'flex', flexDirection:'column', alignItems:'flex-start'}}>
+                      <label style={{color:'#3743B1'}}>SUB TECHNOLOGY</label>
+                      <Select
+                        className="react-selectcomponent"
+                        classNamePrefix="name-select"
+                        onChange={(value) =>
+                          this.handelData("sub_technology", value)
+                        }
+                        getOptionLabel={(option) => `${option.name}`}
+                        getOptionValue={(option) => `${option.id}`}
+                        isOptionSelected={(option) =>
+                          this.state.sub_technology === option.name ? true : false
+                        }
+                        isMulti
+                        styles={customStyles}
+                        options={this.state.subtech_list}
+                        isSearchable={true}
+                        openMenuOnClick={true}
+                        placeholder={"CHOOSE SUB TECHNOLOGY"}
+                      />
+                    </div>
 
-                  <div class="form__group">
-                    <label style={{color:'#3743B1'}}>RELEVANT EXPERIENCE</label>
-                    <Select
-                      className="react-selectcomponent"
-                      classNamePrefix="name-select"
-                      onChange={(value) =>
-                        this.handelData("relevant_experience", value)
-                      }
-                      getOptionLabel={(option) => `${option.name}`}
-                      getOptionValue={(option) => `${option}`}
-                      isOptionSelected={(option) =>
-                        this.state.sub_technology === option.name ? true : false
-                      }
-                      styles={customStyles}
-                      options={experienceData}
-                      isSearchable={true}
-                      openMenuOnClick={true}
-                      placeholder={"YEARS OF RELEVANT EXPERIENCE"}
-                    />
-                  </div>
-                  <div class="form__group">
-                    {/* <label>Designation</label>
-                    <input
-                      type="text"
-                      value={this.state.desig}
-                      onChange={(e) => this.handelData("desig", e.target.value)}
-                      className="form__control"
-                      placeholder="Designation"
-                    /> */}
-                    <TextField variant="outlined" className="form__control"  label="DESIGNATION" type="text" value={this.state.desig} onChange={(e) => this.handelData("desig", e.target.value)} />
-                  </div>
-                  <div class="form__group">
-                    {/* <label>Fees</label>
-                    <input
-                      type="number"
-                      value={this.state.fees}
-                      onChange={(e) => this.handelData("fees", e.target.value)}
-                      className="form__control"
-                      placeholder="Fees"
-                    /> */}
-                    <TextField variant="outlined" className="form__control"  label="FEE" type="text" value={this.state.fees} onChange={(e) => this.handelData("fees", e.target.value)} />
-                  </div>
-                  {/* <div class="form__group">
-                    <label>Rating</label>
-                    <input
-                      type="number"
-                      value={this.state.rating}
-                      onChange={(e) =>
-                        this.handelData("rating", e.target.value)
-                      }
-                      className="form__control"
-                      placeholder="Rating"
-                    />
-                  </div> */}
-                  <div class="form__group" style={{padding:10}}>
-                    <div
-                      style={{ display: "flex", flexDirection:'column' }}
-                    >
-                      <label style={{ marginRight: "3vw", color:'#3743B1' }}>
-                        ATTACH RESUME
-                      </label>
-                      
-                        <input
-                          type="file"
-                          // className=""
-                          // className="form__control"
-                          onChange={(e) => this.handleResume(e)}
-                          accept="image/*, .pdf, .doc,.docx"
-                          id="raised-button-file-1"
-                          hidden
-                        />
-                        <label htmlFor="raised-button-file-1">
-                          <div style={{maxWidth:100, padding:5, textAlign:'center', borderRadius:10}} className="upload-image" component="span">
-                            SELECT FILE
-                          </div>
-                        </label> 
-                  
-                  
-                        <div>{this.state.resume?.name}</div>
+                    <div class="form__group" style={{display:'flex', flexDirection:'column', alignItems:'flex-start'}}>
+                      <label style={{color:'#3743B1'}}>TOTAL EXPERIENCE</label>
+                      <Select
+                        className="react-selectcomponent"
+                        classNamePrefix="name-select"
+                        onChange={(value) =>
+                          this.handelData("total_experience", value)
+                        }
+                        getOptionLabel={(option) => `${option.name}`}
+                        getOptionValue={(option) => `${option}`}
+                        isOptionSelected={(option) =>
+                          this.state.sub_technology === option.name ? true : false
+                        }
+                        styles={customStyles}
+                        options={experienceData}
+                        isSearchable={true}
+                        openMenuOnClick={true}
+                        placeholder={"YEARS OF EXPERIENCE"}
+                      />
+                    </div>
+
+                    <div class="form__group" style={{display:'flex', flexDirection:'column', alignItems:'flex-start'}}>
+                      <label style={{color:'#3743B1'}}>RELEVANT EXPERIENCE</label>
+                      <Select
+                        className="react-selectcomponent"
+                        classNamePrefix="name-select"
+                        onChange={(value) =>
+                          this.handelData("relevant_experience", value)
+                        }
+                        getOptionLabel={(option) => `${option.name}`}
+                        getOptionValue={(option) => `${option}`}
+                        isOptionSelected={(option) =>
+                          this.state.sub_technology === option.name ? true : false
+                        }
+                        styles={customStyles}
+                        options={experienceData}
+                        isSearchable={true}
+                        openMenuOnClick={true}
+                        placeholder={"YEARS OF RELEVANT EXPERIENCE"}
+                      />
+                    </div>
+                    <div class="form__group">
+                      {/* <label>Designation</label>
+                      <input
+                        type="text"
+                        value={this.state.desig}
+                        onChange={(e) => this.handelData("desig", e.target.value)}
+                        className="form__control"
+                        placeholder="Designation"
+                      /> */}
+                      <TextField variant="outlined" className="form__control"  label="DESIGNATION" type="text" value={this.state.desig} onChange={(e) => this.handelData("desig", e.target.value)} />
+                    </div>
+                    <div class="form__group">
+                      {/* <label>Fees</label>
+                      <input
+                        type="number"
+                        value={this.state.fees}
+                        onChange={(e) => this.handelData("fees", e.target.value)}
+                        className="form__control"
+                        placeholder="Fees"
+                      /> */}
+                      <TextField variant="outlined" className="form__control"  label="FEE" type="text" value={this.state.fees} onChange={(e) => this.handelData("fees", e.target.value)} />
+                    </div>
+                    {/* <div class="form__group">
+                      <label>Rating</label>
+                      <input
+                        type="number"
+                        value={this.state.rating}
+                        onChange={(e) =>
+                          this.handelData("rating", e.target.value)
+                        }
+                        className="form__control"
+                        placeholder="Rating"
+                      />
+                    </div> */}
+                    <div class="form__group" style={{padding:10}}>
+                      <div
+                        style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}
+                      >
+                        <label style={{ marginRight: "3vw", color:'#3743B1' }}>
+                          ATTACH RESUME
+                        </label>
+                        
+                          <input
+                            type="file"
+                            // className=""
+                            // className="form__control"
+                            onChange={(e) => this.handleResume(e)}
+                            accept="image/*, .pdf, .doc,.docx"
+                            id="raised-button-file-1"
+                            hidden
+                          />
+                          <label htmlFor="raised-button-file-1">
+                            <div style={{maxWidth:100, padding:5, textAlign:'center', borderRadius:10}} className="upload-image" component="span">
+                              SELECT FILE
+                            </div>
+                          </label> 
+                    
+                    
+                          <div>{this.state.resume?.name}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* <div class="form__group">
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <label>Date of Birth</label>
-                  <div style={{ margin: "0 60px" }}>
-                    <DatePicker onChange={this.onChange} format="YYYY-MM-DD"/>
+                {/* <div class="form__group">
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <label>Date of Birth</label>
+                    <div style={{ margin: "0 60px" }}>
+                      <DatePicker onChange={this.onChange} format="YYYY-MM-DD"/>
+                    </div>
                   </div>
-                </div>
+                </div> */}
+              </Col>
+              {/* <div>
+                <label>Attach Resume</label>{" "}
               </div> */}
-            </Col>
-            {/* <div>
-              <label>Attach Resume</label>{" "}
-            </div> */}
-            {/* <div>
-              <input
-                type="file"
-                className="form__control"
-                onChange={(e) => this.handleResume(e)}
-                accept="image/*, .pdf, .doc,.docx"
-              />
-            </div> */}
-            
-            
+              {/* <div>
+                <input
+                  type="file"
+                  className="form__control"
+                  onChange={(e) => this.handleResume(e)}
+                  accept="image/*, .pdf, .doc,.docx"
+                />
+              </div> */}
+              
+              
 
-            <Col className="registration__details__footer">
-              <div style={{display:'flex', flexDirection:'row', width:"100%", gap:5}}>
-                <Checkbox style={{color:"#3743B1"}} checked={this.state.checked} onChange={() => {this.setState({checked : !this.state.checked})}} />
-                <span>By register I agree To</span>
-                <span>
-                  <a style={{ color: "#3743B1", cursor: "pointer" }}>
-                    Term & Condition
-                  </a>{" "}
-                  and{" "}
-                  <a style={{ color: "#3743B1", cursor: "pointer" }}>
-                    Privacy policy
-                  </a>
-                </span>
-              </div>
-              <button type="submit" disabled={!this.state.checked} style={!this.state.checked ? {backgroundColor:'#BBBBBB', color:'white', border:'none'} : null} onClick={this.onSubmit}>
-                DONE
-              </button>
-            </Col>
-          </form>
-        </div>
-      </>
-    );
+              <Col className="registration__details__footer">
+                <div style={{display:'flex', flexDirection:'row', width:"100%", gap:5}}>
+                  <Checkbox style={{color:"#3743B1"}} checked={this.state.checked} onChange={() => {this.setState({checked : !this.state.checked})}} />
+                  <span>By register I agree To</span>
+                  <span>
+                    <a style={{ color: "#3743B1", cursor: "pointer" }}>
+                      Term & Condition
+                    </a>{" "}
+                    and{" "}
+                    <a style={{ color: "#3743B1", cursor: "pointer" }}>
+                      Privacy policy
+                    </a>
+                  </span>
+                </div>
+                <button type="submit" disabled={!this.state.checked} style={!this.state.checked ? {backgroundColor:'#BBBBBB', color:'white', border:'none'} : null} onClick={this.onSubmit}>
+                  DONE
+                </button>
+              </Col>
+            </form>
+          </div>
+        </>
+      );
+    }
   }
 }
 

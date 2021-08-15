@@ -116,9 +116,9 @@ componentDidMount() {
         .then(
           (result) => {
            console.log('result', result)
-            this.setState({ technology_list: result })
+            this.setState({ technology_list: result.results })
             let selected_Techs = []
-            result.forEach((k,i) => {
+            result.results.forEach((k,i) => {
                 searchData.technology.forEach((v,i_n) => {
                     if (k.id === v) {
                         selected_Techs.push(k)
@@ -401,7 +401,7 @@ componentDidMount() {
                     </div>
                   ) : (
                     <div className="body__ctr1">
-                        <div className="advance_Card" style={isMobile ? {marginTop:80, display:'flex', justifyContent:'center'} : {}}>
+                        <div className="advance_Card" style={isMobile ? {marginTop:40, display:'flex', justifyContent:'center'} : {}}>
                         <div className="advance_search_card">
                             <Typography style={{fontSize:22, fontWeight:400}}>Advance Search</Typography>
                             <div style={{marginTop:20}}>

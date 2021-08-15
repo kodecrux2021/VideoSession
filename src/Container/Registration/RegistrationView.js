@@ -19,6 +19,7 @@ import OtpInput from 'react-otp-input';
 import firebase from "firebase/app";
 import "firebase/auth";
 import app from '../firebase/firebaseApp'
+import { isMobile } from 'react-device-detect';
 
 
 let recaptchaVerifier = null;
@@ -63,8 +64,11 @@ export default function Registration(props) {
           });
     }
     console.log("otpSent: ", otpSent)
+
     const verifyOTP = ()=>{
       setIsVerifying(true);
+      props.handleVerifyState(true);
+
       confirmObj.confirm(otp).then((result) => {
         // User signed in successfully.
         const user = result.user;
@@ -75,9 +79,10 @@ export default function Registration(props) {
         // User couldn't sign in (bad verification code?)
         // ...
       }).finally(e=>{
-        setIsVerifying(false)
+        // setIsVerifying(false)
       });
     }
+
     const responseFacebook = async (response) => {
         console.log('respose',response)
          if (response.accessToken) {
@@ -148,56 +153,63 @@ export default function Registration(props) {
 
 
     const responseGoogle = async(response) => {
-      console.log('google',response);
+      let status = false
       if (response.accessToken) {
-let data = {"token": response.accessToken}
-        await fetch(url + '/google/', {
-          method: 'POST',
-          headers: {
-              'Accept': 'application/json, text/plain',
-              'Content-Type': 'application/json;charset=UTF-8',
-  
-          },
-          body: JSON.stringify(data)
-      })
-      .then((response) => {
-          console.log("response", response)
-          if (response['status'] === 201 || response['status'] === 200) {
-              return response.json()
-          } else if (response['status'] === 400) {
-             console.log('errorrr')
-          }
-      })
-      .then((result) => {
-          //console.log('result', result);
-          if(result){
-            localStorage.setItem('token',result.access_token)
-            localStorage.setItem('refresh',result.refresh_token)
-            localStorage.setItem('username',result.username)
-            // history.push('/')           
-          }
-          
-      })
-      let auth = localStorage.getItem('token')
-      await fetch(url + '/currentuser/', {
-        method:'GET',
-        headers: {
-          'Accept': 'application/json',
-         'Content-Type': 'application/json',
-         'Authorization': 'Bearer ' + auth,
-       },
-    })
-    .then(res => res.json())
-    .then(
-        (result) => {
-          //console.log('result',result)
-          if(result){
-            localStorage.setItem('user_id', result.user?.id);
-            localStorage.setItem('user_name', result.user?.first_name);
-            message.info('Logged In Succsessfully!!!');
-            history.push('/selector')  
-        }
-        }
+      let data = {"token": response.accessToken}
+              await fetch(url + '/google/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain',
+                    'Content-Type': 'application/json;charset=UTF-8',
+        
+                },
+                body: JSON.stringify(data)
+            })
+            .then((response) => {
+                console.log("response", response)
+                if (response['status'] === 201 || response['status'] === 200) {
+                    return response.json()
+                } else if (response['status'] === 400) {
+                  console.log('errorrr')
+                }
+            })
+            .then((result) => {
+                if (result.status === "FIRST") {
+                  status = true
+                }
+                if(result){
+                  localStorage.setItem('token',result.access_token)
+                  localStorage.setItem('refresh',result.refresh_token)
+                  localStorage.setItem('username',result.username)
+                  // history.push('/')           
+                }
+                
+            })
+            let auth = localStorage.getItem('token')
+            await fetch(url + '/currentuser/', {
+              method:'GET',
+              headers: {
+                'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + auth,
+            },
+          })
+          .then(res => res.json())
+          .then(
+              (result) => {
+                //console.log('result',result)
+                if(result){
+                  localStorage.setItem('user_id', result.user?.id);
+                  localStorage.setItem('user_name', result.user?.first_name);
+                  message.info('Logged In Succsessfully!!!');
+
+                  if (status) {
+                      history.push('/selector')
+                  }else {
+                      history.replace('/') 
+                  } 
+              }
+              }
     )
 
 
@@ -216,10 +228,10 @@ let data = {"token": response.accessToken}
 
     return (
        
-            <div className="__container">
+            <div className="__container" style={isMobile ? {padding:50} : {padding:0}}>
               <div className='registration__details__container' >
                 <div className="_header">
-                    <div style={{display:'flex', flexDirection:'column'}}>
+                    <div style={{display:'flex', flexDirection:'column', alignItems:'flex-start'}}>
                         <h1>Register</h1>
                         <p style={{fontSize:16}}>Sign Up to eKodecrux</p>
                     </div>
@@ -231,18 +243,9 @@ let data = {"token": response.accessToken}
                           buttonText="SIGN UP WITH GOOGLE"
                           onSuccess={responseGoogle}
                           onFailure={responseGoogle}
-                          icon= {<GoogleLogo />}
-                          // style={inStyle}    
+                          icon= {<GoogleLogo />}  
                           />
-                        {/* <FacebookLogin
-                          cssClass = 'facebook'
-                          appId="375577453526335" //APP ID NOT CREATED YET
-                          textButton ="SIGN UP WITH FACEBOOK"
-                          fields="name,email,picture"
-                          callback={responseFacebook}
-                          icon= {<div><FacebookLogo /></div>}
-                          /> */}
-                        <LinkedIn
+                        {/* <LinkedIn
                             className = 'google flex1'
                             clientId="78hfx4m366u3t2"
                             onFailure={responseLinkdin}
@@ -252,9 +255,9 @@ let data = {"token": response.accessToken}
                         >
                             <div style={{display:'flex', gap:20, padding:10}}>
                                 <LinkdinSvg />
-                                <div>SIGN UP WITH LINKEDIN</div>
+                                <div style={isMobile ? {fontSize:10} : {}}>SIGN UP WITH LINKEDIN</div>
                             </div>
-                        </LinkedIn>
+                        </LinkedIn> */}
 
                   </div>
                   <div style={{display:'flex', flex:1, alignItems:'center'}}>
@@ -263,7 +266,7 @@ let data = {"token": response.accessToken}
                       <Divider style={{flex:1}} />
                   </div></>:null}
                 </div>
-              <div className="form__container">
+              <div >
                   {(!otpSent)?<form>
                       <div style={{display:'flex', gap:12}}>
                         <TextField variant="outlined" className="form__control" label="FIRST NAME" value={props.first_name} onChange={(e) => props.handelData('first_name', e.target.value)} />
@@ -299,7 +302,7 @@ let data = {"token": response.accessToken}
 
                             onSubmit()
                           }}
-                      >{(!otpSending)?"NEXT":"Processing..."}</button>
+                      >{(!otpSending)?"NEXT":"SENDING OTP..."}</button>
                       
                   </form>:
                   <div className="verification__body">
@@ -315,7 +318,7 @@ let data = {"token": response.accessToken}
                             />
                       </div>
                       <h5>Didn't Recieve OTP? <span style={{fontWeight:"bold",color:" #30b3f0", cursor: "pointer"}} onClick={onSubmit}>Resend Code</span></h5>
-                    <button onClick={verifyOTP}>{(!isVerifying)?"NEXT":"Registering..."}</button>
+                    <button onClick={verifyOTP}>{(!props.isVerifying)?"NEXT":"Registering..."}</button>
                 </div>
                 }
                   <div id="captcha_cont"></div>

@@ -423,7 +423,7 @@ export default class NotificationsContainer extends Component {
 
     render() {
         return (
-          <div>
+          <div style={{display:'flex', flex:1}}>
             <Navbar />
             <ReactPolling
               url={`${url}/api/request-read`}
@@ -446,7 +446,7 @@ export default class NotificationsContainer extends Component {
               render={({ startPolling, stopPolling, isPolling }) => {
                 if (isPolling) {
                    return (
-                     <div>
+                     <div style={{display:'flex', flex:1}}>
                        
                        <Notifications
                          selected={this.state.selected}

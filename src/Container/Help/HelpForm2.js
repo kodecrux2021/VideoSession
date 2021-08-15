@@ -40,7 +40,7 @@ export default class HelpForm2 extends Component {
           .then(
             (result) => {
              // console.log('result', result)
-              this.setState({ technology_list: result })
+              this.setState({ technology_list: result.results })
             }
           )
     }

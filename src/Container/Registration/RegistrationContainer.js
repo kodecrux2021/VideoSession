@@ -1,5 +1,4 @@
 import React, { Component,  } from 'react';
-import RegistrationLayout from '../../components/RegistrationLayout/RegistrationLayout';
 import RegistrationView from './RegistrationView'
 import 'antd/dist/antd.css';
 import { message } from 'antd';
@@ -8,7 +7,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { Link } from 'react-router-dom';
 import { Card } from '@material-ui/core';
 import Logo from '../../assets/img/logo.png'
-import axios from 'axios';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 class RegistrationContainer extends Component {
@@ -26,6 +25,13 @@ class RegistrationContainer extends Component {
         first_name: '',
         last_name: '',
 
+        loader : false,
+        isVerifying : false
+
+    }
+
+    handleVerifyState = (State) => {
+        this.setState({isVerifying : State})
     }
 
 
@@ -85,9 +91,10 @@ class RegistrationContainer extends Component {
         console.log('auth resposne', this.state.authResponse)
     }
 
-    onSubmit=async(setOtpSent)=> {
+    onSubmit = async(setOtpSent)=> {
        
         if (this.state.email === '' || this.state.password === '' || this.state.mobile === '' || this.state.position === '' || this.state.setemail_validate !== '' || this.state.setmobile_validate !== '' || this.state.setpassword_validate !== '' ){
+            this.handleVerifyState(false)
             if (this.state.first_name === ''){
                 message.info('Please Fill First Name');    
             }
@@ -170,15 +177,16 @@ class RegistrationContainer extends Component {
                 if (response['status'] === 201 || response['status'] === 200) {
                     return response.json()
                 } else if (response['status'] === 400) {
-                        let data = response.json()
-                        console.log(data)
-                        if(data.phone){
-                            message.info(data.phone[0]);
-                        }else{
-                            console.log('A user with that username already exists.')
-                            message.info('A user with that email already exists!!!');
-                        }
-                        setOtpSent(false)
+                    this.handleVerifyState(false)
+                    let data = response.json()
+                    console.log(data)
+                    if(data.phone){
+                        message.info(data.phone[0]);
+                    }else{
+                        console.log('A user with that username already exists.')
+                        message.info('A user with that email already exists!!!');
+                    }
+                    setOtpSent(false)
                         
                 }
             })
@@ -212,6 +220,7 @@ class RegistrationContainer extends Component {
                     if (response['status'] === 201 || response['status'] === 200) {
                         return response.json()
                     } else if (response['status'] === 401) {
+                        this.handleVerifyState(false)
                         if (response['statusText'] === 'Unauthorized') {
                             // console.log('username or password you have provided is Incorrect')
                             message.info('Username or password you have provided is incorrect!!!');
@@ -284,7 +293,9 @@ class RegistrationContainer extends Component {
                     localStorage.setItem('user_id', result?.id);
                     localStorage.setItem('is_client', result?.is_client);
                     console.log(localStorage.getItem("is_client"));
+                    this.handleVerifyState(false)
                     this.props.history.push("/details");
+                    
                 }
                 
             })   
@@ -297,34 +308,48 @@ class RegistrationContainer extends Component {
       }
 
     render() {
-        return (
-            <div> 
-                <div className='body__ctr'>
-                    <div style={{position:'absolute', display:'flex', flex:1, width:'100%', alignItems:'flex-end',justifyContent:'flex-end', paddingRight:40}}>
-                        <Link to='/'> <CloseIcon style={{fontSize:30, color:'black'}} /> </Link>
-                    </div>
-                    <div style={{marginTop:30, display:'flex', justifyContent:'center'}}>
-                        <Card elevation={1} style={{width:180, height:50, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
-                            <Link to='/'>
-                                <img src={Logo} style={{ height: '30px', zIndex: 1000}} />
-                            </Link>
-                        </Card>
-                    </div>
-                    <RegistrationView
-                        onChangeValue={this.onChangeValue}
-                        handelData={this.handelData}
-                        onSubmit={this.onSubmit}
-                        email={this.state.email}
-                        mobile={this.state.mobile}
-                        password={this.state.password}
-                        position={this.state.position}
-                        first_name={this.state.first_name}
-                        last_name={this.state.last_name}
-                    />
-                </div> 
-            </div>
+        if (this.state.loader) {
+            return (
+                <div style={{display:'flex', flex:1, justifyContent:'center', alignItems:'center', height:'100%'}}>
+                    <CircularProgress />
+                </div>
+            )
+        } else {
+            return (
+                <div> 
+                    <div className='body__ctr' style={{display:'flex', flex:1, alignItems:'center', flexDirection:'column'}}>
+                        <div style={{position:'absolute', margin:30, display:'flex', flex:1, width:'100%', alignItems:'flex-end',justifyContent:'flex-end', paddingRight:40}}>
+                            <Link to='/'> <CloseIcon style={{fontSize:30, color:'black'}} /> </Link>
+                        </div>
+                        <div style={{display:'flex', flex:1, justifyContent:'center', flexDirection:'column'}}>
+                            <div style={{marginTop:30, display:'flex', justifyContent:'center'}}>
+                                <Card elevation={1} style={{width:180, height:50, display:'flex', justifyContent:'center', alignItems:'center', borderRadius:30,}}>
+                                    <Link to='/'>
+                                        <img src={Logo} style={{ height: '30px', zIndex: 1000}} />
+                                    </Link>
+                                </Card>
+                            </div>
+                            <RegistrationView
+                                onChangeValue={this.onChangeValue}
+                                handelData={this.handelData}
+                                onSubmit={this.onSubmit}
+                                email={this.state.email}
+                                mobile={this.state.mobile}
+                                password={this.state.password}
+                                position={this.state.position}
+                                first_name={this.state.first_name}
+                                last_name={this.state.last_name}
+                                isVerifying = {this.state.isVerifying}
+                                handleVerifyState = {this.handleVerifyState}
 
-            );
+                            />
+                        </div>
+                        
+                    </div> 
+                </div>
+
+                );
+            }
     }
 }
 

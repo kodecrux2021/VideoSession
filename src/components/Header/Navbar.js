@@ -183,7 +183,7 @@ export default function Navbar(props) {
             )}
           </Drawer>
         </div>
-            <img src={kodecrux} style={{ height: '30px', position: 'absolute',marginLeft: '15px', marginTop: -50, zIndex: 1000}} onClick = {() => history.push('/')}/>
+            <img src={kodecrux} style={{ height: '30px', position: 'absolute',margin: 15, zIndex: 1000}} onClick = {() => history.push('/')}/>
         </Hidden>
       
     </>

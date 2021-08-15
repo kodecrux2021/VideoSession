@@ -119,7 +119,7 @@ const styles = theme => ({
           </div>
           
           <div className="d-flex flex-column trainers__card__details ">
-            <div className="d-flex flex-column"> 
+            <div className="d-flex flex-column" style={{alignItems:'flex-start'}}> 
                 <Typography style={{ color: "#424242", fontSize:16, fontWeight:500, marginTop:17 }}>{props.name}</Typography>
                 <Typography style={{ color: "#898989", fontSize:12, fontWeight:'normal', }}>{props.details}</Typography>      
             </div>
@@ -144,12 +144,15 @@ const styles = theme => ({
               )}
               </div>
               {props.badge ? <StarsIcon /> : null}
-              <Typography style={{fontSize:16, fontWeight:'bold' }}>
-                ₹{props.rate}
-              </Typography>
-              <Typography style={{fontSize:10}}>
-                INR/hour
-              </Typography>
+              <div style={{display:'flex', flexDirection:'column', alignItems:'flex-start'}}>
+                <Typography style={{fontSize:16, fontWeight:'bold' }}>
+                  ₹{props.rate}
+                </Typography>
+                <Typography style={{fontSize:10}}>
+                  INR/hour
+                </Typography>
+              </div>
+              
             </div>
             
           </div>

@@ -13,6 +13,10 @@ import Chat from '../Chat/ChatComponent';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 
+import { createBrowserHistory } from "history";
+
+const history = createBrowserHistory()
+
 let user_id = ''
 let rec = '';
 
@@ -48,12 +52,22 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export default function Notifications(props) {
+    const [value, setValue] = React.useState(0);
     useEffect(() =>{
         user_id = localStorage.getItem('user_id');
+        if (history.location.pathname === '/notifications/messages') {
+          setValue(0)
+        } else if (history.location.pathname === '/notifications/requests') {
+          setValue(1)
+        } else if (history.location.pathname === '/notifications/troubleshoot') {
+          setValue(2)
+        }
+
     },[])
     const history = useHistory();
     const classes = useStyles();
-    const [value, setValue] = React.useState(0);
+    
+
     const [convoID, setConvoID] = React.useState(null)
     const [request, setRequest] = React.useState(null)
     const [contract, setContract] = React.useState(null)
@@ -103,7 +117,7 @@ export default function Notifications(props) {
     return (
         <div className='notifications' style={{display:'flex', flex:1, flexDirection:'column'}} >
             
-            <div style={{flex:1, display:'flex',}}>
+            <div style={{flex:1, display:'flex', marginTop:75}}>
             <div className='notifications__body' style={props.selected === "troubleshoot" ? {maxWidth:'none', flex:1, height:'100%'} : {flex:1, height:'100%'}} >
                 {
                     props.selected === 'messages' ?
@@ -111,9 +125,10 @@ export default function Notifications(props) {
                     <div className='notifications__body__chat' >
                         {/* <h2>Messages</h2> */}
                         <div className='chat__cards' >
+                        {props.message.count === 0 ? <div>No message</div> : null} 
                         {
                             
-                           props.message.length > 0 && props.message.map((user) =>{
+                           props.message.count > 0 && props?.message?.results?.map((user) =>{
                                 console.log("props message data", props.message)
                                 if(user.includes[0].id == localStorage.getItem('user_id') && user.includes.length > 1){
                                   rec = user.includes[1]                                                                    
@@ -134,143 +149,22 @@ export default function Notifications(props) {
                                         localStorage.setItem('conversation_id', user.id);
                                         // props.chatHandler()
                                     }}>
+                                    <a>
                                       <div className='chat__card__left' >
+                                      
                                       <Avatar style={{borderColor:'#3743B1', border:2, borderStyle:'solid', borderRadius : 50}} src={rec.profile_pic!== null ? rec.profile_pic : props.img} className={classes.large}/>
-                                          <div className='chat__card__details' >
+                                          <div className='chat__card__details' style={{display:'flex', flex:1, alignItems:"center"}} >
                                               <Typography style={{fontSize:14}}>{rec.first_name} {rec.last_name}</Typography>
-                                              <Typography style={{fontSize:12}}>Last msg</Typography>
+                                              {/* <Typography style={{fontSize:12}}>Last msg</Typography> */}
                                           </div>
                                       </div>
+                                      </a>
                                       
                                   </div>
                                 )
                             })
                         }
-                        </div>
-                        
-                    {/* <div className='chat__cards' >
-                        <div className='chat__card' >
-                            <div className='chat__card__left' >
-                            <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Maximulian Stark</span>
-                                </div>
-                            </div>
-
-                                <div className='chat__card__time' >
-                                    <span> 3:31 PM </span>
-                                </div>
-                        </div>
-                        <div className='chat__card' >
-                            <div className='chat__card__left' >
-                            <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Maximulian Stark</span>
-                                </div>
-                            </div>
-
-                                <div className='chat__card__time' >
-                                    <span> 3:31 PM </span>
-                                </div>
-                        </div>
-                        <div className='chat__card' >
-                            <div className='chat__card__left' >
-                            <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Maximulian Stark</span>
-                                </div>
-                            </div>
-
-                                <div className='chat__card__time' >
-                                    <span> 3:31 PM </span>
-                                </div>
-                        </div>
-                        <div className='chat__card' >
-                            <div className='chat__card__left' >
-                            <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Maximulian Stark</span>
-                                </div>
-                            </div>
-
-                                <div className='chat__card__time' >
-                                    <span> 3:31 PM </span>
-                                </div>
-                        </div>
-                        <div className='chat__card' >
-                            <div className='chat__card__left' >
-                            <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Maximulian Stark</span>
-                                </div>
-                            </div>
-
-                                <div className='chat__card__time' >
-                                    <span> 3:31 PM </span>
-                                </div>
-                        </div>
-                        <div className='chat__card' >
-                            <div className='chat__card__left' >
-                            <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Maximulian Stark</span>
-                                </div>
-                            </div>
-
-                                <div className='chat__card__time' >
-                                    <span> 3:31 PM </span>
-                                </div>
-                        </div>
-                        <div className='chat__card' >
-                            <div className='chat__card__left' >
-                            <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Maximulian Stark</span>
-                                </div>
-                            </div>
-
-                                <div className='chat__card__time' >
-                                    <span> 3:31 PM </span>
-                                </div>
-                        </div>
-                        <div className='chat__card' >
-                            <div className='chat__card__left' >
-                            <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Maximulian Stark</span>
-                                </div>
-                            </div>
-
-                                <div className='chat__card__time' >
-                                    <span> 3:31 PM </span>
-                                </div>
-                        </div>
-                        <div className='chat__card' >
-                            <div className='chat__card__left' >
-                            <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Maximulian Stark</span>
-                                </div>
-                            </div>
-
-                                <div className='chat__card__time' >
-                                    <span> 3:31 PM </span>
-                                </div>
-                        </div>
-                        <div className='chat__card' >
-                            <div className='chat__card__left' >
-                            <Avatar src={props.img} className={classes.large}/>
-                                <div className='chat__card__details' >
-                                    <span>Maximulian Stark</span>
-                                </div>
-                            </div>
-
-                                <div className='chat__card__time' >
-                                    <span> 3:31 PM </span>
-                                </div>
-                        </div>       
-                    </div>  */}
-                
+                        </div>                
                 </div>
                 :
                 null
@@ -281,7 +175,7 @@ export default function Notifications(props) {
                     <div className='notifications__body__chat' >
                     <div className='friend__cards' >
                        {
-                           props.requests.map((request)=> 
+                           props?.requests?.results?.map((request)=> 
                             { 
                                 let data =  request.accepted ? 
                                 null :
@@ -519,10 +413,10 @@ export default function Notifications(props) {
                 className={classes.medium}
               /> : null }
               {/* Request cards here */}
-              {request ? <div  style={{flex:1, backgroundColor:'#EEEFFF', height:'fit-content', margin:10, padding:20, borderRadius:20}}>
+              {request ? <div  style={{flex:1, backgroundColor:'#EEEFFF', display:'flex', alignItems:'flex-start', flexDirection:'column', height:'fit-content', margin:10, padding:20, borderRadius:20}}>
                 <Typography variant="h5">{contract?.project_title}</Typography>
                 <Typography variant="subtitle1">{contract?.deliverables}</Typography>
-                <div style={{flex:1, display:'flex', flexDirection:'row'}} className="request_mobile_tech_fix">
+                <div style={{flex:1, display:'flex', width: "100%", flexDirection:'row'}} className="request_mobile_tech_fix">
                   <div style={{flex:1, display:'flex', columnGap:20, alignItems:'center'}}>
                     <Typography variant="body2">Technology:</Typography>
                     <Typography  style={{border:1, borderStyle:'solid', borderColor:'#707070', padding:"5px 20px", borderRadius:50}}>{contract?.request}</Typography>
@@ -552,7 +446,7 @@ export default function Notifications(props) {
                   src={request?.sent_by_profile_pic}
                   className={classes.medium}
                 /> : null }
-              {request ? <div style={{flex:1, backgroundColor:'#EEEFFF', height:'fit-content', margin:10, padding:20, borderRadius:20}}>
+              {request ? <div style={{flex:1, backgroundColor:'#EEEFFF', display:'flex', alignItems:'flex-start', height:'fit-content', margin:10, padding:20, borderRadius:20}}>
                 <Typography variant="caption">{request.user_first_name} {request.user_last_name} would like to message you.</Typography>
                 </div> : null }
                 {request ? <div style={{flex:0.5, display:'flex', flexDirection:'column', gap:20, marginTop:20, alignItems:'center' }}>
@@ -565,16 +459,16 @@ export default function Notifications(props) {
             </div> : null }
             </div>
             <BottomNavigation showLabels 
-            onChange={(event, newValue) => {
-              setValue(newValue);
-              if (newValue === 0) {
-                props.selectHandler('messages')
-              } else if (newValue === 1) {
-                props.selectHandler('requests')
-              } else {
-                props.selectHandler('troubleshoot')
-              }
-            }}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+                if (newValue === 0) {
+                  props.selectHandler('messages')
+                } else if (newValue === 1) {
+                  props.selectHandler('requests')
+                } else {
+                  props.selectHandler('troubleshoot')
+                }
+              }}
             style={{display:'flex', outline:'none', zIndex:200}} value={value}>
                 <BottomNavigationAction label="Message" icon={<ChatIcon />} />
                 <BottomNavigationAction label="Requests" icon={<PeopleAltIcon />} />

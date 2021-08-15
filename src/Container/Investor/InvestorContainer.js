@@ -4,6 +4,7 @@ import {url} from '../../Server/GlobalUrl'
 import {message} from 'antd';
 import Navbar from '../../components/Header/Navbar';
 import kodecrux from '../../assets/images/reg2.jpeg'
+import Logo from '../../assets/img/logo.png'
 
 const sampleData = [
     { id: 1, name: 'Blockchain' },
@@ -190,8 +191,8 @@ export default class InvestorContainer extends Component {
     render() {
         return (
             <div>
-              <img src={kodecrux} style={{ height: '70px',marginLeft: '20px', top: '0' }} onClick = {() =>this.props.history.push('/')}/>
-              {/* <Navbar/> */}
+              {/* <img src={kodecrux} style={{ height: '70px',marginLeft: '20px', top: '0' }} onClick = {() =>this.props.history.push('/')}/> */}
+              <Navbar/>
                 <Investor
                 investor__name={this.state.investor__name}
                 selected={this.state.selected}

@@ -299,7 +299,13 @@ If as a user, you wish to refund the payment if they do not meet thier required 
     }
 
     handleSignup = () => {
-        this.props.history.push('/registration')
+        if(localStorage.getItem('token')){
+            this.props.history.push('/help/1');
+        }  
+        else{
+            this.props.history.push('/registration')
+        }
+        
       }
 
 
@@ -999,7 +1005,7 @@ If as a user, you wish to refund the payment if they do not meet thier required 
 									<div class="footer-logo">
 										<img src={LOGO} alt="logo" />
 									</div>
-									<div class="footer-about-content">
+									<div class="footer-about-content" style={isMobile ? {display:'flex', flexDirection:'column', flex:1,  alignItems:'center'} : {}}>
 										<p>Our solution can address on your on-the job challenges at various phases of projects including Design, Reviews, debugging , troubleshooting , hot fixes and quick project needs. </p>
 										<div class="social-icon">
 											<ul>

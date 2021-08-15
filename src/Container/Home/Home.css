@@ -2143,9 +2143,9 @@ html.menu-opened body {
 	position: relative;
 	z-index: 9;
 }
-.footer .footer-top .footer-about-content {
+/* .footer .footer-top .footer-about-content {
 	max-width: 315px;
-}
+} */
 .footer .footer-bottom {
 	position: relative;
 	z-index: 9;

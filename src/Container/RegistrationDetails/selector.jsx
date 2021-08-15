@@ -19,9 +19,9 @@ class Selector extends React.Component {
 
     handleNext = () => {
         let data = {
-            is_instructor : this.state.codeexpert
+            is_client : !this.state.codeexpert
         }
-        if (this.state.codeexpert) {
+        if (!this.state.codeexpert) {
             let auth = localStorage.getItem("token")
             let user_id = localStorage.getItem("user_id");
             fetch(url + "/api/customuser/" + user_id + "/", {
@@ -37,7 +37,8 @@ class Selector extends React.Component {
                   //console.log("response", response);
                   if (response["status"] === 201 || response["status"] === 200) {
                     message.success("Saved");
-                    window.location.reload();
+                    // window.location.reload();
+                    localStorage.setItem('is_client', !this.state.codeexpert);
                     return response.json();
                   } else if (response["status"] === 400 || response["status"] === 500) {
                     message.error("Something went wrong");
@@ -45,9 +46,11 @@ class Selector extends React.Component {
                   }
                 })
                 .then(async (result) => {
+
                     this.props.history.push("/details");
                 })
         }else {
+            localStorage.setItem('is_client', !this.state.codeexpert);
             this.props.history.push("/details");
         }   
     }
@@ -61,9 +64,9 @@ class Selector extends React.Component {
                         <Typography style={{padding:"40px 40px 0 40px", fontSize:18}}>Select Profile Type</Typography>
                         <div className="select__container" style={{padding:40}} >
                             <button className={this.state.codeexpert ?'select__button__active':'select__button'}  value="codeexpert" onClick={() => {
-                                if (!this.state.codeexpert)  this.setState({codeexpert : !this.state.codeexpert})}}>CODE EXPERT/INSTRUCTOR</button>
+                                this.setState({codeexpert : true})}}>CODE EXPERT/INSTRUCTOR</button>
                             <button className={!this.state.codeexpert ?'select__button__active':'select__button'} value="customer" onClick={() => {
-                                if (this.state.codeexpert)  this.setState({codeexpert : !this.state.codeexpert})}} >CUSTOMER/STUDENT</button>
+                                 this.setState({codeexpert : false})}} >CUSTOMER/STUDENT</button>
                         </div>
                         <div style={{display:'flex', flex:1, justifyContent:'flex-end', padding:"0 40px"}}>
                             <button style={{outline:"none", maxWidth:200}} onClick={this.handleNext}

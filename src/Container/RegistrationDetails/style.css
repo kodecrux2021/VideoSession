@@ -77,7 +77,7 @@ color: rgb(175, 175, 175);
 @media (max-width: 600px) {
 .registration__details__container {
     padding: 20px 0px;
-    width: 380px;
+    /* width: 380px; */
 }
 
 .registration__details__footer > div {

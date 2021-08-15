@@ -377,6 +377,7 @@ class Profile extends Component {
           //console.log("response", response);
           if (response["status"] === 201 || response["status"] === 200) {
             message.success("Saved");
+            localStorage.setItem("user_name", this.state.First_Name)
             window.location.reload();
             return response.json();
           } else if (response["status"] === 400 || response["status"] === 500) {
@@ -401,6 +402,7 @@ class Profile extends Component {
               // console.log("response", response);
               if (response["status"] === 201 || response["status"] === 200) {
                 message.success("Saved");
+                localStorage.setItem("user_name", this.state.First_Name)
                 window.location.reload();
                 // window.location.reload();
                 return response.json();
@@ -838,7 +840,7 @@ class Profile extends Component {
                         " "
                       ) : (
                         <>
-                          <div class="form__group">
+                          <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
                             <label style={{color:'#3743B1'}}>TECHNOLOGY</label>
 
                             <Select
@@ -864,7 +866,7 @@ class Profile extends Component {
                             />
                           </div>
 
-                          <div class="form__group">
+                          <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
                             <label style={{color:'#3743B1'}}>SUB TECHNOLOGY</label>
 
                             <Select
@@ -891,7 +893,7 @@ class Profile extends Component {
                             />
                           </div>
 
-                          <div class="form__group">
+                          <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
                             <label style={{color:'#3743B1'}}>TOTAL EXPERIENCE</label>
 
                             <Select
@@ -916,7 +918,7 @@ class Profile extends Component {
                             />
                           </div>
 
-                          <div class="form__group">
+                          <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
                             <label style={{color:'#3743B1'}}>RELEVANT EXPERIENCE</label>
 
                             <Select
@@ -940,7 +942,7 @@ class Profile extends Component {
                               value={relevant_experience}
                             />
                           </div>
-                          <div class="form__group">
+                          <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
                             <div
                               style={{ display: "flex", flexDirection:'column' }}
                             >

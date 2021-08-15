@@ -151,21 +151,32 @@ function Payment() {
     
   };
   const handlePayment = async() => {
-    const data = await Axios({
-      url: `${url}/order/`,
+    let auth = localStorage.getItem("token");
+    fetch(url + "/order/", {
       method: "POST",
       headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
+        Accept: "application/json, text/plain",
+        "Content-Type": "application/json;charset=UTF-8",
+        Authorization: "Bearer " + auth,
       },
-      data : {
+      body: JSON.stringify({
         hire_id:localStorage.getItem('pay_id')
+      }),
+    })
+    .then((response) => {
+        if (response['status'] === 201 || response['status'] === 200) {
+          return response.json()
+      } else if (response['status'] === 401) {
+          message.info('Something went wrong');
       }
-    }).then((res) => {
-      return res
-    });
-    const link=data.data.paymentLink;
-    window.location.replace(link);
+      })
+      .then((result) => {
+        console.log(result)
+        const link=result.paymentLink;
+        // console.log(link)
+        window.location.replace(link);
+      })
+    
   }
 
   return (
@@ -181,7 +192,7 @@ function Payment() {
       
       {/* <Checkbox onChange={onChange}>Reccuring payments for default payment methods</Checkbox> */}
       <div style={{minHeight:200, boxShadow:'0px 3px 6px rgba(0,0,0,0.16)', borderRadius:10, padding:20, marginTop:20}}>
-        <Typography variant="h6" style={{fontWeight:'400'}}>ORDER DETAILS</Typography>
+        <Typography variant="h6" style={{fontWeight:'400', textAlign:'left'}}>ORDER DETAILS</Typography>
         <div style={{borderBottomColor:'#C3C3C3', borderBottomStyle:'solid', borderBottomWidth:1, width:50, margin:"20px 0"}}></div>
           {/* <Table dataSource={dataSource} columns={columns} /> */}
           <DataGrid rows={orderData} columns={columns} pageSize={5} autoHeight={true}

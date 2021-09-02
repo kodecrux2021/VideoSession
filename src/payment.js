@@ -199,9 +199,9 @@ function Payment() {
                                 disableExtendRowFullWidth={true} disableMultipleColumnsSorting disableDensitySelector
                                 disableColumnSelector disableColumnFilter disableColumnMenu disableColumnReorder disableSelectionOnClick hideFooterPagination hideFooter />
         <div style={{display:'flex', justifyContent:'space-between', marginTop:30}}>
-          <button onClick={showRazorpay} className="btn btn-primary btn-block" style = {{width: '90px', fontSize: '15px'}}>
+          {/* <button onClick={showRazorpay} className="btn btn-primary btn-block" style = {{width: '90px', fontSize: '15px'}}>
           Add Card
-          </button>
+          </button> */}
           <button onClick={handlePayment} className="btn btn-primary btn-block" style = {{width: '90px', fontSize: '15px', marginTop:0}}>
           Pay Now
           </button>

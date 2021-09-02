@@ -691,7 +691,7 @@ class New extends React.Component {
                         className="form__control"
                         placeholder="Fees"
                       /> */}
-                      <TextField variant="outlined" className="form__control"  label="FEE" type="text" value={this.state.fees} onChange={(e) => this.handelData("fees", e.target.value)} />
+                      <TextField variant="outlined" className="form__control"  label="FEE (INR/Min)" type="text" value={this.state.fees} onChange={(e) => this.handelData("fees", e.target.value)} />
                     </div>
                     {/* <div class="form__group">
                       <label>Rating</label>

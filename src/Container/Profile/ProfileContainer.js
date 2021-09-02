@@ -19,6 +19,8 @@ import "./Profile.css";
 import { TextField, Button } from "@material-ui/core";
 import axios from "axios";
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -81,6 +83,8 @@ class Profile extends Component {
       loading: false,
       PageLoading: false,
       Uploading: false,
+
+      Loader : false
     };
   }
   
@@ -401,9 +405,10 @@ class Profile extends Component {
             }).then((response) => {
               // console.log("response", response);
               if (response["status"] === 201 || response["status"] === 200) {
-                message.success("Saved");
+                
                 localStorage.setItem("user_name", this.state.First_Name)
-                window.location.reload();
+                window.location.reload()
+                message.success("Saved");
                 // window.location.reload();
                 return response.json();
               } else if (response["status"] === 400) {
@@ -450,7 +455,7 @@ class Profile extends Component {
 
     let formData = new FormData();
     this.state.fileList.length > 0 &&
-      formData.append("profile_pic", this.state.fileList[0].originFileObj);
+    formData.append("profile_pic", this.state.fileList[0].originFileObj);
 
     axios.put(`${url}/api/customusersecond/${user_id}/`, formData, {
       headers: {
@@ -644,350 +649,356 @@ class Profile extends Component {
       }),
       menuPortal: base => ({ ...base, zIndex: 9999 })
     };
-    return (
-      <div>
-        <Navbar />
-        {/* <Link to="/">
-          <img className="Profile__logo" src={kodecrux} />
-        </Link> */}
+    if (this.state.PageLoading) {
+      return (
+        <div style={{display:'flex', flex:1, justifyContent:'center', alignItems:'center', height:'100%'}}>
+            <CircularProgress />
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <Navbar />
+          {/* <Link to="/">
+            <img className="Profile__logo" src={kodecrux} />
+          </Link> */}
 
-        {this.state.PageLoading ? (
-          <div className="Spinner_Loading">
-            <Spin size="large" />
-          </div>
-        ) : localStorage.getItem("user_id") ? (
-          <div className="Profile">
+          {this.state.PageLoading ? (
+            <div></div>
+          ) : localStorage.getItem("user_id") ? (
+            <div className="Profile">
 
-            <div className="Profile__container">
-              <div className="Profile__title">
-                <h2 style={{fontSize:16, color:'#3743B1', fontWeight:'normal'}}>PROFILE</h2>
-                {/* <h6>Add/edit Information about yourself</h6> */}
-              </div>
-              <div className="Profile__section">
-                <div className="profile__image">
-                  {" "}
-                  {profile_pic ? (
-                    <Image style={{border:2, borderColor:'#3743B1', borderStyle:'dashed'}} width={96} height={98} src={`${profile_pic}`} />
-                  ) : (
-                    <Image
-                      style={{border:2, borderColor:'#3743B1', borderStyle:'dashed'}}
-                      width={96}
-                      height={98}
-                      src="error"
-                      fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrkl1AuO+pmgAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAwqADAAQAAAABAAAAwwAAAAD9b/HnAAAHlklEQVR4Ae3dP3PTWBSGcbGzM6GCKqlIBRV0dHRJFarQ0eUT8LH4BnRU0NHR0UEFVdIlFRV7TzRksomPY8uykTk/zewQfKw/9znv4yvJynLv4uLiV2dBoDiBf4qP3/ARuCRABEFAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghgg0Aj8i0JO4OzsrPv69Wv+hi2qPHr0qNvf39+iI97soRIh4f3z58/u7du3SXX7Xt7Z2enevHmzfQe+oSN2apSAPj09TSrb+XKI/f379+08+A0cNRE2ANkupk+ACNPvkSPcAAEibACyXUyfABGm3yNHuAECRNgAZLuYPgEirKlHu7u7XdyytGwHAd8jjNyng4OD7vnz51dbPT8/7z58+NB9+/bt6jU/TI+AGWHEnrx48eJ/EsSmHzx40L18+fLyzxF3ZVMjEyDCiEDjMYZZS5wiPXnyZFbJaxMhQIQRGzHvWR7XCyOCXsOmiDAi1HmPMMQjDpbpEiDCiL358eNHurW/5SnWdIBbXiDCiA38/Pnzrce2YyZ4//59F3ePLNMl4PbpiL2J0L979+7yDtHDhw8vtzzvdGnEXdvUigSIsCLAWavHp/+qM0BcXMd/q25n1vF57TYBp0a3mUzilePj4+7k5KSLb6gt6ydAhPUzXnoPR0dHl79WGTNCfBnn1uvSCJdegQhLI1vvCk+fPu2ePXt2tZOYEV6/fn31dz+shwAR1sP1cqvLntbEN9MxA9xcYjsxS1jWR4AIa2Ibzx0tc44fYX/16lV6NDFLXH+YL32jwiACRBiEbf5KcXoTIsQSpzXx4N28Ja4BQoK7rgXiydbHjx/P25TaQAJEGAguWy0+2Q8PD6/Ki4R8EVl+bzBOnZY95fq9rj9zAkTI2SxdidBHqG9+skdw43borCXO/ZcJdraPWdv22uIEiLA4q7nvvCug8WTqzQveOH26fodo7g6uFe/a17W3+nFBAkRYENRdb1vkkz1CH9cPsVy/jrhr27PqMYvENYNlHAIesRiBYwRy0V+8iXP8+/fvX11Mr7L7ECueb/r48eMqm7FuI2BGWDEG8cm+7G3NEOfmdcTQw4h9/55lhm7DekRYKQPZF2ArbXTAyu4kDYB2YxUzwg0gi/41ztHnfQG26HbGel/crVrm7tNY+/1btkOEAZ2M05r4FB7r9GbAIdxaZYrHdOsgJ/wCEQY0J74TmOKnbxxT9n3FgGGWWsVdowHtjt9Nnvf7yQM2aZU/TIAIAxrw6dOnAWtZZcoEnBpNuTuObWMEiLAx1HY0ZQJEmHJ3HNvGCBBhY6jtaMoEiJB0Z29vL6ls58vxPcO8/zfrdo5qvKO+d3Fx8Wu8zf1dW4p/cPzLly/dtv9Ts/EbcvGAHhHyfBIhZ6NSiIBTo0LNNtScABFyNiqFCBChULMNNSdAhJyNSiECRCjUbEPNCRAhZ6NSiAARCjXbUHMCRMjZqBQiQIRCzTbUnAARcjYqhQgQoVCzDTUnQIScjUohAkQo1GxDzQkQIWejUogAEQo121BzAkTI2agUIkCEQs021JwAEXI2KoUIEKFQsw01J0CEnI1KIQJEKNRsQ80JECFno1KIABEKNdtQcwJEyNmoFCJAhELNNtScABFyNiqFCBChULMNNSdAhJyNSiECRCjUbEPNCRAhZ6NSiAARCjXbUHMCRMjZqBQiQIRCzTbUnAARcjYqhQgQoVCzDTUnQIScjUohAkQo1GxDzQkQIWejUogAEQo121BzAkTI2agUIkCEQs021JwAEXI2KoUIEKFQsw01J0CEnI1KIQJEKNRsQ80JECFno1KIABEKNdtQcwJEyNmoFCJAhELNNtScABFyNiqFCBChULMNNSdAhJyNSiECRCjUbEPNCRAhZ6NSiAARCjXbUHMCRMjZqBQiQIRCzTbUnAARcjYqhQgQoVCzDTUnQIScjUohAkQo1GxDzQkQIWejUogAEQo121BzAkTI2agUIkCEQs021JwAEXI2KoUIEKFQsw01J0CEnI1KIQJEKNRsQ80JECFno1KIABEKNdtQcwJEyNmoFCJAhELNNtScABFyNiqFCBChULMNNSdAhJyNSiEC/wGgKKC4YMA4TAAAAABJRU5ErkJggg=="
-                    >
-                    </Image>
-                  )}
-                  {this.state.Uploading ? (
-                    <div style={{ color: "#3743B1", fontSize:10 }}>
-                      Uploading <LoadingOutlined />{" "}
-                    </div>
-                  ) : (
-                    <Upload
-                      beforeUpload={(file) => {
-                        const isJPG =
-                          file.type === "image/jpeg" ||
-                          file.type === "image/png";
-                        if (!isJPG) {
-                          message.error("You can only upload JPG or PNG file!");
-                          return false;
-                        } else {
-                          return true;
-                        }
-                      }}
-                      customRequest={dummyRequest}
-                      //  action="https://next.json-generator.com/api/json/get/4ytyBoLK8"
-                      // listType="picture-card"
-                      fileList={fileList}
-                      onPreview={this.handlePreview}
-                      onChange={(e) => this.HandleImageChange(e)}
-                    >
-                      {fileList.length >= 1 ? null : uploadButton}
-                    </Upload>
-                  )}
-                  {/* <img src={`${profile_pic}`} /> */}
+              <div className="Profile__container">
+                <div className="Profile__title">
+                  <h2 style={{fontSize:16, color:'#3743B1', fontWeight:'normal'}}>PROFILE</h2>
+                  {/* <h6>Add/edit Information about yourself</h6> */}
                 </div>
-                <div className="profile__input_Fields">
-                  <form onSubmit={this.onSubmit}>
-                    <Col>
-                      <div style={{ textAlign: "center", margin: "10px" }}>
-                        {/* <Upload {...props}>
-                    <Button icon={<UploadOutlined />}>Upload</Button>
-                  </Upload> */}
-                        {/* <Modal
-                            visible={previewVisible}
-                            title={previewTitle}
-                            footer={null}
-                            onCancel={this.handleCancel}
-                          >
-                            <img
-                              alt="example"
-                              style={{ width: "100%" }}
-                              src={previewImage}
-                            />
-                          </Modal> */}
+                <div className="Profile__section">
+                  <div className="profile__image">
+                    {" "}
+                    {profile_pic ? (
+                      <Image style={{border:2, borderColor:'#3743B1', borderStyle:'dashed'}} width={96} height={98} src={`${profile_pic}`} />
+                    ) : (
+                      <Image
+                        style={{border:2, borderColor:'#3743B1', borderStyle:'dashed'}}
+                        width={96}
+                        height={98}
+                        src="error"
+                        fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrkl1AuO+pmgAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAwqADAAQAAAABAAAAwwAAAAD9b/HnAAAHlklEQVR4Ae3dP3PTWBSGcbGzM6GCKqlIBRV0dHRJFarQ0eUT8LH4BnRU0NHR0UEFVdIlFRV7TzRksomPY8uykTk/zewQfKw/9znv4yvJynLv4uLiV2dBoDiBf4qP3/ARuCRABEFAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghgg0Aj8i0JO4OzsrPv69Wv+hi2qPHr0qNvf39+iI97soRIh4f3z58/u7du3SXX7Xt7Z2enevHmzfQe+oSN2apSAPj09TSrb+XKI/f379+08+A0cNRE2ANkupk+ACNPvkSPcAAEibACyXUyfABGm3yNHuAECRNgAZLuYPgEirKlHu7u7XdyytGwHAd8jjNyng4OD7vnz51dbPT8/7z58+NB9+/bt6jU/TI+AGWHEnrx48eJ/EsSmHzx40L18+fLyzxF3ZVMjEyDCiEDjMYZZS5wiPXnyZFbJaxMhQIQRGzHvWR7XCyOCXsOmiDAi1HmPMMQjDpbpEiDCiL358eNHurW/5SnWdIBbXiDCiA38/Pnzrce2YyZ4//59F3ePLNMl4PbpiL2J0L979+7yDtHDhw8vtzzvdGnEXdvUigSIsCLAWavHp/+qM0BcXMd/q25n1vF57TYBp0a3mUzilePj4+7k5KSLb6gt6ydAhPUzXnoPR0dHl79WGTNCfBnn1uvSCJdegQhLI1vvCk+fPu2ePXt2tZOYEV6/fn31dz+shwAR1sP1cqvLntbEN9MxA9xcYjsxS1jWR4AIa2Ibzx0tc44fYX/16lV6NDFLXH+YL32jwiACRBiEbf5KcXoTIsQSpzXx4N28Ja4BQoK7rgXiydbHjx/P25TaQAJEGAguWy0+2Q8PD6/Ki4R8EVl+bzBOnZY95fq9rj9zAkTI2SxdidBHqG9+skdw43borCXO/ZcJdraPWdv22uIEiLA4q7nvvCug8WTqzQveOH26fodo7g6uFe/a17W3+nFBAkRYENRdb1vkkz1CH9cPsVy/jrhr27PqMYvENYNlHAIesRiBYwRy0V+8iXP8+/fvX11Mr7L7ECueb/r48eMqm7FuI2BGWDEG8cm+7G3NEOfmdcTQw4h9/55lhm7DekRYKQPZF2ArbXTAyu4kDYB2YxUzwg0gi/41ztHnfQG26HbGel/crVrm7tNY+/1btkOEAZ2M05r4FB7r9GbAIdxaZYrHdOsgJ/wCEQY0J74TmOKnbxxT9n3FgGGWWsVdowHtjt9Nnvf7yQM2aZU/TIAIAxrw6dOnAWtZZcoEnBpNuTuObWMEiLAx1HY0ZQJEmHJ3HNvGCBBhY6jtaMoEiJB0Z29vL6ls58vxPcO8/zfrdo5qvKO+d3Fx8Wu8zf1dW4p/cPzLly/dtv9Ts/EbcvGAHhHyfBIhZ6NSiIBTo0LNNtScABFyNiqFCBChULMNNSdAhJyNSiECRCjUbEPNCRAhZ6NSiAARCjXbUHMCRMjZqBQiQIRCzTbUnAARcjYqhQgQoVCzDTUnQIScjUohAkQo1GxDzQkQIWejUogAEQo121BzAkTI2agUIkCEQs021JwAEXI2KoUIEKFQsw01J0CEnI1KIQJEKNRsQ80JECFno1KIABEKNdtQcwJEyNmoFCJAhELNNtScABFyNiqFCBChULMNNSdAhJyNSiECRCjUbEPNCRAhZ6NSiAARCjXbUHMCRMjZqBQiQIRCzTbUnAARcjYqhQgQoVCzDTUnQIScjUohAkQo1GxDzQkQIWejUogAEQo121BzAkTI2agUIkCEQs021JwAEXI2KoUIEKFQsw01J0CEnI1KIQJEKNRsQ80JECFno1KIABEKNdtQcwJEyNmoFCJAhELNNtScABFyNiqFCBChULMNNSdAhJyNSiECRCjUbEPNCRAhZ6NSiAARCjXbUHMCRMjZqBQiQIRCzTbUnAARcjYqhQgQoVCzDTUnQIScjUohAkQo1GxDzQkQIWejUogAEQo121BzAkTI2agUIkCEQs021JwAEXI2KoUIEKFQsw01J0CEnI1KIQJEKNRsQ80JECFno1KIABEKNdtQcwJEyNmoFCJAhELNNtScABFyNiqFCBChULMNNSdAhJyNSiEC/wGgKKC4YMA4TAAAAABJRU5ErkJggg=="
+                      >
+                      </Image>
+                    )}
+                    {this.state.Uploading ? (
+                      <div style={{ color: "#3743B1", fontSize:10 }}>
+                        Uploading <LoadingOutlined />{" "}
                       </div>
-
-                      <div className="form__group" style={{display:'flex', gap:20}}>
-                        <TextField variant="outlined" name="First_Name" className="form__control" label="FIRST NAME" type="text" value={First_Name} onChange={this.handleChange} />
-                        <TextField variant="outlined" name="Last_Name" className="form__control" label="LAST NAME" type="text" value={Last_Name} onChange={this.handleChange} />
-                      </div>
-                      {/* <div className="form__group">
-                        <label>Last Name</label>
-                        <input
-                          type="text"
-                          className="form__control"
-                          placeholder="Last Name"
-                          name="Last_Name"
-                          defaultValue={Last_Name}
-                          // value={Last_Name}
-                          onChange={this.handleChange}
-                        />
-                      </div> */}
-                      {/* <div class="form__group">
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <label>Date of Birth</label>
-
-                          <div style={{ margin: "0 60px" }}>
-                            <DatePicker
-                              onChange={this.onChange}
-                              size="large"
-                              format="YYYY-MM-DD"
-                              defaultValue={
-                                Date_Of_Birth ? moment(Date_Of_Birth) : ""
-                              }
-                            />
-                          </div>
-                        </div>
-                      </div> */}
-                      <div className="form__group">
-                        {/* <label>Email</label>
-                        <input
-                          type="email"
-                          className="form__control"
-                          id="email"
-                          name="Email"
-                          placeholder="Your Email Here"
-                          onChange={(e) =>
-                            this.handleData("Email", e.target.value)
+                    ) : (
+                      <Upload
+                        beforeUpload={(file) => {
+                          const isJPG =
+                            file.type === "image/jpeg" ||
+                            file.type === "image/png";
+                          if (!isJPG) {
+                            message.error("You can only upload JPG or PNG file!");
+                            return false;
+                          } else {
+                            return true;
                           }
-                          value={Email}
-                        /> */}
-                        <TextField variant="outlined" className="form__control" label="EMAIL ADDRESS" type="email" value={Email} onChange={(e) =>
-                            this.handleData("Email", e.target.value)} />
-                      </div>
-
-                      <div className="form__group">
-                        {/* <label>Phone no</label>
-                        <input
-                          type="text"
-                          className="form__control"
-                          id="Phone"
-                          placeholder="Enter Mobile Number"
-                          name="Phone"
-                          onChange={(e) =>
-                            this.handleData("Phone", e.target.value)
-                          }
-                          value={Phone}
-                        /> */}
-                        <TextField variant="outlined" className="form__control" label="PHONE NUMBER" type="number" value={Phone} onChange={(e) =>
-                            this.handleData("Phone", e.target.value)
-                          } />
-                      </div>
-
-                      <div class="form__group" style={{display:'flex', gap:20}}>
-                        {/* <label>Pin Code</label>
-                        <input
-                          className="form__control"
-                          value={pincode}
-                          name="pincode"
-                          type="text"
-                          placeholder="Enter Your Postal Code"
-                          onChange={this.handleChange}
-                        /> */}
-                        <TextField variant="outlined" name="pincode" className="form__control" label="PIN CODE" type="text" value={pincode} onChange={this.handleChange}
-                           />
-                        <TextField variant="outlined" name="city" className="form__control" label="CITY" type="text" value={city} onChange={this.handleChange}
-                           />
-                      </div>
-                      <div class="form__group">
-                        {/* <label>State</label>
-                        <input
-                          className="form__control"
-                          value={state}
-                          name="state"
-                          type="text"
-                          placeholder="Enter Your state"
-                          onChange={this.handleChange}
-                        /> */}
-                        <TextField variant="outlined" name="state" className="form__control" label="STATE" type="text" value={state} onChange={this.handleChange}
-                           />
-                      </div>
-                      {/* <div class="form__group"> */}
-                        {/* <label>City</label>
-                        <input
-                          className="form__control"
-                          value={city}
-                          name="city"
-                          type="text"
-                          placeholder="Enter Your city"
-                          onChange={this.handleChange}
-                        /> */}
-                        
-                      {/* </div> */}
-
-                      {client ? (
-                        " "
-                      ) : (
-                        <>
-                          <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
-                            <label style={{color:'#3743B1'}}>TECHNOLOGY</label>
-
-                            <Select
-                              className="react-selectcomponent"
-                              classNamePrefix="name-select"
-                              onChange={(value) =>
-                                this.handleData("technology", value)
-                              }
-                              options={tech_list}
-                              getOptionLabel={(option) => `${option.name}`}
-                              getOptionValue={(option) => `${option.id}`}
-                              isOptionSelected={(option) =>
-                                this.state.technology === option.name
-                                  ? true
-                                  : false
-                              }
-                              styles={customStyles}
-                              isSearchable={true}
-                              openMenuOnClick={true}
-                              placeholder={"CHOOSE TECHNOLOGY"}
-                              value={technology}
-                              isMulti
-                            />
-                          </div>
-
-                          <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
-                            <label style={{color:'#3743B1'}}>SUB TECHNOLOGY</label>
-
-                            <Select
-                              className="react-selectcomponent"
-                              classNamePrefix="name-select"
-                              onChange={(value) =>
-                                this.handleData("sub_technology", value)
-                              }
-                              options={subtech_list}
-                              getOptionLabel={(option) => `${option.name}`}
-                              getOptionValue={(option) => `${option.id}`}
-                              isOptionSelected={(option) =>
-                                this.state.sub_technology === option.name
-                                  ? true
-                                  : false
-                              }
-                              isMulti
-                              styles={customStyles}
-                              isSearchable={true}
-                              // options={this.state.subtech_list}
-                              openMenuOnClick={true}
-                              placeholder={"CHOOSE SUB TECHNOLOGY"}
-                              value={this.state.sub_technology}
-                            />
-                          </div>
-
-                          <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
-                            <label style={{color:'#3743B1'}}>TOTAL EXPERIENCE</label>
-
-                            <Select
-                              className="react-selectcomponent"
-                              classNamePrefix="name-select"
-                              onChange={(value) =>
-                                this.handleData("total_experience", value)
-                              }
-                              getOptionLabel={(option) => `${option.name}`}
-                              getOptionValue={(option) => `${option}`}
-                              isOptionSelected={(option) =>
-                                this.state.sub_technology === option.name
-                                  ? true
-                                  : false
-                              }
-                              styles={customStyles}
-                              options={experienceData}
-                              isSearchable={true}
-                              openMenuOnClick={true}
-                              placeholder={"YEARS OF EXPERIENCE"}
-                              value={this.state.total_experience}
-                            />
-                          </div>
-
-                          <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
-                            <label style={{color:'#3743B1'}}>RELEVANT EXPERIENCE</label>
-
-                            <Select
-                              className="react-selectcomponent"
-                              classNamePrefix="name-select"
-                              onChange={(value) =>
-                                this.handleData("relevant_experience", value)
-                              }
-                              getOptionLabel={(option) => `${option.name}`}
-                              getOptionValue={(option) => `${option}`}
-                              isOptionSelected={(option) =>
-                                this.state.sub_technology === option.name
-                                  ? true
-                                  : false
-                              }
-                              styles={customStyles}
-                              options={experienceData}
-                              isSearchable={true}
-                              openMenuOnClick={true}
-                              placeholder={"RELEVANT YEARS OF EXPERIENCE"}
-                              value={relevant_experience}
-                            />
-                          </div>
-                          <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
-                            <div
-                              style={{ display: "flex", flexDirection:'column' }}
+                        }}
+                        customRequest={dummyRequest}
+                        //  action="https://next.json-generator.com/api/json/get/4ytyBoLK8"
+                        // listType="picture-card"
+                        fileList={fileList}
+                        onPreview={this.handlePreview}
+                        onChange={(e) => this.HandleImageChange(e)}
+                      >
+                        {fileList.length >= 1 ? null : uploadButton}
+                      </Upload>
+                    )}
+                    {/* <img src={`${profile_pic}`} /> */}
+                  </div>
+                  <div className="profile__input_Fields">
+                    <form onSubmit={this.onSubmit}>
+                      <Col>
+                        <div style={{ textAlign: "center", margin: "10px" }}>
+                          {/* <Upload {...props}>
+                      <Button icon={<UploadOutlined />}>Upload</Button>
+                    </Upload> */}
+                          {/* <Modal
+                              visible={previewVisible}
+                              title={previewTitle}
+                              footer={null}
+                              onCancel={this.handleCancel}
                             >
-                              <label style={{ marginRight: "3vw", color:'#3743B1' }}>
-                                ATTACH RESUME
-                              </label>
-                              
-                                <input
-                                  type="file"
-                                  // className=""
-                                  // className="form__control"
-                                  onChange={(e) => this.handleResume(e)}
-                                  accept="image/*, .pdf, .doc,.docx"
-                                  id="raised-button-file"
-                                  hidden
-                                />
-                                <label htmlFor="raised-button-file">
-                                  <Button variant="outlined" className="upload-image" component="span">
-                                    SELECT FILE
-                                  </Button>
-                                </label> 
-                                <div>{this.state.resume?.name}</div>
+                              <img
+                                alt="example"
+                                style={{ width: "100%" }}
+                                src={previewImage}
+                              />
+                            </Modal> */}
+                        </div>
+
+                        <div className="form__group" style={{display:'flex', gap:20}}>
+                          <TextField variant="outlined" name="First_Name" className="form__control" label="FIRST NAME" type="text" value={First_Name} onChange={this.handleChange} />
+                          <TextField variant="outlined" name="Last_Name" className="form__control" label="LAST NAME" type="text" value={Last_Name} onChange={this.handleChange} />
+                        </div>
+                        {/* <div className="form__group">
+                          <label>Last Name</label>
+                          <input
+                            type="text"
+                            className="form__control"
+                            placeholder="Last Name"
+                            name="Last_Name"
+                            defaultValue={Last_Name}
+                            // value={Last_Name}
+                            onChange={this.handleChange}
+                          />
+                        </div> */}
+                        {/* <div class="form__group">
+                          <div style={{ display: "flex", alignItems: "center" }}>
+                            <label>Date of Birth</label>
+
+                            <div style={{ margin: "0 60px" }}>
+                              <DatePicker
+                                onChange={this.onChange}
+                                size="large"
+                                format="YYYY-MM-DD"
+                                defaultValue={
+                                  Date_Of_Birth ? moment(Date_Of_Birth) : ""
+                                }
+                              />
                             </div>
                           </div>
-                        </>
-                      )}
-                    </Col>
-                    <Col className="registration__details__footer">
-                    <button type="submit" onClick={this.onSubmit}>
-                      {loading ? <Spin indicator={antIcon} /> : "Save"}
-                    </button>
-                      {/* <button type="submit">
+                        </div> */}
+                        <div className="form__group">
+                          {/* <label>Email</label>
+                          <input
+                            type="email"
+                            className="form__control"
+                            id="email"
+                            name="Email"
+                            placeholder="Your Email Here"
+                            onChange={(e) =>
+                              this.handleData("Email", e.target.value)
+                            }
+                            value={Email}
+                          /> */}
+                          <TextField variant="outlined" className="form__control" label="EMAIL ADDRESS" type="email" value={Email} onChange={(e) =>
+                              this.handleData("Email", e.target.value)} />
+                        </div>
+
+                        <div className="form__group">
+                          {/* <label>Phone no</label>
+                          <input
+                            type="text"
+                            className="form__control"
+                            id="Phone"
+                            placeholder="Enter Mobile Number"
+                            name="Phone"
+                            onChange={(e) =>
+                              this.handleData("Phone", e.target.value)
+                            }
+                            value={Phone}
+                          /> */}
+                          <TextField variant="outlined" className="form__control" label="PHONE NUMBER" type="number" value={Phone} onChange={(e) =>
+                              this.handleData("Phone", e.target.value)
+                            } />
+                        </div>
+
+                        <div class="form__group" style={{display:'flex', gap:20}}>
+                          {/* <label>Pin Code</label>
+                          <input
+                            className="form__control"
+                            value={pincode}
+                            name="pincode"
+                            type="text"
+                            placeholder="Enter Your Postal Code"
+                            onChange={this.handleChange}
+                          /> */}
+                          <TextField variant="outlined" name="pincode" className="form__control" label="PIN CODE" type="text" value={pincode} onChange={this.handleChange}
+                            />
+                          <TextField variant="outlined" name="city" className="form__control" label="CITY" type="text" value={city} onChange={this.handleChange}
+                            />
+                        </div>
+                        <div class="form__group">
+                          {/* <label>State</label>
+                          <input
+                            className="form__control"
+                            value={state}
+                            name="state"
+                            type="text"
+                            placeholder="Enter Your state"
+                            onChange={this.handleChange}
+                          /> */}
+                          <TextField variant="outlined" name="state" className="form__control" label="STATE" type="text" value={state} onChange={this.handleChange}
+                            />
+                        </div>
+                        {/* <div class="form__group"> */}
+                          {/* <label>City</label>
+                          <input
+                            className="form__control"
+                            value={city}
+                            name="city"
+                            type="text"
+                            placeholder="Enter Your city"
+                            onChange={this.handleChange}
+                          /> */}
+                          
+                        {/* </div> */}
+
+                        {client ? (
+                          " "
+                        ) : (
+                          <>
+                            <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
+                              <label style={{color:'#3743B1'}}>TECHNOLOGY</label>
+
+                              <Select
+                                className="react-selectcomponent"
+                                classNamePrefix="name-select"
+                                onChange={(value) =>
+                                  this.handleData("technology", value)
+                                }
+                                options={tech_list}
+                                getOptionLabel={(option) => `${option.name}`}
+                                getOptionValue={(option) => `${option.id}`}
+                                isOptionSelected={(option) =>
+                                  this.state.technology === option.name
+                                    ? true
+                                    : false
+                                }
+                                styles={customStyles}
+                                isSearchable={true}
+                                openMenuOnClick={true}
+                                placeholder={"CHOOSE TECHNOLOGY"}
+                                value={technology}
+                                isMulti
+                              />
+                            </div>
+
+                            <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
+                              <label style={{color:'#3743B1'}}>SUB TECHNOLOGY</label>
+
+                              <Select
+                                className="react-selectcomponent"
+                                classNamePrefix="name-select"
+                                onChange={(value) =>
+                                  this.handleData("sub_technology", value)
+                                }
+                                options={subtech_list}
+                                getOptionLabel={(option) => `${option.name}`}
+                                getOptionValue={(option) => `${option.id}`}
+                                isOptionSelected={(option) =>
+                                  this.state.sub_technology === option.name
+                                    ? true
+                                    : false
+                                }
+                                isMulti
+                                styles={customStyles}
+                                isSearchable={true}
+                                // options={this.state.subtech_list}
+                                openMenuOnClick={true}
+                                placeholder={"CHOOSE SUB TECHNOLOGY"}
+                                value={this.state.sub_technology}
+                              />
+                            </div>
+
+                            <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
+                              <label style={{color:'#3743B1'}}>TOTAL EXPERIENCE</label>
+
+                              <Select
+                                className="react-selectcomponent"
+                                classNamePrefix="name-select"
+                                onChange={(value) =>
+                                  this.handleData("total_experience", value)
+                                }
+                                getOptionLabel={(option) => `${option.name}`}
+                                getOptionValue={(option) => `${option}`}
+                                isOptionSelected={(option) =>
+                                  this.state.sub_technology === option.name
+                                    ? true
+                                    : false
+                                }
+                                styles={customStyles}
+                                options={experienceData}
+                                isSearchable={true}
+                                openMenuOnClick={true}
+                                placeholder={"YEARS OF EXPERIENCE"}
+                                value={this.state.total_experience}
+                              />
+                            </div>
+
+                            <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
+                              <label style={{color:'#3743B1'}}>RELEVANT EXPERIENCE</label>
+
+                              <Select
+                                className="react-selectcomponent"
+                                classNamePrefix="name-select"
+                                onChange={(value) =>
+                                  this.handleData("relevant_experience", value)
+                                }
+                                getOptionLabel={(option) => `${option.name}`}
+                                getOptionValue={(option) => `${option}`}
+                                isOptionSelected={(option) =>
+                                  this.state.sub_technology === option.name
+                                    ? true
+                                    : false
+                                }
+                                styles={customStyles}
+                                options={experienceData}
+                                isSearchable={true}
+                                openMenuOnClick={true}
+                                placeholder={"RELEVANT YEARS OF EXPERIENCE"}
+                                value={relevant_experience}
+                              />
+                            </div>
+                            <div class="form__group" style={{ display: "flex", flexDirection:'column', alignItems:'flex-start' }}>
+                              <div
+                                style={{ display: "flex", flexDirection:'column' }}
+                              >
+                                <label style={{ marginRight: "3vw", color:'#3743B1' }}>
+                                  ATTACH RESUME
+                                </label>
+                                
+                                  <input
+                                    type="file"
+                                    // className=""
+                                    // className="form__control"
+                                    onChange={(e) => this.handleResume(e)}
+                                    accept="image/*, .pdf, .doc,.docx"
+                                    id="raised-button-file"
+                                    hidden
+                                  />
+                                  <label htmlFor="raised-button-file">
+                                    <Button variant="outlined" className="upload-image" component="span">
+                                      SELECT FILE
+                                    </Button>
+                                  </label> 
+                                  <div>{this.state.resume?.name}</div>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </Col>
+                      <Col className="registration__details__footer">
+                      <button type="submit" onClick={this.onSubmit}>
                         {loading ? <Spin indicator={antIcon} /> : "Save"}
-                      </button> */}
-                    </Col>
-                  </form>
+                      </button>
+                        {/* <button type="submit">
+                          {loading ? <Spin indicator={antIcon} /> : "Save"}
+                        </button> */}
+                      </Col>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <Redirect to="/login" />
-        )}
-      </div>
-    );
+          ) : (
+            <Redirect to="/login" />
+          )}
+        </div>
+      );
+    }
   }
 }
 

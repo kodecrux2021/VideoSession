@@ -39,7 +39,7 @@ export default class HelpForm1 extends Component {
             <>
             {/* <img src={kodecrux} style={{ height: '70px', position: 'absolute',marginLeft: '15px', marginTop: '15px'}} onClick = {() =>this.props.history.push('/')}/> */}
             <Navbar/>
-            <div className='body__ctr'>
+            <div className='body__ctr' style={{display:'flex', flex:1}}>
             <div className='help__form__container'>
              <div className='HelpForm1'>
                 <div className='HelpForm1__header' style={isMobile ? {marginTop:80, fontSize:24} : {}}>
